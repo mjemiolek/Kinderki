@@ -9,14 +9,10 @@
 #include <rapidjson/writer.h>
 #include <rapidjson/stringbuffer.h>
 
+#include <irrKlang/ik_ISound.h>
 
-//#include <freetype/freetype.h>
-//#include <ft2build.h>
-//#include FT_FREETYPE_H
-
-//#include <ik_ISound.h>
-
-
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
