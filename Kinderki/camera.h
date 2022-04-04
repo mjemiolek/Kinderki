@@ -33,6 +33,7 @@ public:
     glm::vec3 Up;
     glm::vec3 Right;
     glm::vec3 WorldUp;
+    glm::vec3 angle = glm::vec3(0.0f, 0.0f, -0.35f);
     // euler Angles
     float Yaw;
     float Pitch;
@@ -63,7 +64,7 @@ public:
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix()
     {
-        return glm::lookAt(Position, Position + Front, Up);
+        return glm::lookAt(Position, Position + -Up + angle, Front);
     }
 
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
