@@ -25,6 +25,8 @@
 #include <iostream>
 #include <mmcobj.h>
 
+#include <sstream>
+
 static void glfw_error_callback(int error, const char* description);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -57,7 +59,6 @@ Camera camera(glm::vec3(0.0f, 5.0f, 0.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
-std::stringstream string_object_name;
 
 
 // timing
@@ -123,6 +124,9 @@ float vertices[] = {
     -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 };
+
+
+std::ostringstream strs;
 
 
 float quadVertices[] = {
@@ -323,6 +327,8 @@ double passed_time = 0.0;
 bool should_render = false;
 double frame_time = 1.0 / 60.0;
 
+std::string coos;
+
 
 
 std::shared_ptr<SceneGraphNode> root_node;
@@ -402,6 +408,7 @@ int main()
 
     // Output {"project":"rapidjson","stars":11}
     std::cout << buffer.GetString() << std::endl;
+
 
 
     //FT_Library  library;
@@ -632,6 +639,10 @@ int main()
     }
 
 
+
+
+
+
     glm::mat4 projection2 = glm::ortho(0.0f, static_cast<GLfloat>(SCR_WIDTH), 0.0f, static_cast<GLfloat>(SCR_HEIGHT));
     textShader.use();
     glUniformMatrix4fv(glGetUniformLocation(textShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection2));
@@ -750,13 +761,16 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 18);
             glBindVertexArray(0);
 
+            
             //
             //glBindBuffer(GL_ARRAY_BUFFER, textVBO);
             //glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-            RenderText(textShader, "example", 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+
+            
+            
+            RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
             //string_object_name.clear();
             //RenderText(textShader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
-
 
 
 
@@ -920,7 +934,9 @@ void update(float dt) {
     else {
         x = -0.90f;
     }
-    string_object_name << current_time;
+    strs.str(std::string());
+
+    strs << current_time;
     root_node->update(Transform(), false);
 }
 void render() {
@@ -972,6 +988,7 @@ void RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat 
         glDrawArrays(GL_TRIANGLES, 0, 6);
         // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
         x += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+
     }
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
