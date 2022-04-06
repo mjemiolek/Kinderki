@@ -761,19 +761,6 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 18);
             glBindVertexArray(0);
 
-            
-            //
-            //glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-            //glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-
-            
-            
-            RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-            //string_object_name.clear();
-            //RenderText(textShader, "(C) LearnOpenGL.com", 540.0f, 570.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
-
-
-
              //Since the cubemap will always have a depth of 1.0, we need that equal sign so it doesn't get discarded
             glDepthFunc(GL_LEQUAL);
 
@@ -798,6 +785,9 @@ int main()
 
             // Switch back to the normal depth function
             glDepthFunc(GL_LESS);
+
+            RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+
 
             render_gui();
             glfwPollEvents();
