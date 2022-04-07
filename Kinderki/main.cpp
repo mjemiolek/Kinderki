@@ -1,6 +1,6 @@
-//#include "imgui.h"
-//#include "imgui_impl_glfw.h"
-//#include "imgui_impl_opengl3.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -734,6 +734,8 @@ int main()
         passed_time = current_time - last_time;
         last_time = current_time;
         unprocessed_time += passed_time;
+        input(window);
+
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
@@ -744,7 +746,6 @@ int main()
 
         if (should_render) {
             should_render = false;
-            input(window);
             render();
             testShader.use();
             glBindVertexArray(quadVAO);
@@ -926,7 +927,7 @@ void update(float dt) {
     }
     strs.str(std::string());
 
-    strs << current_time;
+    strs << passed_time;
     root_node->update(Transform(), false);
 }
 void render() {
@@ -936,6 +937,18 @@ void render() {
 
 }
 void render_gui() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+
+
+    ImGui::Render();
+    int display_w, display_h;
+    glfwGetFramebufferSize(window, &display_w, &display_h);
+    glViewport(0, 0, display_w, display_h);
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 
 
 }
