@@ -1,6 +1,6 @@
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+//#include "imgui.h"
+//#include "imgui_impl_glfw.h"
+//#include "imgui_impl_opengl3.h"
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -72,7 +72,7 @@ glm::vec3 cubePositions[] = {
         glm::vec3(2.0f,  5.0f, -15.0f),
         glm::vec3(0.5f, 0.2f, -1.5f),
         glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3(2.4f, -0.4f, -3.5f),
+        glm::vec3(0.0f, 0.0f,  3.5f),
         glm::vec3(-1.7f,  3.0f, -7.5f),
         glm::vec3(1.3f, -2.0f, -2.5f),
         glm::vec3(1.5f,  2.0f, -2.5f),
@@ -334,6 +334,7 @@ std::string coos;
 std::shared_ptr<SceneGraphNode> root_node;
 std::shared_ptr<SceneGraphNode> cube1;
 std::shared_ptr<SceneGraphNode> cube2;
+std::shared_ptr<SceneGraphNode> cube3;
 std::shared_ptr<SceneGraphNode> test1;
 std::shared_ptr<SceneGraphNode> progressbar;
 
@@ -545,6 +546,7 @@ int main()
     root_node = std::make_shared<SceneGraphNode>();
     cube1 = std::make_shared<SceneGraphNode>();
     cube2 = std::make_shared<SceneGraphNode>();
+    cube3 = std::make_shared<SceneGraphNode>();
     test1 = std::make_shared<SceneGraphNode>();
 
     root_node->add_child(cube1);
@@ -558,6 +560,12 @@ int main()
     cube2->texture = texturekupa;
     cube2->get_transform().m_position = cubePositions[2];
     cube2->isBox = true;
+
+    cube2->add_child(cube3);
+    cube3->shaderTemp = lightingShader;
+    cube3->texture = texturekupa;
+    cube3->get_transform().m_position = cubePositions[4];
+    cube3->isBox = true;
 
     //    root_node->add_child(test1);
     //    test1->shaderTemp = testShader;
@@ -734,7 +742,6 @@ int main()
         passed_time = current_time - last_time;
         last_time = current_time;
         unprocessed_time += passed_time;
-        input(window);
 
 
         while (unprocessed_time >= frame_time) {
@@ -746,6 +753,7 @@ int main()
 
         if (should_render) {
             should_render = false;
+            input(window);
             render();
             testShader.use();
             glBindVertexArray(quadVAO);
@@ -838,6 +846,10 @@ void input(GLFWwindow* window) {
         camera.ProcessKeyboard(LEFT, passed_time);
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, passed_time);
+    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+        cube2->get_transform().x_rotation_angle += 1.0f;
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+        cube3->get_transform().x_rotation_angle += 1.0f;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -928,6 +940,8 @@ void update(float dt) {
     strs.str(std::string());
 
     strs << passed_time;
+    cube2->update_transform();
+    cube3->update_transform();
     root_node->update(Transform(), false);
 }
 void render() {
@@ -937,17 +951,17 @@ void render() {
 
 }
 void render_gui() {
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+    //ImGui_ImplOpenGL3_NewFrame();
+    //ImGui_ImplGlfw_NewFrame();
+    //ImGui::NewFrame();
 
 
 
-    ImGui::Render();
-    int display_w, display_h;
-    glfwGetFramebufferSize(window, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    //ImGui::Render();
+    //int display_w, display_h;
+    //glfwGetFramebufferSize(window, &display_w, &display_h);
+    //glViewport(0, 0, display_w, display_h);
+    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 
 
