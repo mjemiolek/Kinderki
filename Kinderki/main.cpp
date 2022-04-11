@@ -477,9 +477,10 @@ int main()
     cube2->tempRender = BOX;
     cube2->VAOTemp = cubeVAO;
 
+    cube2->add_child(cube3);
     cube3->shaderTemp = lightingShader;
     cube3->texture = texturekupa;
-    cube3->get_transform().m_position = player ->getPlayerPosition();
+    cube3->get_transform().m_position = player->getPlayerPosition();
     cube3->tempRender = BOX;
     cube3->VAOTemp = cubeVAO;
 
@@ -679,6 +680,8 @@ int main()
         if (should_render) {
             should_render = false;
             input(window);
+            
+
             render();
             testShader.use();
             glBindVertexArray(quadVAO);
@@ -721,6 +724,8 @@ int main()
             glDepthFunc(GL_LESS);
 
             RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+
+            player->move(window, &cube3->get_transform().m_position);
 
 
             render_gui();
