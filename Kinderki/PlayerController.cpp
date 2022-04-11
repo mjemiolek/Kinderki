@@ -3,7 +3,7 @@
 
 PlayerController::PlayerController(glm::vec3 PlayerPosition)
 {
-	this->PlayerPosition;
+    this->PlayerPosition = PlayerPosition;
 }
 
 PlayerController::~PlayerController()

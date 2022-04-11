@@ -461,7 +461,9 @@ int main()
     test1 = std::make_shared<SceneGraphNode>();
     modelTest = std::make_shared<SceneGraphNode>();
 
+
     PlayerController* player = new PlayerController(cubePositions[4]);
+    glm::vec3 cube3vec = player->getPlayerPosition();
 
     root_node->add_child(cube1);
     cube1->shaderTemp = lightingShader;
@@ -477,9 +479,10 @@ int main()
     cube2->tempRender = BOX;
     cube2->VAOTemp = cubeVAO;
 
+    root_node->add_child(cube3);
     cube3->shaderTemp = lightingShader;
     cube3->texture = texturekupa;
-    cube3->get_transform().m_position = player ->getPlayerPosition();
+    cube3->get_transform().m_position = cube3vec;
     cube3->tempRender = BOX;
     cube3->VAOTemp = cubeVAO;
 
@@ -679,6 +682,8 @@ int main()
         if (should_render) {
             should_render = false;
             input(window);
+            player->move(window, cube3vec);
+            player->setPlayerPosition(cube3vec);
             render();
             testShader.use();
             glBindVertexArray(quadVAO);

@@ -146,12 +146,14 @@
   <ItemGroup>
     <ClCompile Include="glad.c" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="stb.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="mesh.h" />
     <ClInclude Include="model.h" />
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="shader.h" />
   </ItemGroup>
