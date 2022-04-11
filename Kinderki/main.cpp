@@ -23,6 +23,7 @@
 #include "camera.h"
 #include "model.h"
 #include "SceneGraph.h"
+#include "PlayerController.h"
 
 
 #include <iostream>
@@ -460,6 +461,8 @@ int main()
     test1 = std::make_shared<SceneGraphNode>();
     modelTest = std::make_shared<SceneGraphNode>();
 
+    PlayerController* player = new PlayerController(cubePositions[4]);
+
     root_node->add_child(cube1);
     cube1->shaderTemp = lightingShader;
     cube1->texture = texture;
@@ -474,10 +477,9 @@ int main()
     cube2->tempRender = BOX;
     cube2->VAOTemp = cubeVAO;
 
-    cube2->add_child(cube3);
     cube3->shaderTemp = lightingShader;
     cube3->texture = texturekupa;
-    cube3->get_transform().m_position = cubePositions[4];
+    cube3->get_transform().m_position = player ->getPlayerPosition();
     cube3->tempRender = BOX;
     cube3->VAOTemp = cubeVAO;
 

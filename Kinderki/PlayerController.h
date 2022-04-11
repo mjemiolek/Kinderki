@@ -1,4 +1,8 @@
 #pragma once
+#ifndef PLAYERCONTROLLER_H
+#define PLAYERCONTROLLER_H
+
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -26,3 +30,5 @@ public:
 	void setPlayerPosition(glm::vec3 position);
 	void move(GLFWwindow* window, glm::vec3& Cube1Position);
 };
+
+#endif

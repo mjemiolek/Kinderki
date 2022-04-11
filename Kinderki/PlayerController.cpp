@@ -1,3 +1,4 @@
+#define PLAYERCONTROLLER_H_IMPLEMENTATION
 #include "PlayerController.h"
 
 PlayerController::PlayerController(glm::vec3 PlayerPosition)
