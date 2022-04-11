@@ -461,6 +461,7 @@ int main()
     test1 = std::make_shared<SceneGraphNode>();
     modelTest = std::make_shared<SceneGraphNode>();
 
+
     PlayerController* player = new PlayerController(cubePositions[4]);
 
     root_node->add_child(cube1);
@@ -680,8 +681,6 @@ int main()
         if (should_render) {
             should_render = false;
             input(window);
-            
-
             render();
             testShader.use();
             glBindVertexArray(quadVAO);
