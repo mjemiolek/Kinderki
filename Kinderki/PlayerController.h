@@ -28,7 +28,7 @@ public:
 	~PlayerController();
 	glm::vec3 getPlayerPosition();
 	void setPlayerPosition(glm::vec3 position);
-	void move(GLFWwindow* window, glm::vec3* Cube1Position);
+	void move(GLFWwindow* window, glm::vec3* Cube1Position, float deltaTime);
 };
 
 #endif

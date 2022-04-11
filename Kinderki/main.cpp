@@ -60,7 +60,7 @@ const GLuint SCR_WIDTH = 1280;
 const GLuint SCR_HEIGHT = 720;
 
 // camera
-
+glm::vec3 cameraPos(0.0f, 8.0f, 3.0f);
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -71,11 +71,11 @@ float lastFrame = 0.0f;
 // lighting
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 glm::vec3 cubePositions[] = {
-        glm::vec3(0.0f,  0.0f,  0.0f),
+        glm::vec3(0.0f, 0.0f,  3.5f),
         glm::vec3(2.0f,  5.0f, -15.0f),
         glm::vec3(0.5f, 0.2f, -1.5f),
         glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3(0.0f, 0.0f,  3.5f),
+        glm::vec3(0.0f, 0.0f,  0.0f),
         glm::vec3(-1.7f,  3.0f, -7.5f),
         glm::vec3(1.3f, -2.0f, -2.5f),
         glm::vec3(1.5f,  2.0f, -2.5f),
@@ -478,7 +478,7 @@ int main()
     cube2->tempRender = BOX;
     cube2->VAOTemp = cubeVAO;
 
-    cube2->add_child(cube3);
+    root_node->add_child(cube3);
     cube3->shaderTemp = lightingShader;
     cube3->texture = texturekupa;
     cube3->get_transform().m_position = player->getPlayerPosition();
@@ -670,6 +670,8 @@ int main()
         last_time = current_time;
         unprocessed_time += passed_time;
 
+        input(window);
+        player->move(window, &cube3->get_transform().m_position, passed_time);
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
@@ -680,7 +682,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-            input(window);
+            
             render();
             testShader.use();
             glBindVertexArray(quadVAO);
@@ -724,9 +726,6 @@ int main()
 
             RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 
-            player->move(window, &cube3->get_transform().m_position);
-
-
             render_gui();
             glfwPollEvents();
             glfwSwapBuffers(window);
@@ -767,18 +766,22 @@ void input(GLFWwindow* window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    
+        //Player+Camera                                OnlyCamera
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         camera.ProcessKeyboard(FORWARD, passed_time);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
         camera.ProcessKeyboard(BACKWARD, passed_time);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
         camera.ProcessKeyboard(LEFT, passed_time);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, passed_time);
     if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-        cube2->get_transform().x_rotation_angle += 1.0f;
+        cube2->get_transform().x_rotation_angle += 6.0f * passed_time;
     if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-        cube3->get_transform().x_rotation_angle += 1.0f;
+        cube2->get_transform().z_rotation_angle += 9.0f * passed_time;
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+        camera.Position = cube3->get_transform().m_position + cameraPos;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
