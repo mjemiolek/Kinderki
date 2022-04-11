@@ -59,8 +59,6 @@ Camera camera(glm::vec3(0.0f, 5.0f, 0.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
-
-
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -205,7 +203,9 @@ unsigned int skyboxIndices[] =
     6, 2, 3
 };
 
-
+enum renderEnum {
+    MODEL,BOX,LIGHT
+};
 
 GLint u_scale_loc = -1;
 GLint u_world_loc = -1;
@@ -266,7 +266,7 @@ struct SceneGraphNode {
             shaderTemp.setMat4("view", view);
             shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
 
-            if (isBox && !is2d) {
+            if (tempRender == BOX) {
 
                 shaderTemp.setVec3("viewPos", camera.Position);
                 shaderTemp.setVec3("light.direction", -1.0f, -0.8f, -1.0f);
@@ -279,19 +279,18 @@ struct SceneGraphNode {
                 glBindTexture(GL_TEXTURE_2D, texture);
                 glDrawArrays(GL_TRIANGLES, 0, 36);
             }
-            //            if(is2d && !isBox){
+            if(tempRender == MODEL){
+                shaderTemp.setVec3("viewPos", camera.Position);
+                shaderTemp.setVec3("light.direction", -1.0f, -0.8f, -1.0f);
+                shaderTemp.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+                shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+                shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+                shaderTemp.setFloat("material.shininess", 64.0f);
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, texture);
+                modelTemp.Draw(shaderTemp);
 
-            //            }
-
-
-
-                        //glm::mat4 model = glm::mat4(1.0f);
-            //            model = glm::translate(model, cubePositions[2]);
-            //            float anglet = 20.0f * 2;
-            //            model = glm::rotate(model, glm::radians(anglet), glm::vec3(1.0f, 0.3f, 0.5f));
-            //            shaderTemp.setMat4("model", model);
-            //            glBindTexture(GL_TEXTURE_2D, textureSpec);
-            //            glDrawArrays(GL_TRIANGLES, 0, 36);
+            }
 
         }
         for (uint32_t i = 0; i < m_children.size(); ++i) {
@@ -307,9 +306,9 @@ struct SceneGraphNode {
     }
 
     Shader shaderTemp = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
+    Model modelTemp = Model("res/models/box.obj");
     GLuint texture;
-    bool isBox = false;
-    bool is2d = false;
+    renderEnum tempRender;
 
 private:
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;
@@ -337,6 +336,7 @@ std::shared_ptr<SceneGraphNode> cube2;
 std::shared_ptr<SceneGraphNode> cube3;
 std::shared_ptr<SceneGraphNode> test1;
 std::shared_ptr<SceneGraphNode> progressbar;
+std::shared_ptr<SceneGraphNode> modelTest;
 
 int main()
 {
@@ -387,6 +387,10 @@ int main()
     Shader skyboxShader("res/shaders/skybox.vert", "res/shaders/skybox.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
     //Shader lightCubeShader("D:/Users/wojci/CLionProjects/OpenGLPAG/res/shaders/lightcube.vert", "D:/Users/wojci/CLionProjects/OpenGLPAG/res/shaders/lightcube.frag");
+
+
+    Model box("res/models/box.obj");
+    Model sphere("res/models/sphere.obj");
 
     skyboxShader.use();
     glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
@@ -534,7 +538,6 @@ int main()
 
     // load models
     // -----------
-    Model ourModel("res/models/box.obj");
     //Model myModel("../../res/models/kupa.obj");
     unsigned int texture = loadTexture("res/textures/stone.jpg");
     unsigned int texturekupa = loadTexture("res/textures/win.png");
@@ -548,24 +551,34 @@ int main()
     cube2 = std::make_shared<SceneGraphNode>();
     cube3 = std::make_shared<SceneGraphNode>();
     test1 = std::make_shared<SceneGraphNode>();
+    modelTest = std::make_shared<SceneGraphNode>();
 
     root_node->add_child(cube1);
     cube1->shaderTemp = lightingShader;
     cube1->texture = texture;
     cube1->get_transform().m_position = cubePositions[0];
-    cube1->isBox = true;
+    cube1->tempRender = BOX;
 
     root_node->add_child(cube2);
     cube2->shaderTemp = lightingShader;
     cube2->texture = texturekupa;
     cube2->get_transform().m_position = cubePositions[2];
-    cube2->isBox = true;
+    cube2->tempRender = BOX;
 
     cube2->add_child(cube3);
     cube3->shaderTemp = lightingShader;
     cube3->texture = texturekupa;
     cube3->get_transform().m_position = cubePositions[4];
-    cube3->isBox = true;
+    cube3->tempRender = BOX;
+
+    root_node->add_child(modelTest);
+    modelTest->shaderTemp = lightingShader;
+    modelTest->texture = texturekupa;
+    modelTest->get_transform().m_position = cubePositions[3];
+    modelTest->tempRender = MODEL;
+    modelTest->modelTemp = sphere;
+    modelTest->get_transform().m_scale = 0.15f;
+
 
     //    root_node->add_child(test1);
     //    test1->shaderTemp = testShader;
