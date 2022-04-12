@@ -39,6 +39,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void input(GLFWwindow* window);
 unsigned int loadTexture(char const* path);
 void update(float dt);
+void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]);
 void render();
 void render_gui();
 void RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
@@ -418,17 +419,6 @@ int main()
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
 
-
-
-
-
-
-
-
-
-
-
-
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
     unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
@@ -492,16 +482,11 @@ int main()
     modelTest->tempRender = MODEL;
     modelTest->modelTemp = sphere;
     modelTest->get_transform().m_scale = 0.15f;
-
-
+    
     //    root_node->add_child(test1);
     //    test1->shaderTemp = testShader;
     //    test1->texture = texture;
     //    test1->is2d = true;
-
-
-
-
 
     // Create VAO, VBO, and EBO for the skybox
     unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
@@ -518,7 +503,6 @@ int main()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 
     // All the faces of the cubemap (make sure they are in this exact order)
     std::string facesCubemap[6] =
@@ -661,7 +645,7 @@ int main()
 
 
 
-
+    std::shared_ptr<SceneGraphNode> objects[] = {cube1,cube2,modelTest };
 
     while (!glfwWindowShouldClose(window))
     {
@@ -672,6 +656,9 @@ int main()
 
         input(window);
         player->move(window, &cube3->get_transform().m_position, passed_time);
+        checkForCollisions(player, objects);
+
+
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
@@ -854,6 +841,31 @@ unsigned int loadTexture(char const* path)
     }
 
     return textureID;
+}
+
+
+void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]) {
+    Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
+    glm::vec3 play = cube3->get_transform().m_position;  //player->getPlayerPosition() doesnt work
+    for (int i = 0; i < 3; i++) //change "3" to "number of objects in array"
+    {
+        glm::vec3 p = objects[i]->get_transform().m_position;
+        float distance = sqrt((p.x - play.x) * (p.x - play.x) + (p.y - play.y) * (p.y - play.y) + (p.z - play.z) * (p.z - play.z));
+        if (distance <= 1.5f)
+        {
+            //push player outside
+            glm::vec3 direction(play.x - p.x, play.y - p.y, play.z - p.z);
+            cube3->get_transform().m_position.x += direction.x * 0.03f;
+            cube3->get_transform().m_position.y += direction.y * 0.03f;
+            cube3->get_transform().m_position.z += direction.z * 0.03f;
+            //while (distance <= 1.5f) {
+                //cube3->get_transform().m_position.x += direction.x * 0.1f;
+                //cube3->get_transform().m_position.y += direction.y * 0.1f;
+                //cube3->get_transform().m_position.z += direction.z * 0.1f;
+                //distance = sqrt((p.x - play.x) * (p.x - play.x) + (p.y - play.y) * (p.y - play.y) + (p.z - play.z) * (p.z - play.z));
+            //}
+        }
+    }
 }
 
 void update(float dt) {
