@@ -3,33 +3,21 @@
 //#include "imgui_impl_opengl3.h"
 #pragma once
 
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
 #include <rapidjson/document.h>
 #include <rapidjson/writer.h>
 #include <rapidjson/stringbuffer.h>
 
 #include <irrKlang/ik_ISound.h>
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include "shader.h"
 #include "camera.h"
 #include "model.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
+#include "text.h"
+#include "skybox.h"
 
-
-#include <iostream>
 #include <mmcobj.h>
-
-#include <sstream>
 
 
 static void glfw_error_callback(int error, const char* description);
@@ -42,19 +30,8 @@ void update(float dt);
 void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]);
 void render();
 void render_gui();
-void RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color);
 
 GLFWwindow* window = nullptr;
-
-/// Holds all state information relevant to a character as loaded using FreeType
-struct Character {
-    GLuint TextureID;   // ID handle of the glyph texture
-    glm::ivec2 Size;    // Size of glyph
-    glm::ivec2 Bearing;  // Offset from baseline to left/top of glyph
-    GLuint Advance;    // Horizontal offset to advance to next glyph
-};
-
-std::map<GLchar, Character> Characters;
 
 // settings
 const GLuint SCR_WIDTH = 1280;
@@ -165,6 +142,7 @@ float bar[] = {
     x,  -0.95f,
     -0.95f,  -0.95f
 };
+
 float color[] = {
         0.7f,0.7f,0.7f,
         0.7f,0.7f,0.7f,
@@ -172,41 +150,6 @@ float color[] = {
         0.7f,0.7f,0.7f,
         0.7f,0.7f,0.7f,
         0.7f,0.7f,0.7f
-};
-
-float skyboxVertices[] =
-{
-    //   Coordinates
-    -1.0f, -1.0f,  1.0f,//        7--------6
-     1.0f, -1.0f,  1.0f,//       /|       /|
-     1.0f, -1.0f, -1.0f,//      4--------5 |
-    -1.0f, -1.0f, -1.0f,//      | |      | |
-    -1.0f,  1.0f,  1.0f,//      | 3------|-2
-     1.0f,  1.0f,  1.0f,//      |/       |/
-     1.0f,  1.0f, -1.0f,//      0--------1
-    -1.0f,  1.0f, -1.0f
-};
-
-unsigned int skyboxIndices[] =
-{
-    // Right
-    1, 2, 6,
-    6, 5, 1,
-    // Left
-    0, 4, 7,
-    7, 3, 0,
-    // Top
-    4, 5, 6,
-    6, 7, 4,
-    // Bottom
-    0, 3, 2,
-    2, 1, 0,
-    // Back
-    0, 1, 5,
-    5, 4, 0,
-    // Front
-    3, 7, 6,
-    6, 2, 3
 };
 
 
@@ -220,11 +163,6 @@ unsigned int VBO = 0;
 //unsigned int quadVAO = 0;
 unsigned int progressVBO1 = 0;
 unsigned int quadVAO, quadVBO1, quadVBO2, quadVBO3, quadEBO;
-GLuint textVAO, textVBO;
-
-
-
-
 
 
 //time
@@ -236,8 +174,6 @@ bool should_render = false;
 double frame_time = 1.0 / 60.0;
 
 std::string coos;
-
-
 
 std::shared_ptr<SceneGraphNode> root_node;
 std::shared_ptr<SceneGraphNode> cube1;
@@ -288,15 +224,12 @@ int main()
 
     // build and compile shaders
     // -------------------------
-    //Shader ourShader("D:/Users/wojci/CLionProjects/OpenGLPAG/res/shaders/model.vert", "D:/Users/wojci/CLionProjects/OpenGLPAG/res/shaders/model.frag");
 
     Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
     Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
     Shader skyboxShader("res/shaders/skybox.vert", "res/shaders/skybox.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
-    //Shader lightCubeShader("D:/Users/wojci/CLionProjects/OpenGLPAG/res/shaders/lightcube.vert", "D:/Users/wojci/CLionProjects/OpenGLPAG/res/shaders/lightcube.frag");
-
 
     Model box("res/models/box.obj");
     Model sphere("res/models/sphere.obj");
@@ -322,40 +255,8 @@ int main()
 
     // Output {"project":"rapidjson","stars":11}
     std::cout << buffer.GetString() << std::endl;
-
-
-
-    //FT_Library  library;
-
-    //boolean error = FT_Init_FreeType(&library);
-    //if (error)
-    //{
-    //    std::cout << "an error occurred during library initialization" << std::endl;
-    //}
-
-
-    //
-
-    //    FT_Library ft;
-    //    if (FT_Init_FreeType(&ft))
-    //    {
-    //        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-    //        return -1;
-    //    }
-    //
-    //    FT_Face face;
-    //    if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
-    //    {
-    //        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-    //        return -1;
-    //    }
-
-        // set up vertex data (and buffer(s)) and configure vertex attributes
-        // ------------------------------------------------------------------
-
-
-
-        // first, configure the cube's VAO (and VBO)
+    
+    // first, configure the cube's VAO (and VBO)
     glGenVertexArrays(1, &cubeVAO);
     glGenBuffers(1, &VBO);
 
@@ -389,11 +290,6 @@ int main()
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
-    //    glGenBuffers(1, &quadVBO2);
-    //    glBindBuffer(GL_ARRAY_BUFFER, quadVBO2);
-    //    glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW);
-    //    glEnableVertexAttribArray(1);
-    //    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
     glGenBuffers(1, &quadVBO3);
     glBindBuffer(GL_ARRAY_BUFFER, quadVBO3);
@@ -483,169 +379,9 @@ int main()
     modelTest->modelTemp = sphere;
     modelTest->get_transform().m_scale = 0.15f;
     
-    //    root_node->add_child(test1);
-    //    test1->shaderTemp = testShader;
-    //    test1->texture = texture;
-    //    test1->is2d = true;
 
-    // Create VAO, VBO, and EBO for the skybox
-    unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
-    glGenVertexArrays(1, &skyboxVAO);
-    glGenBuffers(1, &skyboxVBO);
-    glGenBuffers(1, &skyboxEBO);
-    glBindVertexArray(skyboxVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, skyboxEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(skyboxIndices), &skyboxIndices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-    // All the faces of the cubemap (make sure they are in this exact order)
-    std::string facesCubemap[6] =
-    {
-        "res/textures/right.jpg",
-        "res/textures/left.jpg",
-        "res/textures/top.jpg",
-        "res/textures/bottom.jpg",
-        "res/textures/front.jpg",
-        "res/textures/back.jpg"
-    };
-
-    // Creates the cubemap texture object
-    unsigned int cubemapTexture;
-    glGenTextures(1, &cubemapTexture);
-    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // These are very important to prevent seams
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-    // This might help with seams on some systems
-    //glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
-
-    // Cycles through all the textures and attaches them to the cubemap object
-    for (unsigned int i = 0; i < 6; i++)
-    {
-        int width, height, nrChannels;
-        unsigned char* data = stbi_load(facesCubemap[i].c_str(), &width, &height, &nrChannels, 0);
-        if (data)
-        {
-            stbi_set_flip_vertically_on_load(false);
-            glTexImage2D
-            (
-                GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-                0,
-                GL_RGB,
-                width,
-                height,
-                0,
-                GL_RGB,
-                GL_UNSIGNED_BYTE,
-                data
-            );
-            stbi_image_free(data);
-        }
-        else
-        {
-            std::cout << "Failed to load texture: " << facesCubemap[i] << std::endl;
-            stbi_image_free(data);
-        }
-    }
-
-
-
-
-
-
-    glm::mat4 projection2 = glm::ortho(0.0f, static_cast<GLfloat>(SCR_WIDTH), 0.0f, static_cast<GLfloat>(SCR_HEIGHT));
-    textShader.use();
-    glUniformMatrix4fv(glGetUniformLocation(textShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection2));
-
-    // FreeType
-    FT_Library ft;
-    // All functions return a value different than 0 whenever an error occurred
-    if (FT_Init_FreeType(&ft))
-        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-
-    // Load font as face
-    FT_Face face;
-    if (FT_New_Face(ft, "res/fonts/arial.ttf", 0, &face))
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-
-    // Set size to load glyphs as
-    FT_Set_Pixel_Sizes(face, 0, 48);
-
-    // Disable byte-alignment restriction
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    // Load first 128 characters of ASCII set
-    for (GLubyte c = 0; c < 128; c++)
-    {
-        // Load character glyph 
-        if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-        {
-            std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-            continue;
-        }
-        // Generate texture
-        GLuint texture;
-        glGenTextures(1, &texture);
-        glBindTexture(GL_TEXTURE_2D, texture);
-        glTexImage2D(
-            GL_TEXTURE_2D,
-            0,
-            GL_RED,
-            face->glyph->bitmap.width,
-            face->glyph->bitmap.rows,
-            0,
-            GL_RED,
-            GL_UNSIGNED_BYTE,
-            face->glyph->bitmap.buffer
-        );
-        // Set texture options
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        // Now store character for later use
-        Character character = {
-            texture,
-            glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-            glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-            face->glyph->advance.x
-        };
-        Characters.insert(std::pair<GLchar, Character>(c, character));
-    }
-    glBindTexture(GL_TEXTURE_2D, 0);
-    // Destroy FreeType once we're finished
-    FT_Done_Face(face);
-    FT_Done_FreeType(ft);
-
-
-    // Configure VAO/VBO for texture quads
-    glGenVertexArrays(1, &textVAO);
-    glGenBuffers(1, &textVBO);
-    glBindVertexArray(textVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-
-
-
-
-
-
-
-    std::shared_ptr<SceneGraphNode> objects[] = {cube1,cube2,modelTest };
+    Skybox skybox;
+    Text text(textShader);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -656,7 +392,9 @@ int main()
 
         input(window);
         player->move(window, &cube3->get_transform().m_position, passed_time);
-        checkForCollisions(player, objects);
+        camera.Position = cube3->get_transform().m_position + cameraPos;  //attach camera to player
+        std::shared_ptr<SceneGraphNode> collidingObjects[] = { cube1,cube2,modelTest };
+        checkForCollisions(player, collidingObjects);
 
 
 
@@ -664,8 +402,8 @@ int main()
             should_render = true;
             unprocessed_time -= frame_time;
             update(frame_time);
-
         }
+
 
         if (should_render) {
             should_render = false;
@@ -686,32 +424,9 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 18);
             glBindVertexArray(0);
 
-             //Since the cubemap will always have a depth of 1.0, we need that equal sign so it doesn't get discarded
-            glDepthFunc(GL_LEQUAL);
+            skybox.render(skyboxShader);
 
-            skyboxShader.use();
-            glm::mat4 view = glm::mat4(1.0f);
-            glm::mat4 projection = glm::mat4(1.0f);
-            // We make the mat4 into a mat3 and then a mat4 again in order to get rid of the last row and column
-            // The last row and column affect the translation of the skybox (which we don't want to affect)
-            view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
-            projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-            glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-            glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-            // Draws the cubemap as the last object so we can save a bit of performance by discarding all fragments
-            // where an object is present (a depth of 1.0f will always fail against any object's depth value)
-
-            glBindVertexArray(skyboxVAO);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
-            glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
-
-            // Switch back to the normal depth function
-            glDepthFunc(GL_LESS);
-
-            RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+            text.RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 
             render_gui();
             glfwPollEvents();
@@ -855,9 +570,9 @@ void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode
         {
             //push player outside
             glm::vec3 direction(play.x - p.x, play.y - p.y, play.z - p.z);
-            cube3->get_transform().m_position.x += direction.x * 3.0f * passed_time;
-            cube3->get_transform().m_position.y += direction.y * 3.0f * passed_time;
-            cube3->get_transform().m_position.z += direction.z * 3.0f * passed_time;
+            cube3->get_transform().m_position.x += direction.x * 0.05f;
+            cube3->get_transform().m_position.y += direction.y * 0.05f;
+            cube3->get_transform().m_position.z += direction.z * 0.05f;
             //while (distance <= 1.5f) {
                 //cube3->get_transform().m_position.x += direction.x * 0.1f;
                 //cube3->get_transform().m_position.y += direction.y * 0.1f;
@@ -906,51 +621,4 @@ void render_gui() {
     //glfwGetFramebufferSize(window, &display_w, &display_h);
     //glViewport(0, 0, display_w, display_h);
     //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-
-
-}
-void RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
-{
-    // Activate corresponding render state	
-    shader.use();
-    glUniform3f(glGetUniformLocation(shader.ID, "textColor"), color.x, color.y, color.z);
-    glActiveTexture(GL_TEXTURE0);
-    glBindVertexArray(textVAO);
-
-    // Iterate through all characters
-    std::string::const_iterator c;
-    for (c = text.begin(); c != text.end(); c++)
-    {
-        Character ch = Characters[*c];
-
-        GLfloat xpos = x + ch.Bearing.x * scale;
-        GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
-
-        GLfloat w = ch.Size.x * scale;
-        GLfloat h = ch.Size.y * scale;
-        // Update VBO for each character
-        GLfloat vertices[6][4] = {
-            { xpos,     ypos + h,   0.0, 0.0 },
-            { xpos,     ypos,       0.0, 1.0 },
-            { xpos + w, ypos,       1.0, 1.0 },
-
-            { xpos,     ypos + h,   0.0, 0.0 },
-            { xpos + w, ypos,       1.0, 1.0 },
-            { xpos + w, ypos + h,   1.0, 0.0 }
-        };
-        // Render glyph texture over quad
-        glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-        // Update content of VBO memory
-        glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // Be sure to use glBufferSubData and not glBufferData
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        // Render quad
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        // Now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-        x += (ch.Advance >> 6) * scale; // Bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
-
-    }
-    glBindVertexArray(0);
-    glBindTexture(GL_TEXTURE_2D, 0);
 }
