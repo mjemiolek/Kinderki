@@ -30,7 +30,7 @@ void PlayerController::move(GLFWwindow* window, glm::vec3* Cube1Position, float 
         Cube1Position->x -= 2.5f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
         Cube1Position->x += 2.5f * deltaTime;
-    //setPlayerPosition(Cube1Position);
+    setPlayerPosition(*Cube1Position);
 
 };
 

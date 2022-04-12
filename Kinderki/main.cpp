@@ -855,9 +855,9 @@ void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode
         {
             //push player outside
             glm::vec3 direction(play.x - p.x, play.y - p.y, play.z - p.z);
-            cube3->get_transform().m_position.x += direction.x * 0.03f;
-            cube3->get_transform().m_position.y += direction.y * 0.03f;
-            cube3->get_transform().m_position.z += direction.z * 0.03f;
+            cube3->get_transform().m_position.x += direction.x * 3.0f * passed_time;
+            cube3->get_transform().m_position.y += direction.y * 3.0f * passed_time;
+            cube3->get_transform().m_position.z += direction.z * 3.0f * passed_time;
             //while (distance <= 1.5f) {
                 //cube3->get_transform().m_position.x += direction.x * 0.1f;
                 //cube3->get_transform().m_position.y += direction.y * 0.1f;
