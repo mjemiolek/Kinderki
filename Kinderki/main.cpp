@@ -399,7 +399,7 @@ int main()
     Skybox skybox;
     Text text(textShader);
 
-    //std::shared_ptr<SceneGraphNode> objects[] = { cube1,cube2,modelTest,floorTest,meshesTest,sandsTest };
+    std::shared_ptr<SceneGraphNode> collidingObjects[] = { cube1,cube2,modelTest,floorTest,meshesTest,sandsTest };
 
     while (!glfwWindowShouldClose(window))
     {
@@ -410,8 +410,6 @@ int main()
 
         input(window);
         player->move(window, &cube3->get_transform().m_position, passed_time);
-        camera.Position = cube3->get_transform().m_position + cameraPos;  //attach camera to player
-        std::shared_ptr<SceneGraphNode> collidingObjects[] = { cube1,cube2,modelTest };
         checkForCollisions(player, collidingObjects);
 
 
@@ -586,9 +584,12 @@ void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode
         {
             //push player outside
             glm::vec3 direction(play.x - p.x, play.y - p.y, play.z - p.z);
-            cube3->get_transform().m_position.x += direction.x * 0.05f;
-            cube3->get_transform().m_position.y += direction.y * 0.05f;
-            cube3->get_transform().m_position.z += direction.z * 0.05f;
+            cube3->get_transform().m_position.x += direction.x * 2.5f * passed_time;
+            cube3->get_transform().m_position.y += direction.y * 2.5f * passed_time;
+            cube3->get_transform().m_position.z += direction.z * 2.5f * passed_time;
+
+            camera.Position.x = cube3->get_transform().m_position.x + cameraPos.x;  //attach camera to player
+            camera.Position.z = cube3->get_transform().m_position.z + cameraPos.z;  //attach camera to player
             //while (distance <= 1.5f) {
                 //cube3->get_transform().m_position.x += direction.x * 0.1f;
                 //cube3->get_transform().m_position.y += direction.y * 0.1f;
