@@ -12,7 +12,7 @@
 //const GLuint SCR_WIDTH = 1280;
 //const GLuint SCR_HEIGHT = 720;
 
-Camera camera(glm::vec3(0.0f, 8.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 16.0f, 5.0f));
 
 enum renderEnum {
     MODEL, BOX, LIGHT

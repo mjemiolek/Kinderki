@@ -32,13 +32,14 @@ void render();
 void render_gui();
 
 GLFWwindow* window = nullptr;
+std::ostringstream strs;
 
 // settings
 const GLuint SCR_WIDTH = 1280;
 const GLuint SCR_HEIGHT = 720;
 
 // camera
-glm::vec3 cameraPos(0.0f, 8.0f, 3.0f);
+glm::vec3 cameraPos(0.0f, 16.0f, 5.0f);
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -48,17 +49,21 @@ float lastFrame = 0.0f;
 
 // lighting
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
+glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
+glm::vec3 floorPos(0.0f, -1.75f, 0.0f);
+
+
 glm::vec3 cubePositions[] = {
-        glm::vec3(0.0f, 0.0f,  3.5f),
-        glm::vec3(2.0f,  5.0f, -15.0f),
-        glm::vec3(0.5f, 0.2f, -1.5f),
-        glm::vec3(-3.8f, -2.0f, -12.3f),
-        glm::vec3(0.0f, 0.0f,  0.0f),
-        glm::vec3(-1.7f,  3.0f, -7.5f),
-        glm::vec3(1.3f, -2.0f, -2.5f),
+        glm::vec3(0.0f, 2.0f,  3.5f),
+        glm::vec3(2.0f,  2.0f, -15.0f),
+        glm::vec3(0.5f, 2.0f, -1.5f),
+        glm::vec3(-3.8f, 2.0f, -12.3f),
+        glm::vec3(0.0f, 2.0f,  0.0f),
+        glm::vec3(0.0f,  2.0f, 0.0f),
+        glm::vec3(1.3f, 2.0f, -2.5f),
         glm::vec3(1.5f,  2.0f, -2.5f),
-        glm::vec3(1.5f,  0.2f, -1.5f),
-        glm::vec3(-1.3f,  1.0f, -1.5f)
+        glm::vec3(1.5f,  2.0f, -1.5f),
+        glm::vec3(-1.3f,  2.0f, -1.5f)
 };
 
 float vertices[] = {
@@ -106,10 +111,6 @@ float vertices[] = {
     -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
 };
 
-
-std::ostringstream strs;
-
-
 float quadVertices[] = {
     // pozycje       // kolory
     0.95f,  0.60f,
@@ -117,8 +118,6 @@ float quadVertices[] = {
     0.95f, 0.95f,
     0.60f,  0.60f
 };
-
-float x = -0.90f;
 
 float textCords[] = { 0.0f, 1.0f,
                      1.0f, 0.0f,
@@ -133,6 +132,7 @@ float normals[] = { 0.0f, 1.0f, 0.0f,
                    0.0f, 1.0f, 0.0f,
                    0.0f, 1.0f, 0.0f };
 
+float x = -0.90f;
 float bar[] = {
     // pozycje       // kolory
     -0.95f,  -0.95f,
@@ -151,7 +151,6 @@ float color[] = {
         0.7f,0.7f,0.7f,
         0.7f,0.7f,0.7f
 };
-
 
 
 GLint u_scale_loc = -1;
@@ -173,8 +172,6 @@ double passed_time = 0.0;
 bool should_render = false;
 double frame_time = 1.0 / 60.0;
 
-std::string coos;
-
 std::shared_ptr<SceneGraphNode> root_node;
 std::shared_ptr<SceneGraphNode> cube1;
 std::shared_ptr<SceneGraphNode> cube2;
@@ -182,6 +179,10 @@ std::shared_ptr<SceneGraphNode> cube3;
 std::shared_ptr<SceneGraphNode> test1;
 std::shared_ptr<SceneGraphNode> progressbar;
 std::shared_ptr<SceneGraphNode> modelTest;
+
+std::shared_ptr<SceneGraphNode> floorTest;
+std::shared_ptr<SceneGraphNode> meshesTest;
+std::shared_ptr<SceneGraphNode> sandsTest;
 
 int main()
 {
@@ -234,28 +235,13 @@ int main()
     Model box("res/models/box.obj");
     Model sphere("res/models/sphere.obj");
 
+    Model floor("res/models/floor.obj");
+    Model meshes("res/models/meshes.obj");
+    Model sands("res/models/sands.obj");
+
     skyboxShader.use();
     glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
-    const char* json = "{\"project\":\"rapidjson\",\"stars\":10}";
-    //
-    //
-    //
-    rapidjson::Document document;
-    document.Parse(json);
-
-    // 2. Modify it by DOM.
-    rapidjson::Value& s = document["stars"];
-    s.SetInt(s.GetInt() + 1);
-
-    // 3. Stringify the DOM
-    rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-    document.Accept(writer);
-
-    // Output {"project":"rapidjson","stars":11}
-    std::cout << buffer.GetString() << std::endl;
-    
     // first, configure the cube's VAO (and VBO)
     glGenVertexArrays(1, &cubeVAO);
     glGenBuffers(1, &VBO);
@@ -335,6 +321,9 @@ int main()
     //Model myModel("../../res/models/kupa.obj");
     unsigned int texture = loadTexture("res/textures/stone.jpg");
     unsigned int texturekupa = loadTexture("res/textures/win.png");
+    unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
+    unsigned int texturemetal = loadTexture("res/textures/metaltexture.png");
+    unsigned int texturesand = loadTexture("res/textures/sandtexture.png");
     //unsigned int candy = loadTexture("res/textures/candy.jpg");
 
     // draw in wireframe
@@ -346,6 +335,9 @@ int main()
     cube3 = std::make_shared<SceneGraphNode>();
     test1 = std::make_shared<SceneGraphNode>();
     modelTest = std::make_shared<SceneGraphNode>();
+    floorTest = std::make_shared<SceneGraphNode>();
+    meshesTest = std::make_shared<SceneGraphNode>();
+    sandsTest = std::make_shared<SceneGraphNode>();
 
 
     PlayerController* player = new PlayerController(cubePositions[4]);
@@ -378,10 +370,36 @@ int main()
     modelTest->tempRender = MODEL;
     modelTest->modelTemp = sphere;
     modelTest->get_transform().m_scale = 0.15f;
+
+    root_node->add_child(floorTest);
+    floorTest->shaderTemp = lightingShader;
+    floorTest->texture = texturegrass;
+    floorTest->get_transform().m_position = floorPos;
+    floorTest->tempRender = MODEL;
+    floorTest->modelTemp = floor;
+    floorTest->get_transform().m_scale = 0.02f;
+
+    root_node->add_child(sandsTest);
+    sandsTest->shaderTemp = lightingShader;
+    sandsTest->texture = texturesand;
+    sandsTest->get_transform().m_position = zeroPos;
+    sandsTest->tempRender = MODEL;
+    sandsTest->modelTemp = sands;
+    sandsTest->get_transform().m_scale = 0.01f;
+
+    root_node->add_child(meshesTest);
+    meshesTest->shaderTemp = lightingShader;
+    meshesTest->texture = texturemetal;
+    meshesTest->get_transform().m_position = zeroPos;
+    meshesTest->tempRender = MODEL;
+    meshesTest->modelTemp = meshes;
+    meshesTest->get_transform().m_scale = 0.01f;
     
 
     Skybox skybox;
     Text text(textShader);
+
+    //std::shared_ptr<SceneGraphNode> objects[] = { cube1,cube2,modelTest,floorTest,meshesTest,sandsTest };
 
     while (!glfwWindowShouldClose(window))
     {
@@ -520,7 +538,6 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     camera.ProcessMouseScroll(yoffset);
 }
 
-
 unsigned int loadTexture(char const* path)
 {
     unsigned int textureID;
@@ -557,7 +574,6 @@ unsigned int loadTexture(char const* path)
 
     return textureID;
 }
-
 
 void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]) {
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
@@ -603,18 +619,18 @@ void update(float dt) {
     cube3->update_transform();
     root_node->update(Transform(), false);
 }
+
 void render() {
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     root_node->render(true);
 
 }
+
 void render_gui() {
     //ImGui_ImplOpenGL3_NewFrame();
     //ImGui_ImplGlfw_NewFrame();
     //ImGui::NewFrame();
-
-
 
     //ImGui::Render();
     //int display_w, display_h;
