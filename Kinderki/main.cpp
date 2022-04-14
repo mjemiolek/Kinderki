@@ -163,7 +163,6 @@ unsigned int VBO = 0;
 unsigned int progressVBO1 = 0;
 unsigned int quadVAO, quadVBO1, quadVBO2, quadVBO3, quadEBO;
 
-
 //time
 double last_time = glfwGetTime();
 double unprocessed_time = 0.0;
@@ -226,21 +225,17 @@ int main()
     // build and compile shaders
     // -------------------------
 
+    //Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
+    //Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
     Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
-    Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
-    Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
     Shader skyboxShader("res/shaders/skybox.vert", "res/shaders/skybox.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
 
     Model box("res/models/box.obj");
     Model sphere("res/models/sphere.obj");
-
     Model floor("res/models/floor.obj");
     Model meshes("res/models/meshes.obj");
     Model sands("res/models/sands.obj");
-
-    skyboxShader.use();
-    glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
     // first, configure the cube's VAO (and VBO)
     glGenVertexArrays(1, &cubeVAO);
@@ -311,20 +306,19 @@ int main()
 
     lightingShader.use();
     lightingShader.setInt("material.diffuse", 0);
-    lightingShader.setInt("material.specular", 1);
+    lightingShader.setInt("material.specular", 64);
+    lightingShader.setVec3("lightPos", lightPos);
 
-    testShader.use();
-    testShader.setInt("texture_diffuse1", 0);
+    skyboxShader.use();
+    glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
     // load models
     // -----------
-    //Model myModel("../../res/models/kupa.obj");
     unsigned int texture = loadTexture("res/textures/stone.jpg");
     unsigned int texturekupa = loadTexture("res/textures/win.png");
     unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
     unsigned int texturemetal = loadTexture("res/textures/metaltexture.png");
     unsigned int texturesand = loadTexture("res/textures/sandtexture.png");
-    //unsigned int candy = loadTexture("res/textures/candy.jpg");
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -338,7 +332,6 @@ int main()
     floorTest = std::make_shared<SceneGraphNode>();
     meshesTest = std::make_shared<SceneGraphNode>();
     sandsTest = std::make_shared<SceneGraphNode>();
-
 
     PlayerController* player = new PlayerController(cubePositions[4]);
 
@@ -425,7 +418,6 @@ int main()
             should_render = false;
             
             render();
-            testShader.use();
             glBindVertexArray(quadVAO);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
@@ -435,7 +427,6 @@ int main()
             glBindBuffer(GL_ARRAY_BUFFER, progressVBO1);
             glBufferData(GL_ARRAY_BUFFER, sizeof(bar), &bar, GL_STATIC_DRAW);
 
-            test2Shader.use();
             glBindVertexArray(progressVAO);
             glDrawArrays(GL_TRIANGLES, 0, 18);
             glBindVertexArray(0);
@@ -448,10 +439,6 @@ int main()
             glfwPollEvents();
             glfwSwapBuffers(window);
         }
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-//        glfwSwapBuffers(window);
-//        glfwPollEvents();
     }
     //ImGui_ImplOpenGL3_Shutdown();
     //ImGui_ImplGlfw_Shutdown();
@@ -460,11 +447,6 @@ int main()
     glDeleteVertexArrays(1, &cubeVAO);
     glDeleteVertexArrays(1, &quadVAO);
     glDeleteBuffers(1, &VBO);
-
-    //    glDeleteBuffers(1, &vbo_id);
-    //    glDeleteBuffers(1, &colors_vbo_id);
-    //    glDeleteBuffers(1, &ebo_id);
-    //    glDeleteVertexArrays(1, &vao_id);
 
         // glfw: terminate, clearing all previously allocated GLFW resources.
         // ------------------------------------------------------------------
@@ -574,8 +556,7 @@ unsigned int loadTexture(char const* path)
 }
 
 void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]) {
-    Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
-    glm::vec3 play = cube3->get_transform().m_position;  //player->getPlayerPosition() doesnt work
+    glm::vec3 play = cube3->get_transform().m_position;  //change it to player
     for (int i = 0; i < 3; i++) //change "3" to "number of objects in array"
     {
         glm::vec3 p = objects[i]->get_transform().m_position;
@@ -590,12 +571,6 @@ void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode
 
             camera.Position.x = cube3->get_transform().m_position.x + cameraPos.x;  //attach camera to player
             camera.Position.z = cube3->get_transform().m_position.z + cameraPos.z;  //attach camera to player
-            //while (distance <= 1.5f) {
-                //cube3->get_transform().m_position.x += direction.x * 0.1f;
-                //cube3->get_transform().m_position.y += direction.y * 0.1f;
-                //cube3->get_transform().m_position.z += direction.z * 0.1f;
-                //distance = sqrt((p.x - play.x) * (p.x - play.x) + (p.y - play.y) * (p.y - play.y) + (p.z - play.z) * (p.z - play.z));
-            //}
         }
     }
 }

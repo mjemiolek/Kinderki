@@ -9,8 +9,8 @@
 #include "model.h"
 
 //// settings
-//const GLuint SCR_WIDTH = 1280;
-//const GLuint SCR_HEIGHT = 720;
+const GLuint SCREEN_WIDTH = 1280;
+const GLuint SCREEN_HEIGHT = 720;
 
 Camera camera(glm::vec3(0.0f, 16.0f, 5.0f));
 
@@ -56,10 +56,8 @@ struct SceneGraphNode {
     void render(bool is_root = false
     ) {
         if (!is_root) {
-
-
             shaderTemp.use();
-            glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)1280 / (float)720, 0.1f, 100.0f);
+            glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
             shaderTemp.setMat4("projection", projection);
 
             glm::mat4 view = camera.GetViewMatrix();
@@ -69,8 +67,9 @@ struct SceneGraphNode {
             if (tempRender == BOX) {
 
                 shaderTemp.setVec3("viewPos", camera.Position);
-                shaderTemp.setVec3("light.direction", -1.0f, -0.8f, -1.0f);
-                shaderTemp.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+                shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+                shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
+                shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
                 shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
                 shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
                 shaderTemp.setFloat("material.shininess", 64.0f);
@@ -81,8 +80,9 @@ struct SceneGraphNode {
             }
             if (tempRender == MODEL) {
                 shaderTemp.setVec3("viewPos", camera.Position);
-                shaderTemp.setVec3("light.direction", -1.0f, -0.8f, -1.0f);
-                shaderTemp.setVec3("light.ambient", 0.2f, 0.2f, 0.2f);
+                shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+                shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
+                shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
                 shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
                 shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
                 shaderTemp.setFloat("material.shininess", 64.0f);
