@@ -27,7 +27,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void input(GLFWwindow* window);
 unsigned int loadTexture(char const* path);
 void update(float dt);
-void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]);
+boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]);
 void render();
 void render_gui();
 
@@ -157,11 +157,8 @@ GLint u_scale_loc = -1;
 GLint u_world_loc = -1;
 GLint u_scale_loc2 = -1;
 float scale = 1.0f;
-unsigned int cubeVAO = 0;
-unsigned int VBO = 0;
-//unsigned int quadVAO = 0;
-unsigned int progressVBO1 = 0;
-unsigned int quadVAO, quadVBO1, quadVBO2, quadVBO3, quadEBO;
+
+
 
 //time
 double last_time = glfwGetTime();
@@ -225,8 +222,8 @@ int main()
     // build and compile shaders
     // -------------------------
 
-    //Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
-    //Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
+    Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
+    Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
     Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Shader skyboxShader("res/shaders/skybox.vert", "res/shaders/skybox.frag");
     Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
@@ -237,30 +234,8 @@ int main()
     Model meshes("res/models/meshes.obj");
     Model sands("res/models/sands.obj");
 
-    // first, configure the cube's VAO (and VBO)
-    glGenVertexArrays(1, &cubeVAO);
-    glGenBuffers(1, &VBO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindVertexArray(cubeVAO);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
-    unsigned int lightCubeVAO;
-    glGenVertexArrays(1, &lightCubeVAO);
-    glBindVertexArray(lightCubeVAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    // note that we update the lamp's position attribute's stride to reflect the updated buffer data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
+    
+    unsigned int quadVAO, quadVBO1, quadVBO2, quadVBO3, quadEBO;
 
     glGenVertexArrays(1, &quadVAO);
     glBindVertexArray(quadVAO);
@@ -291,7 +266,6 @@ int main()
     glGenBuffers(1, &progressVBO1);
     glBindBuffer(GL_ARRAY_BUFFER, progressVBO1);
     glBufferData(GL_ARRAY_BUFFER, sizeof(bar), &bar, GL_STATIC_DRAW);
-    //    glBufferSubData(GL_ARRAY_BUFFER,0, sizeof(bar), &bar);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
@@ -339,22 +313,27 @@ int main()
     cube1->shaderTemp = lightingShader;
     cube1->texture = texture;
     cube1->get_transform().m_position = cubePositions[0];
-    cube1->tempRender = BOX;
-    cube1->VAOTemp = cubeVAO;
+    cube1->tempRender = MODEL;
+    cube1->modelTemp = box;
+    cube1->get_transform().m_scale = 0.15f;
 
     root_node->add_child(cube2);
     cube2->shaderTemp = lightingShader;
     cube2->texture = texturekupa;
     cube2->get_transform().m_position = cubePositions[2];
     cube2->tempRender = BOX;
-    cube2->VAOTemp = cubeVAO;
+    cube2->tempRender = MODEL;
+    cube2->modelTemp = box;
+    cube2->get_transform().m_scale = 0.15f;
 
     root_node->add_child(cube3);
     cube3->shaderTemp = lightingShader;
     cube3->texture = texturekupa;
     cube3->get_transform().m_position = player->getPlayerPosition();
     cube3->tempRender = BOX;
-    cube3->VAOTemp = cubeVAO;
+    cube3->tempRender = MODEL;
+    cube3->modelTemp = box;
+    cube3->get_transform().m_scale = 0.15f;
 
     root_node->add_child(modelTest);
     modelTest->shaderTemp = lightingShader;
@@ -402,8 +381,11 @@ int main()
         unprocessed_time += passed_time;
 
         input(window);
-        player->move(window, &cube3->get_transform().m_position, passed_time);
-        checkForCollisions(player, collidingObjects);
+        if (!checkForCollisions(player, collidingObjects)) {
+            player->move(window, &cube3->get_transform().m_position, passed_time);
+
+        }
+        
 
 
 
@@ -418,6 +400,7 @@ int main()
             should_render = false;
             
             render();
+            testShader.use();
             glBindVertexArray(quadVAO);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
@@ -427,6 +410,7 @@ int main()
             glBindBuffer(GL_ARRAY_BUFFER, progressVBO1);
             glBufferData(GL_ARRAY_BUFFER, sizeof(bar), &bar, GL_STATIC_DRAW);
 
+            test2Shader.use();
             glBindVertexArray(progressVAO);
             glDrawArrays(GL_TRIANGLES, 0, 18);
             glBindVertexArray(0);
@@ -444,9 +428,9 @@ int main()
     //ImGui_ImplGlfw_Shutdown();
     //ImGui::DestroyContext();
     
-    glDeleteVertexArrays(1, &cubeVAO);
-    glDeleteVertexArrays(1, &quadVAO);
-    glDeleteBuffers(1, &VBO);
+    //glDeleteVertexArrays(1, &cubeVAO);
+    //glDeleteVertexArrays(1, &quadVAO);
+    //glDeleteBuffers(1, &VBO);
 
         // glfw: terminate, clearing all previously allocated GLFW resources.
         // ------------------------------------------------------------------
@@ -480,8 +464,11 @@ void input(GLFWwindow* window) {
         cube2->get_transform().x_rotation_angle += 6.0f * passed_time;
     if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
         cube2->get_transform().z_rotation_angle += 9.0f * passed_time;
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-        camera.Position = cube3->get_transform().m_position + cameraPos;
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+        camera.Position.x = cube3->get_transform().m_position.x + cameraPos.x;  //attach camera to player
+        camera.Position.z = cube3->get_transform().m_position.z + cameraPos.z;  //attach camera to player
+    }
+        //camera.Position = cube3->get_transform().m_position + cameraPos;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
@@ -555,7 +542,7 @@ unsigned int loadTexture(char const* path)
     return textureID;
 }
 
-void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]) {
+boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]) {
     glm::vec3 play = cube3->get_transform().m_position;  //change it to player
     for (int i = 0; i < 3; i++) //change "3" to "number of objects in array"
     {
@@ -571,8 +558,10 @@ void checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode
 
             camera.Position.x = cube3->get_transform().m_position.x + cameraPos.x;  //attach camera to player
             camera.Position.z = cube3->get_transform().m_position.z + cameraPos.z;  //attach camera to player
+            return true;
         }
     }
+    return false;
 }
 
 void update(float dt) {
@@ -599,6 +588,8 @@ void update(float dt) {
 void render() {
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
     root_node->render(true);
 
 }
