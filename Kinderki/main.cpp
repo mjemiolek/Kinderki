@@ -16,6 +16,7 @@
 #include "PlayerController.h"
 #include "text.h"
 #include "skybox.h"
+#include "GameManager.h"
 
 #include <mmcobj.h>
 
@@ -25,10 +26,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void input(GLFWwindow* window);
-unsigned int loadTexture(char const* path);
-void update(float dt);
-boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]);
-void render();
+//unsigned int loadTexture(char const* path);
+//void update(float dt);
+boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[], std::shared_ptr<SceneGraphNode> cube);
+//void render();
 void render_gui();
 
 GLFWwindow* window = nullptr;
@@ -49,22 +50,10 @@ float lastFrame = 0.0f;
 
 // lighting
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
-glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
-glm::vec3 floorPos(0.0f, -1.75f, 0.0f);
 
 
-glm::vec3 cubePositions[] = {
-        glm::vec3(0.0f, 2.0f,  3.5f),
-        glm::vec3(2.0f,  2.0f, -15.0f),
-        glm::vec3(0.5f, 2.0f, -1.5f),
-        glm::vec3(-3.8f, 2.0f, -12.3f),
-        glm::vec3(0.0f, 2.0f,  0.0f),
-        glm::vec3(0.0f,  2.0f, 0.0f),
-        glm::vec3(1.3f, 2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -1.5f),
-        glm::vec3(-1.3f,  2.0f, -1.5f)
-};
+
+
 
 float vertices[] = {
     // positions          // normals           // texture coords
@@ -168,17 +157,7 @@ double passed_time = 0.0;
 bool should_render = false;
 double frame_time = 1.0 / 60.0;
 
-std::shared_ptr<SceneGraphNode> root_node;
-std::shared_ptr<SceneGraphNode> cube1;
-std::shared_ptr<SceneGraphNode> cube2;
-std::shared_ptr<SceneGraphNode> cube3;
-std::shared_ptr<SceneGraphNode> test1;
-std::shared_ptr<SceneGraphNode> progressbar;
-std::shared_ptr<SceneGraphNode> modelTest;
 
-std::shared_ptr<SceneGraphNode> floorTest;
-std::shared_ptr<SceneGraphNode> meshesTest;
-std::shared_ptr<SceneGraphNode> sandsTest;
 
 int main()
 {
@@ -222,17 +201,10 @@ int main()
     // build and compile shaders
     // -------------------------
 
+    Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
     Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
     Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
-    Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Shader skyboxShader("res/shaders/skybox.vert", "res/shaders/skybox.frag");
-    Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
-
-    Model box("res/models/box.obj");
-    Model sphere("res/models/sphere.obj");
-    Model floor("res/models/floor.obj");
-    Model meshes("res/models/meshes.obj");
-    Model sands("res/models/sands.obj");
 
     
     unsigned int quadVAO, quadVBO1, quadVBO2, quadVBO3, quadEBO;
@@ -272,106 +244,43 @@ int main()
 
     // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
-    unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
-    unsigned int specularMap = loadTexture("res/textures/spec.jpg");
+    
 
     // shader configuration
     // --------------------
 
-    lightingShader.use();
-    lightingShader.setInt("material.diffuse", 0);
-    lightingShader.setInt("material.specular", 64);
-    lightingShader.setVec3("lightPos", lightPos);
-
-    skyboxShader.use();
-    glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
+    
 
     // load models
     // -----------
-    unsigned int texture = loadTexture("res/textures/stone.jpg");
-    unsigned int texturekupa = loadTexture("res/textures/win.png");
-    unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
-    unsigned int texturemetal = loadTexture("res/textures/metaltexture.png");
-    unsigned int texturesand = loadTexture("res/textures/sandtexture.png");
+    
 
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-    root_node = std::make_shared<SceneGraphNode>();
-    cube1 = std::make_shared<SceneGraphNode>();
-    cube2 = std::make_shared<SceneGraphNode>();
-    cube3 = std::make_shared<SceneGraphNode>();
-    test1 = std::make_shared<SceneGraphNode>();
-    modelTest = std::make_shared<SceneGraphNode>();
-    floorTest = std::make_shared<SceneGraphNode>();
-    meshesTest = std::make_shared<SceneGraphNode>();
-    sandsTest = std::make_shared<SceneGraphNode>();
+    //root_node = std::make_shared<SceneGraphNode>();
+    //cube1 = std::make_shared<SceneGraphNode>();
+    //cube2 = std::make_shared<SceneGraphNode>();
+    //cube3 = std::make_shared<SceneGraphNode>();
+    //test1 = std::make_shared<SceneGraphNode>();
+    //modelTest = std::make_shared<SceneGraphNode>();
+    //floorTest = std::make_shared<SceneGraphNode>();
+    //meshesTest = std::make_shared<SceneGraphNode>();
+    //sandsTest = std::make_shared<SceneGraphNode>();
 
-    PlayerController* player = new PlayerController(cubePositions[4]);
 
-    root_node->add_child(cube1);
-    cube1->shaderTemp = lightingShader;
-    cube1->texture = texture;
-    cube1->get_transform().m_position = cubePositions[0];
-    cube1->tempRender = MODEL;
-    cube1->modelTemp = box;
-    cube1->get_transform().m_scale = 0.15f;
-
-    root_node->add_child(cube2);
-    cube2->shaderTemp = lightingShader;
-    cube2->texture = texturekupa;
-    cube2->get_transform().m_position = cubePositions[2];
-    cube2->tempRender = BOX;
-    cube2->tempRender = MODEL;
-    cube2->modelTemp = box;
-    cube2->get_transform().m_scale = 0.15f;
-
-    root_node->add_child(cube3);
-    cube3->shaderTemp = lightingShader;
-    cube3->texture = texturekupa;
-    cube3->get_transform().m_position = player->getPlayerPosition();
-    cube3->tempRender = BOX;
-    cube3->tempRender = MODEL;
-    cube3->modelTemp = box;
-    cube3->get_transform().m_scale = 0.15f;
-
-    root_node->add_child(modelTest);
-    modelTest->shaderTemp = lightingShader;
-    modelTest->texture = texturekupa;
-    modelTest->get_transform().m_position = cubePositions[3];
-    modelTest->tempRender = MODEL;
-    modelTest->modelTemp = sphere;
-    modelTest->get_transform().m_scale = 0.15f;
-
-    root_node->add_child(floorTest);
-    floorTest->shaderTemp = lightingShader;
-    floorTest->texture = texturegrass;
-    floorTest->get_transform().m_position = floorPos;
-    floorTest->tempRender = MODEL;
-    floorTest->modelTemp = floor;
-    floorTest->get_transform().m_scale = 0.02f;
-
-    root_node->add_child(sandsTest);
-    sandsTest->shaderTemp = lightingShader;
-    sandsTest->texture = texturesand;
-    sandsTest->get_transform().m_position = zeroPos;
-    sandsTest->tempRender = MODEL;
-    sandsTest->modelTemp = sands;
-    sandsTest->get_transform().m_scale = 0.01f;
-
-    root_node->add_child(meshesTest);
-    meshesTest->shaderTemp = lightingShader;
-    meshesTest->texture = texturemetal;
-    meshesTest->get_transform().m_position = zeroPos;
-    meshesTest->tempRender = MODEL;
-    meshesTest->modelTemp = meshes;
-    meshesTest->get_transform().m_scale = 0.01f;
     
+    GameManager gameManager;
+    gameManager.init();
 
     Skybox skybox;
     Text text(textShader);
+    PlayerController* player = new PlayerController();
+    unsigned int texture = gameManager.loadTexture("res/textures/stone.jpg");
 
-    std::shared_ptr<SceneGraphNode> collidingObjects[] = { cube1,cube2,modelTest,floorTest,meshesTest,sandsTest };
+
+    skyboxShader.use();
+    glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -381,10 +290,11 @@ int main()
         unprocessed_time += passed_time;
 
         input(window);
-        if (!checkForCollisions(player, collidingObjects)) {
-            player->move(window, &cube3->get_transform().m_position, passed_time);
+        if (!checkForCollisions(player, gameManager.collidingObjects, gameManager.cube3)) {
+            player->move(window, &gameManager.cube3->get_transform().m_position, passed_time);
 
         }
+
         
 
 
@@ -392,14 +302,14 @@ int main()
         while (unprocessed_time >= frame_time) {
             should_render = true;
             unprocessed_time -= frame_time;
-            update(frame_time);
+            gameManager.update(frame_time);
         }
 
 
         if (should_render) {
             should_render = false;
             
-            render();
+            gameManager.render();
             testShader.use();
             glBindVertexArray(quadVAO);
             glActiveTexture(GL_TEXTURE0);
@@ -416,7 +326,8 @@ int main()
             glBindVertexArray(0);
 
             skybox.render(skyboxShader);
-
+            strs.str(std::string());
+            strs << passed_time;
             text.RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 
             render_gui();
@@ -460,14 +371,14 @@ void input(GLFWwindow* window) {
         camera.ProcessKeyboard(LEFT, passed_time);
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
         camera.ProcessKeyboard(RIGHT, passed_time);
-    if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-        cube2->get_transform().x_rotation_angle += 6.0f * passed_time;
-    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-        cube2->get_transform().z_rotation_angle += 9.0f * passed_time;
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-        camera.Position.x = cube3->get_transform().m_position.x + cameraPos.x;  //attach camera to player
-        camera.Position.z = cube3->get_transform().m_position.z + cameraPos.z;  //attach camera to player
-    }
+    //if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+    //    cube2->get_transform().x_rotation_angle += 6.0f * passed_time;
+    //if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+    //    cube2->get_transform().z_rotation_angle += 9.0f * passed_time;
+    //if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+    //    camera.Position.x = cube3->get_transform().m_position.x + cameraPos.x;  //attach camera to player
+    //    camera.Position.z = cube3->get_transform().m_position.z + cameraPos.z;  //attach camera to player
+    //}
         //camera.Position = cube3->get_transform().m_position + cameraPos;
 }
 
@@ -505,45 +416,10 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     camera.ProcessMouseScroll(yoffset);
 }
 
-unsigned int loadTexture(char const* path)
-{
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
 
-    int width, height, nrComponents;
-    unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
-    if (data)
-    {
-        GLenum format;
-        if (nrComponents == 1)
-            format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
 
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        stbi_image_free(data);
-    }
-    else
-    {
-        std::cout << "Texture failed to load at path: " << path << std::endl;
-        stbi_image_free(data);
-    }
-
-    return textureID;
-}
-
-boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[]) {
-    glm::vec3 play = cube3->get_transform().m_position;  //change it to player
+boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[], std::shared_ptr<SceneGraphNode> cube) {
+    glm::vec3 play = cube->get_transform().m_position;  //change it to player
     for (int i = 0; i < 3; i++) //change "3" to "number of objects in array"
     {
         glm::vec3 p = objects[i]->get_transform().m_position;
@@ -552,47 +428,21 @@ boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphN
         {
             //push player outside
             glm::vec3 direction(play.x - p.x, play.y - p.y, play.z - p.z);
-            cube3->get_transform().m_position.x += direction.x * 2.5f * passed_time;
-            cube3->get_transform().m_position.y += direction.y * 2.5f * passed_time;
-            cube3->get_transform().m_position.z += direction.z * 2.5f * passed_time;
+            cube->get_transform().m_position.x += direction.x * 2.5f * passed_time;
+            cube->get_transform().m_position.y += direction.y * 2.5f * passed_time;
+            cube->get_transform().m_position.z += direction.z * 2.5f * passed_time;
 
-            camera.Position.x = cube3->get_transform().m_position.x + cameraPos.x;  //attach camera to player
-            camera.Position.z = cube3->get_transform().m_position.z + cameraPos.z;  //attach camera to player
+            camera.Position.x = cube->get_transform().m_position.x + cameraPos.x;  //attach camera to player
+            camera.Position.z = cube->get_transform().m_position.z + cameraPos.z;  //attach camera to player
             return true;
         }
     }
     return false;
 }
 
-void update(float dt) {
-    if (x < -0.50f) {
-        x = x + 0.01f;
-        bar[4] = x;
-        bar[6] = x;
-        bar[8] = x;
-
-        //std::cout << bar[4] << " " << std::endl;
-
-    }
-    else {
-        x = -0.90f;
-    }
-    strs.str(std::string());
-
-    strs << passed_time;
-    cube2->update_transform();
-    cube3->update_transform();
-    root_node->update(Transform(), false);
-}
-
-void render() {
-    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-    root_node->render(true);
 
-}
 
 void render_gui() {
     //ImGui_ImplOpenGL3_NewFrame();

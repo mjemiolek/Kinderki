@@ -24,7 +24,7 @@ class PlayerController {
 private:
 	glm::vec3 PlayerPosition;
 public:
-	PlayerController(glm::vec3 PlayerPosition);
+	PlayerController();
 	~PlayerController();
 	glm::vec3 getPlayerPosition();
 	void setPlayerPosition(glm::vec3 position);
