@@ -14,6 +14,7 @@
 #include "Skybox.h"
 #include "Settings.h"
 #include <mmcobj.h>
+#include <vector>
 
 //GameManager is responsible for creating and rendering objects, gameplay, game physics
 class GameManager {
@@ -28,9 +29,88 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> floorTest;
     std::shared_ptr<SceneGraphNode> meshesTest;
     std::shared_ptr<SceneGraphNode> sandsTest;
-    std::shared_ptr<SceneGraphNode> collidingObjects[6];
+    std::vector<std::shared_ptr<SceneGraphNode>> collidingObjects;
 
 
+    GameManager() {
+        glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
+        // settings
+        glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
+        glm::vec3 floorPos(0.0f, -1.75f, 0.0f);
+
+        glm::vec3 cubePositions[] = {
+        glm::vec3(0.0f, 2.0f,  3.5f),
+        glm::vec3(2.0f,  2.0f, -15.0f),
+        glm::vec3(0.5f, 2.0f, -1.5f),
+        glm::vec3(-3.8f, 2.0f, -12.3f),
+        glm::vec3(0.0f, 2.0f,  0.0f),
+        glm::vec3(0.0f,  2.0f, 0.0f),
+        glm::vec3(1.3f, 2.0f, -2.5f),
+        glm::vec3(1.5f,  2.0f, -2.5f),
+        glm::vec3(1.5f,  2.0f, -1.5f),
+        glm::vec3(-1.3f,  2.0f, -1.5f)
+        };
+
+
+
+        //Initializing shader
+        Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
+        lightingShader.use();
+        lightingShader.setInt("material.diffuse", 0);
+        lightingShader.setInt("material.specular", 64);
+        lightingShader.setVec3("lightPos", lightPos);
+
+
+        //Initializing models and textures
+        Model box("res/models/box.obj");
+        Model sphere("res/models/sphere.obj");
+        Model floor("res/models/floor.obj");
+        Model meshes("res/models/meshes.obj");
+        Model sands("res/models/sands.obj");
+
+        unsigned int texturekupa = loadTexture("res/textures/win.png");
+        unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
+        unsigned int texturemetal = loadTexture("res/textures/metaltexture.png");
+        unsigned int texturesand = loadTexture("res/textures/sandtexture.png");
+        unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
+        unsigned int specularMap = loadTexture("res/textures/spec.jpg");
+        unsigned int texture = loadTexture("res/textures/stone.jpg");
+
+
+        //Allocating storage for the objects
+        root_node = std::make_shared<SceneGraphNode>();
+        cube1 = std::make_shared<SceneGraphNode>();
+        cube2 = std::make_shared<SceneGraphNode>();
+        cube3 = std::make_shared<SceneGraphNode>();
+        test1 = std::make_shared<SceneGraphNode>();
+        modelTest = std::make_shared<SceneGraphNode>();
+        floorTest = std::make_shared<SceneGraphNode>();
+        meshesTest = std::make_shared<SceneGraphNode>();
+        sandsTest = std::make_shared<SceneGraphNode>();
+
+        collidingObjects.insert(collidingObjects.end(), { cube1, cube2, modelTest, floorTest, meshesTest, sandsTest });
+
+        root_node->add_child(cube1);
+        cube1->setProperties(lightingShader, texture, cubePositions[0], MODEL, box, 0.15f);
+
+        root_node->add_child(cube2);
+        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f);
+
+        root_node->add_child(cube3);
+        cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f);
+
+        root_node->add_child(modelTest);
+        modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f);
+
+        root_node->add_child(floorTest);
+        floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f);
+
+        root_node->add_child(sandsTest);
+        sandsTest->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f);
+
+        root_node->add_child(meshesTest);
+        meshesTest->setProperties(lightingShader, texturemetal, zeroPos, MODEL, meshes, 0.01f);
+    }
 
     unsigned int loadTexture(char const* path)
     {
@@ -68,90 +148,7 @@ class GameManager {
 
         return textureID;
     }
-	void init() {
-        glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
-        // settings
-        glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
-        glm::vec3 floorPos(0.0f, -1.75f, 0.0f);
-
-        glm::vec3 cubePositions[] = {
-        glm::vec3(0.0f, 2.0f,  3.5f),
-        glm::vec3(2.0f,  2.0f, -15.0f),
-        glm::vec3(0.5f, 2.0f, -1.5f),
-        glm::vec3(-3.8f, 2.0f, -12.3f),
-        glm::vec3(0.0f, 2.0f,  0.0f),
-        glm::vec3(0.0f,  2.0f, 0.0f),
-        glm::vec3(1.3f, 2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -1.5f),
-        glm::vec3(-1.3f,  2.0f, -1.5f)
-        };
-
-        
-
-        //Initializing shader
-        Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
-        lightingShader.use();
-        lightingShader.setInt("material.diffuse", 0);
-        lightingShader.setInt("material.specular", 64);
-        lightingShader.setVec3("lightPos", lightPos);
-
-        
-        //Initializing models and textures
-        Model box("res/models/box.obj");
-        Model sphere("res/models/sphere.obj");
-        Model floor("res/models/floor.obj");
-        Model meshes("res/models/meshes.obj");
-        Model sands("res/models/sands.obj");
-
-        unsigned int texturekupa = loadTexture("res/textures/win.png");
-        unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
-        unsigned int texturemetal = loadTexture("res/textures/metaltexture.png");
-        unsigned int texturesand = loadTexture("res/textures/sandtexture.png");
-        unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
-        unsigned int specularMap = loadTexture("res/textures/spec.jpg");
-        unsigned int texture = loadTexture("res/textures/stone.jpg");
-
-
-
-        root_node = std::make_shared<SceneGraphNode>();
-        cube1 = std::make_shared<SceneGraphNode>();
-        cube2 = std::make_shared<SceneGraphNode>();
-        cube3 = std::make_shared<SceneGraphNode>();
-        test1 = std::make_shared<SceneGraphNode>();
-        modelTest = std::make_shared<SceneGraphNode>();
-        floorTest = std::make_shared<SceneGraphNode>();
-        meshesTest = std::make_shared<SceneGraphNode>();
-        sandsTest = std::make_shared<SceneGraphNode>();
-
-        collidingObjects[0] = cube1;
-        collidingObjects[1] = cube2;
-        collidingObjects[2] = modelTest;
-        collidingObjects[3] = floorTest;
-        collidingObjects[4] = meshesTest;
-        collidingObjects[5] = sandsTest;
-
-        root_node->add_child(cube1);
-        cube1->setProperties(lightingShader, texture, cubePositions[0], MODEL, box, 0.15f);
-
-        root_node->add_child(cube2);
-        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f);
-
-        root_node->add_child(cube3);
-        cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f);
-
-        root_node->add_child(modelTest);
-        modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f);
-
-        root_node->add_child(floorTest);
-        floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f);
-
-        root_node->add_child(sandsTest);
-        sandsTest->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f);
-
-        root_node->add_child(meshesTest);
-        meshesTest->setProperties(lightingShader, texturemetal, zeroPos, MODEL, meshes, 0.01f);
-	}
+    
     void update(float dt) {
         //if (x < -0.50f) {
         //    x = x + 0.01f;

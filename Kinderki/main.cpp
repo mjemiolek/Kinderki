@@ -14,7 +14,6 @@
 #include "Model.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
-#include "Text.h"
 #include "Skybox.h"
 #include "GameManager.h"
 #include "Gui.h"
@@ -30,12 +29,11 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void input(GLFWwindow* window);
 //unsigned int loadTexture(char const* path);
 //void update(float dt);
-boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[], std::shared_ptr<SceneGraphNode> cube);
+boolean checkForCollisions(PlayerController* player, std::vector<std::shared_ptr<SceneGraphNode>> objects, std::shared_ptr<SceneGraphNode> cube);
 //void render();
 void render_gui();
 
 GLFWwindow* window = nullptr;
-std::ostringstream strs;
 
 // camera
 glm::vec3 cameraPos(0.0f, 16.0f, 5.0f);
@@ -99,10 +97,7 @@ int main()
     //Creating game components
     GameManager gameManager;
     Gui gui;
-    gameManager.init();
-    gui.init();
     Skybox skybox;
-    Text text;
     PlayerController* player = new PlayerController();
 
     //load texture to gui
@@ -119,14 +114,13 @@ int main()
         input(window);
         if (!checkForCollisions(player, gameManager.collidingObjects, gameManager.cube3)) {
             player->move(window, &gameManager.cube3->get_transform().m_position, passed_time);
-
         }
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
             unprocessed_time -= frame_time;
             gameManager.update(frame_time);
-            gui.update();
+            gui.update(passed_time);
         }
 
 
@@ -134,12 +128,8 @@ int main()
             should_render = false;
             
             gameManager.render();
-            gui.render();
             skybox.render();
-            
-            strs.str(std::string());
-            strs << passed_time;
-            text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+            gui.render();
 
             render_gui();
             glfwPollEvents();
@@ -153,6 +143,7 @@ int main()
     //glDeleteVertexArrays(1, &cubeVAO);
     //glDeleteVertexArrays(1, &quadVAO);
     //glDeleteBuffers(1, &VBO);
+    delete player;
 
         // glfw: terminate, clearing all previously allocated GLFW resources.
         // ------------------------------------------------------------------
@@ -229,7 +220,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 
 
 
-boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphNode> objects[], std::shared_ptr<SceneGraphNode> cube) {
+boolean checkForCollisions(PlayerController* player, std::vector<std::shared_ptr<SceneGraphNode>> objects, std::shared_ptr<SceneGraphNode> cube) {
     glm::vec3 play = cube->get_transform().m_position;  //change it to player
     for (int i = 0; i < 3; i++) //change "3" to "number of objects in array"
     {
