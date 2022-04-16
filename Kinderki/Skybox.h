@@ -42,8 +42,12 @@ private:
     unsigned int cubemapTexture;
     const GLuint SCREEN_WIDTH = 1280;
     const GLuint SCREEN_HEIGHT = 720;
+    Shader skyboxShader;
 public:
     Skybox() {
+        skyboxShader.constructShader("res/shaders/skybox.vert", "res/shaders/skybox.frag");
+        skyboxShader.use();
+        glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
         glGenVertexArrays(1, &skyboxVAO);
         glGenBuffers(1, &skyboxVBO);
         glGenBuffers(1, &skyboxEBO);
@@ -111,7 +115,7 @@ public:
         }
     }
 
-    void render(Shader& skyboxShader) {
+    void render() {
         //Since the cubemap will always have a depth of 1.0, we need that equal sign so it doesn't get discarded
         glDepthFunc(GL_LEQUAL);
 

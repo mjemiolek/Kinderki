@@ -12,7 +12,6 @@
 #include "PlayerController.h"
 #include "text.h"
 #include "skybox.h"
-
 #include <mmcobj.h>
 
 
@@ -222,6 +221,5 @@ class GameManager {
 
 
         root_node->render(true);
-
     }
 };

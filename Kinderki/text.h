@@ -36,9 +36,11 @@ private:
     GLuint textVAO, textVBO;
     const GLuint SCREEN_WIDTH = 1280;
     const GLuint SCREEN_HEIGHT = 720;
+    Shader shader;
 public:
-    Text(Shader& shader)
+    Text()
     {
+        shader.constructShader("res/shaders/text.vert", "res/shaders/text.frag");
         glm::mat4 projection2 = glm::ortho(0.0f, static_cast<GLfloat>(SCREEN_WIDTH), 0.0f, static_cast<GLfloat>(SCREEN_HEIGHT));
         shader.use();
         glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection2));
@@ -114,7 +116,7 @@ public:
         glBindVertexArray(0);
     }
 
-    void RenderText(Shader& shader, std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
+    void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
     {
         // Activate corresponding render state	
         shader.use();

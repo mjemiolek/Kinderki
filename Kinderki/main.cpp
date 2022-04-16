@@ -17,6 +17,7 @@
 #include "text.h"
 #include "skybox.h"
 #include "GameManager.h"
+#include "Gui.h"
 
 #include <mmcobj.h>
 
@@ -52,102 +53,15 @@ float lastFrame = 0.0f;
 glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
 
 
-
-
-
-float vertices[] = {
-    // positions          // normals           // texture coords
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  0.0f,
-    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-    0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f,  1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f,  0.0f,
-
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-    0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f,  1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f,  0.0f,
-
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-    -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-
-    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-    0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  1.0f,
-    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-    0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  1.0f,
-    0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f,  0.0f,
-
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-    0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  1.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-    0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f,  0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f,  1.0f,
-
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-    0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-    0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
-};
-
-float quadVertices[] = {
-    // pozycje       // kolory
-    0.95f,  0.60f,
-    0.60f, 0.95f,
-    0.95f, 0.95f,
-    0.60f,  0.60f
-};
-
-float textCords[] = { 0.0f, 1.0f,
-                     1.0f, 0.0f,
-                     0.0f, 0.0f,
-                     1.0f, 1.0f };
-
-uint32_t indices[] = { 3, 1, 2,
-                      2, 0, 3 };
-
 float normals[] = { 0.0f, 1.0f, 0.0f,
                    0.0f, 1.0f, 0.0f,
                    0.0f, 1.0f, 0.0f,
                    0.0f, 1.0f, 0.0f };
 
-float x = -0.90f;
-float bar[] = {
-    // pozycje       // kolory
-    -0.95f,  -0.95f,
-    -0.95f, -0.90f,
-    x, -0.90f,
-    x, -0.90f,
-    x,  -0.95f,
-    -0.95f,  -0.95f
-};
-
-float color[] = {
-        0.7f,0.7f,0.7f,
-        0.7f,0.7f,0.7f,
-        0.7f,0.7f,0.7f,
-        0.7f,0.7f,0.7f,
-        0.7f,0.7f,0.7f,
-        0.7f,0.7f,0.7f
-};
-
-
 GLint u_scale_loc = -1;
 GLint u_world_loc = -1;
 GLint u_scale_loc2 = -1;
 float scale = 1.0f;
-
-
 
 //time
 double last_time = glfwGetTime();
@@ -156,7 +70,6 @@ double current_time = 0.0;
 double passed_time = 0.0;
 bool should_render = false;
 double frame_time = 1.0 / 60.0;
-
 
 
 int main()
@@ -191,96 +104,26 @@ int main()
     }
 
     // tell stb_image.h to flip loaded texture's on the y-axis (before loading model).
-//    stbi_set_flip_vertically_on_load(true);
+    // stbi_set_flip_vertically_on_load(true);
 
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // build and compile shaders
-    // -------------------------
 
-    Shader textShader("res/shaders/text.vert", "res/shaders/text.frag");
-    Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
-    Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
-    Shader skyboxShader("res/shaders/skybox.vert", "res/shaders/skybox.frag");
-
-    
-    unsigned int quadVAO, quadVBO1, quadVBO2, quadVBO3, quadEBO;
-
-    glGenVertexArrays(1, &quadVAO);
-    glBindVertexArray(quadVAO);
-
-    glGenBuffers(1, &quadVBO1);
-    glBindBuffer(GL_ARRAY_BUFFER, quadVBO1);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-
-
-    glGenBuffers(1, &quadVBO3);
-    glBindBuffer(GL_ARRAY_BUFFER, quadVBO3);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(textCords), textCords, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-
-    glGenBuffers(1, &quadEBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-
-    unsigned int progressVAO, progressVBO1, progressVBO2, progressEBO;
-
-    glGenVertexArrays(1, &progressVAO);
-    glBindVertexArray(progressVAO);
-
-    glGenBuffers(1, &progressVBO1);
-    glBindBuffer(GL_ARRAY_BUFFER, progressVBO1);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(bar), &bar, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-
-
-    // load textures (we now use a utility function to keep the code more organized)
-    // -----------------------------------------------------------------------------
-    
-
-    // shader configuration
-    // --------------------
-
-    
-
-    // load models
-    // -----------
-    
-
-    // draw in wireframe
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    //root_node = std::make_shared<SceneGraphNode>();
-    //cube1 = std::make_shared<SceneGraphNode>();
-    //cube2 = std::make_shared<SceneGraphNode>();
-    //cube3 = std::make_shared<SceneGraphNode>();
-    //test1 = std::make_shared<SceneGraphNode>();
-    //modelTest = std::make_shared<SceneGraphNode>();
-    //floorTest = std::make_shared<SceneGraphNode>();
-    //meshesTest = std::make_shared<SceneGraphNode>();
-    //sandsTest = std::make_shared<SceneGraphNode>();
-
-
-    
+    //Creating game components
     GameManager gameManager;
+    Gui gui;
     gameManager.init();
-
+    gui.init();
     Skybox skybox;
-    Text text(textShader);
+    Text text;
     PlayerController* player = new PlayerController();
+
+    //load texture to gui
     unsigned int texture = gameManager.loadTexture("res/textures/stone.jpg");
-
-
-    skyboxShader.use();
-    glUniform1i(glGetUniformLocation(skyboxShader.ID, "skybox"), 0);
+    gui.texture = texture;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -295,14 +138,11 @@ int main()
 
         }
 
-        
-
-
-
         while (unprocessed_time >= frame_time) {
             should_render = true;
             unprocessed_time -= frame_time;
             gameManager.update(frame_time);
+            gui.update();
         }
 
 
@@ -310,25 +150,12 @@ int main()
             should_render = false;
             
             gameManager.render();
-            testShader.use();
-            glBindVertexArray(quadVAO);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, texture);
-            glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
-
-            glBindBuffer(GL_ARRAY_BUFFER, progressVBO1);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(bar), &bar, GL_STATIC_DRAW);
-
-            test2Shader.use();
-            glBindVertexArray(progressVAO);
-            glDrawArrays(GL_TRIANGLES, 0, 18);
-            glBindVertexArray(0);
-
-            skybox.render(skyboxShader);
+            gui.render();
+            skybox.render();
+            
             strs.str(std::string());
             strs << passed_time;
-            text.RenderText(textShader, strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+            text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 
             render_gui();
             glfwPollEvents();
@@ -439,9 +266,6 @@ boolean checkForCollisions(PlayerController* player, std::shared_ptr<SceneGraphN
     }
     return false;
 }
-
-
-
 
 
 void render_gui() {

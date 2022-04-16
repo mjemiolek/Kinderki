@@ -150,27 +150,32 @@
     <ClCompile Include="stb.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="model.h" />
+    <ClInclude Include="Gui.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="SceneGraph.h" />
-    <ClInclude Include="shader.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
-    <ClInclude Include="text.h" />
+    <ClInclude Include="Text.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\basic.frag" />
     <None Include="res\shaders\basic.vert" />
     <None Include="res\shaders\basic2.frag" />
     <None Include="res\shaders\basic2.vert" />
+    <None Include="res\shaders\debuq_quad.frag" />
+    <None Include="res\shaders\debuq_quad.vert" />
     <None Include="res\shaders\lightcaster.frag" />
     <None Include="res\shaders\lightcaster.vert" />
     <None Include="res\shaders\lightcube.frag" />
     <None Include="res\shaders\lightcube.vert" />
     <None Include="res\shaders\model.frag" />
     <None Include="res\shaders\model.vert" />
+    <None Include="res\shaders\shadow_mapping_depth.frag" />
+    <None Include="res\shaders\shadow_mapping_depth.vert" />
     <None Include="res\shaders\skybox.frag" />
     <None Include="res\shaders\skybox.vert" />
     <None Include="res\shaders\text.frag" />
