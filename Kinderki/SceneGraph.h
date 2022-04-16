@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Model.h"
 #include "Settings.h"
+#include "Collider.h"
 
 Camera camera(glm::vec3(0.0f, 16.0f, 5.0f));
 
@@ -94,19 +95,14 @@ struct SceneGraphNode {
             m_children[i]->render();
         }
     }
-    void setProperties(
-        Shader shader,
-        unsigned int ttexture,
-        glm::vec3 position,
-        renderEnum predefined,
-        Model model,
-        float scale) {
+    void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale/*, Collider col*/) {
         shaderTemp = shader;
         texture = ttexture;
         m_transform.m_position = position;
         tempRender = predefined;
         modelTemp = model;
         m_transform.m_scale = scale;
+        //collider = col;
     }
     void update_transform() {
         m_transform.m_world_matrix = m_transform.get_combined_matrix();
@@ -121,6 +117,7 @@ struct SceneGraphNode {
     GLuint texture;
     renderEnum tempRender;
     unsigned int VAOTemp;
+    //Collider collider;
 
 private:
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;

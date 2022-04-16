@@ -46,12 +46,12 @@ public:
 		closeA = position.z + collisionRange.z;
 
 		//Calculate the sides of box B
-		leftB = boxCollider.getPosition.x - boxCollider.getCollisionRange.x;
-		rightB = boxCollider.getPosition.x + boxCollider.getCollisionRange.x;
-		topB = boxCollider.getPosition.y + boxCollider.getCollisionRange.y;
-		bottomB = boxCollider.getPosition.y - boxCollider.getCollisionRange.y;
-		awayB = boxCollider.getPosition.z - boxCollider.getCollisionRange.z;
-		closeB = boxCollider.getPosition.z + boxCollider.getCollisionRange.z;
+		leftB = boxCollider.getPosition().x - boxCollider.getCollisionRange().x;
+		rightB = boxCollider.getPosition().x + boxCollider.getCollisionRange().x;
+		topB = boxCollider.getPosition().y + boxCollider.getCollisionRange().y;
+		bottomB = boxCollider.getPosition().y - boxCollider.getCollisionRange().y;
+		awayB = boxCollider.getPosition().z - boxCollider.getCollisionRange().z;
+		closeB = boxCollider.getPosition().z + boxCollider.getCollisionRange().z;
 
 		//If any of the sides from A are outside of B
 		//Y-axis
