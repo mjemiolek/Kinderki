@@ -9,15 +9,16 @@
 
 #include <irrKlang/ik_ISound.h>
 
-#include "shader.h"
-#include "camera.h"
-#include "model.h"
+#include "Shader.h"
+#include "Camera.h"
+#include "Model.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
-#include "text.h"
-#include "skybox.h"
+#include "Text.h"
+#include "Skybox.h"
 #include "GameManager.h"
 #include "Gui.h"
+#include "Settings.h"
 
 #include <mmcobj.h>
 
@@ -36,10 +37,6 @@ void render_gui();
 GLFWwindow* window = nullptr;
 std::ostringstream strs;
 
-// settings
-const GLuint SCR_WIDTH = 1280;
-const GLuint SCR_HEIGHT = 720;
-
 // camera
 glm::vec3 cameraPos(0.0f, 16.0f, 5.0f);
 float lastX = SCR_WIDTH / 2.0f;
@@ -49,19 +46,6 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-// lighting
-glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
-
-
-float normals[] = { 0.0f, 1.0f, 0.0f,
-                   0.0f, 1.0f, 0.0f,
-                   0.0f, 1.0f, 0.0f,
-                   0.0f, 1.0f, 0.0f };
-
-GLint u_scale_loc = -1;
-GLint u_world_loc = -1;
-GLint u_scale_loc2 = -1;
-float scale = 1.0f;
 
 //time
 double last_time = glfwGetTime();

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Settings.h"
 
 float skyboxVertices[] =
 {
@@ -40,8 +40,6 @@ class Skybox {
 private:
     unsigned int skyboxVAO, skyboxVBO, skyboxEBO;
     unsigned int cubemapTexture;
-    const GLuint SCREEN_WIDTH = 1280;
-    const GLuint SCREEN_HEIGHT = 720;
     Shader skyboxShader;
 public:
     Skybox() {
@@ -125,7 +123,7 @@ public:
         // We make the mat4 into a mat3 and then a mat4 again in order to get rid of the last row and column
         // The last row and column affect the translation of the skybox (which we don't want to affect)
         view = glm::mat4(glm::mat3(camera.GetViewMatrix()));
-        projection = glm::perspective(glm::radians(45.0f), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
+        projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "view"), 1, GL_FALSE, glm::value_ptr(view));
         glUniformMatrix4fv(glGetUniformLocation(skyboxShader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 

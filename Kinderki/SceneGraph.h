@@ -4,13 +4,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "shader.h"
-#include "camera.h"
-#include "model.h"
-
-//// settings
-const GLuint SCREEN_WIDTH = 1280;
-const GLuint SCREEN_HEIGHT = 720;
+#include "Shader.h"
+#include "Camera.h"
+#include "Model.h"
+#include "Settings.h"
 
 Camera camera(glm::vec3(0.0f, 16.0f, 5.0f));
 
@@ -57,7 +54,7 @@ struct SceneGraphNode {
     ) {
         if (!is_root) {
             shaderTemp.use();
-            glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.1f, 100.0f);
+            glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
             shaderTemp.setMat4("projection", projection);
 
             glm::mat4 view = camera.GetViewMatrix();
@@ -97,6 +94,20 @@ struct SceneGraphNode {
             m_children[i]->render();
         }
     }
+    void setProperties(
+        Shader shader,
+        unsigned int ttexture,
+        glm::vec3 position,
+        renderEnum predefined,
+        Model model,
+        float scale) {
+        shaderTemp = shader;
+        texture = ttexture;
+        m_transform.m_position = position;
+        tempRender = predefined;
+        modelTemp = model;
+        m_transform.m_scale = scale;
+    }
     void update_transform() {
         m_transform.m_world_matrix = m_transform.get_combined_matrix();
         m_dirty = true;
@@ -115,5 +126,4 @@ private:
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;
     Transform m_transform;
     bool m_dirty;
-
 };

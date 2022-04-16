@@ -16,7 +16,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-#include "shader.h"
+#include "Shader.h"
+#include "Settings.h"
 
 /// Holds all state information relevant to a character as loaded using FreeType
 struct Character {
@@ -34,14 +35,12 @@ private:
     FT_Face face;
     std::map<GLchar, Character> Characters;
     GLuint textVAO, textVBO;
-    const GLuint SCREEN_WIDTH = 1280;
-    const GLuint SCREEN_HEIGHT = 720;
     Shader shader;
 public:
     Text()
     {
         shader.constructShader("res/shaders/text.vert", "res/shaders/text.frag");
-        glm::mat4 projection2 = glm::ortho(0.0f, static_cast<GLfloat>(SCREEN_WIDTH), 0.0f, static_cast<GLfloat>(SCREEN_HEIGHT));
+        glm::mat4 projection2 = glm::ortho(0.0f, static_cast<GLfloat>(SCR_WIDTH), 0.0f, static_cast<GLfloat>(SCR_HEIGHT));
         shader.use();
         glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection2));
 

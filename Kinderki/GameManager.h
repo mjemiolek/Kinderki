@@ -5,16 +5,17 @@
 
 #include <irrKlang/ik_ISound.h>
 
-#include "shader.h"
-#include "camera.h"
-#include "model.h"
+#include "Shader.h"
+#include "Camera.h"
+#include "Model.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
-#include "text.h"
-#include "skybox.h"
+#include "Text.h"
+#include "Skybox.h"
+#include "Settings.h"
 #include <mmcobj.h>
 
-
+//GameManager is responsible for creating and rendering objects, gameplay, game physics
 class GameManager {
     public:
     std::shared_ptr<SceneGraphNode> root_node;
@@ -24,12 +25,9 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> test1;
     std::shared_ptr<SceneGraphNode> progressbar;
     std::shared_ptr<SceneGraphNode> modelTest;
-
     std::shared_ptr<SceneGraphNode> floorTest;
     std::shared_ptr<SceneGraphNode> meshesTest;
     std::shared_ptr<SceneGraphNode> sandsTest;
-    const GLuint SCR_WIDTH = 1280;
-    const GLuint SCR_HEIGHT = 720;
     std::shared_ptr<SceneGraphNode> collidingObjects[6];
 
 
@@ -73,8 +71,6 @@ class GameManager {
 	void init() {
         glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
         // settings
-        
-
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
         glm::vec3 floorPos(0.0f, -1.75f, 0.0f);
 
@@ -93,17 +89,15 @@ class GameManager {
 
         
 
-        
+        //Initializing shader
         Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
-
-
         lightingShader.use();
         lightingShader.setInt("material.diffuse", 0);
         lightingShader.setInt("material.specular", 64);
         lightingShader.setVec3("lightPos", lightPos);
 
         
-
+        //Initializing models and textures
         Model box("res/models/box.obj");
         Model sphere("res/models/sphere.obj");
         Model floor("res/models/floor.obj");
@@ -138,62 +132,25 @@ class GameManager {
         collidingObjects[5] = sandsTest;
 
         root_node->add_child(cube1);
-        cube1->shaderTemp = lightingShader;
-        cube1->texture = texture;
-        cube1->get_transform().m_position = cubePositions[0];
-        cube1->tempRender = MODEL;
-        cube1->modelTemp = box;
-        cube1->get_transform().m_scale = 0.15f;
+        cube1->setProperties(lightingShader, texture, cubePositions[0], MODEL, box, 0.15f);
 
         root_node->add_child(cube2);
-        cube2->shaderTemp = lightingShader;
-        cube2->texture = texturekupa;
-        cube2->get_transform().m_position = cubePositions[2];
-        cube2->tempRender = BOX;
-        cube2->tempRender = MODEL;
-        cube2->modelTemp = box;
-        cube2->get_transform().m_scale = 0.15f;
+        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f);
 
         root_node->add_child(cube3);
-        cube3->shaderTemp = lightingShader;
-        cube3->texture = texturekupa;
-        cube3->get_transform().m_position = cubePositions[4];
-        cube3->tempRender = BOX;
-        cube3->tempRender = MODEL;
-        cube3->modelTemp = box;
-        cube3->get_transform().m_scale = 0.15f;
+        cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f);
 
         root_node->add_child(modelTest);
-        modelTest->shaderTemp = lightingShader;
-        modelTest->texture = texturekupa;
-        modelTest->get_transform().m_position = cubePositions[3];
-        modelTest->tempRender = MODEL;
-        modelTest->modelTemp = sphere;
-        modelTest->get_transform().m_scale = 0.15f;
+        modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f);
 
         root_node->add_child(floorTest);
-        floorTest->shaderTemp = lightingShader;
-        floorTest->texture = texturegrass;
-        floorTest->get_transform().m_position = floorPos;
-        floorTest->tempRender = MODEL;
-        floorTest->modelTemp = floor;
-        floorTest->get_transform().m_scale = 0.02f;
+        floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f);
 
         root_node->add_child(sandsTest);
-        sandsTest->shaderTemp = lightingShader;
-        sandsTest->texture = texturesand;
-        sandsTest->get_transform().m_position = zeroPos;
-        sandsTest->tempRender = MODEL;
-        sandsTest->modelTemp = sands;
-        sandsTest->get_transform().m_scale = 0.01f;
+        sandsTest->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f);
 
         root_node->add_child(meshesTest);
-        meshesTest->shaderTemp = lightingShader;
-        meshesTest->texture = texturemetal;
-        meshesTest->get_transform().m_position = zeroPos;
-        meshesTest->tempRender = MODEL;
-        meshesTest->modelTemp = meshes;
-        meshesTest->get_transform().m_scale = 0.01f;
+        meshesTest->setProperties(lightingShader, texturemetal, zeroPos, MODEL, meshes, 0.01f);
 	}
     void update(float dt) {
         //if (x < -0.50f) {
