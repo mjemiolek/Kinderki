@@ -105,7 +105,7 @@ class GameManager {
         cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, cube3Collider);
 
         root_node->add_child(modelTest);
-        Collider modelTestCollider(2.5f, false, cubePositions[3]);
+        Collider modelTestCollider(1.8f, false, cubePositions[3]);
         modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f, modelTestCollider);
 
         root_node->add_child(floorTest);
