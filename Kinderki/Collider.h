@@ -5,10 +5,15 @@
 class Collider {
 private:
 	glm::vec3 position;
-	float radius = 0;
+	float radius = -1;
 	glm::vec3 collisionRange = glm::vec3(0.0f ,0.0f ,0.0f); //distance from center in all 3 directions
 	bool isTrigger;
 public:
+	Collider() {
+		radius = 0;
+		isTrigger = false;
+		position = glm::vec3(0.0f, 0.0f, -3.0f);
+	}
 	Collider(float rad, bool isTrig, glm::vec3 pos) {
 		radius = rad;
 		isTrigger = isTrig;
@@ -30,12 +35,12 @@ public:
 		return false;
 	}
 	bool boxToBoxCollisioncheck(Collider boxCollider) {
-		int leftA, leftB;
-		int rightA, rightB;
-		int topA, topB;
-		int bottomA, bottomB;
-		int awayA, awayB;
-		int closeA, closeB;
+		float leftA, leftB;
+		float rightA, rightB;
+		float topA, topB;
+		float bottomA, bottomB;
+		float awayA, awayB;
+		float closeA, closeB;
 
 		//Calculate the sides of box A
 		leftA = position.x - collisionRange.x;

@@ -16,6 +16,7 @@
 #include "PlayerController.h"
 #include "Skybox.h"
 #include "GameManager.h"
+#include "ColliderManager.h"
 #include "Gui.h"
 #include "Settings.h"
 
@@ -26,7 +27,7 @@ static void glfw_error_callback(int error, const char* description);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-void input(GLFWwindow* window);
+void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player);
 //unsigned int loadTexture(char const* path);
 //void update(float dt);
 boolean checkForCollisions(PlayerController* player, std::vector<std::shared_ptr<SceneGraphNode>> objects, std::shared_ptr<SceneGraphNode> cube);
@@ -96,6 +97,7 @@ int main()
 
     //Creating game components
     GameManager gameManager;
+    ColliderManager colManager(gameManager.collidingObjects);
     Gui gui;
     Skybox skybox;
     PlayerController* player = new PlayerController();
@@ -111,10 +113,9 @@ int main()
         last_time = current_time;
         unprocessed_time += passed_time;
 
-        input(window);
-        if (!checkForCollisions(player, gameManager.collidingObjects, gameManager.cube3)) {
-            player->move(window, &gameManager.cube3->get_transform().m_position, passed_time);
-        }
+        input(window, gameManager.cube3);
+        player->move(window, gameManager.cube3, passed_time);
+        colManager.manageCollisions(gameManager.cube3,passed_time);
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
@@ -159,27 +160,26 @@ static void glfw_error_callback(int error, const char* description)
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void input(GLFWwindow* window) {
+void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-
-    
         //Player+Camera                                OnlyCamera
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, passed_time);
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, passed_time);
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, passed_time);
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, passed_time);
+    //if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    //    camera.ProcessKeyboard(FORWARD, passed_time);
+    //if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    //    camera.ProcessKeyboard(BACKWARD, passed_time);
+    //if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    //    camera.ProcessKeyboard(LEFT, passed_time);
+    //if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    //    camera.ProcessKeyboard(RIGHT, passed_time);
     //if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
     //    cube2->get_transform().x_rotation_angle += 6.0f * passed_time;
     //if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
     //    cube2->get_transform().z_rotation_angle += 9.0f * passed_time;
     //if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-    //    camera.Position.x = cube3->get_transform().m_position.x + cameraPos.x;  //attach camera to player
-    //    camera.Position.z = cube3->get_transform().m_position.z + cameraPos.z;  //attach camera to player
+        camera.Position.x = player->get_transform().m_position.x + cameraPos.x;  //attach camera to player
+        camera.Position.z = player->get_transform().m_position.z + cameraPos.z;  //attach camera to player
+        camera.Position.y = player->get_transform().m_position.y + cameraPos.y;  //attach camera to player
     //}
         //camera.Position = cube3->get_transform().m_position + cameraPos;
 }

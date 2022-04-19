@@ -13,6 +13,7 @@
 #include "Text.h"
 #include "Skybox.h"
 #include "Settings.h"
+#include "Collider.h"
 #include <mmcobj.h>
 #include <vector>
 
@@ -88,19 +89,24 @@ class GameManager {
         meshesTest = std::make_shared<SceneGraphNode>();
         sandsTest = std::make_shared<SceneGraphNode>();
 
-        collidingObjects.insert(collidingObjects.end(), { cube1, cube2, modelTest, floorTest, meshesTest, sandsTest });
+        collidingObjects.insert(collidingObjects.end(), { cube1, cube2, modelTest});
+        glm::vec3 boxColRange(0.38f, 0.38f, 0.38f);
 
         root_node->add_child(cube1);
-        cube1->setProperties(lightingShader, texture, cubePositions[0], MODEL, box, 0.15f);
+        Collider cube1Collider(boxColRange, false, cubePositions[0]);
+        cube1->setProperties(lightingShader, texture, cubePositions[0], MODEL, box, 0.15f, cube1Collider);
 
         root_node->add_child(cube2);
-        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f);
+        Collider cube2Collider(boxColRange, false, cubePositions[2]);
+        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, cube2Collider);
 
         root_node->add_child(cube3);
-        cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f);
+        Collider cube3Collider(boxColRange, false, cubePositions[4]);
+        cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, cube3Collider);
 
         root_node->add_child(modelTest);
-        modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f);
+        Collider modelTestCollider(2.5f, false, cubePositions[3]);
+        modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f, modelTestCollider);
 
         root_node->add_child(floorTest);
         floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f);
@@ -172,8 +178,6 @@ class GameManager {
     void render() {
         glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
         root_node->render(true);
     }
 };

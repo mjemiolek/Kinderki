@@ -95,14 +95,14 @@ struct SceneGraphNode {
             m_children[i]->render();
         }
     }
-    void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale/*, Collider col*/) {
+    void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, Collider col = Collider()) {
         shaderTemp = shader;
         texture = ttexture;
         m_transform.m_position = position;
         tempRender = predefined;
         modelTemp = model;
         m_transform.m_scale = scale;
-        //collider = col;
+        collider = col;
     }
     void update_transform() {
         m_transform.m_world_matrix = m_transform.get_combined_matrix();
@@ -117,7 +117,7 @@ struct SceneGraphNode {
     GLuint texture;
     renderEnum tempRender;
     unsigned int VAOTemp;
-    //Collider collider;
+    Collider collider;
 
 private:
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;

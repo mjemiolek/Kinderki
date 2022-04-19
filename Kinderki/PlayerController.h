@@ -20,15 +20,35 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include "SceneGraph.h"
+
 class PlayerController {
 private:
 	glm::vec3 PlayerPosition;
 public:
-	PlayerController();
-	~PlayerController();
-	glm::vec3 getPlayerPosition();
-	void setPlayerPosition(glm::vec3 position);
-	void move(GLFWwindow* window, glm::vec3* Cube1Position, float deltaTime);
+    PlayerController() {}
+    ~PlayerController() {}
+    glm::vec3 getPlayerPosition()
+    {
+        return PlayerPosition;
+    }
+    void setPlayerPosition(glm::vec3 position)
+    {
+        PlayerPosition = position;
+    }
+	void move(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player, float deltaTime) 
+    {
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+            player->get_transform().m_position.z -= 2.5f * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+            player->get_transform().m_position.z += 2.5f * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+            player->get_transform().m_position.x -= 2.5f * deltaTime;
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+            player->get_transform().m_position.x += 2.5f * deltaTime;
+        setPlayerPosition(player->get_transform().m_position);
+        player->collider.setPosition(player->get_transform().m_position);
+	}
 };
 
 #endif
