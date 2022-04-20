@@ -14,6 +14,7 @@
 #include "Skybox.h"
 #include "Settings.h"
 #include "Collider.h"
+#include "GravityManager.h"
 #include <mmcobj.h>
 #include <vector>
 
@@ -31,6 +32,10 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> meshesTest;
     std::shared_ptr<SceneGraphNode> sandsTest;
     std::vector<std::shared_ptr<SceneGraphNode>> collidingObjects;
+    std::shared_ptr<GravityManager> gravity;
+   
+
+
 
 
     GameManager() {
@@ -52,7 +57,9 @@ class GameManager {
         glm::vec3(-1.3f,  2.0f, -1.5f)
         };
 
-
+        //Initializing gravity
+        gravity = std::make_shared<GravityManager>();
+        gravity->setGravity(0.5f);
 
         //Initializing shader
         Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
@@ -101,6 +108,7 @@ class GameManager {
         cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, cube2Collider);
 
         root_node->add_child(cube3);
+        
         Collider cube3Collider(boxColRange, false, cubePositions[4]);
         cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, cube3Collider);
 
@@ -171,6 +179,8 @@ class GameManager {
         //strs.str(std::string());
 
         //strs << passed_time;
+        gravity->updateGravityInPositiveY(cube2, dt);
+
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);

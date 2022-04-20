@@ -153,6 +153,7 @@
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="GravityManager.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />

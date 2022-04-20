@@ -19,6 +19,7 @@
 #include "ColliderManager.h"
 #include "Gui.h"
 #include "Settings.h"
+#include "GravityManager.h"
 
 #include <mmcobj.h>
 
@@ -53,7 +54,6 @@ double current_time = 0.0;
 double passed_time = 0.0;
 bool should_render = false;
 double frame_time = 1.0 / 60.0;
-
 
 int main()
 {
