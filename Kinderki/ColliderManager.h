@@ -68,7 +68,7 @@ public:
 					//Push player away
 					if (tempCollider->sphereToSphereCollisionCheck(object->collider))
 					{
-						pushFromSphere(player, object->collider.getPosition());
+						pushFromSphere(player, object->collider,tempCollider->getRadius());
 					}
 					//delete tempCollider
 					delete tempCollider;
@@ -77,7 +77,7 @@ public:
 					//Push player away
 					if (player->collider.sphereToSphereCollisionCheck(object->collider))
 					{
-						pushFromSphere(player, object->collider.getPosition());
+						pushFromSphere(player, object->collider,player->collider.getRadius());
 					}
 				}
 			}
@@ -131,12 +131,20 @@ public:
 			}
 		}
 	}
-	void pushFromSphere(std::shared_ptr<SceneGraphNode> player,glm::vec3 spherePos)
+	void pushFromSphere(std::shared_ptr<SceneGraphNode> player, Collider sphere,float playerRadius)
 	{
-		//Change it for something smarter
+		//Positions
 		glm::vec3 play = player->collider.getPosition();
-		glm::vec3 p = spherePos;
-		glm::vec3 direction(play.x - p.x, play.y - p.y, play.z - p.z);
-		player->get_transform().m_position += direction * 0.02f;
+		glm::vec3 p = sphere.getPosition();
+		//distance between sphere centers
+		float distance = sqrt((p.x - play.x) * (p.x - play.x) + (p.y - play.y) * (p.y - play.y) + (p.z - play.z) * (p.z - play.z));
+		//Distance to push sphere from other sphere
+		float overlap = distance - playerRadius - sphere.getRadius();
+		//Displace player
+		play.x -= overlap * (play.x - p.x) / distance;
+		play.y -= overlap * (play.y - p.y) / distance;
+		play.z -= overlap * (play.z - p.z) / distance;
+		//Attach new position to player
+		player->get_transform().m_position = play;
 	}
 };

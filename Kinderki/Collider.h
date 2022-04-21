@@ -28,7 +28,7 @@ public:
 		glm::vec3 play = position;
 		glm::vec3 p = sphereCollider.getPosition();
 		float distance = sqrt((p.x - play.x) * (p.x - play.x) + (p.y - play.y) * (p.y - play.y) + (p.z - play.z) * (p.z - play.z));
-		if (distance <= radius+sphereCollider.getRadius())
+		if (distance < radius+sphereCollider.getRadius())
 		{
 			return true;
 		}
