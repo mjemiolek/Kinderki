@@ -9,6 +9,7 @@
 
 #include <irrKlang/ik_ISound.h>
 
+#include "Sound.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "Model.h"
@@ -54,6 +55,8 @@ double current_time = 0.0;
 double passed_time = 0.0;
 bool should_render = false;
 double frame_time = 1.0 / 60.0;
+
+bool temp = true;
 
 int main()
 {
@@ -106,6 +109,10 @@ int main()
     unsigned int texture = gameManager.loadTexture("res/textures/stone.jpg");
     gui.texture = texture;
 
+    Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
+    sound.play();
+
+    
     while (!glfwWindowShouldClose(window))
     {
         current_time = glfwGetTime();
