@@ -32,9 +32,14 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player);
 //unsigned int loadTexture(char const* path);
 //void update(float dt);
-boolean checkForCollisions(PlayerController* player, std::vector<std::shared_ptr<SceneGraphNode>> objects, std::shared_ptr<SceneGraphNode> cube);
+//boolean checkForCollisions(PlayerController* player, std::vector<std::shared_ptr<SceneGraphNode>> objects, std::shared_ptr<SceneGraphNode> cube);
 //void render();
 void render_gui();
+//delete it ///////////////////////
+//void renderScene(const Shader& shader);
+//void renderCube();
+//void renderQuad();
+//delete it ///////////////////////
 
 GLFWwindow* window = nullptr;
 
@@ -57,6 +62,9 @@ bool should_render = false;
 double frame_time = 1.0 / 60.0;
 
 bool temp = true;
+
+//for testing (delete it)
+//unsigned int planeVAO;
 
 int main()
 {
@@ -98,6 +106,61 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
+    //for testing (delete it after)////////////////////////////////////////////////////
+    //Shader simpleDepthShader("res/shaders/shadow_mapping_depth.vert", "res/shaders/shadow_mapping_depth.frag");
+    //Shader debugDepthQuad("res/shaders/debug_quad.vert", "res/shaders/debug_quad.frag");
+
+    //float planeVertices[] = {
+    //    // positions            // normals         // texcoords
+    //     25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+    //    -25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
+    //    -25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+
+    //     25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+    //    -25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+    //     25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,  25.0f, 25.0f
+    //};
+    //// plane VAO
+    //unsigned int planeVBO;
+    //glGenVertexArrays(1, &planeVAO);
+    //glGenBuffers(1, &planeVBO);
+    //glBindVertexArray(planeVAO);
+    //glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
+    //glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
+    //glEnableVertexAttribArray(0);
+    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    //glEnableVertexAttribArray(1);
+    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    //glEnableVertexAttribArray(2);
+    //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    //glBindVertexArray(0);
+    ///////////////////////////////////////////////////////////////////////
+    //unsigned int depthMapFBO, depthMap;
+    //// configure depth map FBO
+    //// -----------------------
+    //
+    //glGenFramebuffers(1, &depthMapFBO);
+    //// create depth texture
+    //glGenTextures(1, &depthMap);
+    //glBindTexture(GL_TEXTURE_2D, depthMap);
+    //glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    //// attach depth texture as FBO's depth buffer
+    //glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+    //glDrawBuffer(GL_NONE);
+    //glReadBuffer(GL_NONE);
+    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    ////Shadows configuration
+    //debugDepthQuad.use();
+    //debugDepthQuad.setInt("depthMap", 0);
+    ////
+    //glm::vec3 lightPos(-2.0f, 4.0f, -1.0f);
+    /////////////////////////////////////////////////////////////////
+
     //Creating game components
     GameManager gameManager;
     ColliderManager colManager(gameManager.collidingObjects);
@@ -135,9 +198,43 @@ int main()
         if (should_render) {
             should_render = false;
             
-            gameManager.render();
-            skybox.render();
-            gui.render();
+                //delete it after//////////////////////////////////////////////////////
+                // 1. render depth of scene to texture (from light's perspective)
+                //float near_plane = 1.0f, far_plane = 7.5f;
+                //glm::mat4 orthgonalProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+                ////glm::mat4 lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                //glm::mat4 lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+                //glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
+                ////glUniformMatrix4fv(glGetUniformLocation(shadowMapProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+                //simpleDepthShader.use();
+                //simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+                //glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+                //glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+                //glClear(GL_DEPTH_BUFFER_BIT);
+                ////root_node->renderScene(true, &shadowMapProgram);
+                ////put here some code for rendering
+                //renderScene(simpleDepthShader);
+
+                //glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+                //// reset viewport
+                //glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+                //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+                //// render Depth map to quad for visual debugging
+                //// ---------------------------------------------
+                //debugDepthQuad.use();
+                //debugDepthQuad.setFloat("near_plane", near_plane);
+                //debugDepthQuad.setFloat("far_plane", far_plane);
+                //glActiveTexture(GL_TEXTURE0);
+                //glBindTexture(GL_TEXTURE_2D, depthMap);
+                //renderQuad();
+                //delete it after//////////////////////////////////////////////////////
+
+            gameManager.renderDepth();
+            //skybox.render();
+            //gui.render();
 
             render_gui();
             glfwPollEvents();
@@ -152,6 +249,8 @@ int main()
     //glDeleteVertexArrays(1, &quadVAO);
     //glDeleteBuffers(1, &VBO);
     delete player;
+    //glDeleteVertexArrays(1, &planeVAO);
+    //glDeleteBuffers(1, &planeVBO);
 
         // glfw: terminate, clearing all previously allocated GLFW resources.
         // ------------------------------------------------------------------
@@ -159,6 +258,135 @@ int main()
     glfwTerminate();
     return 0;
 }
+
+//delete it ///////////////////////
+//void renderScene(const Shader& shader)
+//{
+//    // floor
+//    glm::mat4 model = glm::mat4(1.0f);
+//    shader.setMat4("model", model);
+//    glBindVertexArray(planeVAO);
+//    glDrawArrays(GL_TRIANGLES, 0, 6);
+//    // cubes
+//    model = glm::mat4(1.0f);
+//    model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0));
+//    model = glm::scale(model, glm::vec3(0.5f));
+//    shader.setMat4("model", model);
+//    renderCube();
+//    model = glm::mat4(1.0f);
+//    model = glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0));
+//    model = glm::scale(model, glm::vec3(0.5f));
+//    shader.setMat4("model", model);
+//    renderCube();
+//    model = glm::mat4(1.0f);
+//    model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 2.0));
+//    model = glm::rotate(model, glm::radians(60.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
+//    model = glm::scale(model, glm::vec3(0.25));
+//    shader.setMat4("model", model);
+//    renderCube();
+//}
+//unsigned int cubeVAO = 0;
+//unsigned int cubeVBO = 0;
+//void renderCube()
+//{
+//    // initialize (if necessary)
+//    if (cubeVAO == 0)
+//    {
+//        float vertices[] = {
+//            // back face
+//            -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+//             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+//             1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f, // bottom-right         
+//             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+//            -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+//            -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f, // top-left
+//            // front face
+//            -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+//             1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f, // bottom-right
+//             1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+//             1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+//            -1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f, // top-left
+//            -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+//            // left face
+//            -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+//            -1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-left
+//            -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+//            -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+//            -1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+//            -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+//            // right face
+//             1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+//             1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+//             1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-right         
+//             1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+//             1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+//             1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-left     
+//            // bottom face
+//            -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+//             1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f, // top-left
+//             1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+//             1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+//            -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+//            -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+//            // top face
+//            -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+//             1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+//             1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f, // top-right     
+//             1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+//            -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+//            -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f  // bottom-left        
+//        };
+//        glGenVertexArrays(1, &cubeVAO);
+//        glGenBuffers(1, &cubeVBO);
+//        // fill buffer
+//        glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+//        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+//        // link vertex attributes
+//        glBindVertexArray(cubeVAO);
+//        glEnableVertexAttribArray(0);
+//        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+//        glEnableVertexAttribArray(1);
+//        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+//        glEnableVertexAttribArray(2);
+//        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+//        glBindBuffer(GL_ARRAY_BUFFER, 0);
+//        glBindVertexArray(0);
+//    }
+//    // render Cube
+//    glBindVertexArray(cubeVAO);
+//    glDrawArrays(GL_TRIANGLES, 0, 36);
+//    glBindVertexArray(0);
+//}
+//unsigned int quadVAO = 0;
+//unsigned int quadVBO;
+//void renderQuad()
+//{
+//    if (quadVAO == 0)
+//    {
+//        float quadVertices[] = {
+//            // positions        // texture Coords
+//            -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+//            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+//             1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+//             1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+//        };
+//        // setup plane VAO
+//        glGenVertexArrays(1, &quadVAO);
+//        glGenBuffers(1, &quadVBO);
+//        glBindVertexArray(quadVAO);
+//        glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+//        glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+//        glEnableVertexAttribArray(0);
+//        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+//        glEnableVertexAttribArray(1);
+//        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+//    }
+//    glBindVertexArray(quadVAO);
+//    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//    glBindVertexArray(0);
+//}
+//delete it ///////////////////////
+
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -223,30 +451,6 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     camera.ProcessMouseScroll(yoffset);
-}
-
-
-
-boolean checkForCollisions(PlayerController* player, std::vector<std::shared_ptr<SceneGraphNode>> objects, std::shared_ptr<SceneGraphNode> cube) {
-    glm::vec3 play = cube->get_transform().m_position;  //change it to player
-    for (int i = 0; i < 3; i++) //change "3" to "number of objects in array"
-    {
-        glm::vec3 p = objects[i]->get_transform().m_position;
-        float distance = sqrt((p.x - play.x) * (p.x - play.x) + (p.y - play.y) * (p.y - play.y) + (p.z - play.z) * (p.z - play.z));
-        if (distance <= 1.5f)
-        {
-            //push player outside
-            glm::vec3 direction(play.x - p.x, play.y - p.y, play.z - p.z);
-            cube->get_transform().m_position.x += direction.x * 2.5f * passed_time;
-            cube->get_transform().m_position.y += direction.y * 2.5f * passed_time;
-            cube->get_transform().m_position.z += direction.z * 2.5f * passed_time;
-
-            camera.Position.x = cube->get_transform().m_position.x + cameraPos.x;  //attach camera to player
-            camera.Position.z = cube->get_transform().m_position.z + cameraPos.z;  //attach camera to player
-            return true;
-        }
-    }
-    return false;
 }
 
 

@@ -121,16 +121,22 @@
     <None Include="res\shaders\text.vert">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
-    <None Include="res\shaders\debuq_quad.frag">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\debuq_quad.vert">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
     <None Include="res\shaders\shadow_mapping_depth.frag">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
     <None Include="res\shaders\shadow_mapping_depth.vert">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="shadow_mapping.frag">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="shadow_mapping.vert">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\debug_quad.frag">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\debug_quad.vert">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
   </ItemGroup>

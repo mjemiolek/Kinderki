@@ -33,13 +33,19 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> sandsTest;
     std::vector<std::shared_ptr<SceneGraphNode>> collidingObjects;
     std::shared_ptr<GravityManager> gravity;
-   
+    //For shadows
+    Shader shaderShad = Shader("res/shaders/shadow_mapping.vert", "res/shaders/shadow_mapping.frag");
+    unsigned int depthMapFBO, depthMap;
+    Shader simpleDepthShader = Shader("res/shaders/shadow_mapping_depth.vert", "res/shaders/shadow_mapping_depth.frag");
+    Shader debugDepthQuad = Shader("res/shaders/debug_quad.vert", "res/shaders/debug_quad.frag");
 
+    //for testing
+    unsigned int planeVAO;
+    glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
 
 
 
     GameManager() {
-        glm::vec3 lightPos(0.0f, 0.0f, 0.0f);
         // settings
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
         glm::vec3 floorPos(0.0f, -1.75f, 0.0f);
@@ -66,8 +72,61 @@ class GameManager {
         lightingShader.use();
         lightingShader.setInt("material.diffuse", 0);
         lightingShader.setInt("material.specular", 64);
-        lightingShader.setVec3("lightPos", lightPos);
+        //lightingShader.setVec3("light.position", lightPos);
 
+        //for testing (delete it after)////////////////////////////////////////////////////
+        float planeVertices[] = {
+            // positions            // normals         // texcoords
+             25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+            -25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,   0.0f,  0.0f,
+            -25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+
+             25.0f, -0.5f,  25.0f,  0.0f, 1.0f, 0.0f,  25.0f,  0.0f,
+            -25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,   0.0f, 25.0f,
+             25.0f, -0.5f, -25.0f,  0.0f, 1.0f, 0.0f,  25.0f, 25.0f
+        };
+        // plane VAO
+        unsigned int planeVBO;
+        glGenVertexArrays(1, &planeVAO);
+        glGenBuffers(1, &planeVBO);
+        glBindVertexArray(planeVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+        glBindVertexArray(0);
+        /////////////////////////////////////////////////////////////////////
+
+        //shadow shaders configuration
+        /*shaderShad.use();
+        shaderShad.setInt("diffuseTexture", 0);
+        shaderShad.setInt("shadowMap", 1);*/
+        //change shader to shadow shader
+
+        // configure depth map FBO
+        // -----------------------
+        glGenFramebuffers(1, &depthMapFBO);
+        // create depth texture
+        glGenTextures(1, &depthMap);
+        glBindTexture(GL_TEXTURE_2D, depthMap);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, shadowMapWidth, shadowMapHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        // attach depth texture as FBO's depth buffer
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        //Shadows configuration
+        debugDepthQuad.use();
+        debugDepthQuad.setInt("depthMap", 0);
 
         //Initializing models and textures
         Model box("res/models/box.obj");
@@ -190,4 +249,204 @@ class GameManager {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         root_node->render(true);
     }
+    void renderScene(const Shader& shader)
+    {
+        //// floor
+        glm::mat4 model = glm::mat4(1.0f);
+        //shader.setMat4("model", model);
+        //glBindVertexArray(planeVAO);
+        //glDrawArrays(GL_TRIANGLES, 0, 6);
+        //// cubes
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, glm::vec3(0.0f, 1.5f, 0.0));
+        //model = glm::scale(model, glm::vec3(0.5f));
+        //shader.setMat4("model", model);
+        //renderCube();
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, glm::vec3(2.0f, 0.0f, 1.0));
+        //model = glm::scale(model, glm::vec3(0.5f));
+        //shader.setMat4("model", model);
+        //renderCube();
+        //model = glm::mat4(1.0f);
+        //model = glm::translate(model, glm::vec3(-1.0f, 0.0f, 2.0));
+        //model = glm::rotate(model, glm::radians(60.0f), glm::normalize(glm::vec3(1.0, 0.0, 1.0)));
+        //model = glm::scale(model, glm::vec3(0.25));
+        //shader.setMat4("model", model);
+        //renderCube();
+
+        //temporary solution
+        model = root_node->m_children[0]->get_transform().m_world_matrix;
+        shader.setMat4("model", model);
+        root_node->m_children[0]->modelTemp.Draw(simpleDepthShader);
+
+        model = root_node->m_children[1]->get_transform().m_world_matrix;
+        shader.setMat4("model", model);
+        root_node->m_children[1]->modelTemp.Draw(simpleDepthShader);
+
+        model = root_node->m_children[2]->get_transform().m_world_matrix;
+        shader.setMat4("model", model);
+        root_node->m_children[2]->modelTemp.Draw(simpleDepthShader);
+
+        model = root_node->m_children[3]->get_transform().m_world_matrix;
+        shader.setMat4("model", model);
+        root_node->m_children[3]->modelTemp.Draw(simpleDepthShader);
+
+        model = root_node->m_children[4]->get_transform().m_world_matrix;
+        shader.setMat4("model", model);
+        root_node->m_children[4]->modelTemp.Draw(simpleDepthShader);
+
+        model = root_node->m_children[5]->get_transform().m_world_matrix;
+        shader.setMat4("model", model);
+        root_node->m_children[5]->modelTemp.Draw(simpleDepthShader);
+
+        model = root_node->m_children[6]->get_transform().m_world_matrix;
+        shader.setMat4("model", model);
+        root_node->m_children[6]->modelTemp.Draw(simpleDepthShader);
+    }
+    //unsigned int cubeVAO = 0;
+    //unsigned int cubeVBO = 0;
+    //void renderCube()
+    //{
+    //    // initialize (if necessary)
+    //    if (cubeVAO == 0)
+    //    {
+    //        float vertices[] = {
+    //            // back face
+    //            -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+    //             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+    //             1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f, // bottom-right         
+    //             1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f, // top-right
+    //            -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f, // bottom-left
+    //            -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f, // top-left
+    //            // front face
+    //            -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+    //             1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f, // bottom-right
+    //             1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+    //             1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f, // top-right
+    //            -1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f, // top-left
+    //            -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f, // bottom-left
+    //            // left face
+    //            -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+    //            -1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-left
+    //            -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+    //            -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-left
+    //            -1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+    //            -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-right
+    //            // right face
+    //             1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+    //             1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+    //             1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f, // top-right         
+    //             1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f, // bottom-right
+    //             1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f, // top-left
+    //             1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f, // bottom-left     
+    //            // bottom face
+    //            -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+    //             1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f, // top-left
+    //             1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+    //             1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f, // bottom-left
+    //            -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f, // bottom-right
+    //            -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f, // top-right
+    //            // top face
+    //            -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+    //             1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+    //             1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f, // top-right     
+    //             1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f, // bottom-right
+    //            -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f, // top-left
+    //            -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f  // bottom-left        
+    //        };
+    //        glGenVertexArrays(1, &cubeVAO);
+    //        glGenBuffers(1, &cubeVBO);
+    //        // fill buffer
+    //        glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
+    //        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    //        // link vertex attributes
+    //        glBindVertexArray(cubeVAO);
+    //        glEnableVertexAttribArray(0);
+    //        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    //        glEnableVertexAttribArray(1);
+    //        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    //        glEnableVertexAttribArray(2);
+    //        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    //        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //        glBindVertexArray(0);
+    //    }
+    //    // render Cube
+    //    glBindVertexArray(cubeVAO);
+    //    glDrawArrays(GL_TRIANGLES, 0, 36);
+    //    glBindVertexArray(0);
+    //}
+    unsigned int quadVAO = 0;
+    unsigned int quadVBO;
+    void renderQuad()
+    {
+        if (quadVAO == 0)
+        {
+            float quadVertices[] = {
+                // positions        // texture Coords
+                -1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+                -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+                 1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+                 1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            };
+            // setup plane VAO
+            glGenVertexArrays(1, &quadVAO);
+            glGenBuffers(1, &quadVBO);
+            glBindVertexArray(quadVAO);
+            glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+            glEnableVertexAttribArray(0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(1);
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+        }
+        glBindVertexArray(quadVAO);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindVertexArray(0);
+    }
+    void renderDepth()
+    {
+        // 1. render depth of scene to texture (from light's perspective)
+        float near_plane = 0.1f, far_plane = 75.0f;
+        glm::mat4 orthgonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, near_plane, far_plane);
+        //glm::mat4 lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+        glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
+        //glUniformMatrix4fv(glGetUniformLocation(shadowMapProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
+        simpleDepthShader.use();
+        simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+        glViewport(0, 0, shadowMapWidth, shadowMapHeight);
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+        glClear(GL_DEPTH_BUFFER_BIT);
+        //root_node->renderScene(true, &shadowMapProgram);
+        //put here some code for rendering
+        renderScene(simpleDepthShader);
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        // reset viewport
+        glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // render Depth map to quad for visual debugging
+        // ---------------------------------------------
+        debugDepthQuad.use();
+        debugDepthQuad.setFloat("near_plane", near_plane);
+        debugDepthQuad.setFloat("far_plane", far_plane);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, depthMap);
+        renderQuad();
+    }
+    //void renderScene(bool is_root = false, uint32_t i = 0)
+    //{
+    //    if (!is_root)
+    //    {
+    //        glm::mat4 model = root_node->m_children[i]->m_transform.m_world_matrix;
+    //        shadowMapProgram.setMat4("model", model); //some problem here
+    //        root_node->m_children[i]->modelTemp.Draw(shadowMapProgram);
+    //    }
+    //    for (uint32_t i = 0; i < root_node->m_children.size(); ++i) {
+    //        renderScene(false,i);
+    //    }
+    //}
 };

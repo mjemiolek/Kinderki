@@ -12,6 +12,7 @@
 
 Camera camera(glm::vec3(0.0f, 16.0f, 5.0f));
 
+
 enum renderEnum {
     MODEL, BOX, LIGHT
 };
@@ -65,8 +66,9 @@ struct SceneGraphNode {
             if (tempRender == BOX) {
 
                 shaderTemp.setVec3("viewPos", camera.Position);
+                shaderTemp.setVec3("light.position", lightPos);
                 shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-                shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
+                //shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
                 shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
                 shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
                 shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
@@ -78,8 +80,9 @@ struct SceneGraphNode {
             }
             if (tempRender == MODEL) {
                 shaderTemp.setVec3("viewPos", camera.Position);
+                shaderTemp.setVec3("light.position", lightPos);
                 shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-                shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
+                //shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
                 shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
                 shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
                 shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
@@ -95,6 +98,42 @@ struct SceneGraphNode {
             m_children[i]->render();
         }
     }
+    //void render2(bool is_root = false, unsigned int depthMap = 0, glm::mat4 lightProjection = glm::mat4(0.0f)) {
+    //    if (!is_root) {
+    //        shaderTemp.use();
+    //        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    //        shaderTemp.setMat4("projection", projection);
+
+    //        glm::mat4 view = camera.GetViewMatrix();
+    //        shaderTemp.setMat4("view", view);
+    //        shaderTemp.setMat4("model", m_transform.m_world_matrix);
+    //        shaderTemp.setMat4("lightSpaceMatrix", lightProjection);
+    //        if (tempRender == MODEL) {
+    //            shaderTemp.setVec3("viewPos", camera.Position);
+    //            shaderTemp.setVec3("lightPos", lightPos);
+    //            glActiveTexture(GL_TEXTURE0);
+    //            glBindTexture(GL_TEXTURE_2D, texture);
+    //            glActiveTexture(GL_TEXTURE1);
+    //            glBindTexture(GL_TEXTURE_2D, depthMap);
+    //            modelTemp.Draw(shaderTemp);
+    //        }
+
+    //    }
+    //    for (uint32_t i = 0; i < m_children.size(); ++i) {
+    //        m_children[i]->render2(false,depthMap, lightProjection);
+    //    }
+    //}
+    //void renderScene(bool is_root = false,Shader* shader = &Shader("nic","nic"))
+    //{
+    //    if (!is_root)
+    //    {
+    //        shader->setMat4("model", m_transform.m_world_matrix); //some problem here
+    //        modelTemp.Draw(*shader);
+    //    }
+    //    for (uint32_t i = 0; i < m_children.size(); ++i) {
+    //        m_children[i]->renderScene(false,shader);
+    //    }
+    //}
     void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, Collider col = Collider()) {
         shaderTemp = shader;
         texture = ttexture;
@@ -118,8 +157,8 @@ struct SceneGraphNode {
     renderEnum tempRender;
     unsigned int VAOTemp;
     Collider collider;
+    glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
 
-private:
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;
     Transform m_transform;
     bool m_dirty;

@@ -16,7 +16,7 @@ public:
 	{
 		for (const auto& object : collidingObjects) 
 		{
-			//For box to box//   It's not trigger           //         If it is box         //   player have box collider
+//For box to box//			   It's not trigger           //         If it is box         //   player have box collider
 			if (object->collider.getIsTrigger() == false && object->collider.getRadius() <= 0 && player->collider.getRadius() <= 0 &&
 				player->collider.boxToBoxCollisioncheck(object->collider))
 			{
@@ -57,7 +57,7 @@ public:
 					}
 				}
 			}
-			//For Sphere to sphere and box to sphere
+//For Sphere to sphere and box to sphere
 			//				 It's not trigger		    	//         If it is sphere    //
 			if (object->collider.getIsTrigger() == false && object->collider.getRadius() > 0)
 			{      //Player have box collider
@@ -81,7 +81,7 @@ public:
 					}
 				}
 			}
-			//For sphere to box// It's not trigger       //        It's box                 //  player have sphere collider
+//For sphere to box//		 It's not trigger       //        It's box                 //  player have sphere collider
 			if (object->collider.getIsTrigger() == false && object->collider.getRadius() <= 0 && player->collider.getRadius() > 0)
 			{
 				//Create temporary box collider for player beacuse I'm lazy
