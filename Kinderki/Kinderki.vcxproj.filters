@@ -79,34 +79,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\basic.frag">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\basic.vert">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\basic2.frag">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\basic2.vert">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
     <None Include="res\shaders\lightcaster.frag">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
     <None Include="res\shaders\lightcaster.vert">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\lightcube.frag">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\lightcube.vert">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\model.frag">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="res\shaders\model.vert">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
     <None Include="res\shaders\skybox.frag">
@@ -127,16 +103,16 @@
     <None Include="res\shaders\shadow_mapping_depth.vert">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
-    <None Include="shadow_mapping.frag">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
-    <None Include="shadow_mapping.vert">
-      <Filter>Pliki zasobów\res\shaders</Filter>
-    </None>
     <None Include="res\shaders\debug_quad.frag">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
     <None Include="res\shaders\debug_quad.vert">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\shadow_mapping.frag">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\shadow_mapping.vert">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
   </ItemGroup>

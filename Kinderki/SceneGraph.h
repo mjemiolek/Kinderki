@@ -98,42 +98,22 @@ struct SceneGraphNode {
             m_children[i]->render();
         }
     }
-    //void render2(bool is_root = false, unsigned int depthMap = 0, glm::mat4 lightProjection = glm::mat4(0.0f)) {
-    //    if (!is_root) {
-    //        shaderTemp.use();
-    //        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-    //        shaderTemp.setMat4("projection", projection);
-
-    //        glm::mat4 view = camera.GetViewMatrix();
-    //        shaderTemp.setMat4("view", view);
-    //        shaderTemp.setMat4("model", m_transform.m_world_matrix);
-    //        shaderTemp.setMat4("lightSpaceMatrix", lightProjection);
-    //        if (tempRender == MODEL) {
-    //            shaderTemp.setVec3("viewPos", camera.Position);
-    //            shaderTemp.setVec3("lightPos", lightPos);
-    //            glActiveTexture(GL_TEXTURE0);
-    //            glBindTexture(GL_TEXTURE_2D, texture);
-    //            glActiveTexture(GL_TEXTURE1);
-    //            glBindTexture(GL_TEXTURE_2D, depthMap);
-    //            modelTemp.Draw(shaderTemp);
-    //        }
-
-    //    }
-    //    for (uint32_t i = 0; i < m_children.size(); ++i) {
-    //        m_children[i]->render2(false,depthMap, lightProjection);
-    //    }
-    //}
-    //void renderScene(bool is_root = false,Shader* shader = &Shader("nic","nic"))
-    //{
-    //    if (!is_root)
-    //    {
-    //        shader->setMat4("model", m_transform.m_world_matrix); //some problem here
-    //        modelTemp.Draw(*shader);
-    //    }
-    //    for (uint32_t i = 0; i < m_children.size(); ++i) {
-    //        m_children[i]->renderScene(false,shader);
-    //    }
-    //}
+    void render2(bool is_root = false, unsigned int depthMap = 0,Shader shader = Shader())
+    {
+        if (!is_root) 
+        {
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, texture);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, depthMap);
+            shader.setMat4("model", m_transform.m_world_matrix);
+            modelTemp.Draw(shader);
+        }
+        for (uint32_t i = 0; i < m_children.size(); ++i) 
+        {
+            m_children[i]->render2(false,depthMap,shader);
+        }
+    }
     void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, Collider col = Collider()) {
         shaderTemp = shader;
         texture = ttexture;

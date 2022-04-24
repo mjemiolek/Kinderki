@@ -166,26 +166,18 @@
     <ClInclude Include="Text.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\basic.frag" />
-    <None Include="res\shaders\basic.vert" />
-    <None Include="res\shaders\basic2.frag" />
-    <None Include="res\shaders\basic2.vert" />
     <None Include="res\shaders\debug_quad.frag" />
     <None Include="res\shaders\debug_quad.vert" />
     <None Include="res\shaders\lightcaster.frag" />
     <None Include="res\shaders\lightcaster.vert" />
-    <None Include="res\shaders\lightcube.frag" />
-    <None Include="res\shaders\lightcube.vert" />
-    <None Include="res\shaders\model.frag" />
-    <None Include="res\shaders\model.vert" />
+    <None Include="res\shaders\shadow_mapping.frag" />
+    <None Include="res\shaders\shadow_mapping.vert" />
     <None Include="res\shaders\shadow_mapping_depth.frag" />
     <None Include="res\shaders\shadow_mapping_depth.vert" />
     <None Include="res\shaders\skybox.frag" />
     <None Include="res\shaders\skybox.vert" />
     <None Include="res\shaders\text.frag" />
     <None Include="res\shaders\text.vert" />
-    <None Include="shadow_mapping.frag" />
-    <None Include="shadow_mapping.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
