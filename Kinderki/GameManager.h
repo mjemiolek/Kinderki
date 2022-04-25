@@ -24,7 +24,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> root_node;
     std::shared_ptr<SceneGraphNode> cube1;
     std::shared_ptr<SceneGraphNode> cube2;
-    std::shared_ptr<SceneGraphNode> cube3;
+    std::shared_ptr<SceneGraphNode> cube3; //player
     std::shared_ptr<SceneGraphNode> test1;
     std::shared_ptr<SceneGraphNode> progressbar;
     std::shared_ptr<SceneGraphNode> modelTest;
@@ -39,7 +39,6 @@ class GameManager {
     unsigned int depthMapFBO, depthMap;
     Shader simpleDepthShader = Shader("res/shaders/shadow_mapping_depth.vert", "res/shaders/shadow_mapping_depth.frag");
     Shader debugDepthQuad = Shader("res/shaders/debug_quad.vert", "res/shaders/debug_quad.frag");
-    glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
 
 
 
@@ -287,9 +286,9 @@ class GameManager {
     {
         // 1. render depth of scene to texture (from light's perspective)
         float near_plane = 0.1f, far_plane = 75.0f;
-        glm::mat4 orthgonalProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, near_plane, far_plane);
+        glm::mat4 orthgonalProjection = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, near_plane, far_plane);
         //glm::mat4 lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        glm::mat4 lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+        glm::mat4 lightView = glm::lookAt(lightPos, cube3->get_transform().m_position, glm::vec3(0.0, 1.0, 0.0));
         glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
         //glUniformMatrix4fv(glGetUniformLocation(shadowMapProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
         simpleDepthShader.use();
@@ -323,11 +322,11 @@ class GameManager {
 
         // render Depth map to quad for visual debugging
         // don't delete---------------------------------
-        /*debugDepthQuad.use();
-        debugDepthQuad.setFloat("near_plane", near_plane);
-        debugDepthQuad.setFloat("far_plane", far_plane);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, depthMap);*/
+        //debugDepthQuad.use();
+        //debugDepthQuad.setFloat("near_plane", near_plane);
+        //debugDepthQuad.setFloat("far_plane", far_plane);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, depthMap);
         //renderQuad();
     }
 };

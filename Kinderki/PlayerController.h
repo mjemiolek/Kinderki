@@ -36,16 +36,24 @@ public:
     {
         PlayerPosition = position;
     }
-	void move(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player, float deltaTime) 
+    void move(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player, float deltaTime)
     {
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             player->get_transform().m_position.z -= 2.5f * deltaTime;
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+            lightPos.z -= 2.5f * deltaTime;
+        }
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
             player->get_transform().m_position.z += 2.5f * deltaTime;
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+            lightPos.z += 2.5f * deltaTime;
+        }
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
             player->get_transform().m_position.x -= 2.5f * deltaTime;
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+            lightPos.x -= 2.5f * deltaTime;
+        }
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
             player->get_transform().m_position.x += 2.5f * deltaTime;
+            lightPos.x += 2.5f * deltaTime;
+        }
         setPlayerPosition(player->get_transform().m_position);
         player->collider.setPosition(player->get_transform().m_position);
 	}

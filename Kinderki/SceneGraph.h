@@ -11,7 +11,7 @@
 #include "Collider.h"
 
 Camera camera(glm::vec3(0.0f, 16.0f, 5.0f));
-
+glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
 
 enum renderEnum {
     MODEL, BOX, LIGHT
@@ -137,7 +137,6 @@ struct SceneGraphNode {
     renderEnum tempRender;
     unsigned int VAOTemp;
     Collider collider;
-    glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
 
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;
     Transform m_transform;
