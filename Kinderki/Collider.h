@@ -8,21 +8,25 @@ private:
 	float radius = -1;
 	glm::vec3 collisionRange = glm::vec3(0.0f ,0.0f ,0.0f); //distance from center in all 3 directions
 	bool isTrigger;
+	bool isStatic; //Can be static or dynamic
 public:
 	Collider() {
 		radius = 0;
 		isTrigger = false;
 		position = glm::vec3(0.0f, 0.0f, -3.0f);
+		isStatic = true;
 	}
-	Collider(float rad, bool isTrig, glm::vec3 pos) {
+	Collider(float rad, bool isTrig, glm::vec3 pos,bool dynamic) {
 		radius = rad;
 		isTrigger = isTrig;
 		position = pos;
+		isStatic = !dynamic;
 	}
-	Collider(glm::vec3 collRange, bool isTrig, glm::vec3 pos) {
+	Collider(glm::vec3 collRange, bool isTrig, glm::vec3 pos,bool dynamic) {
 		collisionRange = collRange;
 		isTrigger = isTrig;
 		position = pos;
+		isStatic = !dynamic;
 	}
 	bool sphereToSphereCollisionCheck(Collider sphereCollider) {
 		glm::vec3 play = position;
@@ -102,5 +106,14 @@ public:
 	}
 	glm::vec3 getCollisionRange() {
 		return collisionRange;
+	}
+	bool operator==(const Collider& rhs) const {
+		return
+			position == rhs.position
+			&& collisionRange == rhs.collisionRange
+			&& isTrigger == rhs.isTrigger
+			&& radius == rhs.radius
+			&& isStatic == rhs.isStatic
+			;
 	}
 };

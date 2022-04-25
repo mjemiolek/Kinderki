@@ -127,24 +127,24 @@ class GameManager {
         meshesTest = std::make_shared<SceneGraphNode>();
         sandsTest = std::make_shared<SceneGraphNode>();
 
-        collidingObjects.insert(collidingObjects.end(), { cube1, cube2, modelTest});
+        collidingObjects.insert(collidingObjects.end(), {  cube1, cube3, cube2, modelTest});
         glm::vec3 boxColRange(0.38f, 0.38f, 0.38f);
 
         root_node->add_child(cube1);
-        Collider cube1Collider(boxColRange, false, cubePositions[0]);
+        Collider cube1Collider(boxColRange, false, cubePositions[0],false);
         cube1->setProperties(lightingShader, texture, cubePositions[0], MODEL, box, 0.15f, cube1Collider);
 
         root_node->add_child(cube2);
-        Collider cube2Collider(boxColRange, false, cubePositions[2]);
+        Collider cube2Collider(boxColRange, false, cubePositions[2],false);
         cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, cube2Collider);
 
         root_node->add_child(cube3);
         
-        Collider cube3Collider(boxColRange, false, cubePositions[4]);
+        Collider cube3Collider(boxColRange, false, cubePositions[4],true);
         cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, cube3Collider);
 
         root_node->add_child(modelTest);
-        Collider modelTestCollider(1.8f, false, cubePositions[3]);
+        Collider modelTestCollider(1.8f, false, cubePositions[3],false);
         modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f, modelTestCollider);
 
         root_node->add_child(floorTest);

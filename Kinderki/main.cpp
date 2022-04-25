@@ -125,7 +125,7 @@ int main()
 
         input(window, gameManager.cube3);
         player->move(window, gameManager.cube3, passed_time);
-        colManager.manageCollisions(gameManager.cube3,passed_time);
+        colManager.manageCollisions(passed_time);
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
