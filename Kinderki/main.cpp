@@ -37,7 +37,8 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player);
 void render_gui();
 
 GLFWwindow* window = nullptr;
-
+//light
+glm::vec3 lightPosition(5.0f, 35.0f, -30.0f);
 // camera
 glm::vec3 cameraPos(0.0f, 16.0f, 5.0f);
 float lastX = SCR_WIDTH / 2.0f;
@@ -193,6 +194,10 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
         camera.Position.x = player->get_transform().m_position.x + cameraPos.x;  //attach camera to player
         camera.Position.z = player->get_transform().m_position.z + cameraPos.z;  //attach camera to player
         camera.Position.y = player->get_transform().m_position.y + cameraPos.y;  //attach camera to player
+        lightPos.x = player->get_transform().m_position.x + lightPosition.x;     //attach light to player
+        lightPos.y = player->get_transform().m_position.y + lightPosition.y;     //attach light to player
+        lightPos.z = player->get_transform().m_position.z + lightPosition.z;     //attach light to player
+
     //}
         //camera.Position = cube3->get_transform().m_position + cameraPos;
 }

@@ -98,6 +98,18 @@ struct SceneGraphNode {
             m_children[i]->render();
         }
     }
+    void renderScene(bool is_root = false, Shader shader = Shader())
+    {
+        if (!is_root)
+        {
+            shader.setMat4("model", m_transform.m_world_matrix);
+            modelTemp.Draw(shader);
+        }
+        for (uint32_t i = 0; i < m_children.size(); ++i)
+        {
+            m_children[i]->renderScene(false, shader);
+        }
+    }
     void render2(bool is_root = false, unsigned int depthMap = 0,Shader shader = Shader())
     {
         if (!is_root) 

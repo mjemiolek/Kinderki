@@ -221,39 +221,6 @@ class GameManager {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         root_node->render(true);
     }
-    void renderScene(Shader& shader)
-    {
-        glm::mat4 model = glm::mat4(1.0f);
-
-        //temporary solution
-        model = root_node->m_children[0]->get_transform().m_world_matrix;
-        shader.setMat4("model", model);
-        root_node->m_children[0]->modelTemp.Draw(shader);
-
-        model = root_node->m_children[1]->get_transform().m_world_matrix;
-        shader.setMat4("model", model);
-        root_node->m_children[1]->modelTemp.Draw(shader);
-
-        model = root_node->m_children[2]->get_transform().m_world_matrix;
-        shader.setMat4("model", model);
-        root_node->m_children[2]->modelTemp.Draw(shader);
-
-        model = root_node->m_children[3]->get_transform().m_world_matrix;
-        shader.setMat4("model", model);
-        root_node->m_children[3]->modelTemp.Draw(shader);
-
-        model = root_node->m_children[4]->get_transform().m_world_matrix;
-        shader.setMat4("model", model);
-        root_node->m_children[4]->modelTemp.Draw(shader);
-
-        model = root_node->m_children[5]->get_transform().m_world_matrix;
-        shader.setMat4("model", model);
-        root_node->m_children[5]->modelTemp.Draw(shader);
-
-        model = root_node->m_children[6]->get_transform().m_world_matrix;
-        shader.setMat4("model", model);
-        root_node->m_children[6]->modelTemp.Draw(shader);
-    }
     unsigned int quadVAO = 0;
     unsigned int quadVBO;
     void renderQuad()
@@ -287,17 +254,16 @@ class GameManager {
         // 1. render depth of scene to texture (from light's perspective)
         float near_plane = 0.1f, far_plane = 75.0f;
         glm::mat4 orthgonalProjection = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, near_plane, far_plane);
-        //glm::mat4 lightView = glm::lookAt(20.0f * lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         glm::mat4 lightView = glm::lookAt(lightPos, cube3->get_transform().m_position, glm::vec3(0.0, 1.0, 0.0));
         glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
-        //glUniformMatrix4fv(glGetUniformLocation(shadowMapProgram.ID, "lightProjection"), 1, GL_FALSE, glm::value_ptr(lightProjection));
         simpleDepthShader.use();
         simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
         glViewport(0, 0, shadowMapWidth, shadowMapHeight);
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
-        renderScene(simpleDepthShader);
+        root_node->renderScene(true, simpleDepthShader);
+        //renderScene(simpleDepthShader);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
