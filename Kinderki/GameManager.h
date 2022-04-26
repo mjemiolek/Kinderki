@@ -27,12 +27,26 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> cube3; //player
     std::shared_ptr<SceneGraphNode> test1;
     std::shared_ptr<SceneGraphNode> progressbar;
-    std::shared_ptr<SceneGraphNode> modelTest;
-    std::shared_ptr<SceneGraphNode> floorTest;
-    std::shared_ptr<SceneGraphNode> meshesTest;
     std::shared_ptr<SceneGraphNode> sandsTest;
     std::vector<std::shared_ptr<SceneGraphNode>> collidingObjects;
     std::shared_ptr<GravityManager> gravity;
+
+    std::shared_ptr<SceneGraphNode> modelTest;
+    std::shared_ptr<SceneGraphNode> floorTest;
+    std::shared_ptr<SceneGraphNode> meshesTest;
+
+    std::shared_ptr<SceneGraphNode> footballgroundptr;
+    std::shared_ptr<SceneGraphNode> hopsalniaptr;
+    std::shared_ptr<SceneGraphNode> hustawkaptr;
+    std::shared_ptr<SceneGraphNode> lawkiptr;
+    std::shared_ptr<SceneGraphNode> sandpitptr;
+    std::shared_ptr<SceneGraphNode> sciezkiptr;
+    std::shared_ptr<SceneGraphNode> seesawptr;
+    std::shared_ptr<SceneGraphNode> seesawchangedptr;
+    std::shared_ptr<SceneGraphNode> treeptr;
+    std::shared_ptr<SceneGraphNode> tyrolkaptr;
+    std::shared_ptr<SceneGraphNode> wallsptr;
+    std::shared_ptr<SceneGraphNode> zjezdzalniaptr;
 
     //For shadows
     Shader shaderShad = Shader("res/shaders/shadow_mapping.vert", "res/shaders/shadow_mapping.frag");
@@ -104,8 +118,21 @@ class GameManager {
         Model box("res/models/box.obj");
         Model sphere("res/models/sphere.obj");
         Model floor("res/models/floor.obj");
-        Model meshes("res/models/meshes.obj");
+        Model meshes("res/models/seesaw.obj");
         Model sands("res/models/sands.obj");
+
+        Model footballground("res/models/footballground.obj");
+        Model hopsalnia("res/models/hopsalnia.obj");
+        Model hustawka("res/models/hustawka.obj");
+        Model lawki("res/models/lawki.obj");
+        Model sandpit("res/models/sandpit.obj");
+        Model sciezki("res/models/sciezki.obj");
+        Model seesaw("res/models/seesaw.obj");
+        Model seesawchanged("res/models/seesawchanged.obj");
+        Model tree("res/models/tree.obj");
+        Model tyrolka("res/models/tyrolka.obj");
+        Model walls("res/models/walls.obj");
+        Model zjezdzalnia("res/models/zjezdzalnia.obj");
 
         unsigned int texturekupa = loadTexture("res/textures/win.png");
         unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
@@ -113,7 +140,7 @@ class GameManager {
         unsigned int texturesand = loadTexture("res/textures/sandtexture.png");
         unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
         unsigned int specularMap = loadTexture("res/textures/spec.jpg");
-        unsigned int texture = loadTexture("res/textures/stone.jpg");
+        unsigned int texturestone = loadTexture("res/textures/stone.jpg");
 
 
         //Allocating storage for the objects
@@ -127,13 +154,26 @@ class GameManager {
         meshesTest = std::make_shared<SceneGraphNode>();
         sandsTest = std::make_shared<SceneGraphNode>();
 
+        footballgroundptr = std::make_shared<SceneGraphNode>();
+        hopsalniaptr = std::make_shared<SceneGraphNode>();
+        hustawkaptr = std::make_shared<SceneGraphNode>();
+        lawkiptr = std::make_shared<SceneGraphNode>();
+        sandpitptr = std::make_shared<SceneGraphNode>();
+        sciezkiptr = std::make_shared<SceneGraphNode>();
+        seesawptr = std::make_shared<SceneGraphNode>();
+        seesawchangedptr = std::make_shared<SceneGraphNode>();
+        treeptr = std::make_shared<SceneGraphNode>();
+        tyrolkaptr = std::make_shared<SceneGraphNode>();
+        wallsptr = std::make_shared<SceneGraphNode>();
+        zjezdzalniaptr = std::make_shared<SceneGraphNode>();
+
         collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, modelTest,floorTest });
         glm::vec3 boxColRange(0.38f, 0.38f, 0.38f);
         glm::vec3 floorColRange(1000000.38f, 2.70f, 1000000.38f);
 
         root_node->add_child(cube1);
         Collider cube1Collider(boxColRange, false, cubePositions[0],false);
-        cube1->setProperties(lightingShader, texture, cubePositions[0], MODEL, box, 0.15f, cube1Collider);
+        cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f, cube1Collider);
 
         root_node->add_child(cube2);
         Collider cube2Collider(boxColRange, false, cubePositions[2],false);
@@ -155,8 +195,44 @@ class GameManager {
         root_node->add_child(sandsTest);
         sandsTest->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f);
 
-        root_node->add_child(meshesTest);
-        meshesTest->setProperties(lightingShader, texturemetal, zeroPos, MODEL, meshes, 0.01f);
+        //root_node->add_child(meshesTest);
+        //meshesTest->setProperties(lightingShader, texturemetal, zeroPos, MODEL, meshes, 0.01f);
+
+        root_node->add_child(footballgroundptr);
+        footballgroundptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, footballground, 0.01f);
+
+        root_node->add_child(hopsalniaptr);
+        hopsalniaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, hopsalnia, 0.01f);
+
+        root_node->add_child(hustawkaptr);
+        hustawkaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, hustawka, 0.01f);
+
+        root_node->add_child(lawkiptr);
+        lawkiptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, lawki, 0.01f);
+
+        root_node->add_child(sandpitptr);
+        sandpitptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, sandpit, 0.01f);
+
+        root_node->add_child(sciezkiptr);
+        sciezkiptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, sciezki, 0.01f);
+
+        root_node->add_child(seesawptr);
+        seesawptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesaw, 0.01f);
+
+        //root_node->add_child(seesawchangedptr);
+        //seesawchangedptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesawchanged, 0.01f);
+
+        root_node->add_child(treeptr);
+        treeptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, tree, 0.01f);
+
+        root_node->add_child(tyrolkaptr);
+        tyrolkaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, tyrolka, 0.01f);
+
+        root_node->add_child(wallsptr);
+        wallsptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, walls, 0.01f);
+
+        root_node->add_child(zjezdzalniaptr);
+        zjezdzalniaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, zjezdzalnia, 0.01f);
     }
 
     unsigned int loadTexture(char const* path)
@@ -197,21 +273,7 @@ class GameManager {
     }
     
     void update(float dt) {
-        //if (x < -0.50f) {
-        //    x = x + 0.01f;
-        //    bar[4] = x;
-        //    bar[6] = x;
-        //    bar[8] = x;
 
-        //    //std::cout << bar[4] << " " << std::endl;
-
-        //}
-        //else {
-        //    x = -0.90f;
-        //}
-        //strs.str(std::string());
-
-        //strs << passed_time;
         gravity->updateGravityInNegativeY(cube2, dt);
 
         cube2->update_transform();

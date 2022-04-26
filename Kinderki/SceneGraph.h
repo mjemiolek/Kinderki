@@ -142,6 +142,28 @@ struct SceneGraphNode {
     Transform& get_transform() {
         return m_transform;
     }
+    
+    void updatePositionDest(glm::vec3 destination) {
+        if (abs(destination.x - m_transform.m_position.x) > 11) {
+            if (m_transform.m_position.x > destination.x) {
+                m_transform.m_position.x -= 0.04;
+            }
+            else
+            {
+                m_transform.m_position.x += 0.04;
+            }
+        }
+        if ((destination.z - m_transform.m_position.z) < -5 || abs(destination.z - m_transform.m_position.z) > 7.5) {
+            if (m_transform.m_position.z > destination.z) {
+                m_transform.m_position.z -= 0.04;
+            }
+            else
+            {
+                m_transform.m_position.z += 0.04;
+            }
+        }
+        m_dirty = true;
+    }
 
     Shader shaderTemp = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Model modelTemp = Model("res/models/box.obj");
