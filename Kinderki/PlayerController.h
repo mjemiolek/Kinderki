@@ -41,18 +41,36 @@ public:
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             player->get_transform().m_position.z -= 2.5f * deltaTime;
             lightPos.z -= 2.5f * deltaTime;
+            //Obrot wprzod
+            if (player->get_transform().y_rotation_angle <= 0.0f)
+                player->get_transform().y_rotation_angle += 90.0f * deltaTime;
+            else if (player->get_transform().y_rotation_angle >= 0.0f)
+                player->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+        
         }
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
             player->get_transform().m_position.z += 2.5f * deltaTime;
             lightPos.z += 2.5f * deltaTime;
+            if (player->get_transform().y_rotation_angle <= 180.0f)
+                player->get_transform().y_rotation_angle += 90.0f * deltaTime;
+            else if (player->get_transform().y_rotation_angle >= 180.0f)
+                player->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
             player->get_transform().m_position.x -= 2.5f * deltaTime;
             lightPos.x -= 2.5f * deltaTime;
+            if (player->get_transform().y_rotation_angle <= 270.0f)
+                player->get_transform().y_rotation_angle += 90.0f * deltaTime;
+            else if (player->get_transform().y_rotation_angle >= 270.0f)
+                player->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
             player->get_transform().m_position.x += 2.5f * deltaTime;
             lightPos.x += 2.5f * deltaTime;
+            if (player->get_transform().y_rotation_angle <= 90.0f)
+                player->get_transform().y_rotation_angle += 90.0f * deltaTime;
+            else if (player->get_transform().y_rotation_angle >= 90.0f)
+                player->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
         setPlayerPosition(player->get_transform().m_position);
         player->collider.setPosition(player->get_transform().m_position);
