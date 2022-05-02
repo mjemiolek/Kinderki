@@ -60,6 +60,7 @@ class GameManager {
         // settings
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
         glm::vec3 floorPos(0.0f, -1.75f, 0.0f);
+        glm::vec3 sandPitPos(4.875f, 1.0f, -9.25f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(0.0f, 2.0f,  3.5f),
@@ -169,6 +170,7 @@ class GameManager {
 
         collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, modelTest,floorTest });
         glm::vec3 boxColRange(0.38f, 0.38f, 0.38f);
+        glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(1000000.38f, 2.70f, 1000000.38f);
 
         root_node->add_child(cube1);
@@ -211,7 +213,9 @@ class GameManager {
         lawkiptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, lawki, 0.01f);
 
         root_node->add_child(sandpitptr);
+        Collider sandPitTrigger(1.5f, false, sandPitPos, true);
         sandpitptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, sandpit, 0.01f);
+        sandpitptr->trigger = sandPitTrigger;
 
         root_node->add_child(sciezkiptr);
         sciezkiptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, sciezki, 0.01f);
@@ -276,6 +280,8 @@ class GameManager {
 
         gravity->updateGravityInNegativeY(cube2, dt);
 
+
+        
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);

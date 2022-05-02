@@ -153,4 +153,6 @@ public:
 		//Attach new position to player
 		player->get_transform().m_position = play;
 	}
+	
+
 };

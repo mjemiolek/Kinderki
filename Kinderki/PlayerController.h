@@ -70,6 +70,35 @@ public:
         playerObject->update_transform();
         playerObject->collider.setPosition(playerObject->get_transform().m_position);
 	}
+   
+
+    bool triggerCollision(std::shared_ptr<SceneGraphNode> obstacle) {
+        //Posistion
+        glm::vec3 pla = playerObject->get_transform().m_position;
+        glm::vec3 obst = obstacle->trigger.getPosition();
+        //distance
+        float distance = sqrt((obst.x - pla.x) * (obst.x - pla.x) + (obst.y - pla.y) * (obst.y - pla.y) + (obst.z - pla.z) * (obst.z - pla.z));
+        //std::cout << "x: " << playerObject->get_transform().m_position.x << "y: " << playerObject->get_transform().m_position.y << "z: " << playerObject->get_transform().m_position.z << std::endl;
+        if (distance < obstacle->trigger.getRadius()) {
+            
+            return true;
+
+        }
+        return false;
+    }
+    void interact(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
+        if (triggerCollision(interacter)) {
+            if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+                playerObject->get_transform().m_position.y -= 0.3f * dt;
+                if (playerObject->get_transform().m_position.y <= 1.5f) {
+                    playerObject->get_transform().m_position.y += 0.3f * dt;
+                    playerObject->get_transform().m_position.x = -5.0f;
+                }
+            }
+        }
+    }
+
+
     void setPlayerObject(std::shared_ptr<SceneGraphNode> tempObject) {
         playerObject = tempObject;
     }
