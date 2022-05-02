@@ -24,57 +24,58 @@
 
 class PlayerController {
 private:
-	glm::vec3 PlayerPosition;
+    std::shared_ptr<SceneGraphNode> playerObject;
 public:
-    PlayerController() {}
+    PlayerController(std::shared_ptr<SceneGraphNode> player) {
+        this->playerObject = player;
+    }
     ~PlayerController() {}
-    glm::vec3 getPlayerPosition()
-    {
-        return PlayerPosition;
-    }
-    void setPlayerPosition(glm::vec3 position)
-    {
-        PlayerPosition = position;
-    }
-    void move(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player, float deltaTime)
+    void move(GLFWwindow* window, float deltaTime)
     {
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            player->get_transform().m_position.z -= 2.5f * deltaTime;
+            playerObject->get_transform().m_position.z -= 2.5f * deltaTime;
             lightPos.z -= 2.5f * deltaTime;
             //Obrot wprzod
-            if (player->get_transform().y_rotation_angle <= 0.0f)
-                player->get_transform().y_rotation_angle += 90.0f * deltaTime;
-            else if (player->get_transform().y_rotation_angle >= 0.0f)
-                player->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+            if (playerObject->get_transform().y_rotation_angle <= 0.0f)
+                playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
+            else if (playerObject->get_transform().y_rotation_angle >= 0.0f)
+                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         
         }
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            player->get_transform().m_position.z += 2.5f * deltaTime;
+            playerObject->get_transform().m_position.z += 2.5f * deltaTime;
             lightPos.z += 2.5f * deltaTime;
-            if (player->get_transform().y_rotation_angle <= 180.0f)
-                player->get_transform().y_rotation_angle += 90.0f * deltaTime;
-            else if (player->get_transform().y_rotation_angle >= 180.0f)
-                player->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+            if (playerObject->get_transform().y_rotation_angle <= 180.0f)
+                playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
+            else if (playerObject->get_transform().y_rotation_angle >= 180.0f)
+                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            player->get_transform().m_position.x -= 2.5f * deltaTime;
+            playerObject->get_transform().m_position.x -= 2.5f * deltaTime;
             lightPos.x -= 2.5f * deltaTime;
-            if (player->get_transform().y_rotation_angle <= 270.0f)
-                player->get_transform().y_rotation_angle += 90.0f * deltaTime;
-            else if (player->get_transform().y_rotation_angle >= 270.0f)
-                player->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+            if (playerObject->get_transform().y_rotation_angle <= 270.0f)
+                playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
+            else if (playerObject->get_transform().y_rotation_angle >= 270.0f)
+                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-            player->get_transform().m_position.x += 2.5f * deltaTime;
+            playerObject->get_transform().m_position.x += 2.5f * deltaTime;
             lightPos.x += 2.5f * deltaTime;
-            if (player->get_transform().y_rotation_angle <= 90.0f)
-                player->get_transform().y_rotation_angle += 90.0f * deltaTime;
-            else if (player->get_transform().y_rotation_angle >= 90.0f)
-                player->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+            if (playerObject->get_transform().y_rotation_angle <= 90.0f)
+                playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
+            else if (playerObject->get_transform().y_rotation_angle >= 90.0f)
+                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
-        setPlayerPosition(player->get_transform().m_position);
-        player->collider.setPosition(player->get_transform().m_position);
+        //setPlayerPosition(playerObject->get_transform().m_position);
+        playerObject->update_transform();
+        playerObject->collider.setPosition(playerObject->get_transform().m_position);
 	}
+    void setPlayerObject(std::shared_ptr<SceneGraphNode> tempObject) {
+        playerObject = tempObject;
+    }
+    std::shared_ptr<SceneGraphNode> getPlayerObject() {
+        return playerObject;
+    }
 };
 
 #endif

@@ -106,7 +106,7 @@ int main()
     ColliderManager colManager(gameManager.collidingObjects);
     Gui gui;
     Skybox skybox;
-    PlayerController* player = new PlayerController();
+    PlayerController* player = new PlayerController(gameManager.cube3);
 
     //load texture to gui
     unsigned int texture = gameManager.loadTexture("res/textures/stone.jpg");
@@ -124,7 +124,7 @@ int main()
         unprocessed_time += passed_time;
 
         input(window, gameManager.cube3);
-        player->move(window, gameManager.cube3, passed_time);
+        player->move(window, passed_time);
         colManager.manageCollisions(passed_time);
 
         while (unprocessed_time >= frame_time) {
