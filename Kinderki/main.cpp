@@ -109,7 +109,11 @@ int main()
     PlayerController* player = new PlayerController(gameManager.cube3);
 
     //load texture to gui
-    unsigned int texture = gameManager.loadTexture("res/textures/stone.jpg");
+    unsigned int texture = gameManager.loadTexture("res/textures/notebook.png");
+    unsigned int textureSeeSaw = gameManager.loadTexture("res/textures/icons/Iseesaw.png");
+    unsigned int textureAerialRunway = gameManager.loadTexture("res/textures/icons/Iaerialrunway.png");
+    gui.textureSeeSaw = textureSeeSaw;
+    gui.textureAerialRunway = textureAerialRunway;
     gui.texture = texture;
 
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
@@ -127,6 +131,7 @@ int main()
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr,passed_time);
         colManager.manageCollisions(passed_time);
+        gui.handleGui(window);
 
 
         while (unprocessed_time >= frame_time) {
