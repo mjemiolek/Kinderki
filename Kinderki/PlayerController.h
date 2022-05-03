@@ -25,9 +25,12 @@
 class PlayerController {
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
+    int candyCount;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
+        candyCount = 6;
+        std::cout << "candy count: " << candyCount << std::endl;
     }
     ~PlayerController() {}
     void move(GLFWwindow* window, float deltaTime)
@@ -101,6 +104,14 @@ public:
 
     void setPlayerObject(std::shared_ptr<SceneGraphNode> tempObject) {
         playerObject = tempObject;
+    }
+
+    void setCandyCount(int thisCandyCount) {
+        candyCount = thisCandyCount;
+    }
+
+    int getCandyCount() {
+        return candyCount;
     }
     std::shared_ptr<SceneGraphNode> getPlayerObject() {
         return playerObject;
