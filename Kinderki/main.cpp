@@ -112,9 +112,22 @@ int main()
     unsigned int texture = gameManager.loadTexture("res/textures/notebook.png");
     unsigned int textureSeeSaw = gameManager.loadTexture("res/textures/icons/Iseesaw.png");
     unsigned int textureAerialRunway = gameManager.loadTexture("res/textures/icons/Iaerialrunway.png");
+    unsigned int textureSwing = gameManager.loadTexture("res/textures/icons/Iswing.png");
+    unsigned int textureTrampoline = gameManager.loadTexture("res/textures/icons/Itrampoline.png");
+    unsigned int textureWallDestroy = gameManager.loadTexture("res/textures/icons/Iwallbang.png");
+    unsigned int textureSandpit = gameManager.loadTexture("res/textures/icons/sandpit.png");
+    unsigned int textureSlide = gameManager.loadTexture("res/textures/icons/slide.png");
+
+    gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
     gui.textureAerialRunway = textureAerialRunway;
-    gui.texture = texture;
+    gui.textureSwing = textureSwing;
+    gui.textureTrampoline = textureTrampoline;
+    gui.textureWallDestroy = textureWallDestroy;
+    gui.textureSandpit = textureSandpit;
+    gui.textureSlide = textureSlide;
+
+    
 
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();

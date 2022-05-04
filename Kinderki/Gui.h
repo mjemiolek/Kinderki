@@ -63,15 +63,30 @@ public:
     unsigned int quadVAO, leftVAO, rightVAO;
     unsigned int quadVBO1, quadVBO2, quadVBO3, quadEBO;
     unsigned int progressVAO, progressVBO1, progressVBO2, progressEBO;
+    
     unsigned int texture;
+    unsigned int textureLeft;
+    unsigned int textureRight;
+
     unsigned int textureSeeSaw;
     unsigned int textureAerialRunway;
+    unsigned int textureSwing;
+    unsigned int textureTrampoline;
+    unsigned int textureWallDestroy;
+    unsigned int textureSandpit;
+    unsigned int textureSlide;
    
     bool visibility = false;
     bool visibilityPageOne = false;
+    bool visibilityPageTwo = false;
+    bool visibilityPageThree = false;
+    bool visibilityPageFour = false;
     
     bool pressflag = false;
     bool pressflagPageOne = false;
+    bool pressflagPageTwo = false;
+    bool pressflagPageThree = false;
+    bool pressflagPageFour = false;
     
     
     Text text;
@@ -158,21 +173,41 @@ public:
         //rendering image
         testShader.use();
 
+
         if (visibilityPageOne) {
+            textureLeft = textureSeeSaw;
+            textureRight = textureAerialRunway;
+        }
+        if (visibilityPageTwo) {
+            textureLeft = textureSwing;
+            textureRight = textureTrampoline;
+        }
+        if (visibilityPageThree) {
+            textureLeft = textureWallDestroy;
+            textureRight = textureSandpit;
+        }
+        if (visibilityPageFour) {
+            textureLeft = textureSlide;
+            textureRight = texture;
+        }
+
+
+        if (visibilityPageOne || visibilityPageTwo || visibilityPageThree || visibilityPageFour) {
             glBindVertexArray(leftVAO);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textureSeeSaw);
+            glBindTexture(GL_TEXTURE_2D, textureLeft);
             glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
 
             glBindVertexArray(rightVAO);
             glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textureAerialRunway);
+            glBindTexture(GL_TEXTURE_2D, textureRight);
             glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
         }
 
-        if (visibilityPageOne) {
+
+        if (visibilityPageOne || visibilityPageTwo || visibilityPageThree || visibilityPageFour) {
             glBindVertexArray(quadVAO);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
@@ -221,18 +256,76 @@ public:
             pressflag = false;
         }
         
+
         if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && !visibilityPageOne && !pressflagPageOne) {
             visibilityPageOne = true;
             pressflagPageOne = true;
-            printf("%s \n", "seesaw on");
+            //printf("%s \n", "Page1 on");
         }
         if (glfwGetKey(window, GLFW_KEY_1) == GLFW_PRESS && visibilityPageOne && !pressflagPageOne) {
             visibilityPageOne = false;
             pressflagPageOne = true;
-            printf("%s \n", "seesaw off");
+            //printf("%s \n", "Page1 off");
         }
         if (glfwGetKey(window, GLFW_KEY_1) == GLFW_RELEASE && pressflagPageOne) {
             pressflagPageOne = false;
+                visibilityPageTwo = false;
+                visibilityPageThree = false;
+                visibilityPageFour = false;
+        }
+
+
+        if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && !visibilityPageTwo && !pressflagPageTwo) {
+            visibilityPageTwo = true;
+            pressflagPageTwo = true;
+            //printf("%s \n", "Page2 on");
+        }
+        if (glfwGetKey(window, GLFW_KEY_2) == GLFW_PRESS && visibilityPageTwo && !pressflagPageTwo) {
+            visibilityPageTwo = false;
+            pressflagPageTwo = true;
+            //printf("%s \n", "Page2 off");
+        }
+        if (glfwGetKey(window, GLFW_KEY_2) == GLFW_RELEASE && pressflagPageTwo) {
+            pressflagPageTwo = false;
+                visibilityPageOne = false;
+                visibilityPageThree = false;
+                visibilityPageFour = false;
+        }
+
+
+        if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && !visibilityPageThree && !pressflagPageThree) {
+            visibilityPageThree = true;
+            pressflagPageThree = true;
+            //printf("%s \n", "Page3 on");
+        }
+        if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS && visibilityPageThree && !pressflagPageThree) {
+            visibilityPageThree = false;
+            pressflagPageThree = true;
+            //printf("%s \n", "Page3 off");
+        }
+        if (glfwGetKey(window, GLFW_KEY_3) == GLFW_RELEASE && pressflagPageThree) {
+            pressflagPageThree = false;
+                visibilityPageOne = false;
+                visibilityPageTwo = false;
+                visibilityPageFour = false;
+        }
+
+
+        if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS && !visibilityPageFour && !pressflagPageFour) {
+            visibilityPageFour = true;
+            pressflagPageFour = true;
+            //printf("%s \n", "Page4 on");
+        }
+        if (glfwGetKey(window, GLFW_KEY_4) == GLFW_PRESS && visibilityPageFour && !pressflagPageFour) {
+            visibilityPageFour = false;
+            pressflagPageFour = true;
+            //printf("%s \n", "Page4 off");
+        }
+        if (glfwGetKey(window, GLFW_KEY_4) == GLFW_RELEASE && pressflagPageFour) {
+            pressflagPageFour = false;
+                visibilityPageOne = false;
+                visibilityPageTwo = false;
+                visibilityPageThree = false;
         }
 
     
