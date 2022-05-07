@@ -15,6 +15,7 @@
 #include "Model.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
+#include "AIController.h"
 #include "Skybox.h"
 #include "GameManager.h"
 #include "ColliderManager.h"
@@ -107,6 +108,7 @@ int main()
     Gui gui;
     Skybox skybox;
     PlayerController* player = new PlayerController(gameManager.cube3);
+    AIController* AI = new AIController(gameManager.cube2);
 
     //load texture to gui
     unsigned int texture = gameManager.loadTexture("res/textures/notebook.png");
@@ -141,6 +143,7 @@ int main()
         unprocessed_time += passed_time;
 
         input(window, gameManager.cube3);
+        AI->move(window, passed_time);
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr,passed_time);
         colManager.manageCollisions(passed_time);
