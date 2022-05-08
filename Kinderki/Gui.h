@@ -36,11 +36,20 @@ float rightPageVertices[] = {
 
 float candyVertices[] = {
     // pozycje
-    0.95f,  0.65f,
-    0.80f,  0.80f,
-    0.95f,  0.80f,
-    0.80f,  0.65f
+    0.70f,  0.65f,
+    0.55f,  0.80f,
+    0.70f,  0.80f,
+    0.55f,  0.65f
 };
+
+float candyCountVertices[] = {
+    // pozycje
+    0.85f,  0.65f,
+    0.70f,  0.80f,
+    0.85f,  0.80f,
+    0.70f,  0.65f
+};
+
 
 
 uint32_t indices[] = { 3, 1, 2,
@@ -67,15 +76,18 @@ float textureCords[] = { 0.0f, 1.0f,
 
 class Gui {
 public:
-    unsigned int quadVAO, leftVAO, rightVAO, candyVAO;
-    unsigned int quadVBO, leftVBO, rightVBO, candyVBO;
+    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO;
+    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO;
     unsigned int quadEBO;
     unsigned int progressVAO, progressVBO1, progressVBO2, progressEBO;
     
     unsigned int texture;
     unsigned int textureLeft;
     unsigned int textureRight;
+
     unsigned int textureCandy;
+    unsigned int textureCandyCount;
+    
 
     unsigned int textureSeeSaw;
     unsigned int textureAerialRunway;
@@ -193,6 +205,26 @@ public:
         glGenBuffers(1, &candyVBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+        //CandyCount square
+        glGenVertexArrays(1, &candyCountVAO);
+        glBindVertexArray(candyCountVAO);
+
+        glGenBuffers(1, &candyCountVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, candyCountVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(candyCountVertices), candyCountVertices, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &candyCountVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, candyCountVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCords), textureCords, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &candyCountVBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
         
         /*
         glGenVertexArrays(1, &progressVAO);
@@ -259,6 +291,12 @@ public:
         glBindTexture(GL_TEXTURE_2D, textureCandy);
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+
+        glBindVertexArray(candyCountVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureCandyCount);
+        glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
        
 
         //rendering progressbar
@@ -277,7 +315,7 @@ public:
         text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
         text2.RenderText(strs2.str(), 50.0f, 100.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 
-        textCukierki.RenderText(strsCukierki.str(), 1700.0, 900.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+        //textCukierki.RenderText(strsCukierki.str(), 1700.0, 900.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 	}
    
     void update(double passed_time) {

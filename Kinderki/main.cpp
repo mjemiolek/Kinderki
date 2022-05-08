@@ -119,6 +119,8 @@ int main()
     unsigned int textureWallDestroy = gameManager.loadTexture("res/textures/icons/Iwallbang.png");
     unsigned int textureSandpit = gameManager.loadTexture("res/textures/icons/sandpit.png");
     unsigned int textureSlide = gameManager.loadTexture("res/textures/icons/slide.png");
+    
+    unsigned int textureCandy = gameManager.loadTexture("res/textures/candy.png");
 
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
@@ -129,10 +131,16 @@ int main()
     gui.textureSandpit = textureSandpit;
     gui.textureSlide = textureSlide;
 
+    gui.textureCandy = textureCandy;
+    
+
+
     
 
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
+
+
 
     
     while (!glfwWindowShouldClose(window))
@@ -146,8 +154,19 @@ int main()
         AI->move(window, passed_time);
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr,passed_time);
+        gui.textureCandyCount = gameManager.candyCount(player);
         colManager.manageCollisions(passed_time);
         gui.handleGui(window);
+
+        //robocza modyfikacja candyCount
+        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+            player->setCandyCount(player->getCandyCount() - 1);
+         
+        //robocza modyfikacja candyCount
+        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) 
+            player->setCandyCount(player->getCandyCount() + 1);
+            
+        
 
 
         while (unprocessed_time >= frame_time) {

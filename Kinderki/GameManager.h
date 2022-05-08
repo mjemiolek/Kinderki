@@ -239,6 +239,8 @@ class GameManager {
         zjezdzalniaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, zjezdzalnia, 0.01f);
     }
 
+   
+
     unsigned int loadTexture(char const* path)
     {
         unsigned int textureID;
@@ -364,5 +366,30 @@ class GameManager {
         //glActiveTexture(GL_TEXTURE0);
         //glBindTexture(GL_TEXTURE_2D, depthMap);
         //renderQuad();
+    }
+
+    unsigned int candyCount(PlayerController* player) {
+        unsigned int textureCandyx0 = loadTexture("res/textures/candyx0.png");
+        unsigned int textureCandyx1 = loadTexture("res/textures/candyx1.png");
+        unsigned int textureCandyx2 = loadTexture("res/textures/candyx2.png");
+        unsigned int textureCandyx3 = loadTexture("res/textures/candyx3.png");
+        unsigned int textureCandyx4 = loadTexture("res/textures/candyx4.png");
+        unsigned int textureCandyx5 = loadTexture("res/textures/candyx5.png");
+        unsigned int textureCandyx6 = loadTexture("res/textures/candyx6.png");
+
+        if (player->getCandyCount() == 6)
+            return textureCandyx6;
+        if (player->getCandyCount() == 5)
+            return textureCandyx5;
+        if (player->getCandyCount() == 4)
+            return textureCandyx4;
+        if (player->getCandyCount() == 3)
+            return textureCandyx3;
+        if (player->getCandyCount() == 2)
+            return textureCandyx2;
+        if (player->getCandyCount() == 1)
+            return textureCandyx1;
+        if (player->getCandyCount() == 0)
+            return textureCandyx0;
     }
 };
