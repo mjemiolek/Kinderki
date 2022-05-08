@@ -171,6 +171,8 @@
     <None Include="res\shaders\debug_quad.vert" />
     <None Include="res\shaders\lightcaster.frag" />
     <None Include="res\shaders\lightcaster.vert" />
+    <None Include="res\shaders\outlining.frag" />
+    <None Include="res\shaders\outlining.vert" />
     <None Include="res\shaders\shadow_mapping.frag" />
     <None Include="res\shaders\shadow_mapping.vert" />
     <None Include="res\shaders\shadow_mapping_depth.frag" />

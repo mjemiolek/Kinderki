@@ -69,6 +69,12 @@ public:
             else if (playerObject->get_transform().y_rotation_angle >= 90.0f)
                 playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
+        //debuowanie postaci
+        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+            playerObject->get_transform().m_position.x += 2.5f * deltaTime;
+            lightPos.x += 2.5f * deltaTime;
+                playerObject->get_transform().x_rotation_angle += 90.0f * deltaTime;
+        }
         //setPlayerPosition(playerObject->get_transform().m_position);
         playerObject->update_transform();
         playerObject->collider.setPosition(playerObject->get_transform().m_position);

@@ -53,6 +53,8 @@ class GameManager {
     unsigned int depthMapFBO, depthMap;
     Shader simpleDepthShader = Shader("res/shaders/shadow_mapping_depth.vert", "res/shaders/shadow_mapping_depth.frag");
     Shader debugDepthQuad = Shader("res/shaders/debug_quad.vert", "res/shaders/debug_quad.frag");
+    //For outline
+    Shader outlineShader = Shader("res/shaders/outlining.vert", "res/shaders/outlining.frag");
 
 
 
@@ -175,68 +177,68 @@ class GameManager {
 
         root_node->add_child(cube1);
         Collider cube1Collider(boxColRange, false, cubePositions[0],false);
-        cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f, cube1Collider);
+        cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f,true, cube1Collider);
 
         root_node->add_child(cube2);
         Collider cube2Collider(boxColRange, false, cubePositions[2],false);
-        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, cube2Collider);
+        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
 
         root_node->add_child(cube3);
         
         Collider cube3Collider(boxColRange, false, cubePositions[4],true);
-        cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, cube3Collider);
+        cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
 
         root_node->add_child(modelTest);
         Collider modelTestCollider(1.8f, false, cubePositions[3],false);
-        modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f, modelTestCollider);
+        modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f, false, modelTestCollider);
 
         root_node->add_child(floorTest);
         Collider floorCol(floorColRange, false, floorPos, true);
-        floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f, floorCol);
+        floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f,false, floorCol);
 
         root_node->add_child(sandsTest);
-        sandsTest->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f);
+        sandsTest->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false );
 
         //root_node->add_child(meshesTest);
         //meshesTest->setProperties(lightingShader, texturemetal, zeroPos, MODEL, meshes, 0.01f);
 
         root_node->add_child(footballgroundptr);
-        footballgroundptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, footballground, 0.01f);
+        footballgroundptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, footballground, 0.01f,false);
 
         root_node->add_child(hopsalniaptr);
-        hopsalniaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, hopsalnia, 0.01f);
+        hopsalniaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, hopsalnia, 0.01f, true);
 
         root_node->add_child(hustawkaptr);
-        hustawkaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, hustawka, 0.01f);
+        hustawkaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, hustawka, 0.01f, true);
 
         root_node->add_child(lawkiptr);
-        lawkiptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, lawki, 0.01f);
+        lawkiptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, lawki, 0.01f, true);
 
         root_node->add_child(sandpitptr);
         Collider sandPitTrigger(1.5f, false, sandPitPos, true);
-        sandpitptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, sandpit, 0.01f);
+        sandpitptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, sandpit, 0.01f, false);
         sandpitptr->trigger = sandPitTrigger;
 
         root_node->add_child(sciezkiptr);
-        sciezkiptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, sciezki, 0.01f);
+        sciezkiptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, sciezki, 0.01f, false);
 
         root_node->add_child(seesawptr);
-        seesawptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesaw, 0.01f);
+        seesawptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesaw, 0.01f, true);
 
         //root_node->add_child(seesawchangedptr);
         //seesawchangedptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesawchanged, 0.01f);
 
         root_node->add_child(treeptr);
-        treeptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, tree, 0.01f);
+        treeptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, tree, 0.01f, false);
 
         root_node->add_child(tyrolkaptr);
-        tyrolkaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, tyrolka, 0.01f);
+        tyrolkaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, tyrolka, 0.01f, true);
 
         root_node->add_child(wallsptr);
-        wallsptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, walls, 0.01f);
+        wallsptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, walls, 0.01f, false);
 
         root_node->add_child(zjezdzalniaptr);
-        zjezdzalniaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, zjezdzalnia, 0.01f);
+        zjezdzalniaptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, zjezdzalnia, 0.01f, true);
     }
 
    
@@ -290,8 +292,11 @@ class GameManager {
     }
     void render() {
         glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        
+
         root_node->render(true);
+        
     }
     unsigned int quadVAO = 0;
     unsigned int quadVBO;
@@ -346,7 +351,9 @@ class GameManager {
         // 2. render scene as normal using the generated depth/shadow map  
         // --------------------------------------------------------------
         glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+        
         shaderShad.use();
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
@@ -356,8 +363,13 @@ class GameManager {
         shaderShad.setVec3("viewPos", camera.Position);
         shaderShad.setVec3("lightPos", lightPos);
         shaderShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-        root_node->render2(true,depthMap, shaderShad);
 
+        // Make it so the stencil test always passes
+        glStencilFunc(GL_ALWAYS, 1, 0xFF);
+        // Enable modifying of the stencil buffer
+        //glStencilMask(0xFF);
+
+        root_node->render2(true,depthMap, shaderShad);
         // render Depth map to quad for visual debugging
         // don't delete---------------------------------
         //debugDepthQuad.use();
@@ -366,6 +378,30 @@ class GameManager {
         //glActiveTexture(GL_TEXTURE0);
         //glBindTexture(GL_TEXTURE_2D, depthMap);
         //renderQuad();
+
+    }
+    void renderWithOutline() {
+        // Make it so only the pixels without the value 1 pass the test
+        glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+        // Disable modifying of the stencil buffer
+        //glStencilMask(0x00);
+        // Disable the depth buffer
+        glDisable(GL_DEPTH_TEST);
+
+        outlineShader.use();
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 view = camera.GetViewMatrix();
+        outlineShader.setMat4("projection", projection);
+        outlineShader.setMat4("view", view);
+        //scale
+        outlineShader.setFloat("m_scale", 1.13f);
+
+        root_node->renderSceneWithOutline(true, outlineShader);
+        //glStencilMask(0xFF);
+        // Clear stencil buffer
+        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+        // Enable the depth buffer
+        glEnable(GL_DEPTH_TEST);
     }
 
     unsigned int candyCount(PlayerController* player, unsigned int tex1, unsigned int tex2, unsigned int tex3, unsigned int tex4, unsigned int tex5, unsigned int tex6, unsigned int tex7) {

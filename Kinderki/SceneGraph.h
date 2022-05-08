@@ -102,6 +102,8 @@ struct SceneGraphNode {
     {
         if (!is_root)
         {
+            
+
             shader.setMat4("model", m_transform.m_world_matrix);
             modelTemp.Draw(shader);
         }
@@ -114,6 +116,12 @@ struct SceneGraphNode {
     {
         if (!is_root) 
         {
+            if (stencil) {
+                glStencilMask(0xFF);
+            }
+            else {
+                glStencilMask(0x00);
+            }
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
             glActiveTexture(GL_TEXTURE1);
@@ -126,7 +134,22 @@ struct SceneGraphNode {
             m_children[i]->render2(false,depthMap,shader);
         }
     }
-    void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, Collider col = Collider(), Collider trig = Collider()) {
+    void renderSceneWithOutline(bool is_root = false, Shader shader = Shader()) {
+        {
+            if (!is_root)
+            {
+                if (stencil) {
+                    shader.setMat4("model", m_transform.m_world_matrix);
+                    modelTemp.Draw(shader);
+                }          
+            }
+            for (uint32_t i = 0; i < m_children.size(); ++i)
+            {
+                m_children[i]->renderSceneWithOutline(false, shader);
+            }
+        }
+    }
+    void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, bool stencilTest, Collider col = Collider(), Collider trig = Collider()) {
         shaderTemp = shader;
         texture = ttexture;
         m_transform.m_position = position;
@@ -135,6 +158,7 @@ struct SceneGraphNode {
         m_transform.m_scale = scale;
         collider = col;
         trigger = trig;
+        stencil = stencilTest; //add outline to object
     }
     void update_transform() {
         m_transform.m_world_matrix = m_transform.get_combined_matrix();
@@ -173,6 +197,7 @@ struct SceneGraphNode {
     unsigned int VAOTemp;
     Collider collider;
     Collider trigger;
+    bool stencil;
 
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;
     Transform m_transform;

@@ -98,6 +98,10 @@ int main()
 
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -189,10 +193,10 @@ int main()
            
             //gameManager.render();
             gameManager.renderwithShadows();
+            gameManager.renderWithOutline();
             skybox.render();
             gui.render();
 
-            render_gui();
             glfwPollEvents();
             glfwSwapBuffers(window);
         }
@@ -283,17 +287,4 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     camera.ProcessMouseScroll(yoffset);
-}
-
-
-void render_gui() {
-    //ImGui_ImplOpenGL3_NewFrame();
-    //ImGui_ImplGlfw_NewFrame();
-    //ImGui::NewFrame();
-
-    //ImGui::Render();
-    //int display_w, display_h;
-    //glfwGetFramebufferSize(window, &display_w, &display_h);
-    //glViewport(0, 0, display_w, display_h);
-    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }

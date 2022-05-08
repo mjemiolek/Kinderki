@@ -118,5 +118,11 @@
     <None Include="res\shaders\shadow_mapping.vert">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
+    <None Include="res\shaders\outlining.frag">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\outlining.vert">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
