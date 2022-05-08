@@ -368,28 +368,22 @@ class GameManager {
         //renderQuad();
     }
 
-    unsigned int candyCount(PlayerController* player) {
-        unsigned int textureCandyx0 = loadTexture("res/textures/candyx0.png");
-        unsigned int textureCandyx1 = loadTexture("res/textures/candyx1.png");
-        unsigned int textureCandyx2 = loadTexture("res/textures/candyx2.png");
-        unsigned int textureCandyx3 = loadTexture("res/textures/candyx3.png");
-        unsigned int textureCandyx4 = loadTexture("res/textures/candyx4.png");
-        unsigned int textureCandyx5 = loadTexture("res/textures/candyx5.png");
-        unsigned int textureCandyx6 = loadTexture("res/textures/candyx6.png");
+    unsigned int candyCount(PlayerController* player, unsigned int tex1, unsigned int tex2, unsigned int tex3, unsigned int tex4, unsigned int tex5, unsigned int tex6, unsigned int tex7) {
+        
 
         if (player->getCandyCount() == 6)
-            return textureCandyx6;
+            return tex7;
         if (player->getCandyCount() == 5)
-            return textureCandyx5;
+            return tex6;
         if (player->getCandyCount() == 4)
-            return textureCandyx4;
+            return tex5;
         if (player->getCandyCount() == 3)
-            return textureCandyx3;
+            return tex4;
         if (player->getCandyCount() == 2)
-            return textureCandyx2;
+            return tex3;
         if (player->getCandyCount() == 1)
-            return textureCandyx1;
+            return tex2;
         if (player->getCandyCount() == 0)
-            return textureCandyx0;
+            return tex1;
     }
 };

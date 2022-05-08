@@ -121,6 +121,13 @@ int main()
     unsigned int textureSlide = gameManager.loadTexture("res/textures/icons/slide.png");
     
     unsigned int textureCandy = gameManager.loadTexture("res/textures/candy.png");
+    unsigned int textureCandyx0 = gameManager.loadTexture("res/textures/candyx0.png");
+    unsigned int textureCandyx1 = gameManager.loadTexture("res/textures/candyx1.png");
+    unsigned int textureCandyx2 = gameManager.loadTexture("res/textures/candyx2.png");
+    unsigned int textureCandyx3 = gameManager.loadTexture("res/textures/candyx3.png");
+    unsigned int textureCandyx4 = gameManager.loadTexture("res/textures/candyx4.png");
+    unsigned int textureCandyx5 = gameManager.loadTexture("res/textures/candyx5.png");
+    unsigned int textureCandyx6 = gameManager.loadTexture("res/textures/candyx6.png");
 
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
@@ -154,7 +161,7 @@ int main()
         AI->move(window, passed_time);
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr,passed_time);
-        gui.textureCandyCount = gameManager.candyCount(player);
+        gui.textureCandyCount = gameManager.candyCount(player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         colManager.manageCollisions(passed_time);
         gui.handleGui(window);
 
