@@ -394,7 +394,7 @@ class GameManager {
         outlineShader.setMat4("projection", projection);
         outlineShader.setMat4("view", view);
         //scale
-        outlineShader.setFloat("m_scale", 1.13f);
+        outlineShader.setFloat("m_scale", 0.13f);
 
         root_node->renderSceneWithOutline(true, outlineShader);
         //glStencilMask(0xFF);
