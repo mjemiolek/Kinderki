@@ -37,6 +37,7 @@ public:
         float speed = 2.5f;
         playerObject->velocity = glm::vec3(0.0f,0.0f,0.0f);
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+            //playerObject->get_transform().m_position.z -= 2.5f * deltaTime;
             playerObject->velocity.z = -(speed);
             lightPos.z -= 2.5f * deltaTime;
             //Obrot wprzod
@@ -47,6 +48,7 @@ public:
         
         }
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+            //playerObject->get_transform().m_position.z += 2.5f * deltaTime;
             playerObject->velocity.z = speed;
             lightPos.z += 2.5f * deltaTime;
             if (playerObject->get_transform().y_rotation_angle <= 180.0f)
@@ -55,6 +57,7 @@ public:
                 playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+            //playerObject->get_transform().m_position.x -= 2.5f * deltaTime;
             playerObject->velocity.x = -(speed);
             lightPos.x -= 2.5f * deltaTime;
             if (playerObject->get_transform().y_rotation_angle <= 270.0f)
@@ -63,6 +66,7 @@ public:
                 playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
         }
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+            //playerObject->get_transform().m_position.x += 2.5f * deltaTime;
             playerObject->velocity.x = speed;
             lightPos.x += 2.5f * deltaTime;
             if (playerObject->get_transform().y_rotation_angle <= 90.0f)

@@ -20,6 +20,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <stdlib.h>
+#include <ctime>
 
 #include "SceneGraph.h"
 

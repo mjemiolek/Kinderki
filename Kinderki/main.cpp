@@ -22,6 +22,7 @@
 #include "Gui.h"
 #include "Settings.h"
 #include "GravityManager.h"
+#include "PhysicsWorld.h"
 
 #include <mmcobj.h>
 
@@ -109,6 +110,7 @@ int main()
     //Creating game components
     GameManager gameManager;
     ColliderManager colManager(gameManager.collidingObjects);
+    PhysicsWorld physicsWorld(gameManager.collidingObjects);
     Gui gui;
     Skybox skybox;
     PlayerController* player = new PlayerController(gameManager.cube3);
@@ -166,7 +168,8 @@ int main()
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr,passed_time);
         gui.textureCandyCount = gameManager.candyCount(player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
-        colManager.manageCollisions(passed_time);
+        //colManager.manageCollisions(passed_time);
+        physicsWorld.step(passed_time);
         gui.handleGui(window);
 
         //robocza modyfikacja candyCount
@@ -177,8 +180,6 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) 
             player->setCandyCount(player->getCandyCount() + 1);
             
-        
-
 
         while (unprocessed_time >= frame_time) {
             should_render = true;

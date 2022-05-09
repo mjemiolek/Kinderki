@@ -107,6 +107,9 @@ public:
 	glm::vec3 getCollisionRange() {
 		return collisionRange;
 	}
+	bool getIsStatic() {
+		return isStatic;
+	}
 	bool operator==(const Collider& rhs) const {
 		return
 			position == rhs.position
