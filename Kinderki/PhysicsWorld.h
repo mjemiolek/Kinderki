@@ -157,7 +157,6 @@ public:
 									}
 								}
 							}
-							//delete tempCollider
 							delete tempCollider;
 						}
 					}
