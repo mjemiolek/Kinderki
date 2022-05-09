@@ -136,6 +136,10 @@ class GameManager {
         Model tyrolka("res/models/tyrolka.obj");
         Model walls("res/models/walls.obj");
         Model zjezdzalnia("res/models/zjezdzalnia.obj");
+        //Model postac_test("res/models/main_character.obj");
+        //Model postac_test("res/models/postac_test_kolejny.obj");
+        Model postac_test("res/models/postac_test_v4.obj");
+
 
         unsigned int texturekupa = loadTexture("res/textures/win.png");
         unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
@@ -144,6 +148,8 @@ class GameManager {
         unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
         unsigned int specularMap = loadTexture("res/textures/spec.jpg");
         unsigned int texturestone = loadTexture("res/textures/stone.jpg");
+        //unsigned int texture_postac_test = loadTexture("res/textures/oko_tekstura_test2.png");
+        unsigned int texture_postac_test = loadTexture("res/textures/baking_5.png");
 
 
         //Allocating storage for the objects
@@ -186,7 +192,8 @@ class GameManager {
         root_node->add_child(cube3);
         
         Collider cube3Collider(boxColRange, false, cubePositions[4],true);
-        cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
+        //cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
+        cube3->setProperties(lightingShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
 
         root_node->add_child(modelTest);
         Collider modelTestCollider(1.8f, false, cubePositions[3],false);
