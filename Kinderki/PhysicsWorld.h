@@ -15,7 +15,10 @@ public:
 	void step(float deltaTime){
 		for (const auto& object : physicsObjects)
 		{
-			object->applyGravity(deltaTime);
+			if (object->collider.getIsDynamic() == true)
+			{
+				object->applyGravity(deltaTime);
+			}
 		}
 		manageCollisions(deltaTime);
 		for (const auto& object : physicsObjects)
@@ -42,7 +45,7 @@ public:
 						if (object->collider.getIsTrigger() == false && object->collider.getRadius() <= 0 && player->collider.getRadius() <= 0 &&
 							player->collider.boxToBoxCollisioncheck(object->collider))
 						{
-							if (abs(x) >= abs(y) && abs(x) >= abs(z))
+							if (abs(x) >= abs(y) && abs(x) >= abs(z)) // x-axis collision
 							{
 								if (x > 0)
 								{
@@ -53,7 +56,7 @@ public:
 									player->get_transform().m_position.x -= 2.5f * deltaTime;
 								}
 							}
-							else if (abs(y) >= abs(x) && abs(y) >= abs(z))
+							else if (abs(y) >= abs(x) && abs(y) >= abs(z)) //y-axis collision
 							{
 								if (y > 0)
 								{
@@ -63,8 +66,9 @@ public:
 								{
 									player->get_transform().m_position.y -= 2.5f * deltaTime;
 								}
+								player->velocity.y = 0.0f;
 							}
-							else if (abs(z) >= abs(x) && abs(z) >= abs(y))
+							else if (abs(z) >= abs(x) && abs(z) >= abs(y)) //z-axis collision
 							{
 								if (z > 0)
 								{

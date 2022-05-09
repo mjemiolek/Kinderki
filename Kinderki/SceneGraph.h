@@ -204,14 +204,14 @@ struct SceneGraphNode {
     bool m_dirty;
 
     //Physics
-    glm::vec3 gravity = glm::vec3(0.0f, -0.981f, 0.0f);
+    glm::vec3 gravity = glm::vec3(0.0f, -9.81f, 0.0f);
     glm::vec3 velocity = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 force = glm::vec3(0.0f, 0.0f, 0.0f);
     float mass = 1.0f;
 
     void applyGravity(float deltaTime)
     {
-        //if (collider.getIsStatic() == false) { force += mass * gravity; } // apply a force of gravity
+        force += mass * gravity; // apply a force of gravity
 
         velocity += force / mass * deltaTime;
         

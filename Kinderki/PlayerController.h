@@ -35,7 +35,8 @@ public:
     void move(GLFWwindow* window, float deltaTime)
     {
         float speed = 2.5f;
-        playerObject->velocity = glm::vec3(0.0f,0.0f,0.0f);
+        playerObject->velocity.z = 0.0f;
+        playerObject->velocity.x = 0.0f;
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             playerObject->velocity.z = -(speed);
             lightPos.z -= 2.5f * deltaTime;
@@ -79,6 +80,12 @@ public:
         //setPlayerPosition(playerObject->get_transform().m_position);
         playerObject->update_transform();
         playerObject->collider.setPosition(playerObject->get_transform().m_position);
+
+        //move Player to position (0,2,0)
+        if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+        {
+            playerObject->get_transform().m_position = glm::vec3(0.0f, 2.0f, 0.0f);
+        }
 	}
    
     bool triggerCollision(std::shared_ptr<SceneGraphNode> obstacle) {

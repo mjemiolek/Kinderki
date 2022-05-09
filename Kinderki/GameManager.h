@@ -173,7 +173,7 @@ class GameManager {
         collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, modelTest,floorTest });
         glm::vec3 boxColRange(0.38f, 0.38f, 0.38f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
-        glm::vec3 floorColRange(1000000.38f, 2.70f, 1000000.38f);
+        glm::vec3 floorColRange(20.0f, 22.70f, 20.0f);
 
         root_node->add_child(cube1);
         Collider cube1Collider(boxColRange, false, cubePositions[0],false);
@@ -193,7 +193,7 @@ class GameManager {
         modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f, false, modelTestCollider);
 
         root_node->add_child(floorTest);
-        Collider floorCol(floorColRange, false, floorPos, false);
+        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -21.75f, 0.0f), false);
         floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f,false, floorCol);
 
         root_node->add_child(sandsTest);
@@ -283,7 +283,6 @@ class GameManager {
     void update(float dt) {
 
         gravity->updateGravityInNegativeY(cube2, dt);
-
 
         
         cube2->update_transform();
