@@ -68,7 +68,7 @@ class GameManager {
         glm::vec3(0.0f, 2.0f,  3.5f),
         glm::vec3(2.0f,  2.0f, -15.0f),
         glm::vec3(0.5f, 12.0f, -1.5f),
-        glm::vec3(-3.8f, 4.0f, -12.3f),
+        glm::vec3(-3.8f, 2.0f, -12.3f),
         glm::vec3(0.0f, 2.0f,  0.0f),
         glm::vec3(0.0f,  2.0f, 0.0f),
         glm::vec3(1.3f, 2.0f, -2.5f),
@@ -193,7 +193,7 @@ class GameManager {
         modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f, false, modelTestCollider);
 
         root_node->add_child(floorTest);
-        Collider floorCol(floorColRange, false, floorPos, true);
+        Collider floorCol(floorColRange, false, floorPos, false);
         floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f,false, floorCol);
 
         root_node->add_child(sandsTest);

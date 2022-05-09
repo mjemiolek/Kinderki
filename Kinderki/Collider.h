@@ -8,25 +8,25 @@ private:
 	float radius = -1;
 	glm::vec3 collisionRange = glm::vec3(0.0f ,0.0f ,0.0f); //distance from center in all 3 directions
 	bool isTrigger;
-	bool isStatic; //Can be static or dynamic
+	bool isDynamic; //Can be static or dynamic
 public:
 	Collider() {
 		radius = 0;
 		isTrigger = false;
 		position = glm::vec3(0.0f, 0.0f, -3.0f);
-		isStatic = true;
+		isDynamic = false;
 	}
 	Collider(float rad, bool isTrig, glm::vec3 pos,bool dynamic) {
 		radius = rad;
 		isTrigger = isTrig;
 		position = pos;
-		isStatic = !dynamic;
+		isDynamic = dynamic;
 	}
 	Collider(glm::vec3 collRange, bool isTrig, glm::vec3 pos,bool dynamic) {
 		collisionRange = collRange;
 		isTrigger = isTrig;
 		position = pos;
-		isStatic = !dynamic;
+		isDynamic = dynamic;
 	}
 	bool sphereToSphereCollisionCheck(Collider sphereCollider) {
 		glm::vec3 play = position;
@@ -34,6 +34,7 @@ public:
 		float distance = sqrt((p.x - play.x) * (p.x - play.x) + (p.y - play.y) * (p.y - play.y) + (p.z - play.z) * (p.z - play.z));
 		if (distance < radius+sphereCollider.getRadius())
 		{
+			std::cout << "SphereCollision";
 			return true;
 		}
 		return false;
@@ -90,6 +91,7 @@ public:
 		{
 			return false;
 		}
+		std::cout << "BoxCollision";
 		return true;
 	}
 	bool getIsTrigger() {
@@ -107,8 +109,8 @@ public:
 	glm::vec3 getCollisionRange() {
 		return collisionRange;
 	}
-	bool getIsStatic() {
-		return isStatic;
+	bool getIsDynamic() {
+		return isDynamic;
 	}
 	bool operator==(const Collider& rhs) const {
 		return
@@ -116,7 +118,7 @@ public:
 			&& collisionRange == rhs.collisionRange
 			&& isTrigger == rhs.isTrigger
 			&& radius == rhs.radius
-			&& isStatic == rhs.isStatic
+			&& isDynamic == rhs.isDynamic
 			;
 	}
 };
