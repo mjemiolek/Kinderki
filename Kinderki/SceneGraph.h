@@ -220,5 +220,6 @@ struct SceneGraphNode {
     void moveObject(float deltaTime)
     {
         m_transform.m_position += velocity * deltaTime;
+        collider.setPosition(m_transform.m_position);
     }
 };

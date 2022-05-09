@@ -18,13 +18,10 @@ public:
 			if (object->collider.getIsDynamic() == true)
 			{
 				object->applyGravity(deltaTime);
+				object->moveObject(deltaTime);
 			}
 		}
 		manageCollisions(deltaTime);
-		for (const auto& object : physicsObjects)
-		{
-			object->moveObject(deltaTime);
-		}
 	}
 
 	void manageCollisions(float deltaTime)
@@ -41,43 +38,57 @@ public:
 						glm::vec3 play = player->collider.getPosition();
 						glm::vec3 p = object->collider.getPosition();
 						float x = play.x - p.x, y = play.y - p.y, z = play.z - p.z;
+						//There is so problem for not perfect cube boxes
 						//For box to box//			   It's not trigger           //         If it is box         //   player have box collider
 						if (object->collider.getIsTrigger() == false && object->collider.getRadius() <= 0 && player->collider.getRadius() <= 0 &&
 							player->collider.boxToBoxCollisioncheck(object->collider))
 						{
 							if (abs(x) >= abs(y) && abs(x) >= abs(z)) // x-axis collision
 							{
-								if (x > 0)
+								//Push object away from collision
+								player->get_transform().m_position.x -= player->velocity.x * deltaTime;
+								/*if (x > 0)
 								{
-									player->get_transform().m_position.x += 2.5f * deltaTime;
+									player->get_transform().m_position.x += player->velocity.x * deltaTime;
 								}
 								else
 								{
-									player->get_transform().m_position.x -= 2.5f * deltaTime;
-								}
+									player->get_transform().m_position.x -= player->velocity.x * deltaTime;
+								}*/
+
+								//Reset object velocity in collision direction
+								player->velocity.x= 0.0f;
 							}
 							else if (abs(y) >= abs(x) && abs(y) >= abs(z)) //y-axis collision
 							{
-								if (y > 0)
+								//Push object away from collision
+								player->get_transform().m_position.y -= player->velocity.y * deltaTime;
+
+								/*if (y > 0)
 								{
-									player->get_transform().m_position.y += 2.5f * deltaTime;
+									player->get_transform().m_position.y -= player->velocity.y * deltaTime;
 								}
 								else
 								{
-									player->get_transform().m_position.y -= 2.5f * deltaTime;
-								}
+									player->get_transform().m_position.y += player->velocity.y * deltaTime;
+								}*/
+
+								//Reset object velocity in collision direction
 								player->velocity.y = 0.0f;
 							}
 							else if (abs(z) >= abs(x) && abs(z) >= abs(y)) //z-axis collision
 							{
-								if (z > 0)
+								//Push object away from collision
+								player->get_transform().m_position.z -= player->velocity.z * deltaTime;
+								/*if (z > 0)
 								{
 									player->get_transform().m_position.z += 2.5f * deltaTime;
 								}
 								else
 								{
 									player->get_transform().m_position.z -= 2.5f * deltaTime;
-								}
+								}*/
+								player->velocity.z = 0.0f;
 							}
 						}
 						//For Sphere to sphere and box to sphere

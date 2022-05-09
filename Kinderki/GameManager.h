@@ -65,7 +65,7 @@ class GameManager {
         glm::vec3 sandPitPos(4.875f, 1.0f, -9.25f);
 
         glm::vec3 cubePositions[] = {
-        glm::vec3(0.0f, 2.0f,  3.5f),
+        glm::vec3(-0.5f, 1.0f,  3.5f),
         glm::vec3(2.0f,  2.0f, -15.0f),
         glm::vec3(0.5f, 12.0f, -1.5f),
         glm::vec3(-3.8f, 2.0f, -12.3f),
