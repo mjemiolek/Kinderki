@@ -153,7 +153,7 @@ int main()
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
 
-
+    bool pressFlagCandy = false;
 
     
     while (!glfwWindowShouldClose(window))
@@ -173,12 +173,30 @@ int main()
         gui.handleGui(window);
 
         //robocza modyfikacja candyCount
-        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-            player->setCandyCount(player->getCandyCount() - 1);
-         
+        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+            if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && !pressFlagCandy) {
+                pressFlagCandy = true;
+                if (player->getCandyCount() >= 1) {
+                    player->setCandyCount(player->getCandyCount() - 1);
+                }
+            }
+        }
+
+
         //robocza modyfikacja candyCount
-        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) 
-            player->setCandyCount(player->getCandyCount() + 1);
+        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+            if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !pressFlagCandy) {
+                pressFlagCandy = true;
+                if (player->getCandyCount() <= 5) {
+                    player->setCandyCount(player->getCandyCount() + 1);
+                }
+            }
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE && pressFlagCandy) {
+            pressFlagCandy = false;
+
+        }
             
 
         while (unprocessed_time >= frame_time) {

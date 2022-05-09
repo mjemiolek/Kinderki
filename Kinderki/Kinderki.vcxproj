@@ -158,6 +158,7 @@
     <ClInclude Include="Gui.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ParticleGen.h" />
     <ClInclude Include="PhysicsWorld.h" />
     <ClInclude Include="PlayerController.h" />
     <ClInclude Include="Object.h" />
