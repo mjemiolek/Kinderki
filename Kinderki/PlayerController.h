@@ -93,7 +93,7 @@ public:
     void rotate(glm::vec3 direction,float deltaTime)
     {
         float angle = 0.0f;
-        float step = 300.0f;
+        float step = 600.0f;
         float deviation = (step/100.0f)*2.2f;
         //Specify direction
         if (direction.x == 0.0f && direction.z == 0.0f) { angle = playerObject->get_transform().y_rotation_angle; }
