@@ -6,6 +6,7 @@
 class PhysicsWorld {
 public:
 	std::vector<std::shared_ptr<SceneGraphNode>> physicsObjects;
+	float speed = 2.5f; //the same as in PlayerController
 	PhysicsWorld() {}
 	PhysicsWorld(std::vector<std::shared_ptr<SceneGraphNode>> colObj)
 	{
@@ -46,15 +47,15 @@ public:
 							if (abs(x) >= abs(y) && abs(x) >= abs(z)) // x-axis collision
 							{
 								//Push object away from collision
-								player->get_transform().m_position.x -= player->velocity.x * deltaTime;
-								/*if (x > 0)
+								//player->get_transform().m_position.x -= player->velocity.x * deltaTime;
+								if (x > 0)
 								{
-									player->get_transform().m_position.x += player->velocity.x * deltaTime;
+									player->get_transform().m_position.x += speed * deltaTime;
 								}
 								else
 								{
-									player->get_transform().m_position.x -= player->velocity.x * deltaTime;
-								}*/
+									player->get_transform().m_position.x -= speed * deltaTime;
+								}
 
 								//Reset object velocity in collision direction
 								player->velocity.x= 0.0f;
@@ -79,15 +80,17 @@ public:
 							else if (abs(z) >= abs(x) && abs(z) >= abs(y)) //z-axis collision
 							{
 								//Push object away from collision
-								player->get_transform().m_position.z -= player->velocity.z * deltaTime;
-								/*if (z > 0)
+								//player->get_transform().m_position.z -= player->velocity.z * deltaTime;
+								if (z > 0)
 								{
-									player->get_transform().m_position.z += 2.5f * deltaTime;
+									player->get_transform().m_position.z += speed * deltaTime;
 								}
 								else
 								{
-									player->get_transform().m_position.z -= 2.5f * deltaTime;
-								}*/
+									player->get_transform().m_position.z -= speed * deltaTime;
+								}
+
+								//Reset object velocity in collision direction
 								player->velocity.z = 0.0f;
 							}
 						}

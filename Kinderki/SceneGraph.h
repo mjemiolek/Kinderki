@@ -102,8 +102,6 @@ struct SceneGraphNode {
     {
         if (!is_root)
         {
-            
-
             shader.setMat4("model", m_transform.m_world_matrix);
             modelTemp.Draw(shader);
         }
