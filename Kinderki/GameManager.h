@@ -65,7 +65,7 @@ class GameManager {
         glm::vec3 sandPitPos(4.875f, 1.0f, -9.25f);
 
         glm::vec3 cubePositions[] = {
-        glm::vec3(-0.5f, 1.0f,  3.5f),
+        glm::vec3(-0.5f, 2.0f,  3.5f),
         glm::vec3(2.0f,  2.0f, -15.0f),
         glm::vec3(0.5f, 12.0f, -1.5f),
         glm::vec3(-3.8f, 2.0f, -12.3f),
@@ -179,7 +179,7 @@ class GameManager {
         collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, modelTest,floorTest });
         glm::vec3 boxColRange(0.38f, 0.38f, 0.38f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
-        glm::vec3 floorColRange(20.0f, 22.70f, 20.0f);
+        glm::vec3 floorColRange(20.0f, 20.0f, 20.0f);
 
         root_node->add_child(cube1);
         Collider cube1Collider(boxColRange, false, cubePositions[0],false);
@@ -200,7 +200,7 @@ class GameManager {
         modelTest->setProperties(lightingShader, texturekupa, cubePositions[3], MODEL, sphere, 0.15f, false, modelTestCollider);
 
         root_node->add_child(floorTest);
-        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -21.75f, 0.0f), false);
+        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -18.8f, 0.0f), false);
         floorTest->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f,false, floorCol);
 
         root_node->add_child(sandsTest);

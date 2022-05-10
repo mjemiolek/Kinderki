@@ -133,7 +133,7 @@ public:
         else {
             playerObject->get_transform().y_rotation_angle = angle;
         }
-        std::cout << playerObject->get_transform().y_rotation_angle<<std::endl;
+        //std::cout << playerObject->get_transform().y_rotation_angle<<std::endl;
     }
    
     bool triggerCollision(std::shared_ptr<SceneGraphNode> obstacle) {
