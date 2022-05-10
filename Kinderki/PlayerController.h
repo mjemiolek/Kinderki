@@ -25,6 +25,7 @@ class PlayerController {
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
     int candyCount;
+    float speed = 2.5f;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -34,39 +35,39 @@ public:
     ~PlayerController() {}
     void move(GLFWwindow* window, float deltaTime)
     {
-        float speed = 2.5f;
         playerObject->velocity.z = 0.0f;
         playerObject->velocity.x = 0.0f;
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             playerObject->velocity.z = -(speed);
             //Obrot wprzod
-            if (playerObject->get_transform().y_rotation_angle <= 0.0f)
+           /* if (playerObject->get_transform().y_rotation_angle <= 0.0f)
                 playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
             else if (playerObject->get_transform().y_rotation_angle >= 0.0f)
-                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
         
         }
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
             playerObject->velocity.z = speed;
-            if (playerObject->get_transform().y_rotation_angle <= 180.0f)
+           /* if (playerObject->get_transform().y_rotation_angle <= 180.0f)
                 playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
             else if (playerObject->get_transform().y_rotation_angle >= 180.0f)
-                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
         }
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
             playerObject->velocity.x = -(speed);
-            if (playerObject->get_transform().y_rotation_angle <= 270.0f)
+           /* if (playerObject->get_transform().y_rotation_angle <= 270.0f)
                 playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
             else if (playerObject->get_transform().y_rotation_angle >= 270.0f)
-                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
         }
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
             playerObject->velocity.x = speed;
-            if (playerObject->get_transform().y_rotation_angle <= 90.0f)
+           /* if (playerObject->get_transform().y_rotation_angle <= 90.0f)
                 playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
             else if (playerObject->get_transform().y_rotation_angle >= 90.0f)
-                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;
+                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
         }
+        rotate(playerObject->velocity, deltaTime);
         //debuowanie postaci
         if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
             playerObject->get_transform().m_position.x += 2.5f * deltaTime;
@@ -87,8 +88,53 @@ public:
             playerObject->get_transform().m_position.y += 0.1f;
             playerObject->velocity.y = speed;
         }
-
 	}
+
+    void rotate(glm::vec3 direction,float deltaTime)
+    {
+        float angle = 0.0f;
+        float step = 300.0f;
+        float deviation = (step/100.0f)*2.2f;
+        //Specify direction
+        if (direction.x == 0.0f && direction.z == 0.0f) { angle = playerObject->get_transform().y_rotation_angle; }
+        else if (direction.x == speed && direction.z == 0.0f) { angle = 90.0f; }              //right
+        else if (direction.z == speed && direction.x == 0.0f) { angle = 180.0f; }        //down
+        else if (direction.x == -speed && direction.z == 0.0f) { angle = 270.0f; }       //left
+        else if (direction.z == -speed && direction.x == 0.0f) { angle = 0.0f; }         //up
+        else if (direction.x == speed && direction.z == speed) { angle = 135.0f; }    //right-down
+        else if (direction.z == speed && direction.x == -speed) { angle = 225.0f; }   //down-left
+        else if (direction.x == -speed && direction.z == -speed) { angle = 315.0f; }  //left-up
+                                                            else { angle = 45.0f; }   //up-right
+        //Rotate player towards direction
+        if (playerObject->get_transform().y_rotation_angle < angle - deviation || playerObject->get_transform().y_rotation_angle > angle + deviation)
+        {
+            float angle1= playerObject->get_transform().y_rotation_angle - angle,
+                  angle2= angle - playerObject->get_transform().y_rotation_angle;
+            if (angle1 < 0.0f) angle1 += 360.0f;
+            if (angle2 < 0.0f) angle2 += 360.0f;
+            if (angle1 < angle2)
+            {
+                //Rotate in left direction
+                playerObject->get_transform().y_rotation_angle -= step * deltaTime;
+                if (playerObject->get_transform().y_rotation_angle < 0.0f)
+                {
+                    playerObject->get_transform().y_rotation_angle += 360.0f;
+                }
+            }
+            else {
+                //Rotate in right direction
+                playerObject->get_transform().y_rotation_angle += step * deltaTime;
+                if (playerObject->get_transform().y_rotation_angle >= 360.0f)
+                {
+                    playerObject->get_transform().y_rotation_angle -= 360.0f;
+                }
+            }
+        }
+        else {
+            playerObject->get_transform().y_rotation_angle = angle;
+        }
+        std::cout << playerObject->get_transform().y_rotation_angle<<std::endl;
+    }
    
     bool triggerCollision(std::shared_ptr<SceneGraphNode> obstacle) {
         //Posistion
