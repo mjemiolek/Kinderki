@@ -371,7 +371,7 @@ class GameManager {
     unsigned int candyCount(PlayerController* player, unsigned int tex1, unsigned int tex2, unsigned int tex3, unsigned int tex4, unsigned int tex5, unsigned int tex6, unsigned int tex7) {
         
 
-        if (player->getCandyCount() == 6)
+        if (player->getCandyCount() >= 6)
             return tex7;
         if (player->getCandyCount() == 5)
             return tex6;
