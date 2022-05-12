@@ -80,6 +80,15 @@
     <ClInclude Include="AIController.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsWorld.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleGen.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\lightcaster.frag">
@@ -116,6 +125,12 @@
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
     <None Include="res\shaders\shadow_mapping.vert">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\outlining.frag">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\outlining.vert">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
   </ItemGroup>

@@ -22,6 +22,7 @@
 #include "Gui.h"
 #include "Settings.h"
 #include "GravityManager.h"
+#include "PhysicsWorld.h"
 
 #include <mmcobj.h>
 
@@ -98,6 +99,10 @@ int main()
 
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glEnable(GL_STENCIL_TEST);
+    glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -105,6 +110,7 @@ int main()
     //Creating game components
     GameManager gameManager;
     ColliderManager colManager(gameManager.collidingObjects);
+    PhysicsWorld physicsWorld(gameManager.collidingObjects);
     Gui gui;
     Skybox skybox;
     PlayerController* player = new PlayerController(gameManager.cube3);
@@ -147,7 +153,7 @@ int main()
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
 
-
+    bool pressFlagCandy = false;
 
     
     while (!glfwWindowShouldClose(window))
@@ -162,19 +168,36 @@ int main()
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr,passed_time);
         gui.textureCandyCount = gameManager.candyCount(player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
-        colManager.manageCollisions(passed_time);
+        //colManager.manageCollisions(passed_time);
+        physicsWorld.step(passed_time);
         gui.handleGui(window);
 
         //robocza modyfikacja candyCount
-        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-            player->setCandyCount(player->getCandyCount() - 1);
-         
-        //robocza modyfikacja candyCount
-        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) 
-            player->setCandyCount(player->getCandyCount() + 1);
-            
-        
+        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
+            if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && !pressFlagCandy) {
+                pressFlagCandy = true;
+                if (player->getCandyCount() >= 1) {
+                    player->setCandyCount(player->getCandyCount() - 1);
+                }
+            }
+        }
 
+
+        //robocza modyfikacja candyCount
+        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
+            if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !pressFlagCandy) {
+                pressFlagCandy = true;
+                if (player->getCandyCount() <= 5) {
+                    player->setCandyCount(player->getCandyCount() + 1);
+                }
+            }
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE && pressFlagCandy) {
+            pressFlagCandy = false;
+
+        }
+            
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
@@ -189,10 +212,10 @@ int main()
            
             //gameManager.render();
             gameManager.renderwithShadows();
+            gameManager.renderWithOutline();
             skybox.render();
             gui.render();
 
-            render_gui();
             glfwPollEvents();
             glfwSwapBuffers(window);
         }
@@ -283,17 +306,4 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 // ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
     camera.ProcessMouseScroll(yoffset);
-}
-
-
-void render_gui() {
-    //ImGui_ImplOpenGL3_NewFrame();
-    //ImGui_ImplGlfw_NewFrame();
-    //ImGui::NewFrame();
-
-    //ImGui::Render();
-    //int display_w, display_h;
-    //glfwGetFramebufferSize(window, &display_w, &display_h);
-    //glViewport(0, 0, display_w, display_h);
-    //ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
