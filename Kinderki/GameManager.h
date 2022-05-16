@@ -185,7 +185,7 @@ class GameManager {
         wallsptr = std::make_shared<SceneGraphNode>();
 
         collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr });
-        glm::vec3 boxColRange(0.38f, 0.38f, 0.38f);
+        glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(200.0f, 20.0f, 200.0f);
 
@@ -194,12 +194,12 @@ class GameManager {
         cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f,true, cube1Collider);
 
         root_node->add_child(cube2);
-        Collider cube2Collider(boxColRange, false, cubePositions[2],false);
+        Collider cube2Collider(boxColRange, false, cubePositions[2], false);
         cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
 
         root_node->add_child(cube3);
         
-        Collider cube3Collider(boxColRange, false, cubePositions[4],true);
+        Collider cube3Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, cubePositions[4],true);
         //cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
         cube3->setProperties(lightingShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
 
@@ -212,7 +212,7 @@ class GameManager {
         benchesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, benches, 0.01f, true);
 
         root_node->add_child(floorptr);
-        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -18.8f, 0.0f), false);
+        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -18.7f, 0.0f), false);
         floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f, false, floorCol);
 
         root_node->add_child(footballstuffptr);

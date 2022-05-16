@@ -38,13 +38,16 @@ public:
 
 						glm::vec3 play = player->collider.getPosition();
 						glm::vec3 p = object->collider.getPosition();
-						float x = play.x - p.x, y = play.y - p.y, z = play.z - p.z;
+						glm::vec3 colR = object->collider.getCollisionRange();
+						float x = play.x - p.x, y = play.y - p.y, z = play.z - p.z; //distance from player in all 3 directions
 						//There is so problem for not perfect cube boxes
 						//For box to box//			   It's not trigger           //         If it is box         //   player have box collider
 						if (object->collider.getIsTrigger() == false && object->collider.getRadius() <= 0 && player->collider.getRadius() <= 0 &&
 							player->collider.boxToBoxCollisioncheck(object->collider))
 						{
-							if (abs(x) >= abs(y) && abs(x) >= abs(z)) // x-axis collision
+							//abs(x) >= abs(y) && abs(x) >= abs(z)
+							if (abs(x) - object->collider.getCollisionRange().x >= abs(z) - object->collider.getCollisionRange().z  &&
+								abs(x) - object->collider.getCollisionRange().x >= abs(y) - object->collider.getCollisionRange().y) // x-axis collision
 							{
 								//Push object away from collision
 								//player->get_transform().m_position.x -= player->velocity.x * deltaTime;
@@ -56,28 +59,30 @@ public:
 								{
 									player->get_transform().m_position.x -= speed * deltaTime;
 								}
-
+								//std::cout << "abs(x):"<<abs(x) <<"abs(z)"<<abs(z)<<std::endl;
 								//Reset object velocity in collision direction
 								player->velocity.x= 0.0f;
 							}
-							else if (abs(y) >= abs(x) && abs(y) >= abs(z)) //y-axis collision
+							else if (abs(y) - object->collider.getCollisionRange().y >= abs(z) - object->collider.getCollisionRange().z &&
+									 abs(y) - object->collider.getCollisionRange().y >= abs(x) - object->collider.getCollisionRange().x) //y-axis collision
 							{
 								//Push object away from collision
-								player->get_transform().m_position.y -= player->velocity.y * deltaTime;
+								//player->get_transform().m_position.y -= player->velocity.y * deltaTime;
 
-								/*if (y > 0)
+								if (y > 0)
 								{
 									player->get_transform().m_position.y -= player->velocity.y * deltaTime;
 								}
 								else
 								{
 									player->get_transform().m_position.y += player->velocity.y * deltaTime;
-								}*/
-
+								}
+								
 								//Reset object velocity in collision direction
 								player->velocity.y = 0.0f;
 							}
-							else if (abs(z) >= abs(x) && abs(z) >= abs(y)) //z-axis collision
+							else if (abs(z) - object->collider.getCollisionRange().z >= abs(x) - object->collider.getCollisionRange().x  &&
+									 abs(z) - object->collider.getCollisionRange().z >= abs(y) - object->collider.getCollisionRange().y) //z-axis collision
 							{
 								//Push object away from collision
 								//player->get_transform().m_position.z -= player->velocity.z * deltaTime;
@@ -89,7 +94,6 @@ public:
 								{
 									player->get_transform().m_position.z -= speed * deltaTime;
 								}
-
 								//Reset object velocity in collision direction
 								player->velocity.z = 0.0f;
 							}

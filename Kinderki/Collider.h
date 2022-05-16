@@ -48,12 +48,12 @@ public:
 		float closeA, closeB;
 
 		//Calculate the sides of box A
-		leftA = position.x - collisionRange.x;
-		rightA = position.x + collisionRange.x;
-		topA = position.y + collisionRange.y;
-		bottomA = position.y - collisionRange.y;
-		awayA = position.z - collisionRange.z;
-		closeA = position.z + collisionRange.z;
+		leftA = position.x - collisionRange.x;    //x
+		rightA = position.x + collisionRange.x;   //x
+		topA = position.y + collisionRange.y;     //y
+		bottomA = position.y - collisionRange.y;  //y
+		awayA = position.z - collisionRange.z;    //z
+		closeA = position.z + collisionRange.z;   //z
 
 		//Calculate the sides of box B
 		leftB = boxCollider.getPosition().x - boxCollider.getCollisionRange().x;
