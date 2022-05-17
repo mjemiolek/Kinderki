@@ -166,7 +166,7 @@ public:
                 }
             }
         }
-        std::cout << sandMove << std::endl;
+        //std::cout << sandMove << std::endl;
 
         if (sandMove) {
             if (playerObject->get_transform().m_position.x >= 1.0f) {

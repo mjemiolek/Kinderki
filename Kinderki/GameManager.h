@@ -64,6 +64,11 @@ class GameManager {
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
         glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
         glm::vec3 sandPitPos(8.87f, 1.82f, -14.34f);
+        glm::vec3 seesawPos(7.53f, 1.82f, -5.46f);
+        glm::vec3 slidePos(21.40f, 1.82f, -15.12f);
+        glm::vec3 trampolinePos(29.50f, 1.82f, -14.95f);
+        glm::vec3 aerialRunnwayPos(32.87f, 1.82f, -9.91f);
+        glm::vec3 swingPos(8.92f, 1.82f, 5.34f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
@@ -190,7 +195,7 @@ class GameManager {
         glm::vec3 floorColRange(30.0f, 20.0f, 30.0f);
 
         root_node->add_child(cube1);
-        Collider cube1Collider(boxColRange, false, cubePositions[0],false);
+        Collider cube1Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, cubePositions[0],false);
         cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f,true, cube1Collider);
 
         root_node->add_child(cube2);
@@ -204,19 +209,20 @@ class GameManager {
         cube3->setProperties(lightingShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
 
 
-
+        Collider aerialrunnwayTrigger(0.8f, false, sandPitPos, true);
         root_node->add_child(aerialrunnwayptr);
         aerialrunnwayptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, aerialrunnway, 0.01f,false);
+        aerialrunnwayptr->trigger = aerialrunnwayTrigger;
 
         root_node->add_child(benchesptr);
-        benchesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, benches, 0.01f, true);
+        benchesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
 
         root_node->add_child(floorptr);
         Collider floorCol(floorColRange, false, glm::vec3(15.0f, -18.56f, 0.0f), false);
         floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.01f, false, floorCol);
 
         root_node->add_child(footballstuffptr);
-        footballstuffptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, footballstuff, 0.01f, true);
+        footballstuffptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, footballstuff, 0.01f, false);
 
         root_node->add_child(sandpitptr);
         Collider sandPitTrigger(2.43f, false, sandPitPos, true);
@@ -226,35 +232,44 @@ class GameManager {
         root_node->add_child(sandsptr);
         sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
+        Collider seesawTrigger(0.5f, false, seesawPos, true);
         root_node->add_child(seesawptr);
         seesawptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesaw, 0.01f, true);
+        seesawptr->trigger = seesawTrigger;
 
         //root_node->add_child(seesawreversepts);
         //seesawreversepts->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesawreverse, 0.01f);
 
+        Collider slideTrigger(1.2f, false, slidePos, true);
         root_node->add_child(slideptr);
-        slideptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, slide, 0.01f, false);
+        slideptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, slide, 0.01f, true);
+        slideptr->trigger = slideTrigger;
 
+
+        Collider swingTrigger(1.0f, false, swingPos, true);
         root_node->add_child(swingptr);
         swingptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, swing, 0.01f, true);
+        swingptr->trigger = swingTrigger;
 
         root_node->add_child(tablesptr);
         tablesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, tables, 0.01f, false);
 
+        Collider trampolineTrigger(1.5f, false, trampolinePos, true);
         root_node->add_child(trampolineptr);
         trampolineptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, trampoline, 0.01f, true);
+        trampolineptr->trigger = trampolineTrigger;
 
         root_node->add_child(treeptr);
-        treeptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, tree, 0.01f, true);
+        treeptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, tree, 0.01f, false);
 
         root_node->add_child(umbrellaptr);
-        umbrellaptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, umbrella, 0.01f, true);
+        umbrellaptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, umbrella, 0.01f, false);
 
         root_node->add_child(walkptr);
-        walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, true);
+        walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, false);
 
         root_node->add_child(wallsptr);
-        wallsptr->setProperties(lightingShader, texturestone, zeroPos, MODEL, walls, 0.01f, true);
+        wallsptr->setProperties(lightingShader, texturestone, zeroPos, MODEL, walls, 0.01f, false);
     }
 
    
@@ -399,7 +414,7 @@ class GameManager {
         // Make it so only the pixels without the value 1 pass the test
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         // Disable modifying of the stencil buffer
-        //glStencilMask(0x00);
+        glStencilMask(0x00);
         // Disable the depth buffer
         glDisable(GL_DEPTH_TEST);
 
@@ -412,7 +427,7 @@ class GameManager {
         outlineShader.setFloat("m_scale", 0.13f);
 
         root_node->renderSceneWithOutline(true, outlineShader);
-        //glStencilMask(0xFF);
+        glStencilMask(0xFF);
         // Clear stencil buffer
         glStencilFunc(GL_ALWAYS, 0, 0xFF);
         // Enable the depth buffer
