@@ -26,6 +26,7 @@ private:
     std::shared_ptr<SceneGraphNode> playerObject;
     int candyCount;
     float speed = 2.5f;
+    bool sandMove = false;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -35,59 +36,62 @@ public:
     ~PlayerController() {}
     void move(GLFWwindow* window, float deltaTime)
     {
-        playerObject->velocity.z = 0.0f;
-        playerObject->velocity.x = 0.0f;
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            playerObject->velocity.z = -(speed);
-            //Obrot wprzod
-           /* if (playerObject->get_transform().y_rotation_angle <= 0.0f)
-                playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
-            else if (playerObject->get_transform().y_rotation_angle >= 0.0f)
-                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
-        
-        }
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            playerObject->velocity.z = speed;
-           /* if (playerObject->get_transform().y_rotation_angle <= 180.0f)
-                playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
-            else if (playerObject->get_transform().y_rotation_angle >= 180.0f)
-                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
-        }
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            playerObject->velocity.x = -(speed);
-           /* if (playerObject->get_transform().y_rotation_angle <= 270.0f)
-                playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
-            else if (playerObject->get_transform().y_rotation_angle >= 270.0f)
-                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
-        }
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-            playerObject->velocity.x = speed;
-           /* if (playerObject->get_transform().y_rotation_angle <= 90.0f)
-                playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
-            else if (playerObject->get_transform().y_rotation_angle >= 90.0f)
-                playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
-        }
-        rotate(playerObject->velocity, deltaTime);
-        //debuowanie postaci
-        if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
-            playerObject->get_transform().m_position.x += 2.5f * deltaTime;
-                playerObject->get_transform().x_rotation_angle += 90.0f * deltaTime;
-        }
-        //setPlayerPosition(playerObject->get_transform().m_position);
-        playerObject->update_transform();
-        playerObject->collider.setPosition(playerObject->get_transform().m_position);
+        if (!sandMove) {
+            playerObject->velocity.z = 0.0f;
+            playerObject->velocity.x = 0.0f;
+            if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+                playerObject->velocity.z = -(speed);
+                //Obrot wprzod
+               /* if (playerObject->get_transform().y_rotation_angle <= 0.0f)
+                    playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
+                else if (playerObject->get_transform().y_rotation_angle >= 0.0f)
+                    playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
 
-        //move Player to position (0,2,0)
-        if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-        {
-            playerObject->get_transform().m_position = glm::vec3(0.0f, 2.0f, 0.0f);
+            }
+            if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+                playerObject->velocity.z = speed;
+                /* if (playerObject->get_transform().y_rotation_angle <= 180.0f)
+                     playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
+                 else if (playerObject->get_transform().y_rotation_angle >= 180.0f)
+                     playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
+            }
+            if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+                playerObject->velocity.x = -(speed);
+                /* if (playerObject->get_transform().y_rotation_angle <= 270.0f)
+                     playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
+                 else if (playerObject->get_transform().y_rotation_angle >= 270.0f)
+                     playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
+            }
+            if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                playerObject->velocity.x = speed;
+                /* if (playerObject->get_transform().y_rotation_angle <= 90.0f)
+                     playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
+                 else if (playerObject->get_transform().y_rotation_angle >= 90.0f)
+                     playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
+            }
+            rotate(playerObject->velocity, deltaTime);
+            //debuowanie postaci
+            if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+                playerObject->get_transform().m_position.x += 2.5f * deltaTime;
+                playerObject->get_transform().x_rotation_angle += 90.0f * deltaTime;
+            }
+            //setPlayerPosition(playerObject->get_transform().m_position);
+            playerObject->update_transform();
+            playerObject->collider.setPosition(playerObject->get_transform().m_position);
+
+            //move Player to position (0,2,0)
+            if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+            {
+                playerObject->get_transform().m_position = glm::vec3(0.0f, 3.5f, 0.0f);
+            }
+            //go up
+            if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            {
+                playerObject->get_transform().m_position.y += 0.1f;
+                playerObject->velocity.y = speed;
+            }
         }
-        //go up
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        {
-            playerObject->get_transform().m_position.y += 0.1f;
-            playerObject->velocity.y = speed;
-        }
+        
 	}
 
     void rotate(glm::vec3 direction,float deltaTime)
@@ -154,12 +158,28 @@ public:
     void interact(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
         if (triggerCollision(interacter)) {
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-                playerObject->get_transform().m_position.y -= 0.3f * dt;
-                if (playerObject->get_transform().m_position.y <= 1.5f) {
-                    playerObject->get_transform().m_position.y += 0.3f * dt;
-                    playerObject->get_transform().m_position.x = -5.0f;
+                playerObject->get_transform().m_position.y -= 2.0f * dt;
+                if (playerObject->get_transform().m_position.y <= 0.0f) {
+                    playerObject->get_transform().m_position.y += 2.0f * dt;
+                    sandMove = true;
+                    //playerObject->get_transform().m_position.x = -5.0f;
                 }
             }
+        }
+        std::cout << sandMove << std::endl;
+
+        if (sandMove) {
+            if (playerObject->get_transform().m_position.x >= 1.0f) {
+                playerObject->get_transform().m_position.x -= 4.5f * dt;
+            }
+            if (playerObject->get_transform().m_position.x <= 1.0f) {
+                playerObject->get_transform().m_position.y += 2.0f * dt;
+                if (playerObject->get_transform().m_position.y >= 1.821f) {
+                    sandMove = false;
+                }
+            }
+            
+
         }
     }
 

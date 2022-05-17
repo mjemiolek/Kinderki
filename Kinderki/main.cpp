@@ -216,6 +216,8 @@ int main()
             skybox.render();
             gui.render();
 
+            std::cout <<"x: " << player->getPlayerObject()->get_transform().m_position.x << "y: " << player->getPlayerObject()->get_transform().m_position.y << "z: " << player->getPlayerObject()->get_transform().m_position.z << std::endl;
+
             glfwPollEvents();
             glfwSwapBuffers(window);
         }

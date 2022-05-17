@@ -62,8 +62,8 @@ class GameManager {
     GameManager() {
         // settings
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
-        glm::vec3 floorPos(0.0f, -1.75f, 0.0f);
-        glm::vec3 sandPitPos(4.875f, 1.0f, -9.25f);
+        glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
+        glm::vec3 sandPitPos(8.87f, 1.82f, -14.34f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
@@ -187,7 +187,7 @@ class GameManager {
         collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
-        glm::vec3 floorColRange(200.0f, 20.0f, 200.0f);
+        glm::vec3 floorColRange(30.0f, 20.0f, 30.0f);
 
         root_node->add_child(cube1);
         Collider cube1Collider(boxColRange, false, cubePositions[0],false);
@@ -212,14 +212,14 @@ class GameManager {
         benchesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, benches, 0.01f, true);
 
         root_node->add_child(floorptr);
-        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -18.7f, 0.0f), false);
-        floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.02f, false, floorCol);
+        Collider floorCol(floorColRange, false, glm::vec3(15.0f, -18.56f, 0.0f), false);
+        floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.01f, false, floorCol);
 
         root_node->add_child(footballstuffptr);
         footballstuffptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, footballstuff, 0.01f, true);
 
         root_node->add_child(sandpitptr);
-        Collider sandPitTrigger(1.5f, false, sandPitPos, true);
+        Collider sandPitTrigger(2.43f, false, sandPitPos, true);
         sandpitptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, sandpit, 0.01f, false);
         sandpitptr->trigger = sandPitTrigger;
 
