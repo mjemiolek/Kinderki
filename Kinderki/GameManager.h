@@ -360,7 +360,8 @@ class GameManager {
     {
         // 1. render depth of scene to texture (from light's perspective)
         float near_plane = 0.1f, far_plane = 75.0f;
-        glm::mat4 orthgonalProjection = glm::ortho(-15.0f, 15.0f, -15.0f, 15.0f, near_plane, far_plane);
+        float area = 22.0f;
+        glm::mat4 orthgonalProjection = glm::ortho(-area, area, -area, area, near_plane, far_plane);
         glm::mat4 lightView = glm::lookAt(lightPos, cube3->get_transform().m_position, glm::vec3(0.0, 1.0, 0.0));
         glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
         simpleDepthShader.use();

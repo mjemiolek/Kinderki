@@ -37,10 +37,11 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player);
 //boolean checkForCollisions(PlayerController* player, std::vector<std::shared_ptr<SceneGraphNode>> objects, std::shared_ptr<SceneGraphNode> cube);
 //void render();
 void render_gui();
+void daySimulation(float dt);
 
 GLFWwindow* window = nullptr;
 //light
-glm::vec3 lightPosition(5.0f, 35.0f, -30.0f);
+glm::vec3 lightPosition(30.0f, 35.0f, -5.0f);
 // camera
 glm::vec3 cameraPos(0.0f, 16.0f, 5.0f);
 float lastX = SCR_WIDTH / 2.0f;
@@ -125,7 +126,7 @@ int main()
     unsigned int textureWallDestroy = gameManager.loadTexture("res/textures/icons/Iwallbang.png");
     unsigned int textureSandpit = gameManager.loadTexture("res/textures/icons/sandpit.png");
     unsigned int textureSlide = gameManager.loadTexture("res/textures/icons/slide.png");
-    
+
     unsigned int textureCandy = gameManager.loadTexture("res/textures/candy.png");
     unsigned int textureCandyx0 = gameManager.loadTexture("res/textures/candyx0.png");
     unsigned int textureCandyx1 = gameManager.loadTexture("res/textures/candyx1.png");
@@ -145,17 +146,17 @@ int main()
     gui.textureSlide = textureSlide;
 
     gui.textureCandy = textureCandy;
-    
 
 
-    
+
+
 
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
 
     bool pressFlagCandy = false;
 
-    
+
     while (!glfwWindowShouldClose(window))
     {
         current_time = glfwGetTime();
@@ -164,9 +165,10 @@ int main()
         unprocessed_time += passed_time;
 
         input(window, gameManager.cube3);
+        daySimulation(passed_time);
         AI->move(window, passed_time);
         player->move(window, passed_time);
-        player->interact(window, gameManager.sandpitptr,passed_time);
+        player->interact(window, gameManager.sandpitptr, passed_time);
         gui.textureCandyCount = gameManager.candyCount(player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);
@@ -197,7 +199,7 @@ int main()
             pressFlagCandy = false;
 
         }
-            
+
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
@@ -209,14 +211,12 @@ int main()
 
         if (should_render) {
             should_render = false;
-           
+
             //gameManager.render();
             gameManager.renderwithShadows();
             gameManager.renderWithOutline();
             skybox.render();
             gui.render();
-
-            std::cout <<"x: " << player->getPlayerObject()->get_transform().m_position.x << "y: " << player->getPlayerObject()->get_transform().m_position.y << "z: " << player->getPlayerObject()->get_transform().m_position.z << std::endl;
 
             glfwPollEvents();
             glfwSwapBuffers(window);
@@ -225,15 +225,15 @@ int main()
     //ImGui_ImplOpenGL3_Shutdown();
     //ImGui_ImplGlfw_Shutdown();
     //ImGui::DestroyContext();
-    
+
     //glDeleteVertexArrays(1, &cubeVAO);
     //glDeleteVertexArrays(1, &quadVAO);
     //glDeleteBuffers(1, &VBO);
     delete player;
 
 
-        // glfw: terminate, clearing all previously allocated GLFW resources.
-        // ------------------------------------------------------------------
+    // glfw: terminate, clearing all previously allocated GLFW resources.
+    // ------------------------------------------------------------------
     glfwDestroyWindow(window);
     glfwTerminate();
     return 0;
@@ -251,29 +251,40 @@ static void glfw_error_callback(int error, const char* description)
 void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-        //Player+Camera                                OnlyCamera
-    //if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-    //    camera.ProcessKeyboard(FORWARD, passed_time);
-    //if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-    //    camera.ProcessKeyboard(BACKWARD, passed_time);
-    //if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-    //    camera.ProcessKeyboard(LEFT, passed_time);
-    //if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-    //    camera.ProcessKeyboard(RIGHT, passed_time);
-    //if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
-    //    cube2->get_transform().x_rotation_angle += 6.0f * passed_time;
-    //if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
-    //    cube2->get_transform().z_rotation_angle += 9.0f * passed_time;
-    //if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-        camera.Position.x = player->get_transform().m_position.x + cameraPos.x;  //attach camera to player
-        camera.Position.z = player->get_transform().m_position.z + cameraPos.z;  //attach camera to player
-        camera.Position.y = player->get_transform().m_position.y + cameraPos.y;  //attach camera to player
-        lightPos.x = player->get_transform().m_position.x + lightPosition.x;     //attach light to player
-        lightPos.y = player->get_transform().m_position.y + lightPosition.y;     //attach light to player
-        lightPos.z = player->get_transform().m_position.z + lightPosition.z;     //attach light to player
+    //Player+Camera                                OnlyCamera
+//if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+//    camera.ProcessKeyboard(FORWARD, passed_time);
+//if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+//    camera.ProcessKeyboard(BACKWARD, passed_time);
+//if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+//    camera.ProcessKeyboard(LEFT, passed_time);
+//if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+//    camera.ProcessKeyboard(RIGHT, passed_time);
+//if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
+//    cube2->get_transform().x_rotation_angle += 6.0f * passed_time;
+//if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+//    cube2->get_transform().z_rotation_angle += 9.0f * passed_time;
+//if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+        lightPosition.x = 30.0f;
+    }
+    camera.Position.x = player->get_transform().m_position.x + cameraPos.x;  //attach camera to player
+    camera.Position.z = player->get_transform().m_position.z + cameraPos.z;  //attach camera to player
+    camera.Position.y = player->get_transform().m_position.y + cameraPos.y;  //attach camera to player
+    lightPos.x = player->get_transform().m_position.x + lightPosition.x;     //attach light to player
+    lightPos.y = player->get_transform().m_position.y + lightPosition.y;     //attach light to player
+    lightPos.z = player->get_transform().m_position.z + lightPosition.z;     //attach light to player
 
-    //}
-        //camera.Position = cube3->get_transform().m_position + cameraPos;
+//}
+    //camera.Position = cube3->get_transform().m_position + cameraPos;
+}
+
+void daySimulation(float dt)
+{
+    float step = -0.5f;
+    lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
+    lightPosition.x += step * dt;
+    if (lightPosition.x < -27.0f) lightPosition.x = 30.0f; //end of day
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
