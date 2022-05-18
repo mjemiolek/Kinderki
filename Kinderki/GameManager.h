@@ -254,7 +254,7 @@ class GameManager {
         root_node->add_child(tablesptr);
         tablesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, tables, 0.01f, false);
 
-        Collider trampolineTrigger(1.5f, false, trampolinePos, true);
+        Collider trampolineTrigger(glm::vec3(1.0f, 0.1f, 1.0f), false, trampolinePos, true);
         root_node->add_child(trampolineptr);
         trampolineptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, trampoline, 0.01f, true);
         trampolineptr->trigger = trampolineTrigger;

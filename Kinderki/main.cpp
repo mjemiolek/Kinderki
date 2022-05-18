@@ -169,6 +169,7 @@ int main()
         AI->move(window, passed_time);
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr, passed_time);
+        player->trampoliner(window, gameManager.trampolineptr, passed_time);
         gui.textureCandyCount = gameManager.candyCount(player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);

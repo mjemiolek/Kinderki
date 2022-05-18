@@ -192,6 +192,16 @@ public:
         }
     }
 
+    void trampoliner(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter, float dt)
+    {
+        std::cout << playerObject->collider.getPosition().x << " " << playerObject->collider.getPosition().z << "       ";
+        std::cout << interacter->trigger.getPosition().x << " " << interacter->trigger.getPosition().z << std::endl;
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
+            playerObject->velocity.y = 10.0f;
+            playerObject->canJump = false;
+        }
+    }
+
     void setPlayerObject(std::shared_ptr<SceneGraphNode> tempObject) {
         playerObject = tempObject;
     }
