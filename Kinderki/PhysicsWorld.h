@@ -63,9 +63,10 @@ public:
 								//Reset object velocity in collision direction
 								player->velocity.x= 0.0f;
 							}
-							else if (abs(y) - object->collider.getCollisionRange().y >= abs(z) - object->collider.getCollisionRange().z &&
-									 abs(y) - object->collider.getCollisionRange().y >= abs(x) - object->collider.getCollisionRange().x) //y-axis collision
+							if (abs(y) - object->collider.getCollisionRange().y >= abs(z) - object->collider.getCollisionRange().z &&
+								abs(y) - object->collider.getCollisionRange().y >= abs(x) - object->collider.getCollisionRange().x) //y-axis collision
 							{
+								player->canJump = true;
 								//Push object away from collision
 								//player->get_transform().m_position.y -= player->velocity.y * deltaTime;
 
@@ -81,8 +82,8 @@ public:
 								//Reset object velocity in collision direction
 								player->velocity.y = 0.0f;
 							}
-							else if (abs(z) - object->collider.getCollisionRange().z >= abs(x) - object->collider.getCollisionRange().x  &&
-									 abs(z) - object->collider.getCollisionRange().z >= abs(y) - object->collider.getCollisionRange().y) //z-axis collision
+							if (abs(z) - object->collider.getCollisionRange().z >= abs(x) - object->collider.getCollisionRange().x  &&
+								abs(z) - object->collider.getCollisionRange().z >= abs(y) - object->collider.getCollisionRange().y) //z-axis collision
 							{
 								//Push object away from collision
 								//player->get_transform().m_position.z -= player->velocity.z * deltaTime;

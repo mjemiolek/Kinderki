@@ -201,6 +201,9 @@ struct SceneGraphNode {
     Transform m_transform;
     bool m_dirty;
 
+    //jumping
+    bool canJump = false;
+
     //Physics
     glm::vec3 gravity = glm::vec3(0.0f, -9.81f, 0.0f);
     glm::vec3 velocity = glm::vec3(0.0f, 0.0f, 0.0f);

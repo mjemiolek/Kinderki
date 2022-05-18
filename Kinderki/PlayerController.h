@@ -87,8 +87,17 @@ public:
             //go up
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
             {
-                playerObject->get_transform().m_position.y += 0.1f;
+                //playerObject->get_transform().m_position.y += 0.1f;
                 playerObject->velocity.y = speed;
+            }
+            //jump
+            if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+            {
+                if (playerObject->canJump==true)
+                {
+                    playerObject->velocity.y = 5.0f;
+                }
+                playerObject->canJump = false;
             }
         }
         
