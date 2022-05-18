@@ -194,6 +194,7 @@ struct SceneGraphNode {
     renderEnum tempRender;
     unsigned int VAOTemp;
     Collider collider;
+    std::vector<Collider> additionalColliders;
     Collider trigger;
     bool stencil;
 

@@ -197,10 +197,15 @@ class GameManager {
         root_node->add_child(cube1);
         Collider cube1Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, cubePositions[0],false);
         cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f,true, cube1Collider);
+        //test
+        Collider cube1ExtraCollider(glm::vec3(0.38f, 0.38f, 0.38f), false,glm::vec3(-0.5f, 2.0f, 5.5f), false);
+        cube1->additionalColliders.push_back(cube1ExtraCollider);
+        //test
 
         root_node->add_child(cube2);
         Collider cube2Collider(boxColRange, false, cubePositions[2], false);
         cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
+        
 
         root_node->add_child(cube3);
         
