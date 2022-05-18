@@ -14,33 +14,39 @@ public:
         playerObject = player;
     }
 
-    void manageBall(GLFWwindow* window)
+    void manageBall(GLFWwindow* window, float dt)
     {
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
         {
             ball->get_transform().m_position = glm::vec3(0.0f, 4.5f, -5.0f);
         }
         //ball logic
+        float vectorx = (ball->get_transform().m_position.x - playerObject->get_transform().m_position.x);
+        float vectorz = (ball->get_transform().m_position.z - playerObject->get_transform().m_position.z);
+        //apply force
         if (ball->collider.sphereToSphereCollisionCheck(playerObject->collider))
         {
-            ball->velocity.x = 2 * playerObject->velocity.x;
-            ball->velocity.z = 2 * playerObject->velocity.z;
+            ball->velocity.x = 8 * vectorx;
+            ball->velocity.z = 8 * vectorz;
         }
-        if (ball->velocity.x > 0)
+        float stopVal= 0.01f;
+        //decelerate
+        if (ball->velocity.x > stopVal || ball->velocity.x < -stopVal)
         {
-            ball->velocity.x -= 0.01f;
+            ball->velocity.x -= ball->velocity.x * dt;
         }
-        if (ball->velocity.x < 0)
+        if (ball->velocity.z > stopVal || ball->velocity.z < -stopVal)
         {
-            ball->velocity.x += 0.01f;
+            ball->velocity.z -= ball->velocity.z * dt;
         }
-        if (ball->velocity.z > 0)
+        //stop
+        if (ball->velocity.x <= stopVal && ball->velocity.x >= -stopVal)
         {
-            ball->velocity.z -= 0.01f;
+            ball->velocity.x = 0.0f;
         }
-        if (ball->velocity.z < 0)
+        if (ball->velocity.z <= stopVal && ball->velocity.z >= -stopVal)
         {
-            ball->velocity.z += 0.01f;
+            ball->velocity.z = 0.0f;
         }
 
 

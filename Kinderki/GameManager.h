@@ -193,13 +193,13 @@ class GameManager {
         collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
-        glm::vec3 floorColRange(30.0f, 20.0f, 30.0f);
+        glm::vec3 floorColRange(300.0f, 20.0f, 300.0f);
 
         root_node->add_child(cube1);
         Collider cube1Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, cubePositions[0],false);
         cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f,true, cube1Collider);
         //test
-        Collider cube1ExtraCollider(glm::vec3(0.38f, 0.38f, 0.38f), false,glm::vec3(-0.5f, 2.0f, 5.5f), false);
+        Collider cube1ExtraCollider(boxColRange, false,glm::vec3(-0.5f, 2.0f, 5.5f), false);
         cube1->additionalColliders.push_back(cube1ExtraCollider);
         //test
 

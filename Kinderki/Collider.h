@@ -34,7 +34,7 @@ public:
 		float distance = sqrt((p.x - play.x) * (p.x - play.x) + (p.y - play.y) * (p.y - play.y) + (p.z - play.z) * (p.z - play.z));
 		if (distance < radius+sphereCollider.getRadius())
 		{
-			std::cout << "SphereCollision";
+			//std::cout << "SphereCollision";
 			return true;
 		}
 		return false;

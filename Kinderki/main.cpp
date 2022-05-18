@@ -168,7 +168,7 @@ int main()
 
         input(window, gameManager.cube3);
         daySimulation(passed_time);
-        ballManager->manageBall(window);
+        ballManager->manageBall(window, passed_time);
         AI->move(window, passed_time);
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr, passed_time);
