@@ -45,6 +45,9 @@ public:
 						object->collider = tempCollider;
 
 					}
+					//Don't go into ground
+					if (player->get_transform().m_position.y < 1.8f) player->get_transform().m_position.y = 1.8f;
+					//std::cout<< player->get_transform().m_position.y << std::endl;
 				}
 			}
 		}
@@ -146,38 +149,58 @@ public:
 			//Copy-paste from above
 			if (tempCollider->boxToBoxCollisioncheck(object->collider))
 			{
-				if (abs(x) >= abs(y) && abs(x) >= abs(z))
+				//abs(x) >= abs(y) && abs(x) >= abs(z)
+				if (abs(x) - object->collider.getCollisionRange().x >= abs(z) - object->collider.getCollisionRange().z &&
+					abs(x) - object->collider.getCollisionRange().x >= abs(y) - object->collider.getCollisionRange().y) // x-axis collision
 				{
+					//Push object away from collision
+					//player->get_transform().m_position.x -= player->velocity.x * deltaTime;
 					if (x > 0)
 					{
-						player->get_transform().m_position.x += 2.5f * deltaTime;
+						player->get_transform().m_position.x += speed * deltaTime;
 					}
 					else
 					{
-						player->get_transform().m_position.x -= 2.5f * deltaTime;
+						player->get_transform().m_position.x -= speed * deltaTime;
 					}
+					//std::cout << "abs(x):"<<abs(x) <<"abs(z)"<<abs(z)<<std::endl;
+					//Reset object velocity in collision direction
+					player->velocity.x = 0.0f;
 				}
-				else if (abs(y) >= abs(x) && abs(y) >= abs(z))
+				if (abs(y) - object->collider.getCollisionRange().y >= abs(z) - object->collider.getCollisionRange().z &&
+					abs(y) - object->collider.getCollisionRange().y >= abs(x) - object->collider.getCollisionRange().x) //y-axis collision
 				{
+					player->canJump = true;
+					//Push object away from collision
+					//player->get_transform().m_position.y -= player->velocity.y * deltaTime;
+
 					if (y > 0)
 					{
-						player->get_transform().m_position.y += 2.5f * deltaTime;
+						player->get_transform().m_position.y -= player->velocity.y * deltaTime;
 					}
 					else
 					{
-						player->get_transform().m_position.y -= 2.5f * deltaTime;
+						player->get_transform().m_position.y += player->velocity.y * deltaTime;
 					}
+
+					//Reset object velocity in collision direction
+					player->velocity.y = 0.0f;
 				}
-				else if (abs(z) >= abs(x) && abs(z) >= abs(y))
+				if (abs(z) - object->collider.getCollisionRange().z >= abs(x) - object->collider.getCollisionRange().x &&
+					abs(z) - object->collider.getCollisionRange().z >= abs(y) - object->collider.getCollisionRange().y) //z-axis collision
 				{
+					//Push object away from collision
+					//player->get_transform().m_position.z -= player->velocity.z * deltaTime;
 					if (z > 0)
 					{
-						player->get_transform().m_position.z += 2.5f * deltaTime;
+						player->get_transform().m_position.z += speed * deltaTime;
 					}
 					else
 					{
-						player->get_transform().m_position.z -= 2.5f * deltaTime;
+						player->get_transform().m_position.z -= speed * deltaTime;
 					}
+					//Reset object velocity in collision direction
+					player->velocity.z = 0.0f;
 				}
 			}
 			delete tempCollider;

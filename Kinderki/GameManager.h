@@ -25,7 +25,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> cube1;
     std::shared_ptr<SceneGraphNode> cube2;
     std::shared_ptr<SceneGraphNode> cube3; //player
-    std::shared_ptr<SceneGraphNode> test1;
+    std::shared_ptr<SceneGraphNode> ball;
     std::shared_ptr<SceneGraphNode> progressbar;
     std::vector<std::shared_ptr<SceneGraphNode>> collidingObjects;
     std::shared_ptr<GravityManager> gravity;
@@ -65,6 +65,7 @@ class GameManager {
         glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
         glm::vec3 sandPitPos(8.87f, 1.82f, -14.34f);
         glm::vec3 seesawPos(7.53f, 1.82f, -5.46f);
+        glm::vec3 ballPos(11.53f, 4.82f, 14.46f);
         glm::vec3 slidePos(21.40f, 1.82f, -15.12f);
         glm::vec3 trampolinePos(29.50f, 1.82f, -14.95f);
         glm::vec3 aerialRunnwayPos(32.87f, 1.82f, -9.91f);
@@ -170,7 +171,7 @@ class GameManager {
         cube1 = std::make_shared<SceneGraphNode>();
         cube2 = std::make_shared<SceneGraphNode>();
         cube3 = std::make_shared<SceneGraphNode>();
-        test1 = std::make_shared<SceneGraphNode>();
+        ball = std::make_shared<SceneGraphNode>();
 
         aerialrunnwayptr = std::make_shared<SceneGraphNode>();
         benchesptr = std::make_shared<SceneGraphNode>();
@@ -189,7 +190,7 @@ class GameManager {
         walkptr = std::make_shared<SceneGraphNode>();
         wallsptr = std::make_shared<SceneGraphNode>();
 
-        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr });
+        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(30.0f, 20.0f, 30.0f);
@@ -208,10 +209,13 @@ class GameManager {
         
 
         root_node->add_child(cube3);
-        
-        Collider cube3Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, cubePositions[4],true);
+        Collider cube3Collider(0.34f, false, cubePositions[4],true);
         //cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
         cube3->setProperties(lightingShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
+
+        root_node->add_child(ball);
+        Collider ballCollider(0.28f, false, glm::vec3(0.0f, 2.0f, -2.0f), true);
+        ball->setProperties(lightingShader, texturekupa, glm::vec3(0.0f, 2.0f, -2.0f),MODEL,sphere,0.03f,true,ballCollider);
 
 
         Collider aerialrunnwayTrigger(0.8f, false, sandPitPos, true);

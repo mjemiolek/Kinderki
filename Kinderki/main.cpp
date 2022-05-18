@@ -23,6 +23,7 @@
 #include "Settings.h"
 #include "GravityManager.h"
 #include "PhysicsWorld.h"
+#include "BallManager.h"
 
 #include <mmcobj.h>
 
@@ -114,6 +115,7 @@ int main()
     PhysicsWorld physicsWorld(gameManager.collidingObjects);
     Gui gui;
     Skybox skybox;
+    BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3);
     PlayerController* player = new PlayerController(gameManager.cube3);
     AIController* AI = new AIController(gameManager.cube2);
 
@@ -166,6 +168,7 @@ int main()
 
         input(window, gameManager.cube3);
         daySimulation(passed_time);
+        ballManager->manageBall(window);
         AI->move(window, passed_time);
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr, passed_time);
@@ -231,6 +234,7 @@ int main()
     //glDeleteVertexArrays(1, &quadVAO);
     //glDeleteBuffers(1, &VBO);
     delete player;
+    delete ballManager;
 
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
@@ -275,9 +279,6 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
     lightPos.x = player->get_transform().m_position.x + lightPosition.x;     //attach light to player
     lightPos.y = player->get_transform().m_position.y + lightPosition.y;     //attach light to player
     lightPos.z = player->get_transform().m_position.z + lightPosition.z;     //attach light to player
-
-//}
-    //camera.Position = cube3->get_transform().m_position + cameraPos;
 }
 
 void daySimulation(float dt)

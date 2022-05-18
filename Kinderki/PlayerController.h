@@ -41,33 +41,15 @@ public:
             playerObject->velocity.x = 0.0f;
             if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
                 playerObject->velocity.z = -(speed);
-                //Obrot wprzod
-               /* if (playerObject->get_transform().y_rotation_angle <= 0.0f)
-                    playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
-                else if (playerObject->get_transform().y_rotation_angle >= 0.0f)
-                    playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
-
             }
             if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
                 playerObject->velocity.z = speed;
-                /* if (playerObject->get_transform().y_rotation_angle <= 180.0f)
-                     playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
-                 else if (playerObject->get_transform().y_rotation_angle >= 180.0f)
-                     playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
             }
             if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
                 playerObject->velocity.x = -(speed);
-                /* if (playerObject->get_transform().y_rotation_angle <= 270.0f)
-                     playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
-                 else if (playerObject->get_transform().y_rotation_angle >= 270.0f)
-                     playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
             }
             if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
                 playerObject->velocity.x = speed;
-                /* if (playerObject->get_transform().y_rotation_angle <= 90.0f)
-                     playerObject->get_transform().y_rotation_angle += 90.0f * deltaTime;
-                 else if (playerObject->get_transform().y_rotation_angle >= 90.0f)
-                     playerObject->get_transform().y_rotation_angle -= 90.0f * deltaTime;*/
             }
             rotate(playerObject->velocity, deltaTime);
             //debuowanie postaci
@@ -75,7 +57,7 @@ public:
                 playerObject->get_transform().m_position.x += 2.5f * deltaTime;
                 playerObject->get_transform().x_rotation_angle += 90.0f * deltaTime;
             }
-            //setPlayerPosition(playerObject->get_transform().m_position);
+
             playerObject->update_transform();
             playerObject->collider.setPosition(playerObject->get_transform().m_position);
 
