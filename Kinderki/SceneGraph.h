@@ -194,12 +194,16 @@ struct SceneGraphNode {
     renderEnum tempRender;
     unsigned int VAOTemp;
     Collider collider;
+    std::vector<Collider> additionalColliders;
     Collider trigger;
     bool stencil;
 
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;
     Transform m_transform;
     bool m_dirty;
+
+    //jumping
+    bool canJump = false;
 
     //Physics
     glm::vec3 gravity = glm::vec3(0.0f, -9.81f, 0.0f);
