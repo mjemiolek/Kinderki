@@ -28,6 +28,7 @@
 class AIController {
 private:
     std::shared_ptr<SceneGraphNode> AIObject;
+    enum StateType{Move, Interact};
 public:
     AIController(std::shared_ptr<SceneGraphNode> AI) {
         this->AIObject = AI;
@@ -56,6 +57,11 @@ public:
         }
     }
 
+    bool checkForInteraction(PlayerController* gracz) {
+        if (gracz->triggerCollision(AIObject)) return true;
+        return false;
+    }
+
     void move(GLFWwindow* window, float deltaTime) {
         std::srand(time(NULL));
         int number;
@@ -79,7 +85,17 @@ public:
         AIObject->collider.setPosition(AIObject->get_transform().m_position);
 
     }
-    void ChangeState() {
+    void ChangeState(GLFWwindow* window, float deltaTime, PlayerController* gracz) {
+        StateType CurrentState = Move;
+        switch (CurrentState)
+        {
+        case Move:
+            move(window, deltaTime);
+            if (checkForInteraction(gracz)) CurrentState = Interact;
+            break;
+        case Interact:
+            if (!checkForInteraction(gracz)) CurrentState = Move;
+        }
         int count = 0;
 
 

@@ -74,7 +74,7 @@ class GameManager {
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
         glm::vec3(2.0f,  2.0f, -15.0f),
-        glm::vec3(0.5f, 12.0f, -1.5f),
+        glm::vec3(0.5f, 2.5f, -1.5f),
         glm::vec3(-3.8f, 2.0f, -12.3f),
         glm::vec3(0.0f, 2.0f,  0.0f),
         glm::vec3(0.0f,  2.0f, 0.0f),
@@ -322,7 +322,7 @@ class GameManager {
     
     void update(float dt) {
 
-        gravity->updateGravityInNegativeY(cube2, dt);
+        //gravity->updateGravityInNegativeY(cube2, dt);
 
         
         cube2->update_transform();

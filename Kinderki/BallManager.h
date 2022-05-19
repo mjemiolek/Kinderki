@@ -34,10 +34,14 @@ public:
         if (ball->velocity.x > stopVal || ball->velocity.x < -stopVal)
         {
             ball->velocity.x -= ball->velocity.x * dt;
+            ball->get_transform().y_rotation_angle += 90.0f * dt;
+            ball->get_transform().x_rotation_angle += 90.0f * dt;
         }
         if (ball->velocity.z > stopVal || ball->velocity.z < -stopVal)
         {
             ball->velocity.z -= ball->velocity.z * dt;
+            ball->get_transform().y_rotation_angle += 90.0f * dt;
+            ball->get_transform().z_rotation_angle += 90.0f * dt;
         }
         //stop
         if (ball->velocity.x <= stopVal && ball->velocity.x >= -stopVal)
