@@ -46,7 +46,7 @@ public:
 
 					}
 					//Don't go into ground
-					if (player->get_transform().m_position.y < 1.8f) player->get_transform().m_position.y = 1.8f;
+					//if (player->get_transform().m_position.y < 1.8f) player->get_transform().m_position.y = 1.8f;
 					//std::cout<< player->get_transform().m_position.y << std::endl;
 				}
 			}

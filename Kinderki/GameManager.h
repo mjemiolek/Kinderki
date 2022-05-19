@@ -70,6 +70,12 @@ class GameManager {
         glm::vec3 trampolinePos(29.50f, 1.82f, -14.95f);
         glm::vec3 aerialRunnwayPos(32.87f, 1.82f, -9.91f);
         glm::vec3 swingPos(8.92f, 1.82f, 5.34f);
+        glm::vec3 wallPosColl1(2.42f, 1.82f, 0.0f);
+        glm::vec3 wallPosColl2(20.675f, 1.82f, -20.89f);
+        glm::vec3 wallPosColl3(12.1845f, 1.82f, 21.0f);
+        glm::vec3 wallPosColl4(21.4975f, 1.82f, 15.823f);
+        glm::vec3 wallPosColl5(30.1425f, 1.82f, 11.07f);
+        glm::vec3 wallPosColl6(38.455f, 1.82f, -4.68f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
@@ -190,7 +196,7 @@ class GameManager {
         walkptr = std::make_shared<SceneGraphNode>();
         wallsptr = std::make_shared<SceneGraphNode>();
 
-        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball });
+        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball,wallsptr });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(300.0f, 20.0f, 300.0f);
@@ -234,7 +240,7 @@ class GameManager {
         footballstuffptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, footballstuff, 0.01f, false);
 
         root_node->add_child(sandpitptr);
-        Collider sandPitTrigger(2.43f, false, sandPitPos, true);
+        Collider sandPitTrigger(glm::vec3(2.43f, 5.1f, 2.43f), false, sandPitPos, true);
         sandpitptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, sandpit, 0.01f, false);
         sandpitptr->trigger = sandPitTrigger;
 
@@ -277,8 +283,20 @@ class GameManager {
         root_node->add_child(walkptr);
         walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, false);
 
+        Collider wallColl1(glm::vec3(0.05f, 3.0f, 21.0f), false, wallPosColl1, true);
+        Collider wallColl2(glm::vec3(17.825f, 3.0f, 0.05f), false, wallPosColl2, true);
+        Collider wallColl3(glm::vec3(9.3145f, 3.0f, 0.05f), false, wallPosColl3, true);
+        Collider wallColl4(glm::vec3(0.05f, 3.0f, 4.747f), false, wallPosColl4, true);
+        Collider wallColl5(glm::vec3(8.3125f, 3.0f, 0.05f), false, wallPosColl5, true);
+        Collider wallColl6(glm::vec3(0.05f, 3.0f, 15.75f), false, wallPosColl6, true);
         root_node->add_child(wallsptr);
         wallsptr->setProperties(lightingShader, texturestone, zeroPos, MODEL, walls, 0.01f, false);
+        wallsptr->additionalColliders.push_back(wallColl1);
+        wallsptr->additionalColliders.push_back(wallColl2);
+        wallsptr->additionalColliders.push_back(wallColl3);
+        wallsptr->additionalColliders.push_back(wallColl4);
+        wallsptr->additionalColliders.push_back(wallColl5);
+        wallsptr->additionalColliders.push_back(wallColl6);
     }
 
    
@@ -462,4 +480,6 @@ class GameManager {
         if (player->getCandyCount() == 0)
             return tex1;
     }
+
+
 };

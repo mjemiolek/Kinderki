@@ -147,7 +147,7 @@ public:
     }
 
     void interact(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
-        if (triggerCollision(interacter)) {
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
                 playerObject->get_transform().m_position.y -= 2.0f * dt;
                 if (playerObject->get_transform().m_position.y <= 0.0f) {

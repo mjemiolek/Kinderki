@@ -166,6 +166,7 @@ int main()
         last_time = current_time;
         unprocessed_time += passed_time;
 
+
         input(window, gameManager.cube3);
         daySimulation(passed_time);
         ballManager->manageBall(window, passed_time);
@@ -215,6 +216,9 @@ int main()
 
         if (should_render) {
             should_render = false;
+
+
+            std::cout << "x: " << player->getPlayerObject()->get_transform().m_position.x << "y: " << player->getPlayerObject()->get_transform().m_position.y << "z: " << player->getPlayerObject()->get_transform().m_position.z << std::endl;
 
             //gameManager.render();
             gameManager.renderwithShadows();
