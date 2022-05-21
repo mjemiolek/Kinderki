@@ -187,6 +187,8 @@
     <None Include="res\shaders\shadow_mapping.vert" />
     <None Include="res\shaders\shadow_mapping_depth.frag" />
     <None Include="res\shaders\shadow_mapping_depth.vert" />
+    <None Include="res\shaders\skeletal_animation.frag" />
+    <None Include="res\shaders\skeletal_animation.vert" />
     <None Include="res\shaders\skybox.frag" />
     <None Include="res\shaders\skybox.vert" />
     <None Include="res\shaders\text.frag" />
