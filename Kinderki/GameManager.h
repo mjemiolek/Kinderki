@@ -56,6 +56,7 @@ class GameManager {
     Shader debugDepthQuad = Shader("res/shaders/debug_quad.vert", "res/shaders/debug_quad.frag");
     //For outline
     Shader outlineShader = Shader("res/shaders/outlining.vert", "res/shaders/outlining.frag");
+    Shader animShader = Shader("res/shaders/skeletal_animation.vert", "res/shaders/skeletal_animation.frag");
 
 
 
