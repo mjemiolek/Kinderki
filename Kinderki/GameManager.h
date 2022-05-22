@@ -47,6 +47,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> walkptr;
     std::shared_ptr<SceneGraphNode> wallsptr;
 
+    std::shared_ptr<SceneGraphNode> heartptr;
 
 
     //For shadows
@@ -77,6 +78,8 @@ class GameManager {
         glm::vec3 wallPosColl4(21.4975f, 1.82f, 15.823f);
         glm::vec3 wallPosColl5(30.1425f, 1.82f, 11.07f);
         glm::vec3 wallPosColl6(38.455f, 1.82f, -4.68f);
+
+        glm::vec3 heartPos(2.0f, 2.0f, 2.0f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
@@ -142,7 +145,7 @@ class GameManager {
         Model sandpit("res/models/level/sandpit.obj");
         Model sands("res/models/level/sands.obj");
         Model seesaw("res/models/level/seesaw.obj");
-        Model seesawrevers("res/models/level/seesawrevers.obj");
+        Model seesawrevers("res/models/level/seesawreverse.obj");
         Model slide("res/models/level/slide.obj");
         Model swing("res/models/level/swing.obj");
         Model tables("res/models/level/tables.obj");
@@ -151,6 +154,8 @@ class GameManager {
         Model umbrella("res/models/level/umbrella.obj");
         Model walk("res/models/level/walk.obj");
         Model walls("res/models/level/walls.obj");
+
+        Model heart("res/models/temp.obj");
 
         //Model postac_test("res/models/main_character.obj");
         //Model postac_test("res/models/postac_test_kolejny.obj");
@@ -197,7 +202,9 @@ class GameManager {
         walkptr = std::make_shared<SceneGraphNode>();
         wallsptr = std::make_shared<SceneGraphNode>();
 
-        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball,wallsptr });
+        heartptr = std::make_shared<SceneGraphNode>();
+
+        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(300.0f, 20.0f, 300.0f);
@@ -298,6 +305,14 @@ class GameManager {
         wallsptr->additionalColliders.push_back(wallColl4);
         wallsptr->additionalColliders.push_back(wallColl5);
         wallsptr->additionalColliders.push_back(wallColl6);
+
+
+        Collider heartCollider(glm::vec3(0.005f, 1.0f, 0.005f), false, heartPos, true);
+        Collider heartTrigger(glm::vec3(2.0f, 2.0f, 2.0f), true, heartPos, true);
+        root_node->add_child(heartptr);
+        heartptr->setProperties(lightingShader, texturekupa, heartPos, MODEL, heart, 0.04f, true);
+        //heartptr->trigger = heartTrigger;
+
     }
 
    

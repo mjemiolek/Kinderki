@@ -41,6 +41,16 @@ struct SceneGraphNode {
     void add_child(const std::shared_ptr<SceneGraphNode>& sgn) {
         m_children.push_back(sgn);
     }
+    bool detach_child(const std::shared_ptr<SceneGraphNode>& sgn) {
+        for (int i = 0; i < m_children.size(); i++) {
+            if (m_children[i] == sgn) {
+                m_children[i] = nullptr;
+                m_children.erase(m_children.begin() + i);
+                return true;
+            }
+        }
+        return false;
+    }
     void update(const Transform& parent_transform, bool dirty) {
         dirty |= m_dirty;
         if (dirty) {

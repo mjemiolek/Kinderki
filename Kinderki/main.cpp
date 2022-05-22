@@ -24,6 +24,7 @@
 #include "GravityManager.h"
 #include "PhysicsWorld.h"
 #include "BallManager.h"
+#include "MovableManager.h"
 
 #include <mmcobj.h>
 
@@ -116,6 +117,7 @@ int main()
     Gui gui;
     Skybox skybox;
     BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3);
+    MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.heartptr, gameManager.cube3);
     PlayerController* player = new PlayerController(gameManager.cube3);
     AIController* AI = new AIController(gameManager.cube2);
 
@@ -170,6 +172,7 @@ int main()
         input(window, gameManager.cube3);
         daySimulation(passed_time);
         ballManager->manageBall(window, passed_time);
+        movableManager->manageMovable(window);
         AI->move(window, passed_time);
         player->move(window, passed_time);
         player->interact(window, gameManager.sandpitptr, passed_time);
@@ -218,7 +221,7 @@ int main()
             should_render = false;
 
 
-            std::cout << "x: " << player->getPlayerObject()->get_transform().m_position.x << "y: " << player->getPlayerObject()->get_transform().m_position.y << "z: " << player->getPlayerObject()->get_transform().m_position.z << std::endl;
+            //std::cout << "x: " << player->getPlayerObject()->get_transform().m_position.x << "y: " << player->getPlayerObject()->get_transform().m_position.y << "z: " << player->getPlayerObject()->get_transform().m_position.z << std::endl;
 
             //gameManager.render();
             gameManager.renderwithShadows();
