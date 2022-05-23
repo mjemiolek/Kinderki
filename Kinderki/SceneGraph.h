@@ -9,8 +9,9 @@
 #include "Model.h"
 #include "Settings.h"
 #include "Collider.h"
+#include "Frustum.h"
 
-Camera camera(glm::vec3(0.0f, 16.0f, 5.0f));
+
 glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
 
 enum renderEnum {
@@ -32,7 +33,100 @@ struct Transform {
     float y_rotation_angle = 0.0f;
     float z_rotation_angle = 0.0f;
     float m_scale = 1.0;
+
+    glm::vec3 getRight() const
+    {
+        return m_world_matrix[0];
+    }
+    glm::vec3 getUp() const
+    {
+        return m_world_matrix[1];
+    }
+    glm::vec3 getBackward() const
+    {
+        return m_world_matrix[2];
+    }
+    glm::vec3 getGlobalScale() const
+    {
+        return { glm::length(getRight()), glm::length(getUp()), glm::length(getBackward()) };
+    }
 };
+
+struct BoundingVolume
+{
+    virtual bool isOnFrustum(const Frustum& camFrustum, const Transform& transform) const = 0;
+
+    virtual bool isOnOrForwardPlan(const Plan& plan) const = 0;
+
+    bool isOnFrustum(const Frustum& camFrustum) const
+    {
+        return (isOnOrForwardPlan(camFrustum.leftFace) &&
+            isOnOrForwardPlan(camFrustum.rightFace) &&
+            isOnOrForwardPlan(camFrustum.topFace) &&
+            isOnOrForwardPlan(camFrustum.bottomFace) &&
+            isOnOrForwardPlan(camFrustum.nearFace) &&
+            isOnOrForwardPlan(camFrustum.farFace));
+    };
+};
+
+struct Sphere : public BoundingVolume
+{
+    glm::vec3 center{ 0.f, 0.f, 0.f };
+    float radius{ 0.f };
+
+    Sphere(const glm::vec3& inCenter, float inRadius)
+        : BoundingVolume{}, center{ inCenter }, radius{ inRadius }
+    {}
+
+    bool isOnOrForwardPlan(const Plan& plan) const final
+    {
+        return plan.getSignedDistanceToPlan(center) > -radius;
+    }
+
+    bool isOnFrustum(const Frustum& camFrustum, const Transform& transform) const final
+    {
+        //Get global scale thanks to our transform
+        const glm::vec3 globalScale = transform.getGlobalScale();
+
+        //Get our global center with process it with the global model matrix of our transform
+        const glm::vec3 globalCenter{ transform.m_world_matrix * glm::vec4(center, 1.f) };
+
+        //To wrap correctly our shape, we need the maximum scale scalar.
+        const float maxScale = std::max(std::max(globalScale.x, globalScale.y), globalScale.z);
+
+        //Max scale is assuming for the diameter. So, we need the half to apply it to our radius
+        Sphere globalSphere(globalCenter, radius * (maxScale * 0.5f));
+
+        //Check Firstly the result that have the most chance to faillure to avoid to call all functions.
+        return (globalSphere.isOnOrForwardPlan(camFrustum.leftFace) &&
+            globalSphere.isOnOrForwardPlan(camFrustum.rightFace) &&
+            globalSphere.isOnOrForwardPlan(camFrustum.farFace) &&
+            globalSphere.isOnOrForwardPlan(camFrustum.nearFace) &&
+            globalSphere.isOnOrForwardPlan(camFrustum.topFace) &&
+            globalSphere.isOnOrForwardPlan(camFrustum.bottomFace));
+    };
+};
+
+Sphere generateSphereBV(const Model& model)
+{
+    glm::vec3 minAABB = glm::vec3(std::numeric_limits<float>::max());
+    glm::vec3 maxAABB = glm::vec3(std::numeric_limits<float>::min());
+    for (auto&& mesh : model.meshes)
+    {
+        for (auto&& vertex : mesh.vertices)
+        {
+            minAABB.x = std::min(minAABB.x, vertex.Position.x);
+            minAABB.y = std::min(minAABB.y, vertex.Position.y);
+            minAABB.z = std::min(minAABB.z, vertex.Position.z);
+
+            maxAABB.x = std::max(maxAABB.x, vertex.Position.x);
+            maxAABB.y = std::max(maxAABB.y, vertex.Position.y);
+            maxAABB.z = std::max(maxAABB.z, vertex.Position.z);
+        }
+    }
+
+    return Sphere((maxAABB + minAABB) * 0.5f, glm::length(minAABB - maxAABB));
+}
 
 
 struct SceneGraphNode {
@@ -120,26 +214,31 @@ struct SceneGraphNode {
             m_children[i]->renderScene(false, shader);
         }
     }
-    void render2(bool is_root = false, unsigned int depthMap = 0,Shader shader = Shader())
+    void render2(bool is_root, unsigned int depthMap, Shader shader, const Frustum& frustum, unsigned int& display, unsigned int& total)
     {
         if (!is_root) 
         {
-            if (stencil) {
-                glStencilMask(0xFF);
+            if (boundingVolume->isOnFrustum(frustum, m_transform))
+            {
+                if (stencil) {
+                    glStencilMask(0xFF);
+                }
+                else {
+                    glStencilMask(0x00);
+                }
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, texture);
+                glActiveTexture(GL_TEXTURE1);
+                glBindTexture(GL_TEXTURE_2D, depthMap);
+                shader.setMat4("model", m_transform.m_world_matrix);
+                modelTemp.Draw(shader);
+                display++;
             }
-            else {
-                glStencilMask(0x00);
-            }
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, texture);
-            glActiveTexture(GL_TEXTURE1);
-            glBindTexture(GL_TEXTURE_2D, depthMap);
-            shader.setMat4("model", m_transform.m_world_matrix);
-            modelTemp.Draw(shader);
+            total++;
         }
         for (uint32_t i = 0; i < m_children.size(); ++i) 
         {
-            m_children[i]->render2(false,depthMap,shader);
+            m_children[i]->render2(false,depthMap,shader,frustum,display,total);
         }
     }
     void renderSceneWithOutline(bool is_root = false, Shader shader = Shader()) {
@@ -163,6 +262,7 @@ struct SceneGraphNode {
         m_transform.m_position = position;
         tempRender = predefined;
         modelTemp = model;
+        boundingVolume = std::make_unique<Sphere>(generateSphereBV(model));
         m_transform.m_scale = scale;
         collider = col;
         trigger = trig;
@@ -207,6 +307,8 @@ struct SceneGraphNode {
     std::vector<Collider> additionalColliders;
     Collider trigger;
     bool stencil;
+
+    std::unique_ptr<Sphere> boundingVolume; //Frustrum
 
     std::vector<std::shared_ptr<SceneGraphNode>> m_children;
     Transform m_transform;

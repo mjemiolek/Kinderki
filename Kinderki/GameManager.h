@@ -15,8 +15,11 @@
 #include "Settings.h"
 #include "Collider.h"
 #include "GravityManager.h"
+#include "Frustum.h"
 #include <mmcobj.h>
 #include <vector>
+
+
 
 //GameManager is responsible for creating and rendering objects, gameplay, game physics
 class GameManager {
@@ -433,6 +436,9 @@ class GameManager {
         
         shaderShad.use();
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        //Frustrum
+        const Frustum camFrustum = createFrustumFromCamera(camera, (float)SCR_WIDTH / (float)SCR_HEIGHT, glm::radians(camera.Zoom), 0.1f, 100.0f);
+
         glm::mat4 view = camera.GetViewMatrix();
         shaderShad.setMat4("projection", projection);
         shaderShad.setMat4("view", view);
@@ -446,7 +452,11 @@ class GameManager {
         // Enable modifying of the stencil buffer
         //glStencilMask(0xFF);
 
-        root_node->render2(true,depthMap, shaderShad);
+        // draw our scene graph
+        unsigned int total = 0, display = 0;
+        root_node->render2(true,depthMap, shaderShad, camFrustum,display,total);
+        //std::cout << "Total process in CPU : " << total << " / Total send to GPU : " << display << std::endl; //debugging
+
         // render Depth map to quad for visual debugging
         // don't delete---------------------------------
         //debugDepthQuad.use();
