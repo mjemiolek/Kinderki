@@ -316,7 +316,7 @@ class GameManager {
         Collider heartCollider(glm::vec3(0.005f, 1.0f, 0.005f), false, heartPos, true);
         Collider heartTrigger(glm::vec3(2.0f, 2.0f, 2.0f), true, heartPos, true);
         root_node->add_child(heartptr);
-        heartptr->setProperties(lightingShader, texturekupa, heartPos, MODEL, heart, 0.04f, true);
+        heartptr->setProperties(lightingShader, texturekupa, heartPos, MODEL, postac_test, 1.0f, true);
         //heartptr->trigger = heartTrigger;
 
     }

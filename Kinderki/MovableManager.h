@@ -9,7 +9,8 @@ private:
     std::shared_ptr<SceneGraphNode> playerObject;
     std::shared_ptr<SceneGraphNode> movable;
     glm::vec3 zeroPos = glm::vec3(0.0f, 0.0f, 0.0f);
-    glm::vec3 ofset2 = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 ofset1 = glm::vec3(0.0f, 0.0f, -0.5f);
+    glm::vec3 ofset2 = glm::vec3(0.0f, 0.0f, -0.5f);
     bool movableFlag = false;
     bool carringFlag = false;
 public:
@@ -20,27 +21,32 @@ public:
     }
 
     void calculateDir() {
-             if (playerObject->m_transform.y_rotation_angle == 0.0f)   { ofset2 = glm::vec3(0.0f, -2.0f, -1.0f); }
-        else if (playerObject->m_transform.y_rotation_angle == 45.0f)  { ofset2 = glm::vec3(0.5f, -2.0f, -0.75f); }
-        else if (playerObject->m_transform.y_rotation_angle == 90.0f)  { ofset2 = glm::vec3(0.75f, -2.0f, -0.5f); }
-        else if (playerObject->m_transform.y_rotation_angle == 135.0f) { ofset2 = glm::vec3(0.5f, -2.0f, -0.25f); }
-        else if (playerObject->m_transform.y_rotation_angle == 180.0f) { ofset2 = glm::vec3(0.0f, -2.0f, 0.0f); }
-        else if (playerObject->m_transform.y_rotation_angle == 225.0f) { ofset2 = glm::vec3(-0.5f, -2.0f, -0.25f); }
-        else if (playerObject->m_transform.y_rotation_angle == 270.0f) { ofset2 = glm::vec3(-0.75f, -2.0f, -0.5f); }
-        else if (playerObject->m_transform.y_rotation_angle == 315.0f) { ofset2 = glm::vec3(-0.5f, -2.0f, -0.75f); }
+        if (playerObject->m_transform.y_rotation_angle == 0.0f) { ofset2 = glm::vec3(0.0f, 0.0f, -0.5f);}
+        else if (playerObject->m_transform.y_rotation_angle == 45.0f)  { ofset2 = glm::vec3(0.33f, 0.0f, -0.33f);}
+        else if (playerObject->m_transform.y_rotation_angle == 90.0f)  { ofset2 = glm::vec3(0.5f, 0.0f, 0.0f);}
+        else if (playerObject->m_transform.y_rotation_angle == 135.0f) { ofset2 = glm::vec3(0.33f, 0.0f, 0.33f);}
+        else if (playerObject->m_transform.y_rotation_angle == 180.0f) { ofset2 = glm::vec3(0.0f, 0.0f, 0.5f);}
+        else if (playerObject->m_transform.y_rotation_angle == 225.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, 0.33f);}
+        else if (playerObject->m_transform.y_rotation_angle == 270.0f) { ofset2 = glm::vec3(-0.5f, 0.0f, 0.0f);}
+        else if (playerObject->m_transform.y_rotation_angle == 315.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, -0.33f);}
     }
 
     void manageMovable(GLFWwindow* window)
     {
         if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
-            if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS && !carringFlag) {
-                movableFlag = true;
-                carringFlag = true;
-                rootNode->detach_child(movable);
-                //movable->m_transform.m_position = zeroPos;               
-                movable->m_transform.m_position = playerObject->get_transform().m_position;
-                movable->m_transform.y_rotation_angle += 180;
-                playerObject->add_child(movable);
+            if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS && !carringFlag && !movableFlag) {
+                    movableFlag = true;
+                    carringFlag = true;
+                    rootNode->detach_child(movable);
+                    movable->m_transform.m_position = zeroPos;               
+                    //movable->m_transform.m_position = playerObject->get_transform().m_position;
+                    //movable->m_transform.y_rotation_angle += 180;
+                    playerObject->add_child(movable);
+                    calculateDir();
+                    movable->m_transform.m_position += ofset1;
+                   // movable->m_transform.y_rotation_angle -= playerObject->m_transform.y_rotation_angle;
+
+
             }
         }
 
@@ -51,8 +57,9 @@ public:
                         movableFlag = false;
                         playerObject->detach_child(movable);
                         rootNode->add_child(movable);
-                        movable->m_transform.m_position = playerObject->get_transform().m_position;
-                        //movable->m_transform.y_rotation_angle += 180;
+                        calculateDir();
+                        movable->m_transform.y_rotation_angle += playerObject->m_transform.y_rotation_angle;
+                        movable->m_transform.m_position = playerObject->get_transform().m_position+ ofset2;                        
                     }
                 }
                 
