@@ -119,9 +119,12 @@ int main()
     Gui gui;
     Skybox skybox;
     BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3);
-    MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.heartptr, gameManager.cube3);
     PlayerController* player = new PlayerController(gameManager.cube3);
     AIController* AI = new AIController(gameManager.cube2);
+
+    MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
+    movableManager->addMovable(gameManager.heartptr);
+    movableManager->addMovable(gameManager.heartptr2);
 
     //load texture to gui
     unsigned int texture = gameManager.loadTexture("res/textures/notebook.png");

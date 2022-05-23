@@ -7,15 +7,16 @@ class MovableManager {
 private:
     std::shared_ptr<SceneGraphNode> rootNode;
     std::shared_ptr<SceneGraphNode> playerObject;
-    std::shared_ptr<SceneGraphNode> movable;
+    //std::shared_ptr<SceneGraphNode> movable;
+    std::vector<std::shared_ptr<SceneGraphNode>> vecMovable;
     glm::vec3 zeroPos = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 ofset1 = glm::vec3(0.0f, 0.0f, -0.5f);
     glm::vec3 ofset2 = glm::vec3(0.0f, 0.0f, -0.5f);
-    bool movableFlag = false;
     bool carringFlag = false;
+    bool overlapFlag = false;
+    int iterator = 0;
 public:
-    MovableManager(std::shared_ptr<SceneGraphNode> root, std::shared_ptr<SceneGraphNode> movable, std::shared_ptr<SceneGraphNode> player) {
-        this->movable = movable;
+    MovableManager(std::shared_ptr<SceneGraphNode> root, std::shared_ptr<SceneGraphNode> player) {
         playerObject = player;
         rootNode = root;
     }
@@ -33,49 +34,88 @@ public:
 
     void manageMovable(GLFWwindow* window)
     {
+        /*
         if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS) {
             if (glfwGetKey(window, GLFW_KEY_N) == GLFW_PRESS && !carringFlag && !movableFlag) {
                     movableFlag = true;
                     carringFlag = true;
-                    rootNode->detach_child(movable);
-                    movable->m_transform.m_position = zeroPos;               
+                    rootNode->detach_child(vecMovable[0]);
+                    vecMovable[0]->m_transform.m_position = zeroPos;
                     //movable->m_transform.m_position = playerObject->get_transform().m_position;
                     //movable->m_transform.y_rotation_angle += 180;
-                    playerObject->add_child(movable);
+                    playerObject->add_child(vecMovable[0]);
                     calculateDir();
-                    movable->m_transform.m_position += ofset1;
+                    vecMovable[0]->m_transform.m_position += ofset1;
                    // movable->m_transform.y_rotation_angle -= playerObject->m_transform.y_rotation_angle;
 
 
             }
         }
+        */
 
+        interact(vecMovable);
         
                 if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-                    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && !carringFlag && movableFlag) {
-                        carringFlag = true;
-                        movableFlag = false;
-                        playerObject->detach_child(movable);
-                        rootNode->add_child(movable);
+                    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && carringFlag) {
+                        carringFlag = false;
+                        //movableFlag = false;
+                        playerObject->detach_child(vecMovable[iterator]);
+                        rootNode->add_child(vecMovable[iterator]);
                         calculateDir();
-                        movable->m_transform.y_rotation_angle += playerObject->m_transform.y_rotation_angle;
-                        movable->m_transform.m_position = playerObject->get_transform().m_position+ ofset2;                        
+                        vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->m_transform.y_rotation_angle;
+                        vecMovable[iterator]->m_transform.m_position = playerObject->get_transform().m_position+ ofset2;
                     }
                 }
                 
-                 if (glfwGetKey(window, GLFW_KEY_N) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE && carringFlag) {
-                     carringFlag = false;
-                 }
+                 //if (glfwGetKey(window, GLFW_KEY_N) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE && carringFlag) {
+                 //    carringFlag = false;
+                 //}
 
-        movable->update_transform();
-        //movable->collider.setPosition(movable->get_transform().m_position);
-    }
-    float retX() {
-        return movable->m_transform.m_position.x;
+        vecMovable[iterator]->update_transform();
+        vecMovable[iterator]->trigger.setPosition(vecMovable[iterator]->get_transform().m_position);
     }
 
-    float retZ() {
-        return movable->m_transform.m_position.z;
+    void addMovable(std::shared_ptr<SceneGraphNode> movable) {
+        vecMovable.push_back(movable);
+    }
+
+    bool delMovable(std::shared_ptr<SceneGraphNode> movable) {
+
+        for (int i = 0; i < vecMovable.size(); i++) {
+            if (vecMovable[i] == movable) {
+                vecMovable[i] = nullptr;
+                vecMovable.erase(vecMovable.begin() + i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void interact(std::vector<std::shared_ptr<SceneGraphNode>> vecMovable) {
+        if (!carringFlag) {
+            for (int i = 0; i < vecMovable.size(); i++) {
+                if (playerObject->collider.boxToBoxCollisioncheck(vecMovable[i]->trigger)) {
+                    
+                        overlapFlag = true;
+                        carringFlag = true;
+                        iterator = i;
+                        rootNode->detach_child(vecMovable[i]);
+                        vecMovable[i]->m_transform.m_position = zeroPos;
+                        playerObject->add_child(vecMovable[i]);
+                        calculateDir();
+                        vecMovable[i]->m_transform.m_position += ofset1;
+                    
+                }
+            }
+        }
+    }
+
+    float retX(int i) {
+        return vecMovable[i]->m_transform.m_position.x;
+    }
+
+    float retZ(int i) {
+        return vecMovable[i]->m_transform.m_position.z;
     }
     
 };

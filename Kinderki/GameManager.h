@@ -51,6 +51,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> wallsptr;
 
     std::shared_ptr<SceneGraphNode> heartptr;
+    std::shared_ptr<SceneGraphNode> heartptr2;
 
 
     //For shadows
@@ -86,6 +87,7 @@ class GameManager {
         glm::vec3 wallPosColl6(38.455f, 1.82f, -4.68f);
 
         glm::vec3 heartPos(2.0f, 2.0f, 2.0f);
+        glm::vec3 heartPos2(-2.0f, 2.0f, -2.0f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
@@ -209,8 +211,9 @@ class GameManager {
         wallsptr = std::make_shared<SceneGraphNode>();
 
         heartptr = std::make_shared<SceneGraphNode>();
+        heartptr2 = std::make_shared<SceneGraphNode>();
 
-        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr });
+        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2 });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(300.0f, 20.0f, 300.0f);
@@ -314,10 +317,16 @@ class GameManager {
 
 
         Collider heartCollider(glm::vec3(0.005f, 1.0f, 0.005f), false, heartPos, true);
-        Collider heartTrigger(glm::vec3(2.0f, 2.0f, 2.0f), true, heartPos, true);
+        Collider heartTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos, true);
+        Collider heartTrigger2(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos2, true);
+        
         root_node->add_child(heartptr);
         heartptr->setProperties(lightingShader, texturekupa, heartPos, MODEL, postac_test, 1.0f, true);
-        //heartptr->trigger = heartTrigger;
+        heartptr->trigger = heartTrigger;
+
+        root_node->add_child(heartptr2);
+        heartptr2->setProperties(lightingShader, textureplanks, heartPos2, MODEL, postac_test, 1.0f, true);
+        heartptr2->trigger = heartTrigger2;
 
     }
 
