@@ -60,6 +60,9 @@ class GameManager {
     Shader animShader = Shader("res/shaders/skeletal_animation.vert", "res/shaders/skeletal_animation.frag");
 
 
+    Shader antialliasingshader = Shader("res/shaders/antialliasing.vert", "res/shaders/antialliasing.frag");
+
+
 
     GameManager() {
         // settings

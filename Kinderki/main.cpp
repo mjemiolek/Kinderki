@@ -78,6 +78,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+    glfwWindowHint(GLFW_SAMPLES, 4); // for MSAA rendering to default framebuffer
 
     // Create window with graphics context
     window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Dear ImGui GLFW+OpenGL3 example", NULL, NULL);
@@ -102,6 +103,7 @@ int main()
 
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE); // for MSAA rendering to default framebuffer
     glDepthFunc(GL_LESS);
     glEnable(GL_STENCIL_TEST);
     glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
