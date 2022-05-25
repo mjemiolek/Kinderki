@@ -13,6 +13,7 @@ uniform sampler2D shadowMap;
 
 uniform vec3 lightPos;
 uniform vec3 viewPos;
+uniform int mode;
 
 float ShadowCalculation(vec4 fragPosLightSpace)
 {
@@ -109,5 +110,18 @@ void main()
     float shadow = ShadowCalculationVersion2(fs_in.FragPosLightSpace);                      
     vec3 lighting = (ambient + (1.0 - shadow) * (diffuse + specular)) * color;     
     
+
+    if(mode==0){
     FragColor = vec4(lighting, 1.0);
+    }
+    else if(mode == 1){
+    FragColor = vec4(1.0-lighting, 1.0);
+    }
+    else if(mode == 2){
+    FragColor = vec4(lighting, 1.0);
+    float average = 0.2126 * FragColor.r + 0.7152 * FragColor.g + 0.0722 * FragColor.b;
+    FragColor = vec4(average, average, average, 1.0);
+    }
+    else if(mode == 3){
+    }
 }

@@ -64,7 +64,7 @@ double frame_time = 1.0 / 60.0;
 
 bool temp = true;
 
-
+int mode = 0;
 
 int main()
 {
@@ -227,9 +227,10 @@ int main()
 
 
             //std::cout << "x: " << player->getPlayerObject()->get_transform().m_position.x << "y: " << player->getPlayerObject()->get_transform().m_position.y << "z: " << player->getPlayerObject()->get_transform().m_position.z << std::endl;
+            std::cout << "x: " << mode << std::endl;
 
             //gameManager.render();
-            gameManager.renderwithShadows();
+            gameManager.renderwithShadows(mode);
             gameManager.renderWithOutline();
             skybox.render();
             gui.render();
@@ -268,6 +269,11 @@ static void glfw_error_callback(int error, const char* description)
 void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
+
+    if(glfwGetKey(window, GLFW_KEY_KP_0) == GLFW_PRESS)  mode = 0;
+    if(glfwGetKey(window, GLFW_KEY_KP_1) == GLFW_PRESS)  mode = 1;
+    if(glfwGetKey(window, GLFW_KEY_KP_2) == GLFW_PRESS)  mode = 2;
+    if(glfwGetKey(window, GLFW_KEY_KP_3) == GLFW_PRESS)  mode = 3;
     //Player+Camera                                OnlyCamera
 //if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 //    camera.ProcessKeyboard(FORWARD, passed_time);

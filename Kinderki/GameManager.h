@@ -414,7 +414,7 @@ class GameManager {
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         glBindVertexArray(0);
     }
-    void renderwithShadows()
+    void renderwithShadows(int mode)
     {
         // 1. render depth of scene to texture (from light's perspective)
         float near_plane = 0.1f, far_plane = 75.0f;
@@ -455,6 +455,7 @@ class GameManager {
         shaderShad.setVec3("viewPos", camera.Position);
         shaderShad.setVec3("lightPos", lightPos);
         shaderShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+        shaderShad.setInt("mode", mode);
 
         // Make it so the stencil test always passes
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
