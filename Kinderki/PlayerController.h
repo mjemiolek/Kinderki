@@ -64,7 +64,7 @@ public:
             //move Player to position (0,2,0)
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
             {
-                playerObject->get_transform().m_position = glm::vec3(0.0f, 3.5f, 0.0f);
+                playerObject->get_transform().m_position = glm::vec3(14.0f, 2.5f, 6.0f);
             }
             //go up
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

@@ -34,9 +34,14 @@ public:
     std::vector<Mesh> meshes;
     std::string directory;
     bool gammaCorrection;
+    float tilingX=1.0f, tilingY=1.0f;
 
-    Model(std::string const &path, bool gamma = false) : gammaCorrection(gamma) {
+
+    Model(std::string const &path,float tX=1.0f,float tY=1.0f, bool gamma = false) {
+        tilingX = tX;
+        tilingY = tY;
         loadModel(path);
+        gammaCorrection = gamma;
     }
 
     Model() {}
@@ -94,6 +99,9 @@ private:
                 glm::vec2 vec;
                 vec.x = mesh->mTextureCoords[0][i].x;
                 vec.y = mesh->mTextureCoords[0][i].y;
+                //tiling
+                vec.x *= tilingX;
+                vec.y *= tilingY;
                 vertex.TexCoords = vec;
                 //tangent
                 vector.x = mesh->mTangents[i].x;

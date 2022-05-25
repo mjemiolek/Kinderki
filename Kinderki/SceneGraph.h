@@ -268,6 +268,12 @@ struct SceneGraphNode {
         trigger = trig;
         stencil = stencilTest; //add outline to object
     }
+    void setRotation(float x, float y, float z)
+    {
+        m_transform.x_rotation_angle = x;
+        m_transform.y_rotation_angle = y;
+        m_transform.z_rotation_angle = z;
+    }
     void update_transform() {
         m_transform.m_world_matrix = m_transform.get_combined_matrix();
         m_dirty = true;

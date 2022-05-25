@@ -7,7 +7,7 @@ private:
 	glm::vec3 position;
 	float radius = -1;
 	glm::vec3 collisionRange = glm::vec3(0.0f ,0.0f ,0.0f); //distance from center in all 3 directions
-	bool isTrigger;
+	bool isTrigger; //this is useless now
 	bool isDynamic; //Can be static or dynamic
 public:
 	Collider() {

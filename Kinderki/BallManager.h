@@ -18,7 +18,7 @@ public:
     {
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
         {
-            ball->get_transform().m_position = glm::vec3(0.0f, 4.5f, -5.0f);
+            ball->get_transform().m_position = glm::vec3(12.0f, 2.5f, 15.0f);
         }
         //ball logic
         float vectorx = (ball->get_transform().m_position.x - playerObject->get_transform().m_position.x);
@@ -52,6 +52,8 @@ public:
         {
             ball->velocity.z = 0.0f;
         }
+        //Don't let the ball to go into ground
+        if (ball->get_transform().m_position.y<1.82f) ball->get_transform().m_position.y = 1.82f;
 
 
         ball->update_transform();
