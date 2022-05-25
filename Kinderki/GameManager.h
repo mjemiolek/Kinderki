@@ -82,8 +82,8 @@ class GameManager {
         glm::vec3 treePos(34.0f, 7.2f, -18.0f);
         glm::vec3 aerialRunnwayPos(32.87f, 1.82f, -9.91f);
         glm::vec3 swingPos(8.0f, 4.2f, 6.0f);
-        glm::vec3 goalLeftPos(5.0f, 1.8f, 15.5f);
-        glm::vec3 goalRightPos(19.0f, 1.8f, 15.5f);
+        glm::vec3 goalLeftPos(5.5f, 1.8f, 15.5f);
+        glm::vec3 goalRightPos(18.5f, 1.8f, 15.5f);
         glm::vec3 wallPosColl1(2.42f, 1.82f, 0.0f);
         glm::vec3 wallPosColl2(20.675f, 1.82f, -20.89f);
         glm::vec3 wallPosColl3(12.1845f, 1.82f, 21.0f);
@@ -222,7 +222,9 @@ class GameManager {
         heartptr = std::make_shared<SceneGraphNode>();
         heartptr2 = std::make_shared<SceneGraphNode>();
 
-        collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,trampolineptr });
+        collidingObjects.insert(collidingObjects.end(),{
+        cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,
+        trampolineptr, goalLeftptr, goalRightptr });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(300.0f, 20.0f, 300.0f);
@@ -277,12 +279,40 @@ class GameManager {
 
         //Bramki
         root_node->add_child(goalLeftptr);
-        goalLeftptr->setProperties(lightingShader, texturemetal, goalLeftPos, MODEL, goalLeft, 0.11f, false);
+        //tyl
+        glm::vec3 gLCP = goalLeftPos; //Goal Left Collider Position
+        gLCP.x -= 1.6f;
+        Collider goalLeftCollider(glm::vec3(0.015f, 3.0f, 2.95f), false, gLCP, false);
+        gLCP.x += 1.4f;
+        goalLeftptr->setProperties(lightingShader, texturemetal, goalLeftPos, MODEL, goalLeft, 0.14f, false, goalLeftCollider);
         goalLeftptr->setRotation(0.0f, 90.0f, 0.0f);
+        //gora
+        gLCP.z -= 3.0f;
+        Collider goalLeftColliderUp(glm::vec3(0.9f, 3.0f, 0.015f), false, gLCP, false);
+        gLCP.z += 3.0f;
+        goalLeftptr->additionalColliders.push_back(goalLeftColliderUp);
+        //dol
+        gLCP.z += 3.0f;
+        Collider goalLeftColliderDown(glm::vec3(0.9f, 3.0f, 0.015f), false, gLCP, false);
+        goalLeftptr->additionalColliders.push_back(goalLeftColliderDown);
 
         root_node->add_child(goalRightptr);
-        goalRightptr->setProperties(lightingShader, texturemetal, goalRightPos, MODEL, goalRight, 0.11f, false);
+        //tyl
+        glm::vec3 gRCP = goalRightPos; //Goal Right Collider Position
+        gRCP.x += 1.6f;
+        Collider goalRightCollider(glm::vec3(0.015f, 3.0f, 2.95f), false, gRCP, false);
+        gRCP.x -= 1.4f;
+        goalRightptr->setProperties(lightingShader, texturemetal, goalRightPos, MODEL, goalRight, 0.14f, false, goalRightCollider);
         goalRightptr->setRotation(0.0f, -90.0f, 0.0f);
+        //gora
+        gRCP.z -= 3.0f;
+        Collider goalRightColliderUp(glm::vec3(0.9f, 3.0f, 0.015f), false, gRCP, false);
+        gRCP.z += 3.0f;
+        goalRightptr->additionalColliders.push_back(goalRightColliderUp);
+        //dol
+        gRCP.z += 3.0f;
+        Collider goalRightColliderDown(glm::vec3(0.9f, 3.0f, 0.015f), false, gRCP, false);
+        goalLeftptr->additionalColliders.push_back(goalRightColliderDown);
 
         //piaskownica
         root_node->add_child(sandpitptr);
