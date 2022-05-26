@@ -27,6 +27,8 @@ private:
     int candyCount;
     float speed = 2.5f;
     bool sandMove = false;
+    bool hustawkerMove = false, hustawkerLeft = true;
+    float hustawkerSpeed;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -174,11 +176,46 @@ public:
         }
     }
 
-    void trampoliner(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter, float dt)
+    void trampoliner(std::shared_ptr<SceneGraphNode> interacter, float dt)
     {
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
             playerObject->velocity.y = 10.0f;
             playerObject->canJump = false;
+        }
+    }
+
+    void hustawker(std::shared_ptr<SceneGraphNode> interacter, std::shared_ptr<SceneGraphNode> seat, float dt)
+    {
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) 
+        {
+            hustawkerMove = true;
+            playerObject->velocity.y = 10.0f;
+            hustawkerSpeed = 135.0f;
+            std::cout << "dobrzej";
+        }
+        if (hustawkerMove)
+        {
+            playerObject->get_transform().m_position.x -= 4.5f * dt;
+            //Preety shit rotating of swing
+            //It may be updated to smooth rotation in future
+            seat->get_transform().z_rotation_angle -= hustawkerSpeed * dt;
+            if (seat->m_transform.z_rotation_angle < -80.0f)
+            {
+                seat->get_transform().z_rotation_angle += hustawkerSpeed * dt;
+                hustawkerSpeed /= 2.0f;
+                hustawkerSpeed = -hustawkerSpeed;
+                hustawkerLeft = false;
+            }
+            if (hustawkerLeft == false)
+            {
+                if (seat->m_transform.z_rotation_angle > 0.0f)
+                {
+                    hustawkerMove = false;
+                    hustawkerLeft = true;
+                }
+            }
+
+            seat->update_transform();
         }
     }
 
