@@ -125,6 +125,7 @@ int main()
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
     movableManager->addMovable(gameManager.heartptr);
     movableManager->addMovable(gameManager.heartptr2);
+    movableManager->addMovable(gameManager.colaptr);
 
     //load texture to gui
     unsigned int texture = gameManager.loadTexture("res/textures/notebook.png");
@@ -136,14 +137,14 @@ int main()
     unsigned int textureSandpit = gameManager.loadTexture("res/textures/icons/sandpit.png");
     unsigned int textureSlide = gameManager.loadTexture("res/textures/icons/slide.png");
 
-    unsigned int textureCandy = gameManager.loadTexture("res/textures/candy.png");
-    unsigned int textureCandyx0 = gameManager.loadTexture("res/textures/candyx0.png");
-    unsigned int textureCandyx1 = gameManager.loadTexture("res/textures/candyx1.png");
-    unsigned int textureCandyx2 = gameManager.loadTexture("res/textures/candyx2.png");
-    unsigned int textureCandyx3 = gameManager.loadTexture("res/textures/candyx3.png");
-    unsigned int textureCandyx4 = gameManager.loadTexture("res/textures/candyx4.png");
-    unsigned int textureCandyx5 = gameManager.loadTexture("res/textures/candyx5.png");
-    unsigned int textureCandyx6 = gameManager.loadTexture("res/textures/candyx6.png");
+    unsigned int textureCandy = gameManager.loadTexture("res/textures/candy/candy.png");
+    unsigned int textureCandyx0 = gameManager.loadTexture("res/textures/candy/candyx0.png");
+    unsigned int textureCandyx1 = gameManager.loadTexture("res/textures/candy/candyx1.png");
+    unsigned int textureCandyx2 = gameManager.loadTexture("res/textures/candy/candyx2.png");
+    unsigned int textureCandyx3 = gameManager.loadTexture("res/textures/candy/candyx3.png");
+    unsigned int textureCandyx4 = gameManager.loadTexture("res/textures/candy/candyx4.png");
+    unsigned int textureCandyx5 = gameManager.loadTexture("res/textures/candy/candyx5.png");
+    unsigned int textureCandyx6 = gameManager.loadTexture("res/textures/candy/candyx6.png");
 
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
