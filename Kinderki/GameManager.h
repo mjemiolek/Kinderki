@@ -83,15 +83,16 @@ class GameManager {
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
         glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
         glm::vec3 sandPitPos(8.87f, 0.0f, -14.34f);
-        glm::vec3 seesawPos(8.0f, 2.50f - 1.82f, -4.5f);
-        glm::vec3 ballPos(11.53f, 4.82f - 1.82f, 14.46f);
-        glm::vec3 slidePos(22.50f, 2.2f - 1.82f, -14.0f);
-        glm::vec3 trampolinePos(29.50f, 2.4f - 1.82f, -14.95f);
-        glm::vec3 treePos(34.0f, 7.2f - 1.82f, -18.0f);
-        glm::vec3 aerialRunnwayPos(32.87f, 0.0f, -9.91f);
-        glm::vec3 swingPos(8.0f, 4.2f - 1.82f, 6.0f);
+        glm::vec3 seesawPos(8.0f, 0.68f, -4.5f);
+        glm::vec3 ballPos(11.53f, 3.00f, 14.46f);
+        glm::vec3 slidePos(22.50f, 0.38f, -14.0f);
+        glm::vec3 trampolinePos(29.50f, 0.58f, -14.95f);
+        glm::vec3 treePos(34.0f, 5.38f, -18.0f);
+        glm::vec3 aerialRunnwayPos(32.87f, 0.82f, -9.91f);
+        glm::vec3 aerialRunnwaySeatPos(0.33, 0.1f, 0.0f);
+        glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
         glm::vec3 poolPos(-2.0f, 0.0f, 6.0f);
-        glm::vec3 poolWaterPos(-2.0f, 2.4f - 1.82f, 6.0f);
+        glm::vec3 poolWaterPos(-2.0f, 0.58f, 6.0f);
         glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
         glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
         glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f);
@@ -101,8 +102,8 @@ class GameManager {
         glm::vec3 wallPosColl5(30.1425f, 0.0f, 11.07f);
         glm::vec3 wallPosColl6(38.455f, 0.0f, -4.68f);
 
-        glm::vec3 heartPos(2.0f, 2.0f, 2.0f);
-        glm::vec3 heartPos2(-2.0f, 2.0f, -2.0f);
+        glm::vec3 heartPos(2.0f, 0.2f, 2.0f);
+        glm::vec3 heartPos2(-2.0f, 0.2f, -2.0f);
         glm::vec3 colaPos(5.0f, 3.0f, 0.0f);
         glm::vec3 mentosPos(10.0f, 3.0f, 0.0f);
 
@@ -308,7 +309,7 @@ class GameManager {
 
 
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////tyrolka
+        //tyrolka
         Collider aerialrunnwayTrigger(0.8f, false, aerialRunnwayPos, true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
@@ -319,26 +320,21 @@ class GameManager {
         aerialrunnwayseatptr->setProperties(lightingShader, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, false);
         //aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
 
-
-
         //³awki
         root_node->add_child(benchesptr);
         benchesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
 
+        ////piaski
+        //root_node->add_child(sandsptr);
+        //sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
-        //piaski
-        root_node->add_child(sandsptr);
-        sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
-
-
-        //krawezniki?
-        root_node->add_child(walkptr);
-        walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, false);
-
+        ////krawezniki?
+        //root_node->add_child(walkptr);
+        //walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, false);
 
         //podloga
         root_node->add_child(floorptr);
-        Collider floorCol(floorColRange, false, glm::vec3(15.0f, -1.0f, 0.0f), false);
+        Collider floorCol(floorColRange, false, glm::vec3(15.0f, -1.2f, 0.0f), false);
         floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
 
 
