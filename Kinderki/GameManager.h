@@ -83,7 +83,7 @@ class GameManager {
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
         glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
         glm::vec3 sandPitPos(8.87f, 0.0f, -14.34f);
-        glm::vec3 seesawPos(8.0f, 0.68f, -4.5f);
+        glm::vec3 seesawPos(8.0f, 0.8f, -4.5f);
         glm::vec3 ballPos(11.53f, 3.00f, 14.46f);
         glm::vec3 slidePos(22.50f, 0.38f, -14.0f);
         glm::vec3 trampolinePos(29.50f, 0.58f, -14.95f);
@@ -280,7 +280,7 @@ class GameManager {
         trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
-        glm::vec3 floorColRange(300.0f, 1.0f, 300.0f);
+        glm::vec3 floorColRange(300.0f, 101.0f, 300.0f);
 
         ////cube do testow
         //root_node->add_child(cube1);
@@ -308,7 +308,6 @@ class GameManager {
         ball->setProperties(lightingShader, textureshrek, glm::vec3(0.0f, 2.0f, -2.0f),MODEL,sphere,0.03f,true,ballCollider);
 
 
-
         //tyrolka
         Collider aerialrunnwayTrigger(0.8f, false, aerialRunnwayPos, true);
         root_node->add_child(aerialrunnwaywholeptr);
@@ -334,7 +333,7 @@ class GameManager {
 
         //podloga
         root_node->add_child(floorptr);
-        Collider floorCol(floorColRange, false, glm::vec3(15.0f, -1.2f, 0.0f), false);
+        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -101.25f, 0.0f), false);
         floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
 
 
@@ -380,7 +379,7 @@ class GameManager {
         //piaskownica
         root_node->add_child(sandpitptr);
         Collider sandPitTrigger(glm::vec3(2.43f, 5.1f, 2.43f), false, sandPitPos, true);
-        sandpitptr->setProperties(lightingShader, texsandpit, zeroPos, MODEL, sandpit, 0.01f, false);
+        sandpitptr->setProperties(lightingShader, texsandpit, sandPitPos, MODEL, sandpit, 0.3f, false);
         sandpitptr->trigger = sandPitTrigger;
 
 

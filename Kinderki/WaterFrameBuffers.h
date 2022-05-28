@@ -12,8 +12,8 @@ private:
 	unsigned int refractiontexture;
 	unsigned int refractionRBO;
 public:
-	const int REFLECTION_WIDTH = 320;
-	const int REFLECTION_HEIGHT = 180;
+	const int REFLECTION_WIDTH = 320*2;
+	const int REFLECTION_HEIGHT = 180*2;
 
 	const int REFRACTION_WIDTH = 1280;
 	const int REFRACTION_HEIGHT = 720;

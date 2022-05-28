@@ -152,7 +152,7 @@ public:
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
                 playerObject->get_transform().m_position.y -= 2.0f * dt;
-                if (playerObject->get_transform().m_position.y <= 0.0f) {
+                if (playerObject->get_transform().m_position.y <= -1.5f) {
                     playerObject->get_transform().m_position.y += 2.0f * dt;
                     sandMove = true;
                     //playerObject->get_transform().m_position.x = -5.0f;
@@ -167,7 +167,7 @@ public:
             }
             if (playerObject->get_transform().m_position.x <= 1.0f) {
                 playerObject->get_transform().m_position.y += 2.0f * dt;
-                if (playerObject->get_transform().m_position.y >= 1.821f) {
+                if (playerObject->get_transform().m_position.y >= 0.01f) {
                     sandMove = false;
                 }
             }

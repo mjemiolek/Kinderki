@@ -118,42 +118,6 @@ int main()
     unsigned int refractiontexture=0;
     unsigned int reflectiontexture=0;
 
-    ////fbo
-    ////refraction
-    //unsigned int waterRefractionFbo;
-    //glGenFramebuffers(1, &waterRefractionFbo);
-    //glBindFramebuffer(GL_FRAMEBUFFER, waterRefractionFbo);
-    ////texture
-    //unsigned int refractiontexture;
-    //glGenTextures(1, &refractiontexture);
-    //glBindTexture(GL_TEXTURE_2D, refractiontexture);
-    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 360, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    //glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, refractiontexture, 0);
-    //////reflection
-    ////unsigned int waterReflectionFbo;
-    ////glGenFramebuffers(1, &waterReflectionFbo);
-    ////glBindFramebuffer(GL_FRAMEBUFFER, waterReflectionFbo);
-    //////texture
-    ////unsigned int reflectiontexture;
-    ////glGenTextures(1, &reflectiontexture);
-    ////glBindTexture(GL_TEXTURE_2D, reflectiontexture);
-    ////glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 640, 360, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    ////glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    ////glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    ////glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, reflectiontexture, 0);
-    //////Render buffer object
-    //unsigned int rbo;
-    //glGenRenderbuffers(1, &rbo);
-    //glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    //glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 640, 360); // use a single renderbuffer object for both a depth AND stencil buffer.
-    //glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
-    //// now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
-    //if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-    //    std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 
     //Creating game components
     GameManager gameManager;
@@ -272,7 +236,7 @@ int main()
 
             //water
             //refraction
-            glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, 2.4f);
+            glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, 0.58f);
             //viewport
             refractiontexture = buffers->getRefractionTexture();
             buffers->bindRefraction();
@@ -285,10 +249,10 @@ int main()
             camera.Position.y -= distance;
             camera.setPitch(-camera.Pitch);
             //move camera
-            clipPlane.w = -clipPlane.w;
+            glm::vec4 clipPlane2 = glm::vec4(0.0f, 1.0f, 0.0f, -0.58f);
             reflectiontexture = buffers->getReflectionTexture();
             buffers->bindReflection();
-            gameManager.render(clipPlane, buffers->REFLECTION_WIDTH, buffers->REFLECTION_HEIGHT);
+            gameManager.render(clipPlane2, buffers->REFLECTION_WIDTH, buffers->REFLECTION_HEIGHT);
             skybox.render();
             buffers->unbindBuffer();
             //move camera
