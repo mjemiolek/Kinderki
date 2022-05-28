@@ -156,8 +156,7 @@ struct SceneGraphNode {
             m_children[i]->update(m_transform, dirty);
         }
     }
-    void render(bool is_root = false
-    ) {
+    void render(bool is_root = false, glm::vec4 clip = glm::vec4(0.0f, -1.0f, 0.0f, 2.4f)) {
         if (!is_root) {
             shaderTemp.use();
             glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -166,6 +165,8 @@ struct SceneGraphNode {
             glm::mat4 view = camera.GetViewMatrix();
             shaderTemp.setMat4("view", view);
             shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
+            shaderTemp.setVec4("plane", clip.x, clip.y, clip.z, clip.w);
+            
 
             if (tempRender == BOX) {
 
@@ -194,12 +195,11 @@ struct SceneGraphNode {
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture);
                 modelTemp.Draw(shaderTemp);
-
             }
 
         }
         for (uint32_t i = 0; i < m_children.size(); ++i) {
-            m_children[i]->render();
+            m_children[i]->render(false, clip);
         }
     }
     void renderScene(bool is_root = false, Shader shader = Shader())
@@ -254,6 +254,27 @@ struct SceneGraphNode {
             {
                 m_children[i]->renderSceneWithOutline(false, shader);
             }
+        }
+    }
+    void renderWater(bool is_root, unsigned int refractionTexture, unsigned int reflectionTexture)
+    {
+        if (!is_root) {
+            shaderTemp.use();
+            glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+            shaderTemp.setMat4("projection", projection);
+
+            glm::mat4 view = camera.GetViewMatrix();
+            shaderTemp.setMat4("view", view);
+            shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, refractionTexture);
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, reflectionTexture);
+            modelTemp.Draw(shaderTemp);
+
+        }
+        for (uint32_t i = 0; i < m_children.size(); ++i) {
+            m_children[i]->renderWater(false, refractionTexture, reflectionTexture);
         }
     }
     void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, bool stencilTest, Collider col = Collider(), Collider trig = Collider()) {

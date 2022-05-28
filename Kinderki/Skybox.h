@@ -138,4 +138,9 @@ public:
         // Switch back to the normal depth function
         glDepthFunc(GL_LESS);
     }
+
+    unsigned int getCubeMapTexture()
+    {
+        return cubemapTexture;
+    }
 };

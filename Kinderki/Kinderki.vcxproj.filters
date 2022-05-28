@@ -116,6 +116,9 @@
     <ClInclude Include="Frustum.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
+    <ClInclude Include="WaterFrameBuffers.h">
+      <Filter>Pliki nagłówkowe</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\lightcaster.frag">
@@ -170,6 +173,12 @@
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
     <None Include="antialliasing.vert">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\water.frag">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\water.vert">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
   </ItemGroup>

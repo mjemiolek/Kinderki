@@ -202,7 +202,7 @@ public:
             if (seat->m_transform.z_rotation_angle < -80.0f)
             {
                 seat->get_transform().z_rotation_angle += hustawkerSpeed * dt;
-                hustawkerSpeed /= 2.0f;
+                hustawkerSpeed /= 2.5f;
                 hustawkerSpeed = -hustawkerSpeed;
                 hustawkerLeft = false;
             }

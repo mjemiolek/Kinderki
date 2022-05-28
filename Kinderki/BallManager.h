@@ -53,7 +53,7 @@ public:
             ball->velocity.z = 0.0f;
         }
         //Don't let the ball to go into ground
-        if (ball->get_transform().m_position.y<1.82f) ball->get_transform().m_position.y = 1.82f;
+        if (ball->get_transform().m_position.y<-0.01f) ball->get_transform().m_position.y = 0.0f;
 
 
         ball->update_transform();

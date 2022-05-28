@@ -159,6 +159,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="ColliderManager.h" />
+    <ClInclude Include="WaterFrameBuffers.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GravityManager.h" />
@@ -197,6 +198,8 @@
     <None Include="res\shaders\skybox.vert" />
     <None Include="res\shaders\text.frag" />
     <None Include="res\shaders\text.vert" />
+    <None Include="res\shaders\water.frag" />
+    <None Include="res\shaders\water.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

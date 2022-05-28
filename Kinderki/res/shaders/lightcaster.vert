@@ -11,8 +11,13 @@ uniform mat4 u_world;
 uniform mat4 view;
 uniform mat4 projection;
 
+uniform vec4 plane;// = vec4(0, -1, 0, 2.4); //hardcoded
+
 void main()
 {
+    vec4 worldPosition = u_world * vec4(aPos, 1.0);
+    gl_ClipDistance[0] = dot(worldPosition, plane);
+
     FragPos = vec3(u_world * vec4(aPos, 1.0));
     Normal = mat3(transpose(inverse(u_world))) * aNormal;
     TexCoords = aTexCoords;

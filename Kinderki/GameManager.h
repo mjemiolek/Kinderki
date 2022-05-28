@@ -25,6 +25,7 @@
 class GameManager {
     public:
     std::shared_ptr<SceneGraphNode> root_node;
+    std::shared_ptr<SceneGraphNode> root_water;
     std::shared_ptr<SceneGraphNode> cube1;
     std::shared_ptr<SceneGraphNode> cube2;
     std::shared_ptr<SceneGraphNode> cube3; //player
@@ -52,11 +53,14 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> umbrellaptr;
     std::shared_ptr<SceneGraphNode> walkptr;
     std::shared_ptr<SceneGraphNode> wallsptr;
+    std::shared_ptr<SceneGraphNode> poolptr;
+    std::shared_ptr<SceneGraphNode> poolwaterptr;
 
     std::shared_ptr<SceneGraphNode> heartptr;
     std::shared_ptr<SceneGraphNode> heartptr2;
 
 
+    Shader lightingShader = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     //For shadows
     Shader shaderShad = Shader("res/shaders/shadow_mapping.vert", "res/shaders/shadow_mapping.frag");
     unsigned int depthMapFBO, depthMap;
@@ -65,35 +69,37 @@ class GameManager {
     //For outline
     Shader outlineShader = Shader("res/shaders/outlining.vert", "res/shaders/outlining.frag");
     Shader animShader = Shader("res/shaders/skeletal_animation.vert", "res/shaders/skeletal_animation.frag");
-
+    //For water
+    Shader waterShader = Shader("res/shaders/water.vert", "res/shaders/water.frag");
 
     Shader antialliasingshader = Shader("res/shaders/antialliasing.vert", "res/shaders/antialliasing.frag");
-
 
 
     GameManager() {
         //settings
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
-        glm::vec3 floorPos(-30.0f, -6.78f, 0.0f);
-        glm::vec3 sandPitPos(8.87f, 1.82f, -14.34f);
-        glm::vec3 seesawPos(8.0f, 2.50f, -4.5f);
-        glm::vec3 ballPos(11.53f, 4.82f, 14.46f);
-        glm::vec3 slidePos(22.50f, 2.2f, -14.0f);
-        glm::vec3 trampolinePos(29.50f, 2.4f, -14.95f);
-        glm::vec3 treePos(34.0f, 7.2f, -18.0f);
-        glm::vec3 aerialRunnwayPos(32.87f, 1.82f, -9.91f);
-        glm::vec3 swingPos(8.0f, 4.2f, 6.0f);
-        glm::vec3 goalLeftPos(5.5f, 1.8f, 15.5f);
-        glm::vec3 goalRightPos(18.5f, 1.8f, 15.5f);
-        glm::vec3 wallPosColl1(2.42f, 1.82f, 0.0f);
-        glm::vec3 wallPosColl2(20.675f, 1.82f, -20.89f);
-        glm::vec3 wallPosColl3(12.1845f, 1.82f, 21.0f);
-        glm::vec3 wallPosColl4(21.4975f, 1.82f, 15.823f);
-        glm::vec3 wallPosColl5(30.1425f, 1.82f, 11.07f);
-        glm::vec3 wallPosColl6(38.455f, 1.82f, -4.68f);
+        glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
+        glm::vec3 sandPitPos(8.87f, 0.0f, -14.34f);
+        glm::vec3 seesawPos(8.0f, 2.50f - 1.82f, -4.5f);
+        glm::vec3 ballPos(11.53f, 4.82f - 1.82f, 14.46f);
+        glm::vec3 slidePos(22.50f, 2.2f - 1.82f, -14.0f);
+        glm::vec3 trampolinePos(29.50f, 2.4f - 1.82f, -14.95f);
+        glm::vec3 treePos(34.0f, 7.2f - 1.82f, -18.0f);
+        glm::vec3 aerialRunnwayPos(32.87f, 0.0f, -9.91f);
+        glm::vec3 swingPos(8.0f, 4.2f - 1.82f, 6.0f);
+        glm::vec3 poolPos(-2.0f, 0.0f, 6.0f);
+        glm::vec3 poolWaterPos(-2.0f, 2.4f - 1.82f, 6.0f);
+        glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
+        glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
+        glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f);
+        glm::vec3 wallPosColl2(20.675f, 0.0f, -20.89f);
+        glm::vec3 wallPosColl3(12.1845f, 0.0f, 21.0f);
+        glm::vec3 wallPosColl4(21.4975f, 0.0f, 15.823f);
+        glm::vec3 wallPosColl5(30.1425f, 0.0f, 11.07f);
+        glm::vec3 wallPosColl6(38.455f, 0.0f, -4.68f);
 
-        glm::vec3 heartPos(2.0f, 2.0f, 2.0f);
-        glm::vec3 heartPos2(-2.0f, 2.0f, -2.0f);
+        glm::vec3 heartPos(2.0f, 0.0f, 2.0f);
+        glm::vec3 heartPos2(-2.0f, 0.0f, -2.0f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
@@ -113,12 +119,15 @@ class GameManager {
         gravity->setGravity(0.5f);
 
         //Initializing shader
-        Shader lightingShader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
         lightingShader.use();
         lightingShader.setInt("material.diffuse", 0);
         lightingShader.setInt("material.specular", 64);
         //lightingShader.setVec3("light.position", lightPos);
 
+        //Initializing water shader
+        waterShader.use();
+        glUniform1i(glGetUniformLocation(waterShader.ID, "refractionTexture"), 0);
+        glUniform1i(glGetUniformLocation(waterShader.ID, "reflectionTexture"), 1);
 
         //shadow shaders configuration
         shaderShad.use();
@@ -171,6 +180,9 @@ class GameManager {
         Model umbrella("res/models/level/umbrella.obj");
         Model walk("res/models/level/walk.obj");
         Model walls("res/models/level/walls.obj",16.0f,1.0f);
+        Model pool("res/models/level/pool.obj");
+        Model poolwater("res/models/level/poolwater.obj");
+
 
         Model heart("res/models/temp.obj");
 
@@ -187,6 +199,8 @@ class GameManager {
         unsigned int texturesand = loadTexture("res/textures/sandtexture.png");
         unsigned int textureplanks = loadTexture("res/textures/planks.png");
         unsigned int texturestone = loadTexture("res/textures/stone.jpg");
+        unsigned int texturewater = loadTexture("res/textures/water.png");
+
 
         unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
         unsigned int specularMap = loadTexture("res/textures/spec.jpg");
@@ -197,6 +211,7 @@ class GameManager {
 
         //Allocating storage for the objects
         root_node = std::make_shared<SceneGraphNode>();
+        root_water = std::make_shared<SceneGraphNode>();
         cube1 = std::make_shared<SceneGraphNode>();
         cube2 = std::make_shared<SceneGraphNode>();
         cube3 = std::make_shared<SceneGraphNode>();
@@ -221,6 +236,9 @@ class GameManager {
         umbrellaptr = std::make_shared<SceneGraphNode>();
         walkptr = std::make_shared<SceneGraphNode>();
         wallsptr = std::make_shared<SceneGraphNode>();
+        poolptr = std::make_shared<SceneGraphNode>();
+        poolwaterptr = std::make_shared<SceneGraphNode>();
+
 
         heartptr = std::make_shared<SceneGraphNode>();
         heartptr2 = std::make_shared<SceneGraphNode>();
@@ -230,16 +248,16 @@ class GameManager {
         trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
-        glm::vec3 floorColRange(300.0f, 20.0f, 300.0f);
+        glm::vec3 floorColRange(300.0f, 1.0f, 300.0f);
 
-        //cube do testow
-        root_node->add_child(cube1);
-        Collider cube1Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, cubePositions[0],false);
-        cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f,true, cube1Collider);
-        //test
-        Collider cube1ExtraCollider(boxColRange, false,glm::vec3(-0.5f, 2.0f, 5.5f), false);
-        cube1->additionalColliders.push_back(cube1ExtraCollider);
-        //test
+        ////cube do testow
+        //root_node->add_child(cube1);
+        //Collider cube1Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, cubePositions[0],false);
+        //cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f,true, cube1Collider);
+        ////test
+        //Collider cube1ExtraCollider(boxColRange, false,glm::vec3(-0.5f, 2.0f, 5.5f), false);
+        //cube1->additionalColliders.push_back(cube1ExtraCollider);
+        ////test
 
         //cube do testu AI
         root_node->add_child(cube2);
@@ -268,16 +286,16 @@ class GameManager {
         benchesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
 
         //piaski
-        //root_node->add_child(sandsptr);
-        //sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
+        root_node->add_child(sandsptr);
+        sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
         //krawezniki?
-        //root_node->add_child(walkptr);
-        //walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, false);
+        root_node->add_child(walkptr);
+        walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, false);
 
         //podloga
         root_node->add_child(floorptr);
-        Collider floorCol(floorColRange, false, glm::vec3(15.0f, -18.56f, 0.0f), false);
+        Collider floorCol(floorColRange, false, glm::vec3(15.0f, -1.0f, 0.0f), false);
         floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
 
         //Bramki
@@ -417,6 +435,11 @@ class GameManager {
         root_node->add_child(umbrellaptr);
         umbrellaptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, umbrella, 0.01f, false);
 
+        //basen
+        root_node->add_child(poolptr);
+        poolptr->setProperties(lightingShader, texturemetal, poolPos, MODEL, pool, 0.07f, false);
+        root_water->add_child(poolwaterptr);
+        poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.07f, false);
 
         //sciany
         Collider wallColl1(glm::vec3(0.05f, 3.0f, 21.0f), false, wallPosColl1, true);
@@ -496,18 +519,19 @@ class GameManager {
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
+        root_water->update(Transform(), false);
     }
-    void render() {
-        glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    void render(glm::vec4 clip,int width,int height) {
+        glViewport(0, 0, width, height);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         
 
-        root_node->render(true);
+        root_node->render(true, clip);
         
     }
     unsigned int quadVAO = 0;
     unsigned int quadVBO;
-    void renderQuad()
+    void renderQuad() //for debbuging
     {
         if (quadVAO == 0)
         {
@@ -618,6 +642,11 @@ class GameManager {
         glStencilFunc(GL_ALWAYS, 0, 0xFF);
         // Enable the depth buffer
         glEnable(GL_DEPTH_TEST);
+    }
+
+    void renderWater(unsigned int refractiontexture, unsigned int reflectiontexture)
+    {
+        root_water->renderWater(true, refractiontexture, reflectiontexture);
     }
 
     unsigned int candyCount(PlayerController* player, unsigned int tex1, unsigned int tex2, unsigned int tex3, unsigned int tex4, unsigned int tex5, unsigned int tex6, unsigned int tex7) {
