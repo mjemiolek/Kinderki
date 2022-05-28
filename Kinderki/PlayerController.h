@@ -54,7 +54,6 @@ public:
             rotate(playerObject->velocity, deltaTime);
             //debuowanie postaci
             if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
-                playerObject->get_transform().m_position.x += 2.5f * deltaTime;
                 playerObject->get_transform().x_rotation_angle += 90.0f * deltaTime;
             }
 
@@ -92,14 +91,14 @@ public:
         float deviation = (step/100.0f)*2.2f;
         //Specify direction
         if (direction.x == 0.0f && direction.z == 0.0f) { angle = playerObject->get_transform().y_rotation_angle; }
-        else if (direction.x == speed && direction.z == 0.0f) { angle = 90.0f; }              //right
-        else if (direction.z == speed && direction.x == 0.0f) { angle = 180.0f; }        //down
-        else if (direction.x == -speed && direction.z == 0.0f) { angle = 270.0f; }       //left
-        else if (direction.z == -speed && direction.x == 0.0f) { angle = 0.0f; }         //up
-        else if (direction.x == speed && direction.z == speed) { angle = 135.0f; }    //right-down
-        else if (direction.z == speed && direction.x == -speed) { angle = 225.0f; }   //down-left
-        else if (direction.x == -speed && direction.z == -speed) { angle = 315.0f; }  //left-up
-                                                            else { angle = 45.0f; }   //up-right
+        else if (direction.x == speed && direction.z == 0.0f) { angle = 270.0f; }       //left
+        else if (direction.z == speed && direction.x == 0.0f)  { angle = 0.0f; }         //up
+        else if (direction.x == -speed && direction.z == 0.0f) { angle = 90.0f; }              //right
+        else if (direction.z == -speed && direction.x == 0.0f) { angle = 180.0f; }        //down
+        else if (direction.x == speed && direction.z == speed) { angle = 315.0f; }  //left-up
+        else if (direction.z == speed && direction.x == -speed) { angle = 45.0f; }   //up-right
+        else if (direction.x == -speed && direction.z == -speed) { angle = 135.0f; }    //right-down
+                                                            else  { angle = 225.0f; }   //down-left
         //Rotate player towards direction
         if (playerObject->get_transform().y_rotation_angle < angle - deviation || playerObject->get_transform().y_rotation_angle > angle + deviation)
         {

@@ -12,7 +12,7 @@
 #include "Sound.h"
 #include "Shader.h"
 #include "Camera.h"
-#include "Model.h"
+#include "ModelAnimation.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
 #include "AIController.h"
@@ -138,6 +138,9 @@ int main()
     unsigned int textureCandyx5 = gameManager.loadTexture("res/textures/candyx5.png");
     unsigned int textureCandyx6 = gameManager.loadTexture("res/textures/candyx6.png");
 
+
+    
+
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
     gui.textureAerialRunway = textureAerialRunway;
@@ -150,8 +153,7 @@ int main()
     gui.textureCandy = textureCandy;
 
 
-
-
+   
 
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
@@ -178,6 +180,8 @@ int main()
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);
         gui.handleGui(window);
+        gameManager.update(passed_time);
+        gui.update(passed_time);
 
         //robocza modyfikacja candyCount
         if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
@@ -209,22 +213,20 @@ int main()
         while (unprocessed_time >= frame_time) {
             should_render = true;
             unprocessed_time -= frame_time;
-            gameManager.update(frame_time);
-            gui.update(passed_time);
+            
         }
 
 
         if (should_render) {
             should_render = false;
 
-
-            std::cout << "x: " << player->getPlayerObject()->get_transform().m_position.x << "y: " << player->getPlayerObject()->get_transform().m_position.y << "z: " << player->getPlayerObject()->get_transform().m_position.z << std::endl;
+            //std::cout << "x: " << player->getPlayerObject()->get_transform().m_position.x << "y: " << player->getPlayerObject()->get_transform().m_position.y << "z: " << player->getPlayerObject()->get_transform().m_position.z << std::endl;
 
             //gameManager.render();
             gameManager.renderwithShadows();
-            gameManager.renderWithOutline();
             skybox.render();
             gui.render();
+
 
             glfwPollEvents();
             glfwSwapBuffers(window);

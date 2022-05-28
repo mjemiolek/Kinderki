@@ -45,7 +45,7 @@ public:
 		auto iter = std::find_if(m_Bones.begin(), m_Bones.end(),
 			[&](const Bone& Bone)
 			{
-				return Bone.GetBoneName() == name;
+				return Bone.GetBoneName() == name.c_str();
 			}
 		);
 		if (iter == m_Bones.end()) return nullptr;
@@ -67,6 +67,8 @@ private:
 		int size = animation->mNumChannels;
 
 		auto& boneInfoMap = model.GetBoneInfoMap();//getting m_BoneInfoMap from Model class
+		std::cout <<"bone info map in readmissingbones: " << boneInfoMap.size() << std::endl;
+		std::cout <<"bone info map in readmissingbones v2: " << GetBoneIDMap().size() << std::endl;
 		int& boneCount = model.GetBoneCount(); //getting the m_BoneCounter from Model class
 
 		//reading channels(bones engaged in an animation and their keyframes)

@@ -1,5 +1,5 @@
-#ifndef OPENGLPAG_MODEL_ANIMATION_H
-#define OPENGLPAG_MODEL_ANIMATION_H
+#ifndef MODEL_H
+#define MODEL_H
 
 #include <glad/glad.h> 
 
@@ -47,22 +47,32 @@ public:
 		for (unsigned int i = 0; i < meshes.size(); i++)
 			meshes[i].Draw(shader);
 	}
-
 	auto& GetBoneInfoMap() { return m_BoneInfoMap; }
 	int& GetBoneCount() { return m_BoneCounter; }
+	
 
 
 private:
 
 	std::map<string, BoneInfo> m_BoneInfoMap;
 	int m_BoneCounter = 0;
+	
+	void SetVertexBoneDataToDefault(Vertex& vertex)
+	{
+		for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
+		{
+			vertex.m_BoneIDs[i] = -1;
+			vertex.m_Weights[i] = 0.0f;
+		}
+	}
+
 
 	// loads a model with supported ASSIMP extensions from file and stores the resulting meshes in the meshes vector.
 	void loadModel(string const& path)
 	{
 		// read file via ASSIMP
 		Assimp::Importer importer;
-		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_CalcTangentSpace);
+		const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
 		// check for errors
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
 		{
@@ -95,14 +105,7 @@ private:
 
 	}
 
-	void SetVertexBoneDataToDefault(Vertex& vertex)
-	{
-		for (int i = 0; i < MAX_BONE_INFLUENCE; i++)
-		{
-			vertex.m_BoneIds[i] = -1;
-			vertex.m_Weights[i] = 0.0f;
-		}
-	}
+	
 
 
 	Mesh processMesh(aiMesh* mesh, const aiScene* scene)
@@ -156,10 +159,10 @@ private:
 	{
 		for (int i = 0; i < MAX_BONE_INFLUENCE; ++i)
 		{
-			if (vertex.m_BoneIds[i] < 0)
+			if (vertex.m_BoneIDs[i] < 0)
 			{
 				vertex.m_Weights[i] = weight;
-				vertex.m_BoneIds[i] = boneID;
+				vertex.m_BoneIDs[i] = boneID;
 				break;
 			}
 		}
@@ -168,25 +171,23 @@ private:
 
 	void ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
 	{
-		auto& boneInfoMap = m_BoneInfoMap;
-		int& boneCount = m_BoneCounter;
-
 		for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
 		{
 			int boneID = -1;
 			std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
-			if (boneInfoMap.find(boneName) == boneInfoMap.end())
+			if (m_BoneInfoMap.find(boneName) == m_BoneInfoMap.end())
 			{
 				BoneInfo newBoneInfo;
-				newBoneInfo.id = boneCount;
-				newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
-				boneInfoMap[boneName] = newBoneInfo;
-				boneID = boneCount;
-				boneCount++;
+				newBoneInfo.id = m_BoneCounter;
+				newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(
+					mesh->mBones[boneIndex]->mOffsetMatrix);
+				m_BoneInfoMap[boneName] = newBoneInfo;
+				boneID = m_BoneCounter;
+				m_BoneCounter++;
 			}
 			else
 			{
-				boneID = boneInfoMap[boneName].id;
+				boneID = m_BoneInfoMap[boneName].id;
 			}
 			assert(boneID != -1);
 			auto weights = mesh->mBones[boneIndex]->mWeights;

@@ -7,7 +7,7 @@
 
 #include "Shader.h"
 #include "Camera.h"
-#include "Model.h"
+#include "ModelAnimation.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
 #include "Text.h"
@@ -15,6 +15,7 @@
 #include "Settings.h"
 #include "Collider.h"
 #include "GravityManager.h"
+#include "Animator.h"
 #include <mmcobj.h>
 #include <vector>
 
@@ -56,7 +57,21 @@ class GameManager {
     Shader debugDepthQuad = Shader("res/shaders/debug_quad.vert", "res/shaders/debug_quad.frag");
     //For outline
     Shader outlineShader = Shader("res/shaders/outlining.vert", "res/shaders/outlining.frag");
-    Shader animShader = Shader("res/shaders/skeletal_animation.vert", "res/shaders/skeletal_animation.frag");
+    Shader animShad = Shader("res/shaders/skeletal_animation.vert", "res/shaders/skeletal_animation.frag");
+
+    //Model postac_test = Model("res/models/postac_test_riggowanie.dae");
+
+    //Model postac_test = Model("res/models/postac_riggowanie_v2.obj");
+    //Model postac_test = Model("res/models/postac_test_v1.dae");
+    //Model postac_test = Model("res/models/postac_test_riggowanie_mniejsze_chyba_poprawione.dae");
+     Model postac_test = Model("res/models/postac_test_kosci_animacja.fbx");
+
+
+     //Model postac_test = Model("res/models/postac_test_v5.dae");
+    //Model postac_test = Model("res/animations/postac_chodzenie.dae");
+    //Model postac_test = Model("res/models/postac_test_v4.obj");
+     Animation anim = Animation("res/models/postac_test_kosci_animacja.fbx",&postac_test);
+     Animator animator = Animator(&anim);
 
 
 
@@ -154,9 +169,13 @@ class GameManager {
 
         //Model postac_test("res/models/main_character.obj");
         //Model postac_test("res/models/postac_test_kolejny.obj");
-        Model postac_test("res/models/postac_test_v4.obj");
+        //Model postac_test("res/models/postac_test_v4.obj"); // aktualna postac
+        
 
+        //Model postac_test("res/models/postac_test_riggowanie.dae");
 
+        std::cout << "bone count: " << postac_test.GetBoneCount() << std::endl;
+        std::cout << "bone info map: " << postac_test.GetBoneInfoMap().size() << std::endl;
 
 
         unsigned int texturekupa = loadTexture("res/textures/win.png");
@@ -171,6 +190,7 @@ class GameManager {
 
         //unsigned int texture_postac_test = loadTexture("res/textures/oko_tekstura_test2.png");
         unsigned int texture_postac_test = loadTexture("res/textures/baking_5.png");
+
 
 
         //Allocating storage for the objects
@@ -197,6 +217,7 @@ class GameManager {
         walkptr = std::make_shared<SceneGraphNode>();
         wallsptr = std::make_shared<SceneGraphNode>();
 
+
         collidingObjects.insert(collidingObjects.end(), {  cube1,cube2,cube3, floorptr, ball,wallsptr });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
@@ -204,7 +225,7 @@ class GameManager {
 
         root_node->add_child(cube1);
         Collider cube1Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, cubePositions[0],false);
-        cube1->setProperties(lightingShader, texturestone, cubePositions[0], MODEL, box, 0.15f,true, cube1Collider);
+        cube1->setProperties(shaderShad,texturestone, cubePositions[0], SHADOW, box, 0.15f,true, cube1Collider);
         //test
         Collider cube1ExtraCollider(boxColRange, false,glm::vec3(-0.5f, 2.0f, 5.5f), false);
         cube1->additionalColliders.push_back(cube1ExtraCollider);
@@ -212,45 +233,45 @@ class GameManager {
 
         root_node->add_child(cube2);
         Collider cube2Collider(boxColRange, false, cubePositions[2], false);
-        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
+        cube2->setProperties(shaderShad, texturekupa, cubePositions[2], SHADOW, box, 0.15f, true, cube2Collider);
         
 
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, cubePositions[4],true);
         //cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
-        cube3->setProperties(lightingShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
+        cube3->setProperties(animShad, texture_postac_test, cubePositions[4], ANIM, postac_test, 0.05f, false , cube3Collider);
 
         root_node->add_child(ball);
         Collider ballCollider(0.28f, false, glm::vec3(0.0f, 2.0f, -2.0f), true);
-        ball->setProperties(lightingShader, texturekupa, glm::vec3(0.0f, 2.0f, -2.0f),MODEL,sphere,0.03f,true,ballCollider);
+        ball->setProperties(shaderShad, texturekupa, glm::vec3(0.0f, 2.0f, -2.0f), SHADOW,sphere,0.03f,true,ballCollider);
 
 
         Collider aerialrunnwayTrigger(0.8f, false, sandPitPos, true);
         root_node->add_child(aerialrunnwayptr);
-        aerialrunnwayptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, aerialrunnway, 0.01f,false);
+        aerialrunnwayptr->setProperties(shaderShad, texturemetal, zeroPos, SHADOW, aerialrunnway, 0.01f,false);
         aerialrunnwayptr->trigger = aerialrunnwayTrigger;
 
         root_node->add_child(benchesptr);
-        benchesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
+        benchesptr->setProperties(shaderShad, textureplanks, zeroPos, SHADOW, benches, 0.01f, false);
 
         root_node->add_child(floorptr);
         Collider floorCol(floorColRange, false, glm::vec3(15.0f, -18.56f, 0.0f), false);
-        floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.01f, false, floorCol);
+        floorptr->setProperties(shaderShad, texturegrass, floorPos, SHADOW, floor, 0.01f, false, floorCol);
 
         root_node->add_child(footballstuffptr);
-        footballstuffptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, footballstuff, 0.01f, false);
+        footballstuffptr->setProperties(shaderShad, texturemetal, zeroPos, SHADOW, footballstuff, 0.01f, false);
 
         root_node->add_child(sandpitptr);
         Collider sandPitTrigger(glm::vec3(2.43f, 5.1f, 2.43f), false, sandPitPos, true);
-        sandpitptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, sandpit, 0.01f, false);
+        sandpitptr->setProperties(shaderShad, textureplanks, zeroPos, SHADOW, sandpit, 0.01f, false);
         sandpitptr->trigger = sandPitTrigger;
 
         root_node->add_child(sandsptr);
-        sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
+        sandsptr->setProperties(shaderShad, texturesand, zeroPos, SHADOW, sands, 0.01f, false);
 
         Collider seesawTrigger(0.5f, false, seesawPos, true);
         root_node->add_child(seesawptr);
-        seesawptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesaw, 0.01f, true);
+        seesawptr->setProperties(shaderShad, texturemetal, zeroPos, SHADOW, seesaw, 0.01f, true);
         seesawptr->trigger = seesawTrigger;
 
         //root_node->add_child(seesawreversepts);
@@ -258,31 +279,31 @@ class GameManager {
 
         Collider slideTrigger(1.2f, false, slidePos, true);
         root_node->add_child(slideptr);
-        slideptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, slide, 0.01f, true);
+        slideptr->setProperties(shaderShad, texturemetal, zeroPos, SHADOW, slide, 0.01f, true);
         slideptr->trigger = slideTrigger;
 
 
         Collider swingTrigger(1.0f, false, swingPos, true);
         root_node->add_child(swingptr);
-        swingptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, swing, 0.01f, true);
+        swingptr->setProperties(shaderShad, texturemetal, zeroPos, SHADOW, swing, 0.01f, true);
         swingptr->trigger = swingTrigger;
 
         root_node->add_child(tablesptr);
-        tablesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, tables, 0.01f, false);
+        tablesptr->setProperties(shaderShad, textureplanks, zeroPos, SHADOW, tables, 0.01f, false);
 
         Collider trampolineTrigger(glm::vec3(1.0f, 0.1f, 1.0f), false, trampolinePos, true);
         root_node->add_child(trampolineptr);
-        trampolineptr->setProperties(lightingShader, texturemetal, zeroPos, MODEL, trampoline, 0.01f, true);
+        trampolineptr->setProperties(shaderShad, texturemetal, zeroPos, SHADOW, trampoline, 0.01f, true);
         trampolineptr->trigger = trampolineTrigger;
 
         root_node->add_child(treeptr);
-        treeptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, tree, 0.01f, false);
+        treeptr->setProperties(shaderShad, textureplanks, zeroPos, SHADOW, tree, 0.01f, false);
 
         root_node->add_child(umbrellaptr);
-        umbrellaptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, umbrella, 0.01f, false);
+        umbrellaptr->setProperties(shaderShad, texturekupa, zeroPos, SHADOW, umbrella, 0.01f, false);
 
         root_node->add_child(walkptr);
-        walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, false);
+        walkptr->setProperties(shaderShad, textureplanks, zeroPos, SHADOW, walk, 0.01f, false);
 
         Collider wallColl1(glm::vec3(0.05f, 3.0f, 21.0f), false, wallPosColl1, true);
         Collider wallColl2(glm::vec3(17.825f, 3.0f, 0.05f), false, wallPosColl2, true);
@@ -291,13 +312,22 @@ class GameManager {
         Collider wallColl5(glm::vec3(8.3125f, 3.0f, 0.05f), false, wallPosColl5, true);
         Collider wallColl6(glm::vec3(0.05f, 3.0f, 15.75f), false, wallPosColl6, true);
         root_node->add_child(wallsptr);
-        wallsptr->setProperties(lightingShader, texturestone, zeroPos, MODEL, walls, 0.01f, false);
+        wallsptr->setProperties(shaderShad, texturestone, zeroPos, SHADOW, walls, 0.01f, false);
         wallsptr->additionalColliders.push_back(wallColl1);
         wallsptr->additionalColliders.push_back(wallColl2);
         wallsptr->additionalColliders.push_back(wallColl3);
         wallsptr->additionalColliders.push_back(wallColl4);
         wallsptr->additionalColliders.push_back(wallColl5);
         wallsptr->additionalColliders.push_back(wallColl6);
+
+        shaderShad.use();
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 view = camera.GetViewMatrix();
+        shaderShad.setMat4("projection", projection);
+        shaderShad.setMat4("view", view);
+        // set light uniforms
+        shaderShad.setVec3("viewPos", camera.Position);
+        shaderShad.setVec3("lightPos", lightPos);
     }
 
    
@@ -342,20 +372,21 @@ class GameManager {
     void update(float dt) {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
-
         
+        animator.UpdateAnimation(dt * 30 );
+
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
     }
-    void render() {
-        glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-        
+    //void render() {
+    //    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    //    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    //    
 
-        root_node->render(true);
-        
-    }
+    //    root_node->render(true);
+    //    
+    //}
     unsigned int quadVAO = 0;
     unsigned int quadVBO;
     void renderQuad()
@@ -386,6 +417,9 @@ class GameManager {
     }
     void renderwithShadows()
     {
+
+        //animator.UpdateAnimation(dt);
+
         // 1. render depth of scene to texture (from light's perspective)
         float near_plane = 0.1f, far_plane = 75.0f;
         float area = 22.0f;
@@ -423,23 +457,33 @@ class GameManager {
         shaderShad.setVec3("lightPos", lightPos);
         shaderShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
+        animShad.use();
+        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        view = camera.GetViewMatrix();
+        animShad.setMat4("projection", projection);
+        animShad.setMat4("view", view);
+        // set light uniforms
+        animShad.setVec3("viewPos", camera.Position);
+        animShad.setVec3("lightPos", lightPos);
+        animShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+        
+     //   animShad.use();
+
+        auto transforms = animator.GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i)
+            animShad.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+
         // Make it so the stencil test always passes
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         // Enable modifying of the stencil buffer
         //glStencilMask(0xFF);
 
-        root_node->render2(true,depthMap, shaderShad);
-        // render Depth map to quad for visual debugging
-        // don't delete---------------------------------
-        //debugDepthQuad.use();
-        //debugDepthQuad.setFloat("near_plane", near_plane);
-        //debugDepthQuad.setFloat("far_plane", far_plane);
-        //glActiveTexture(GL_TEXTURE0);
-        //glBindTexture(GL_TEXTURE_2D, depthMap);
-        //renderQuad();
+        root_node->render2(true,depthMap);
 
-    }
-    void renderWithOutline() {
+
+
+
         // Make it so only the pixels without the value 1 pass the test
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         // Disable modifying of the stencil buffer
@@ -448,8 +492,8 @@ class GameManager {
         glDisable(GL_DEPTH_TEST);
 
         outlineShader.use();
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
+        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        view = camera.GetViewMatrix();
         outlineShader.setMat4("projection", projection);
         outlineShader.setMat4("view", view);
         //scale
@@ -461,6 +505,18 @@ class GameManager {
         glStencilFunc(GL_ALWAYS, 0, 0xFF);
         // Enable the depth buffer
         glEnable(GL_DEPTH_TEST);
+
+
+
+        // render Depth map to quad for visual debugging
+        // don't delete---------------------------------
+        //debugDepthQuad.use();
+        //debugDepthQuad.setFloat("near_plane", near_plane);
+        //debugDepthQuad.setFloat("far_plane", far_plane);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, depthMap);
+        //renderQuad();
+
     }
 
     unsigned int candyCount(PlayerController* player, unsigned int tex1, unsigned int tex2, unsigned int tex3, unsigned int tex4, unsigned int tex5, unsigned int tex6, unsigned int tex7) {

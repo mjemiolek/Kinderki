@@ -6,15 +6,16 @@
 
 #include "Shader.h"
 #include "Camera.h"
-#include "Model.h"
+#include "ModelAnimation.h"
 #include "Settings.h"
 #include "Collider.h"
+#include "Animator.h"
 
 Camera camera(glm::vec3(0.0f, 16.0f, 5.0f));
 glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
 
 enum renderEnum {
-    MODEL, BOX, LIGHT
+    ANIM, MODEL, SHADOW
 };
 
 struct Transform {
@@ -52,52 +53,52 @@ struct SceneGraphNode {
             m_children[i]->update(m_transform, dirty);
         }
     }
-    void render(bool is_root = false
-    ) {
-        if (!is_root) {
-            shaderTemp.use();
-            glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-            shaderTemp.setMat4("projection", projection);
+    //void render(bool is_root = false
+    //) {
+    //    if (!is_root) {
+    //        shaderTemp.use();
+    //        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+    //        shaderTemp.setMat4("projection", projection);
 
-            glm::mat4 view = camera.GetViewMatrix();
-            shaderTemp.setMat4("view", view);
-            shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
+    //        glm::mat4 view = camera.GetViewMatrix();
+    //        shaderTemp.setMat4("view", view);
+    //        shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
 
-            if (tempRender == BOX) {
+    //        if (tempRender == BOX) {
 
-                shaderTemp.setVec3("viewPos", camera.Position);
-                shaderTemp.setVec3("light.position", lightPos);
-                shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-                //shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
-                shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-                shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-                shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-                shaderTemp.setFloat("material.shininess", 64.0f);
-                glBindVertexArray(VAOTemp);
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, texture);
-                glDrawArrays(GL_TRIANGLES, 0, 36);
-            }
-            if (tempRender == MODEL) {
-                shaderTemp.setVec3("viewPos", camera.Position);
-                shaderTemp.setVec3("light.position", lightPos);
-                shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-                //shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
-                shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-                shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-                shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-                shaderTemp.setFloat("material.shininess", 64.0f);
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, texture);
-                modelTemp.Draw(shaderTemp);
+    //            shaderTemp.setVec3("viewPos", camera.Position);
+    //            shaderTemp.setVec3("light.position", lightPos);
+    //            shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+    //            //shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
+    //            shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
+    //            shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+    //            shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+    //            shaderTemp.setFloat("material.shininess", 64.0f);
+    //            glBindVertexArray(VAOTemp);
+    //            glActiveTexture(GL_TEXTURE0);
+    //            glBindTexture(GL_TEXTURE_2D, texture);
+    //            glDrawArrays(GL_TRIANGLES, 0, 36);
+    //        }
+    //        if (tempRender == MODEL) {
+    //            shaderTemp.setVec3("viewPos", camera.Position);
+    //            shaderTemp.setVec3("light.position", lightPos);
+    //            shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+    //            //shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
+    //            shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
+    //            shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+    //            shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+    //            shaderTemp.setFloat("material.shininess", 64.0f);
+    //            glActiveTexture(GL_TEXTURE0);
+    //            glBindTexture(GL_TEXTURE_2D, texture);
+    //            modelTemp.Draw(shaderTemp);
 
-            }
+    //        }
 
-        }
-        for (uint32_t i = 0; i < m_children.size(); ++i) {
-            m_children[i]->render();
-        }
-    }
+    //    }
+    //    for (uint32_t i = 0; i < m_children.size(); ++i) {
+    //        m_children[i]->render();
+    //    }
+    //}
     void renderScene(bool is_root = false, Shader shader = Shader())
     {
         if (!is_root)
@@ -110,7 +111,7 @@ struct SceneGraphNode {
             m_children[i]->renderScene(false, shader);
         }
     }
-    void render2(bool is_root = false, unsigned int depthMap = 0,Shader shader = Shader())
+    void render2(bool is_root = false, unsigned int depthMap = 0)
     {
         if (!is_root) 
         {
@@ -120,16 +121,17 @@ struct SceneGraphNode {
             else {
                 glStencilMask(0x00);
             }
+            shaderTemp.use();
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, texture);
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, depthMap);
-            shader.setMat4("model", m_transform.m_world_matrix);
-            modelTemp.Draw(shader);
+            shaderTemp.setMat4("model", m_transform.m_world_matrix);
+            modelTemp.Draw(shaderTemp);
         }
         for (uint32_t i = 0; i < m_children.size(); ++i) 
         {
-            m_children[i]->render2(false,depthMap,shader);
+            m_children[i]->render2(false,depthMap);
         }
     }
     void renderSceneWithOutline(bool is_root = false, Shader shader = Shader()) {
