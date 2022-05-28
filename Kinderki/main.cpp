@@ -117,6 +117,7 @@ int main()
     WaterFrameBuffers *buffers = new WaterFrameBuffers();
     unsigned int refractiontexture=0;
     unsigned int reflectiontexture=0;
+    float moveFactor = 0.0f;
 
 
     //Creating game components
@@ -133,6 +134,9 @@ int main()
     movableManager->addMovable(gameManager.heartptr);
     movableManager->addMovable(gameManager.heartptr2);
     movableManager->addMovable(gameManager.colaptr);
+
+    //water
+    unsigned int dudvMap = gameManager.loadTexture("res/textures/water/waterDUDV.png");
 
     //load texture to gui
     unsigned int texture = gameManager.loadTexture("res/textures/notebook.png");
@@ -195,6 +199,8 @@ int main()
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);
         gui.handleGui(window);
+        moveFactor += 0.03f * passed_time;
+        moveFactor = fmod(moveFactor,1.0f);
 
         //robocza modyfikacja candyCount
         if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
@@ -263,7 +269,7 @@ int main()
             //render game
             gameManager.renderwithShadows(mode);
             gameManager.renderWithOutline();
-            gameManager.renderWater(refractiontexture, reflectiontexture);
+            gameManager.renderWater(refractiontexture, reflectiontexture,dudvMap,moveFactor);
             skybox.render();
             gui.render();
 

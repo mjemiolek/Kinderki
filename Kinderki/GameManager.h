@@ -134,6 +134,7 @@ class GameManager {
         waterShader.use();
         glUniform1i(glGetUniformLocation(waterShader.ID, "refractionTexture"), 0);
         glUniform1i(glGetUniformLocation(waterShader.ID, "reflectionTexture"), 1);
+        glUniform1i(glGetUniformLocation(waterShader.ID, "dudvMap"), 2);
 
         //shadow shaders configuration
         shaderShad.use();
@@ -211,7 +212,7 @@ class GameManager {
         unsigned int textureplanks = loadTexture("res/textures/planks.png");
         unsigned int textureshrek = loadTexture("res/textures/shrek.png");
         unsigned int texturestone = loadTexture("res/textures/stone.jpg");
-        unsigned int texturewater = loadTexture("res/textures/water.png");
+        unsigned int texturewater = loadTexture("res/textures/water/water.png");
 
 
         unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
@@ -706,9 +707,9 @@ class GameManager {
         glEnable(GL_DEPTH_TEST);
     }
 
-    void renderWater(unsigned int refractiontexture, unsigned int reflectiontexture)
+    void renderWater(unsigned int refractiontexture, unsigned int reflectiontexture, unsigned int dudvMap,float moveFactor)
     {
-        root_water->renderWater(true, refractiontexture, reflectiontexture);
+        root_water->renderWater(true, refractiontexture, reflectiontexture, dudvMap, moveFactor);
     }
 
     unsigned int candyCount(PlayerController* player, unsigned int tex1, unsigned int tex2, unsigned int tex3, unsigned int tex4, unsigned int tex5, unsigned int tex6, unsigned int tex7) {
