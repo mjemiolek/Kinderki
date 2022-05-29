@@ -58,6 +58,9 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> poolwaterptr;
 
 
+    std::shared_ptr<SceneGraphNode> temp;
+
+
     std::shared_ptr<SceneGraphNode> heartptr;
     std::shared_ptr<SceneGraphNode> heartptr2;
 
@@ -89,8 +92,8 @@ class GameManager {
         glm::vec3 slidePos(22.50f, 0.38f, -14.0f);
         glm::vec3 trampolinePos(29.50f, 0.58f, -14.95f);
         glm::vec3 treePos(34.0f, 5.38f, -18.0f);
-        glm::vec3 aerialRunnwayPos(32.87f, 0.82f, -9.91f);
-        glm::vec3 aerialRunnwaySeatPos(0.33, 0.1f, 0.0f);
+        glm::vec3 aerialRunnwayPos(34.0f, 0.0f, -2.5f);
+        glm::vec3 aerialRunnwaySeatPos(0.10, 0.1f, -14.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
         glm::vec3 poolPos(-5.0f, 0.0f, 6.0f);
         glm::vec3 poolWaterPos(-5.05f, 0.58f, 6.0f);
@@ -102,6 +105,9 @@ class GameManager {
         glm::vec3 wallPosColl4(21.4975f, 0.0f, 15.823f);
         glm::vec3 wallPosColl5(30.1425f, 0.0f, 11.07f);
         glm::vec3 wallPosColl6(38.455f, 0.0f, -4.68f);
+
+
+        glm::vec3 tempPos(0.0f, 0.0f, 0.0f);
 
         glm::vec3 heartPos(2.0f, 0.2f, 2.0f);
         glm::vec3 heartPos2(-2.0f, 0.2f, -2.0f);
@@ -278,9 +284,15 @@ class GameManager {
         colaptr = std::make_shared<SceneGraphNode>();
         mentosptr = std::make_shared<SceneGraphNode>();
 
+        temp = std::make_shared<SceneGraphNode>();
+
+
         collidingObjects.insert(collidingObjects.end(),{
         cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr,
-        trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr });
+        trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr,
+        aerialrunnwaywholeptr
+            
+            });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(300.0f, 101.0f, 300.0f);
@@ -311,6 +323,11 @@ class GameManager {
         ball->setProperties(lightingShader, textureshrek, glm::vec3(0.0f, 2.0f, -2.0f),MODEL,sphere,0.03f,true,ballCollider);
 
 
+
+
+
+
+
         //tyrolka
         Collider aerialrunnwayTrigger(0.8f, false, aerialRunnwayPos, true);
         root_node->add_child(aerialrunnwaywholeptr);
@@ -321,6 +338,91 @@ class GameManager {
         root_node->add_child(aerialrunnwayseatptr);
         aerialrunnwayseatptr->setProperties(lightingShader, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, false);
         //aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
+
+        tempPos = aerialRunnwayPos;
+        tempPos.z -= 8.0f;
+
+        //Podloga
+        Collider AERfloor(glm::vec3(1.0f, 0.5f, 1.0f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERfloor);
+        
+        //LEFBACK RIGHTBACK
+        tempPos.x -= 1.4;
+        tempPos.z -= 1.1;
+
+        Collider AERLB(glm::vec3(0.0001f, 4.0f, 0.0001f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERLB);
+
+        tempPos.x += 1.39;
+        tempPos.y += 4.0f;
+        Collider AERfceelingh(glm::vec3(1.25f, 0.25f, 0.001f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERfceelingh);
+
+        tempPos.x += 0.02;
+        tempPos.z += 0.75;
+        Collider AERfceelingv(glm::vec3(0.005f, 0.25f, 0.4f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERfceelingv);
+
+        tempPos.y -= 0.85;
+        tempPos.z += 1.15;
+        Collider AERfceelinghl(glm::vec3(1.0f, 0.01f, 0.2f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERfceelinghl);
+
+        tempPos.z += 8.0f;
+
+        Collider AERrope(glm::vec3(0.01f, 0.01f, 7.35f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERrope);
+
+        tempPos.z += 7.35f;
+        Collider AERroof(glm::vec3(1.25f, 0.01f, 0.001f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERroof);
+
+        tempPos.x -= 1.4;
+        tempPos.y -= 3.25;
+        tempPos.z -= 0.3;
+        Collider AERFrontLeft(glm::vec3(0.01f, 2.35f, 0.45f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERFrontLeft);
+
+        tempPos.x += 2.8;
+        Collider AERFrontRight(glm::vec3(0.01f, 2.35f, 0.45f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERFrontRight);
+
+        tempPos.x -= 1.4;
+        tempPos.y += 3.35;
+        tempPos.z += 0.3;
+
+        tempPos.z -= 7.35f;
+        tempPos.z -= 9.9;
+        tempPos.x += 1.39;
+        tempPos.y -= 3.25f;
+        
+        Collider AERRB(glm::vec3(0.0001f, 4.0f, 0.0001f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERRB);
+
+        tempPos.z += 2.2;
+        tempPos.x -= 0.275;
+        Collider AERRF(glm::vec3(0.0001f, 3.0f, 0.0001f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERRF);
+
+        tempPos.x -= 2.325;
+        Collider AERLF(glm::vec3(0.0001f, 3.0f, 0.0001f), false, tempPos, false);
+        aerialrunnwaywholeptr->additionalColliders.push_back(AERLF);
+        
+        root_node->add_child(temp);
+        temp->setProperties(lightingShader, textureplanks, aerialRunnwayPos, MODEL, postac_test, 1.0f, false);
+        /*
+        swingColPos.z -= 1.45f;
+        swingColPos.x -= 1.2f;
+        Collider sCLU(glm::vec3(0.15f, 2.5f, 0.03f), false, swingColPos, false); //swing collider left up
+        swingptr->additionalColliders.push_back(sCLU);
+        */
+
+
+
+
+
+
+
 
         //³awki
         root_node->add_child(benchesptr);
