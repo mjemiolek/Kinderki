@@ -203,6 +203,8 @@ int main()
         gui.handleGui(window);
         moveFactor += 0.03f * passed_time;
         moveFactor = fmod(moveFactor,1.0f);
+        gameManager.update(passed_time);
+        gui.update(passed_time);
 
         //robocza modyfikacja candyCount
         if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
@@ -234,8 +236,7 @@ int main()
         while (unprocessed_time >= frame_time) {
             should_render = true;
             unprocessed_time -= frame_time;
-            gameManager.update(frame_time);
-            gui.update(passed_time);
+            
         }
 
 

@@ -15,7 +15,7 @@
 glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
 
 enum renderEnum {
-    MODEL, BOX, LIGHT
+    MODEL, BOX, LIGHT, ANIM
 };
 
 struct Transform {
@@ -214,7 +214,7 @@ struct SceneGraphNode {
             m_children[i]->renderScene(false, shader);
         }
     }
-    void render2(bool is_root, unsigned int depthMap, Shader shader, const Frustum& frustum, unsigned int& display, unsigned int& total)
+    void render2(bool is_root, unsigned int depthMap, const Frustum& frustum, unsigned int& display, unsigned int& total)
     {
         if (!is_root) 
         {
@@ -226,19 +226,20 @@ struct SceneGraphNode {
                 else {
                     glStencilMask(0x00);
                 }
+                shaderTemp.use();
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture);
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, depthMap);
-                shader.setMat4("model", m_transform.m_world_matrix);
-                modelTemp.Draw(shader);
+                shaderTemp.setMat4("model", m_transform.m_world_matrix);
+                modelTemp.Draw(shaderTemp);
                 display++;
             }
             total++;
         }
         for (uint32_t i = 0; i < m_children.size(); ++i) 
         {
-            m_children[i]->render2(false,depthMap,shader,frustum,display,total);
+            m_children[i]->render2(false,depthMap,frustum,display,total);
         }
     }
     void renderSceneWithOutline(bool is_root = false, Shader shader = Shader()) {

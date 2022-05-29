@@ -7,6 +7,7 @@
 
 #include "Shader.h"
 #include "Camera.h"
+//#include "ModelAnimation.h"
 #include "Model.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
@@ -16,6 +17,7 @@
 #include "Collider.h"
 #include "GravityManager.h"
 #include "Frustum.h"
+//#include "Animator.h"
 #include <mmcobj.h>
 #include <vector>
 
@@ -82,6 +84,10 @@ class GameManager {
 
     Shader antialliasingshader = Shader("res/shaders/antialliasing.vert", "res/shaders/antialliasing.frag");
 
+    // animacje
+   // Model postac_test = Model("res/models/postac_test_kosci_animacja_v8.fbx");
+   // Animation anim = Animation("res/models/postac_test_kosci_animacja_v8.fbx", &postac_test);
+   // Animator animator = Animator(&anim);
 
     GameManager() {
         //settings
@@ -310,18 +316,18 @@ class GameManager {
         //cube do testu AI
         root_node->add_child(cube2);
         Collider cube2Collider(boxColRange, false, cubePositions[2], false);
-        cube2->setProperties(lightingShader, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
+        cube2->setProperties(shaderShad, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
         
         //gracz
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, cubePositions[4],true);
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
-        cube3->setProperties(lightingShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
+        cube3->setProperties(shaderShad, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
 
         //pilka
         root_node->add_child(ball);
         Collider ballCollider(0.28f, false, glm::vec3(0.0f, 2.0f, -2.0f), true);
-        ball->setProperties(lightingShader, textureshrek, glm::vec3(0.0f, 2.0f, -2.0f),MODEL,sphere,0.03f,true,ballCollider);
+        ball->setProperties(shaderShad, textureshrek, glm::vec3(0.0f, 2.0f, -2.0f),MODEL,sphere,0.03f,true,ballCollider);
 
 
 
@@ -333,11 +339,11 @@ class GameManager {
         Collider aerialrunnwayTrigger(0.8f, false, aerialRunnwayPos, true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
-        aerialrunnwaywholeptr->setProperties(lightingShader, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f,false);
+        aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f,false);
         aerialrunnwaywholeptr->trigger = aerialrunnwayTrigger;
 
         root_node->add_child(aerialrunnwayseatptr);
-        aerialrunnwayseatptr->setProperties(lightingShader, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, false);
+        aerialrunnwayseatptr->setProperties(shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, false);
         //aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
 
         tempPos = aerialRunnwayPos;
@@ -410,7 +416,7 @@ class GameManager {
         aerialrunnwaywholeptr->additionalColliders.push_back(AERLF);
         
         root_node->add_child(temp);
-        temp->setProperties(lightingShader, textureplanks, aerialRunnwayPos, MODEL, postac_test, 1.0f, false);
+        temp->setProperties(shaderShad, textureplanks, aerialRunnwayPos, MODEL, postac_test, 1.0f, false);
         /*
         swingColPos.z -= 1.45f;
         swingColPos.x -= 1.2f;
@@ -427,7 +433,7 @@ class GameManager {
 
         //³awki
         root_node->add_child(benchesptr);
-        benchesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
+        benchesptr->setProperties(shaderShad, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
 
         ////piaski
         //root_node->add_child(sandsptr);
@@ -440,7 +446,7 @@ class GameManager {
         //podloga
         root_node->add_child(floorptr);
         Collider floorCol(floorColRange, false, glm::vec3(0.0f, -101.25f, 0.0f), false);
-        floorptr->setProperties(lightingShader, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
+        floorptr->setProperties(shaderShad, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
 
 
         //Bramki
@@ -450,7 +456,7 @@ class GameManager {
         gLCP.x -= 1.6f;
         Collider goalLeftCollider(glm::vec3(0.015f, 3.0f, 2.95f), false, gLCP, false);
         gLCP.x += 1.4f;
-        goalLeftptr->setProperties(lightingShader, texballkeep, goalLeftPos, MODEL, goalLeft, 0.14f, false, goalLeftCollider);
+        goalLeftptr->setProperties(shaderShad, texballkeep, goalLeftPos, MODEL, goalLeft, 0.14f, false, goalLeftCollider);
         goalLeftptr->setRotation(0.0f, 90.0f, 0.0f);
         //gora
         gLCP.z -= 3.0f;
@@ -469,7 +475,7 @@ class GameManager {
         gRCP.x += 1.6f;
         Collider goalRightCollider(glm::vec3(0.015f, 3.0f, 2.95f), false, gRCP, false);
         gRCP.x -= 1.4f;
-        goalRightptr->setProperties(lightingShader, texballkeep, goalRightPos, MODEL, goalRight, 0.14f, false, goalRightCollider);
+        goalRightptr->setProperties(shaderShad, texballkeep, goalRightPos, MODEL, goalRight, 0.14f, false, goalRightCollider);
         goalRightptr->setRotation(0.0f, -90.0f, 0.0f);
         //gora
         gRCP.z -= 3.0f;
@@ -485,14 +491,14 @@ class GameManager {
         //piaskownica
         root_node->add_child(sandpitptr);
         Collider sandPitTrigger(glm::vec3(2.43f, 5.1f, 2.43f), false, sandPitPos, true);
-        sandpitptr->setProperties(lightingShader, texsandpit, sandPitPos, MODEL, sandpit, 0.3f, false);
+        sandpitptr->setProperties(shaderShad, texsandpit, sandPitPos, MODEL, sandpit, 0.3f, false);
         sandpitptr->trigger = sandPitTrigger;
 
 
         //hustawka wazka
         Collider seesawTrigger(0.5f, false, seesawPos, true);
         root_node->add_child(seesawptr);
-        seesawptr->setProperties(lightingShader, texseesaw, seesawPos, MODEL, seesaw, 0.2f, true);
+        seesawptr->setProperties(shaderShad, texseesaw, seesawPos, MODEL, seesaw, 0.2f, true);
         seesawptr->trigger = seesawTrigger;
 
 
@@ -503,7 +509,7 @@ class GameManager {
         //zjezdzalnia
         Collider slideTrigger(1.2f, false, slidePos, true);
         root_node->add_child(slideptr);
-        slideptr->setProperties(lightingShader, texslide, slidePos, MODEL, slide, 0.035f, true);
+        slideptr->setProperties(shaderShad, texslide, slidePos, MODEL, slide, 0.035f, true);
         slideptr->setRotation(0.0f, -90.0f, 0.0f);
         slideptr->trigger = slideTrigger;
 
@@ -517,7 +523,7 @@ class GameManager {
         swingColPos.y -= 2.0f;
         //siedzenie
         Collider swingCollider(glm::vec3(0.38f, 0.38f, 0.38f), false, swingColPos, false);
-        swingptr->setProperties(lightingShader, texswing, swingPos, MODEL, swing, 0.02f, true, swingCollider);
+        swingptr->setProperties(shaderShad, texswing, swingPos, MODEL, swing, 0.02f, true, swingCollider);
         swingptr->trigger = swingTrigger;
         swingptr->setRotation(0.0f, 180.0f, 0.0f);
         //lewo gora
@@ -543,14 +549,14 @@ class GameManager {
         root_node->add_child(swingseatptr);
         glm::vec3 swingSeatPos = swingPos;
         swingSeatPos.y += 1.40f;
-        swingseatptr->setProperties(lightingShader, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, true);
+        swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, true);
         swingseatptr->trigger = swingTrigger;
         swingseatptr->setRotation(0.0f, 180.0f, 0.0f);
 
 
         //stoly
         root_node->add_child(tablesptr);
-        tablesptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, tables, 0.01f, false);
+        tablesptr->setProperties(shaderShad, textureplanks, zeroPos, MODEL, tables, 0.01f, false);
 
 
 
@@ -564,7 +570,7 @@ class GameManager {
         Collider trampolineCollider1(glm::vec3(0.9f, 1.1f, 0.1f), false, trampolineColliderPos, false);
         trampolineColliderPos.z += q;
         root_node->add_child(trampolineptr);
-        trampolineptr->setProperties(lightingShader, textrampoline, trampolinePos, MODEL, trampoline, 0.006f, true, trampolineCollider1, trampolineTrigger);
+        trampolineptr->setProperties(shaderShad, textrampoline, trampolinePos, MODEL, trampoline, 0.006f, true, trampolineCollider1, trampolineTrigger);
         //trampolineptr->trigger = trampolineTrigger;
         //dol
         trampolineColliderPos.z += q;
@@ -585,16 +591,16 @@ class GameManager {
 
         //drzewo
         root_node->add_child(treeptr);
-        treeptr->setProperties(lightingShader, textree, treePos, MODEL, tree, 0.7f, false);
+        treeptr->setProperties(shaderShad, textree, treePos, MODEL, tree, 0.7f, false);
         treeptr->setRotation(0.0f, 200.0f, 0.0f);
 
         //parasol
         root_node->add_child(umbrellaptr);
-        umbrellaptr->setProperties(lightingShader, texturewin10, zeroPos, MODEL, umbrella, 0.01f, false);
+        umbrellaptr->setProperties(shaderShad, texturewin10, zeroPos, MODEL, umbrella, 0.01f, false);
 
         //basen
         root_node->add_child(poolptr);
-        poolptr->setProperties(lightingShader, texturewin10, poolPos, MODEL, pool, 0.14f, false);
+        poolptr->setProperties(shaderShad, texturewin10, poolPos, MODEL, pool, 0.14f, false);
         root_water->add_child(poolwaterptr);
         poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.14f, false);
 
@@ -606,7 +612,7 @@ class GameManager {
         Collider wallColl5(glm::vec3(8.3125f, 3.0f, 0.05f), false, wallPosColl5, true);
         Collider wallColl6(glm::vec3(0.05f, 3.0f, 15.75f), false, wallPosColl6, true);
         root_node->add_child(wallsptr);
-        wallsptr->setProperties(lightingShader, texturestone, zeroPos, MODEL, walls, 0.01f, false);
+        wallsptr->setProperties(shaderShad, texturestone, zeroPos, MODEL, walls, 0.01f, false);
         wallsptr->additionalColliders.push_back(wallColl1);
         wallsptr->additionalColliders.push_back(wallColl2);
         wallsptr->additionalColliders.push_back(wallColl3);
@@ -622,20 +628,20 @@ class GameManager {
         Collider mentosTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, colaPos, true);
         
         root_node->add_child(heartptr);
-        heartptr->setProperties(lightingShader, texturewin10, heartPos, MODEL, postac_test, 1.0f, true);
+        heartptr->setProperties(shaderShad, texturewin10, heartPos, MODEL, postac_test, 1.0f, true);
         heartptr->trigger = heartTrigger;
 
         root_node->add_child(heartptr2);
-        heartptr2->setProperties(lightingShader, textureplanks, heartPos2, MODEL, postac_test, 1.0f, true);
+        heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 1.0f, true);
         heartptr2->trigger = heartTrigger2;
 
 
         root_node->add_child(colaptr);
-        colaptr->setProperties(lightingShader, texcola, colaPos, MODEL, cola, 0.01f, true);
+        colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 0.01f, true);
         colaptr->trigger = colaTrigger;
 
         root_node->add_child(mentosptr);
-        mentosptr->setProperties(lightingShader, texturewin10, mentosPos, MODEL, mentos, 1.0f, true);
+        mentosptr->setProperties(shaderShad, texturewin10, mentosPos, MODEL, mentos, 1.0f, true);
         mentosptr->trigger = mentosTrigger;
 
     }
@@ -683,7 +689,7 @@ class GameManager {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
 
-        
+    //    animator.UpdateAnimation(dt * 60);
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
@@ -768,6 +774,25 @@ class GameManager {
         shaderShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
         shaderShad.setInt("mode", mode);
 
+        
+
+        // do animacji
+        // 
+        //animShader.use();
+        //projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        //view = camera.GetViewMatrix();
+        //animShader.setMat4("projection", projection);
+        //animShader.setMat4("view", view);
+        //// set light uniforms
+        //animShader.setVec3("viewPos", camera.Position);
+        //animShader.setVec3("lightPos", lightPos);
+        //// animShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+        //auto transforms = animator.GetFinalBoneMatrices();
+        //for (int i = 0; i < transforms.size(); ++i) {
+        //    //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
+        //    animShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        //}
+
         // Make it so the stencil test always passes
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         // Enable modifying of the stencil buffer
@@ -775,7 +800,7 @@ class GameManager {
 
         // draw our scene graph
         unsigned int total = 0, display = 0;
-        root_node->render2(true,depthMap, shaderShad, camFrustum,display,total);
+        root_node->render2(true,depthMap, camFrustum,display,total);
         //std::cout << "Total process in CPU : " << total << " / Total send to GPU : " << display << std::endl; //debugging
 
         // render Depth map to quad for visual debugging
