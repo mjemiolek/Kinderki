@@ -127,6 +127,7 @@ struct SceneGraphNode {
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, depthMap);
             shaderTemp.setMat4("model", m_transform.m_world_matrix);
+
             modelTemp.Draw(shaderTemp);
         }
         for (uint32_t i = 0; i < m_children.size(); ++i) 

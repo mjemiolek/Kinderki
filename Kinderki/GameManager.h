@@ -177,7 +177,6 @@ class GameManager {
         std::cout << "bone count: " << postac_test.GetBoneCount() << std::endl;
         std::cout << "bone info map: " << postac_test.GetBoneInfoMap().size() << std::endl;
 
-
         unsigned int texturekupa = loadTexture("res/textures/win.png");
         unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
         unsigned int texturemetal = loadTexture("res/textures/metaltexture.png");
@@ -373,8 +372,7 @@ class GameManager {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
         
-        animator.UpdateAnimation(dt * 30 );
-
+        animator.UpdateAnimation(dt * 60 );
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
@@ -465,19 +463,20 @@ class GameManager {
         // set light uniforms
         animShad.setVec3("viewPos", camera.Position);
         animShad.setVec3("lightPos", lightPos);
-        animShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-
-        
-     //   animShad.use();
-
+       // animShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
         auto transforms = animator.GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i)
+        for (int i = 0; i < transforms.size(); ++i) {
+      //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
             animShad.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        }
+            
 
         // Make it so the stencil test always passes
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
         // Enable modifying of the stencil buffer
         //glStencilMask(0xFF);
+
+        std::cout << "scale cube3: " << cube3->get_transform().m_scale << std::endl;
 
         root_node->render2(true,depthMap);
 
