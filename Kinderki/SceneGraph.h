@@ -158,43 +158,43 @@ struct SceneGraphNode {
     }
     void render(bool is_root = false, glm::vec4 clip = glm::vec4(0.0f, -1.0f, 0.0f, 2.4f)) {
         if (!is_root) {
-            shaderTemp.use();
+            shaderTemp2.use();
             glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-            shaderTemp.setMat4("projection", projection);
+            shaderTemp2.setMat4("projection", projection);
 
             glm::mat4 view = camera.GetViewMatrix();
-            shaderTemp.setMat4("view", view);
-            shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
-            shaderTemp.setVec4("plane", clip.x, clip.y, clip.z, clip.w);
+            shaderTemp2.setMat4("view", view);
+            shaderTemp2.setMat4("u_world", m_transform.m_world_matrix);
+            shaderTemp2.setVec4("plane", clip.x, clip.y, clip.z, clip.w);
             
 
             if (tempRender == BOX) {
 
-                shaderTemp.setVec3("viewPos", camera.Position);
-                shaderTemp.setVec3("light.position", lightPos);
-                shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+                shaderTemp2.setVec3("viewPos", camera.Position);
+                shaderTemp2.setVec3("light.position", lightPos);
+                shaderTemp2.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
                 //shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
-                shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-                shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-                shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-                shaderTemp.setFloat("material.shininess", 64.0f);
+                shaderTemp2.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
+                shaderTemp2.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+                shaderTemp2.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+                shaderTemp2.setFloat("material.shininess", 64.0f);
                 glBindVertexArray(VAOTemp);
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture);
                 glDrawArrays(GL_TRIANGLES, 0, 36);
             }
             if (tempRender == MODEL) {
-                shaderTemp.setVec3("viewPos", camera.Position);
-                shaderTemp.setVec3("light.position", lightPos);
-                shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+                shaderTemp2.setVec3("viewPos", camera.Position);
+                shaderTemp2.setVec3("light.position", lightPos);
+                shaderTemp2.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
                 //shaderTemp.setVec3("light.direction", -0.1f, -1.0f, 0.5f);
-                shaderTemp.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
-                shaderTemp.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-                shaderTemp.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
-                shaderTemp.setFloat("material.shininess", 64.0f);
+                shaderTemp2.setVec3("light.ambient", 0.5f, 0.5f, 0.5f);
+                shaderTemp2.setVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
+                shaderTemp2.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+                shaderTemp2.setFloat("material.shininess", 64.0f);
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture);
-                modelTemp.Draw(shaderTemp);
+                modelTemp.Draw(shaderTemp2);
             }
 
         }
@@ -335,6 +335,7 @@ struct SceneGraphNode {
     }
 
     Shader shaderTemp = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
+    Shader shaderTemp2 = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Model modelTemp = Model("res/models/box.obj");
     GLuint texture;
     renderEnum tempRender;
