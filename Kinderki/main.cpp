@@ -137,6 +137,8 @@ int main()
 
     //water
     unsigned int dudvMap = gameManager.loadTexture("res/textures/water/waterDUDV.png");
+    unsigned int normalMap = gameManager.loadTexture("res/textures/water/water.png");
+
 
     //load texture to gui
     unsigned int texture = gameManager.loadTexture("res/textures/notebook.png");
@@ -269,7 +271,7 @@ int main()
             //render game
             gameManager.renderwithShadows(mode);
             gameManager.renderWithOutline();
-            gameManager.renderWater(refractiontexture, reflectiontexture,dudvMap,moveFactor);
+            gameManager.renderWater(refractiontexture, reflectiontexture,dudvMap,normalMap,moveFactor);
             skybox.render();
             gui.render();
 

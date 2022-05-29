@@ -256,7 +256,7 @@ struct SceneGraphNode {
             }
         }
     }
-    void renderWater(bool is_root, unsigned int refractionTexture, unsigned int reflectionTexture, unsigned int dudvMap, float moveFactor)
+    void renderWater(bool is_root, unsigned int refractionTexture, unsigned int reflectionTexture, unsigned int dudvMap, unsigned int normalMap, float moveFactor)
     {
         if (!is_root) {
             shaderTemp.use();
@@ -268,17 +268,21 @@ struct SceneGraphNode {
             shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
             shaderTemp.setFloat("moveFactor", moveFactor); //distortion
             shaderTemp.setVec3("cameraPosition", camera.Position);
+            shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+            shaderTemp.setVec3("lightPosition", lightPos);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, refractionTexture);
             glActiveTexture(GL_TEXTURE1);
             glBindTexture(GL_TEXTURE_2D, reflectionTexture);
             glActiveTexture(GL_TEXTURE2);
             glBindTexture(GL_TEXTURE_2D, dudvMap);
+            glActiveTexture(GL_TEXTURE3);
+            glBindTexture(GL_TEXTURE_2D, normalMap);
             modelTemp.Draw(shaderTemp);
 
         }
         for (uint32_t i = 0; i < m_children.size(); ++i) {
-            m_children[i]->renderWater(false, refractionTexture, reflectionTexture, dudvMap, moveFactor);
+            m_children[i]->renderWater(false, refractionTexture, reflectionTexture, dudvMap, normalMap, moveFactor);
         }
     }
     void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, bool stencilTest, Collider col = Collider(), Collider trig = Collider()) {

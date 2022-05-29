@@ -7,11 +7,13 @@ layout (location = 2) in vec2 aTexCoords;  //textureCoordinates
 out vec4 clipSpace;
 out vec2 textureCoords;
 out vec3 toCameraVector;
+out vec3 fromLightVector;
 
 uniform mat4 u_world; //transformationMatrix
 uniform mat4 projection; //projectionMatrix
 uniform mat4 view; //viewMatrix
 uniform vec3 cameraPosition;
+uniform vec3 lightPosition;
 
 const float tiling = 1.0;
 
@@ -22,4 +24,5 @@ void main()
     gl_Position = clipSpace;
     textureCoords = aTexCoords * tiling;
     toCameraVector = cameraPosition - worldPosition.xyz;
+    fromLightVector = worldPosition.xyz - lightPosition;
 }
