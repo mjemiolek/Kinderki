@@ -6,7 +6,7 @@
 
 #include "Shader.h"
 #include "Camera.h"
-#include "Model.h"
+#include "ModelAnimation.h"
 #include "Settings.h"
 #include "Collider.h"
 #include "Frustum.h"

@@ -7,8 +7,8 @@
 
 #include "Shader.h"
 #include "Camera.h"
-//#include "ModelAnimation.h"
-#include "Model.h"
+#include "ModelAnimation.h"
+//#include "Model.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
 #include "Text.h"
@@ -17,7 +17,7 @@
 #include "Collider.h"
 #include "GravityManager.h"
 #include "Frustum.h"
-//#include "Animator.h"
+#include "Animator.h"
 #include <mmcobj.h>
 #include <vector>
 

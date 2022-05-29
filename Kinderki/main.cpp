@@ -12,7 +12,7 @@
 #include "Sound.h"
 #include "Shader.h"
 #include "Camera.h"
-#include "Model.h"
+#include "ModelAnimation.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
 #include "AIController.h"
