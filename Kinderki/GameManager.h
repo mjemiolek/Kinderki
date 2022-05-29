@@ -208,7 +208,7 @@ class GameManager {
 
 
 
-        unsigned int texturekupa = loadTexture("res/textures/win.png");
+        unsigned int texturewin10 = loadTexture("res/textures/win.png");
         unsigned int texturegrass = loadTexture("res/textures/grasstexture.png");
         unsigned int texturemetal = loadTexture("res/textures/metaltexture.png");
         unsigned int texturesand = loadTexture("res/textures/sandtexture.png");
@@ -297,12 +297,12 @@ class GameManager {
         //cube do testu AI
         root_node->add_child(cube2);
         Collider cube2Collider(boxColRange, false, cubePositions[2], false);
-        cube2->setProperties(lightingShader, texturekupa, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
+        cube2->setProperties(lightingShader, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
         
         //gracz
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, cubePositions[4],true);
-        //cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
+        //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
         cube3->setProperties(lightingShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
 
         //pilka
@@ -487,11 +487,11 @@ class GameManager {
 
         //parasol
         root_node->add_child(umbrellaptr);
-        umbrellaptr->setProperties(lightingShader, texturekupa, zeroPos, MODEL, umbrella, 0.01f, false);
+        umbrellaptr->setProperties(lightingShader, texturewin10, zeroPos, MODEL, umbrella, 0.01f, false);
 
         //basen
         root_node->add_child(poolptr);
-        poolptr->setProperties(lightingShader, texturemetal, poolPos, MODEL, pool, 0.14f, false);
+        poolptr->setProperties(lightingShader, texturewin10, poolPos, MODEL, pool, 0.14f, false);
         root_water->add_child(poolwaterptr);
         poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.14f, false);
 
@@ -519,7 +519,7 @@ class GameManager {
         Collider mentosTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, colaPos, true);
         
         root_node->add_child(heartptr);
-        heartptr->setProperties(lightingShader, texturekupa, heartPos, MODEL, postac_test, 1.0f, true);
+        heartptr->setProperties(lightingShader, texturewin10, heartPos, MODEL, postac_test, 1.0f, true);
         heartptr->trigger = heartTrigger;
 
         root_node->add_child(heartptr2);
@@ -532,7 +532,7 @@ class GameManager {
         colaptr->trigger = colaTrigger;
 
         root_node->add_child(mentosptr);
-        mentosptr->setProperties(lightingShader, texturekupa, mentosPos, MODEL, mentos, 1.0f, true);
+        mentosptr->setProperties(lightingShader, texturewin10, mentosPos, MODEL, mentos, 1.0f, true);
         mentosptr->trigger = mentosTrigger;
 
     }

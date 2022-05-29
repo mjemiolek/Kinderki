@@ -44,7 +44,7 @@ void main(void)
     refractiveFactor = pow(refractiveFactor, 0.5);
 
     vec4 normalMapColor = texture(normalMap, distortedTexCoords);
-    vec3 normal = vec3(normalMapColor.r * 2.0 -1.0,normalMapColor.b,normalMapColor.g *2.0 -1.0);
+    vec3 normal = vec3(normalMapColor.r * 2.0 -1.0,normalMapColor.b * 3.0,normalMapColor.g *2.0 -1.0);
     normal = normalize(normal);
 
     vec3 reflectedLight = reflect(normalize(fromLightVector), normal);
