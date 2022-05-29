@@ -56,6 +56,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> wallsptr;
     std::shared_ptr<SceneGraphNode> poolptr;
     std::shared_ptr<SceneGraphNode> poolwaterptr;
+    float waterHeight = 1.28f;
 
 
     std::shared_ptr<SceneGraphNode> temp;
@@ -96,7 +97,7 @@ class GameManager {
         glm::vec3 aerialRunnwaySeatPos(0.10, 0.1f, -14.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
         glm::vec3 poolPos(-5.0f, 0.0f, 6.0f);
-        glm::vec3 poolWaterPos(-5.05f, 0.58f, 6.0f);
+        glm::vec3 poolWaterPos(-5.05f, waterHeight, 6.0f);
         glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
         glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
         glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f);

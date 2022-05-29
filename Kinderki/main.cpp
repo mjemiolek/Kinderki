@@ -244,7 +244,7 @@ int main()
             std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
-            glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, 0.58f);
+            glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);
             //viewport
             refractiontexture = buffers->getRefractionTexture();
             buffers->bindRefraction();
@@ -257,7 +257,7 @@ int main()
             camera.Position.y -= distance;
             camera.setPitch(-camera.Pitch);
             //move camera
-            glm::vec4 clipPlane2 = glm::vec4(0.0f, 1.0f, 0.0f, -0.58f);
+            glm::vec4 clipPlane2 = glm::vec4(0.0f, 1.0f, 0.0f, -gameManager.waterHeight);
             reflectiontexture = buffers->getReflectionTexture();
             buffers->bindReflection();
             gameManager.render(clipPlane2, buffers->REFLECTION_WIDTH, buffers->REFLECTION_HEIGHT);
