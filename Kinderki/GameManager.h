@@ -64,13 +64,13 @@ class GameManager {
     //Model postac_test = Model("res/models/postac_riggowanie_v2.obj");
     //Model postac_test = Model("res/models/postac_test_v1.dae");
     //Model postac_test = Model("res/models/postac_test_riggowanie_mniejsze_chyba_poprawione.dae");
-     Model postac_test = Model("res/models/postac_test_kosci_animacja.fbx");
+     Model postac_test = Model("res/models/postac_test_kosci_animacja_v8.fbx");
 
 
      //Model postac_test = Model("res/models/postac_test_v5.dae");
     //Model postac_test = Model("res/animations/postac_chodzenie.dae");
     //Model postac_test = Model("res/models/postac_test_v4.obj");
-     Animation anim = Animation("res/models/postac_test_kosci_animacja.fbx",&postac_test);
+     Animation anim = Animation("res/models/postac_test_kosci_animacja_v8.fbx",&postac_test);
      Animator animator = Animator(&anim);
 
 
@@ -188,7 +188,7 @@ class GameManager {
         unsigned int specularMap = loadTexture("res/textures/spec.jpg");
 
         //unsigned int texture_postac_test = loadTexture("res/textures/oko_tekstura_test2.png");
-        unsigned int texture_postac_test = loadTexture("res/textures/baking_5.png");
+        unsigned int texture_postac_test = loadTexture("res/textures/main_character_texture.png");
 
 
 
@@ -238,7 +238,7 @@ class GameManager {
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, cubePositions[4],true);
         //cube3->setProperties(lightingShader, texturekupa, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
-        cube3->setProperties(animShad, texture_postac_test, cubePositions[4], ANIM, postac_test, 0.05f, false , cube3Collider);
+        cube3->setProperties(animShad, texture_postac_test, cubePositions[4], ANIM, postac_test, 1.00f, false , cube3Collider);
 
         root_node->add_child(ball);
         Collider ballCollider(0.28f, false, glm::vec3(0.0f, 2.0f, -2.0f), true);
