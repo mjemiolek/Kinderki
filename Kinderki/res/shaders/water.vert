@@ -6,17 +6,20 @@ layout (location = 2) in vec2 aTexCoords;  //textureCoordinates
 
 out vec4 clipSpace;
 out vec2 textureCoords;
+out vec3 toCameraVector;
 
 uniform mat4 u_world; //transformationMatrix
 uniform mat4 projection; //projectionMatrix
 uniform mat4 view; //viewMatrix
+uniform vec3 cameraPosition;
 
-const float tiling = 6.0;
+const float tiling = 1.0;
 
 void main()
 {
     vec4 worldPosition = u_world * vec4(aPos, 1.0);
-    clipSpace = projection * view * u_world * vec4(aPos, 1.0);
+    clipSpace = projection * view * worldPosition;
     gl_Position = clipSpace;
-    textureCoords = aTexCoords;
+    textureCoords = aTexCoords * tiling;
+    toCameraVector = cameraPosition - worldPosition.xyz;
 }

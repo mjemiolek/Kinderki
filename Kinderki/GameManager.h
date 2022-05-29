@@ -57,6 +57,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> poolptr;
     std::shared_ptr<SceneGraphNode> poolwaterptr;
 
+
     std::shared_ptr<SceneGraphNode> heartptr;
     std::shared_ptr<SceneGraphNode> heartptr2;
 
@@ -91,8 +92,8 @@ class GameManager {
         glm::vec3 aerialRunnwayPos(32.87f, 0.82f, -9.91f);
         glm::vec3 aerialRunnwaySeatPos(0.33, 0.1f, 0.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
-        glm::vec3 poolPos(-2.0f, 0.0f, 6.0f);
-        glm::vec3 poolWaterPos(-2.0f, 0.58f, 6.0f);
+        glm::vec3 poolPos(-5.0f, 0.0f, 6.0f);
+        glm::vec3 poolWaterPos(-5.05f, 0.58f, 6.0f);
         glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
         glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
         glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f);
@@ -269,7 +270,6 @@ class GameManager {
         wallsptr = std::make_shared<SceneGraphNode>();
         poolptr = std::make_shared<SceneGraphNode>();
         poolwaterptr = std::make_shared<SceneGraphNode>();
-
 
         heartptr = std::make_shared<SceneGraphNode>();
         heartptr2 = std::make_shared<SceneGraphNode>();
@@ -489,9 +489,9 @@ class GameManager {
 
         //basen
         root_node->add_child(poolptr);
-        poolptr->setProperties(lightingShader, texturemetal, poolPos, MODEL, pool, 0.07f, false);
+        poolptr->setProperties(lightingShader, texturemetal, poolPos, MODEL, pool, 0.14f, false);
         root_water->add_child(poolwaterptr);
-        poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.07f, false);
+        poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.14f, false);
 
         //sciany
         Collider wallColl1(glm::vec3(0.05f, 3.0f, 21.0f), false, wallPosColl1, true);

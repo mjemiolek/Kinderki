@@ -267,6 +267,7 @@ struct SceneGraphNode {
             shaderTemp.setMat4("view", view);
             shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
             shaderTemp.setFloat("moveFactor", moveFactor); //distortion
+            shaderTemp.setVec3("cameraPosition", camera.Position);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, refractionTexture);
             glActiveTexture(GL_TEXTURE1);
