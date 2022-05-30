@@ -360,6 +360,7 @@ struct SceneGraphNode {
     unsigned int VAOTemp;
     Collider collider;
     std::vector<Collider> additionalColliders;
+    std::vector<Collider> additionalTriggers;
     Collider trigger;
     bool stencil;
     movableType movableType;

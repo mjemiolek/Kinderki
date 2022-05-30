@@ -504,9 +504,10 @@ class GameManager {
         //hustawka wazka
         Collider seesawTrigger(0.5f, false, seesawPos, true);
         root_node->add_child(seesawptr);
-        seesawptr->setProperties(shaderShad, texseesaw, seesawPos, MODEL, seesaw, 0.2f, true);
+        seesawptr->setProperties(shaderShad, texseesaw, seesawPos, MODEL, seesaw, 0.2f, false);
         seesawptr->trigger = seesawTrigger;
-
+        Collider seesawTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, seesawPos, false);
+        seesawptr->additionalTriggers.push_back(seesawTriggerOutline);
 
         //root_node->add_child(seesawreversepts);
         //seesawreversepts->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesawreverse, 0.01f);
@@ -515,15 +516,21 @@ class GameManager {
         //zjezdzalnia
         Collider slideTrigger(1.2f, false, slidePos, true);
         root_node->add_child(slideptr);
-        slideptr->setProperties(shaderShad, texslide, slidePos, MODEL, slide, 0.035f, true);
+        slideptr->setProperties(shaderShad, texslide, slidePos, MODEL, slide, 0.035f, false);
         slideptr->setRotation(0.0f, -90.0f, 0.0f);
         slideptr->trigger = slideTrigger;
+        slidePos.x -= 2.3f;
+        Collider slideTriggerOutline(glm::vec3(3.30f, 3.30f, 5.30f), false, slidePos, true);
+        slideptr->additionalTriggers.push_back(slideTriggerOutline);
 
 
         //hustawka
         glm::vec3 swingTrigPos = swingPos;
         swingTrigPos.y -= 1.5f;
-        Collider swingTrigger(glm::vec3(0.30f, 0.30f, 0.30f), false, swingTrigPos, true);
+        Collider swingTrigger(glm::vec3(0.30f, 0.30f, 0.30f), false, swingTrigPos, false);
+
+
+
         root_node->add_child(swingptr);
         glm::vec3 swingColPos = swingPos;
         swingColPos.y -= 2.0f;
@@ -532,6 +539,9 @@ class GameManager {
         swingptr->setProperties(shaderShad, texswing, swingPos, MODEL, swing, 0.02f, true, swingCollider);
         swingptr->trigger = swingTrigger;
         swingptr->setRotation(0.0f, 180.0f, 0.0f);
+        Collider swingTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, swingTrigPos, false);
+        swingptr->additionalTriggers.push_back(swingTriggerOutline);
+        
         //lewo gora
         swingColPos.z -= 1.45f;
         swingColPos.x -= 1.2f;
@@ -555,7 +565,7 @@ class GameManager {
         root_node->add_child(swingseatptr);
         glm::vec3 swingSeatPos = swingPos;
         swingSeatPos.y += 1.40f;
-        swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, true);
+        swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, false);
         swingseatptr->trigger = swingTrigger;
         swingseatptr->setRotation(0.0f, 180.0f, 0.0f);
 
@@ -577,6 +587,8 @@ class GameManager {
         trampolineColliderPos.z += q;
         root_node->add_child(trampolineptr);
         trampolineptr->setProperties(shaderShad, textrampoline, trampolinePos, MODEL, trampoline, 0.006f, true, trampolineCollider1, trampolineTrigger);
+        Collider trampolineTriggerOutline(glm::vec3(3.0f, 0.6f, 3.0f), false, trampolinePos, true);
+        trampolineptr->additionalTriggers.push_back(trampolineTriggerOutline);
         //trampolineptr->trigger = trampolineTrigger;
         //dol
         trampolineColliderPos.z += q;
@@ -834,7 +846,7 @@ class GameManager {
         outlineShader.setMat4("projection", projection);
         outlineShader.setMat4("view", view);
         //scale
-        outlineShader.setFloat("m_scale", 0.13f);
+        outlineShader.setFloat("m_scale", 0.30f);
         outlineShader.setVec3("outlineColor", player->getOutlineColor());
 
         root_node->renderSceneWithOutline(true, outlineShader);

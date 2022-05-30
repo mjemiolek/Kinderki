@@ -193,9 +193,11 @@ int main()
         movableManager->manageMovable(window);
         AI->move(window, passed_time);
         gameManager.player->move(window, passed_time);
-        gameManager.player->interact(window, gameManager.sandpitptr, passed_time);
+        gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
+        gameManager.player->wazker(gameManager.seesawptr, passed_time);
+        gameManager.player->slider(gameManager.slideptr, passed_time);
         gui.textureCandyCount = gameManager.candyCount(gameManager.player, refractiontexture, reflectiontexture, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);

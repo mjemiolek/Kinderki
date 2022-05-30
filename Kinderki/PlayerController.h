@@ -150,13 +150,17 @@ public:
         return false;
     }
 
-    void interact(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
+    void sandPiter(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
         if (playerObject->m_children.size() == 0) {
+            setFalseStencil(interacter);
             return;
         }
+        
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
-            interacter->setStencil(true);
-            setOutlineColor(glm::vec3(0.0f,1.0f,0.0f)); //zielony
+            setTrueStencil(interacter);
+            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f)); //zielony
+            }
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
                 playerObject->get_transform().m_position.y -= 2.0f * dt;
                 if (playerObject->get_transform().m_position.y <= -1.5f) {
@@ -167,12 +171,13 @@ public:
             }
         }
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && !playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
-            interacter->setStencil(true);
-            setOutlineColor(glm::vec3(1.0f, 0.0f, 0.0f)); //czerwony
-        }
-        if(!playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
-            interacter->setStencil(false);
+            setTrueStencil(interacter);
+            if (getOutlineColor() != glm::vec3(1.0f, 0.0f, 0.0f)) {
+                setOutlineColor(glm::vec3(1.0f, 0.0f, 0.0f)); //czerwony
+            }
+
         } 
+        
         //std::cout << sandMove << std::endl;
 
         if (sandMove) {
@@ -188,14 +193,27 @@ public:
             
 
         }
+
     }
 
     void trampoliner(std::shared_ptr<SceneGraphNode> interacter, float dt)
     {
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
+            
+
             playerObject->velocity.y = 10.0f;
             playerObject->canJump = false;
         }
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
+            setTrueStencil(interacter);
+            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+        }
+        else {
+            setFalseStencil(interacter);
+        }
+
     }
 
     void hustawker(std::shared_ptr<SceneGraphNode> interacter, std::shared_ptr<SceneGraphNode> seat, float dt)
@@ -231,7 +249,57 @@ public:
 
             seat->update_transform();
         }
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
+            setTrueStencil(interacter);
+            setTrueStencil(seat);
+            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+        }
+        else {
+            setFalseStencil(interacter);
+            setFalseStencil(seat);
+        }
     }
+
+    void wazker(std::shared_ptr<SceneGraphNode> interacter, float dt) {
+
+        //TODO: 
+
+
+
+
+
+        //change outline
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
+            setTrueStencil(interacter);
+            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+        }
+        else {
+            setFalseStencil(interacter);
+        }
+    }
+    void slider(std::shared_ptr<SceneGraphNode> interacter, float dt) {
+
+        //TODO: 
+
+
+
+
+        //change outline
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
+            setTrueStencil(interacter);
+            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+        }
+        else {
+            setFalseStencil(interacter);
+        }
+    }
+
 
     void setPlayerObject(std::shared_ptr<SceneGraphNode> tempObject) {
         playerObject = tempObject;
@@ -254,6 +322,16 @@ public:
         return outlineColor;
     }
 
+    void setFalseStencil(std::shared_ptr<SceneGraphNode> interacter) {
+        if (interacter->getStencil() != false) {
+            interacter->setStencil(false);
+        }
+    }
+    void setTrueStencil(std::shared_ptr<SceneGraphNode> interacter) {
+        if (interacter->getStencil() != true) {
+            interacter->setStencil(true);
+        }
+    }
 };
 
 #endif
