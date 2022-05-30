@@ -127,7 +127,6 @@ int main()
     Gui gui;
     Skybox skybox;
     BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3);
-    PlayerController* player = new PlayerController(gameManager.cube3);
     AIController* AI = new AIController(gameManager.cube2);
 
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
@@ -193,11 +192,11 @@ int main()
         ballManager->manageBall(window, passed_time);
         movableManager->manageMovable(window);
         AI->move(window, passed_time);
-        player->move(window, passed_time);
-        player->interact(window, gameManager.sandpitptr, passed_time);
-        player->trampoliner(gameManager.trampolineptr, passed_time);
-        player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
-        gui.textureCandyCount = gameManager.candyCount(player, refractiontexture, reflectiontexture, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
+        gameManager.player->move(window, passed_time);
+        gameManager.player->interact(window, gameManager.sandpitptr, passed_time);
+        gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
+        gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
+        gui.textureCandyCount = gameManager.candyCount(gameManager.player, refractiontexture, reflectiontexture, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);
         gui.handleGui(window);
@@ -210,8 +209,8 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
             if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && !pressFlagCandy) {
                 pressFlagCandy = true;
-                if (player->getCandyCount() >= 1) {
-                    player->setCandyCount(player->getCandyCount() - 1);
+                if (gameManager.player->getCandyCount() >= 1) {
+                    gameManager.player->setCandyCount(gameManager.player->getCandyCount() - 1);
                 }
             }
         }
@@ -221,8 +220,8 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
             if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !pressFlagCandy) {
                 pressFlagCandy = true;
-                if (player->getCandyCount() <= 5) {
-                    player->setCandyCount(player->getCandyCount() + 1);
+                if (gameManager.player->getCandyCount() <= 5) {
+                    gameManager.player->setCandyCount(gameManager.player->getCandyCount() + 1);
                 }
             }
         }
@@ -287,7 +286,7 @@ int main()
     //glDeleteVertexArrays(1, &cubeVAO);
     //glDeleteVertexArrays(1, &quadVAO);
     //glDeleteBuffers(1, &VBO);
-    delete player;
+   // delete gameManager.player;
     delete ballManager;
     delete buffers;
     delete AI;

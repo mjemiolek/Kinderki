@@ -84,6 +84,11 @@ class GameManager {
 
     Shader antialliasingshader = Shader("res/shaders/antialliasing.vert", "res/shaders/antialliasing.frag");
 
+
+    std::shared_ptr<PlayerController> player;
+    
+
+
     // animacje
    // Model postac_test = Model("res/models/postac_test_kosci_animacja_v8.fbx");
    // Animation anim = Animation("res/models/postac_test_kosci_animacja_v8.fbx", &postac_test);
@@ -292,6 +297,7 @@ class GameManager {
         mentosptr = std::make_shared<SceneGraphNode>();
 
         temp = std::make_shared<SceneGraphNode>();
+        player = std::make_shared<PlayerController>(cube3);
 
 
         collidingObjects.insert(collidingObjects.end(),{
@@ -634,6 +640,7 @@ class GameManager {
         root_node->add_child(heartptr2);
         heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 1.0f, true);
         heartptr2->trigger = heartTrigger2;
+        heartptr2->movableType = TOSANDPIT;
 
 
         root_node->add_child(colaptr);
@@ -828,6 +835,7 @@ class GameManager {
         outlineShader.setMat4("view", view);
         //scale
         outlineShader.setFloat("m_scale", 0.13f);
+        outlineShader.setVec3("outlineColor", player->getOutlineColor());
 
         root_node->renderSceneWithOutline(true, outlineShader);
         glStencilMask(0xFF);
@@ -842,7 +850,7 @@ class GameManager {
         root_water->renderWater(true, refractiontexture, reflectiontexture, dudvMap, normalMap, moveFactor);
     }
 
-    unsigned int candyCount(PlayerController* player, unsigned int tex1, unsigned int tex2, unsigned int tex3, unsigned int tex4, unsigned int tex5, unsigned int tex6, unsigned int tex7) {
+    unsigned int candyCount(std::shared_ptr<PlayerController> player, unsigned int tex1, unsigned int tex2, unsigned int tex3, unsigned int tex4, unsigned int tex5, unsigned int tex6, unsigned int tex7) {
         
 
         if (player->getCandyCount() >= 6)

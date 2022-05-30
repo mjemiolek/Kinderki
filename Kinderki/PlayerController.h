@@ -29,10 +29,12 @@ private:
     bool sandMove = false;
     bool hustawkerMove = false, hustawkerLeft = true;
     float hustawkerSpeed;
+    glm::vec3 outlineColor;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
         candyCount = 6;
+        outlineColor = glm::vec3(1.0f, 1.0f, 1.0f);
         std::cout << "candy count: " << candyCount << std::endl;
     }
     ~PlayerController() {}
@@ -149,7 +151,12 @@ public:
     }
 
     void interact(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
-        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
+        if (playerObject->m_children.size() == 0) {
+            return;
+        }
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
+            interacter->setStencil(true);
+            setOutlineColor(glm::vec3(0.0f,1.0f,0.0f)); //zielony
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
                 playerObject->get_transform().m_position.y -= 2.0f * dt;
                 if (playerObject->get_transform().m_position.y <= -1.5f) {
@@ -159,6 +166,13 @@ public:
                 }
             }
         }
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && !playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
+            interacter->setStencil(true);
+            setOutlineColor(glm::vec3(1.0f, 0.0f, 0.0f)); //czerwony
+        }
+        if(!playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
+            interacter->setStencil(false);
+        } 
         //std::cout << sandMove << std::endl;
 
         if (sandMove) {
@@ -233,6 +247,13 @@ public:
     std::shared_ptr<SceneGraphNode> getPlayerObject() {
         return playerObject;
     }
+    void setOutlineColor(glm::vec3 temp) {
+        outlineColor = temp;
+    }
+    glm::vec3 getOutlineColor() {
+        return outlineColor;
+    }
+
 };
 
 #endif

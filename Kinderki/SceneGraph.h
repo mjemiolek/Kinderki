@@ -18,6 +18,10 @@ enum renderEnum {
     MODEL, BOX, LIGHT, ANIM
 };
 
+enum movableType {
+    TOSANDPIT, TOSEESAW, TOTRAMPOLINE, TOSLIDE, TOAR, TOSWING
+};
+
 struct Transform {
     Transform() : m_world_matrix(1.0f) {}
     glm::mat4 get_combined_matrix() {
@@ -334,6 +338,20 @@ struct SceneGraphNode {
         m_dirty = true;
     }
 
+    bool getStencil() {
+        return stencil;
+    }
+    void setStencil(bool temp) {
+        stencil = temp;
+    }
+    movableType getMovableType() {
+        return movableType;
+    }
+    void setMovableType(movableType temp) {
+        movableType = temp;
+    }
+
+
     Shader shaderTemp = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Shader shaderTemp2 = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Model modelTemp = Model("res/models/box.obj");
@@ -344,6 +362,7 @@ struct SceneGraphNode {
     std::vector<Collider> additionalColliders;
     Collider trigger;
     bool stencil;
+    movableType movableType;
 
     std::unique_ptr<Sphere> boundingVolume; //Frustrum
 
