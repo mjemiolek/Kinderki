@@ -30,12 +30,17 @@ private:
     bool hustawkerMove = false, hustawkerLeft = true;
     float hustawkerSpeed;
     glm::vec3 outlineColor;
+   
     bool tyrolkerMove = false;
     bool tyrolkerZero = true;
+    bool tyrolkerLaunch = false;
+    int tyrolkerLaunchCounter = 0;
+    int tyrolkerLaunchEdge = 15;
     int tyrolkerDir = -1;
     int tyrolkerAngle = 49;
     int tyrolkerSpeed = 100;
-    glm::vec3 tramplinerTrigerOfsset = glm::vec3(0.0f, 0.0f, 0.0f);
+    int tyrolkerScale = 1;
+    float tyrolkerVelocity6 = 6.0f;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -268,7 +273,7 @@ public:
         }
     }
 
-    void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt)
+    void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt, std::shared_ptr<SceneGraphNode> cola, std::shared_ptr<SceneGraphNode> mentos)
     {
         if (playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z < 5.55)
         {
@@ -278,36 +283,45 @@ public:
                 tyrolkerSpeed = 100.0;
             }
             tyrolkerMove = true;
-            playerObject->m_transform.m_position.z += 7.5 * dt;
+            tyrolkerZero = false;
+            playerObject->m_transform.m_position.z += tyrolkerVelocity6* tyrolkerScale/2 * dt;
             playerObject->m_transform.m_position.y = 1;
-            playerObject->m_transform.m_position.y += 6.0 * dt;
-            std::cout << "taaaaak";
-            seat->m_transform.m_position.z += 7.5 * dt;
-            seat->trigger.setPosition(seat->m_transform.m_position + tramplinerTrigerOfsset);
+            playerObject->m_transform.m_position.y += tyrolkerVelocity6* dt;
+            //std::cout << "taaaaak";
+            seat->m_transform.m_position.z += tyrolkerVelocity6* tyrolkerScale/2 * dt;
+            seat->trigger.setPosition(seat->m_transform.m_position);
             seat->update_transform();
             
             if (seat->trigger.getPosition().z > 4.0 && tyrolkerMove && seat->m_transform.x_rotation_angle < 145)
             {
+                tyrolkerLaunch = true;
                 seat->m_transform.x_rotation_angle += 200.0 * dt;
-                tyrolkerZero = false;
+                //playerObject->m_transform.m_position.z += 6.0 * dt;
+                //playerObject->m_transform.m_position.y += 7.5 * dt;
             }
 
         }
         else if (!playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z > -10.0)
         {
+            
+            if (tyrolkerLaunch) {
+                playerObject->m_transform.m_position.z += tyrolkerVelocity6 * dt;
+                playerObject->m_transform.m_position.y += 2* tyrolkerVelocity6 * dt;
+                tyrolkerLaunchCounter++;
+                if (tyrolkerLaunchCounter == tyrolkerLaunchEdge* tyrolkerScale) {
+                    tyrolkerLaunch = false;
+                    tyrolkerLaunchCounter = 0;
+                }
+            }
+            
             tyrolkerMove = false;
             seat->m_transform.m_position.z -= 1.75 * dt;
-            seat->trigger.setPosition(seat->m_transform.m_position + tramplinerTrigerOfsset);
+            seat->trigger.setPosition(seat->m_transform.m_position);
             seat->update_transform();
-
-//            seat->trigger.getPosition().z > 4.0 &&
 
             if (!tyrolkerMove && !tyrolkerZero)
             {
                 seat->m_transform.x_rotation_angle += tyrolkerDir * tyrolkerSpeed * dt;
-
-                //tyrolkerAngle = tyrolkerAngle - 1; seat->m_transform.x_rotation_angle > tyrolkerAngle ||
-                //tyrolkerAngle = tyrolkerAngle - 0.05;
                 
                 if (tyrolkerAngle < 5) {
                     tyrolkerZero = true;
@@ -325,21 +339,14 @@ public:
                     if (tyrolkerDir == -1 && seat->m_transform.x_rotation_angle < -tyrolkerAngle) {
                     tyrolkerDir = 1;
                     tyrolkerAngle = tyrolkerAngle - 7.0;
-                    //tyrolkerSpeed = tyrolkerSpeed - 5;
                     }
                     if (tyrolkerDir == 1 && seat->m_transform.x_rotation_angle > tyrolkerAngle) {
                     tyrolkerDir = -1;
                     tyrolkerAngle = tyrolkerAngle - 7.0;
-                    //tyrolkerSpeed = tyrolkerSpeed - 5;
                     }
                 }
-                
-
             }
         }
-        
-        //std::cout << seat->trigger.getPosition().x << "   " << seat->trigger.getPosition().z << std::endl;
-        
     }
 
     void wazker(std::shared_ptr<SceneGraphNode> interacter, float dt) {

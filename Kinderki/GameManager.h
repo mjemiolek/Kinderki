@@ -106,7 +106,7 @@ class GameManager {
         glm::vec3 treePos(34.0f, 5.38f, -18.0f);
         glm::vec3 aerialRunnwayPos(34.0f, 0.0f, -2.5f);
         glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
-        glm::vec3 aerialRunnwayTrigerPos(34.0, 2.5f, -10.0f);
+        glm::vec3 aerialRunnwayTrigerPos(34.0, 0.0f, -10.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
         glm::vec3 poolPos(-5.0f, 0.0f, 6.0f);
         glm::vec3 poolWaterPos(-5.05f, waterHeight, 6.0f);
@@ -628,7 +628,7 @@ class GameManager {
         Collider wallColl2(glm::vec3(17.825f, 3.0f, 0.05f), false, wallPosColl2, true);
         Collider wallColl3(glm::vec3(9.3145f, 3.0f, 0.05f), false, wallPosColl3, true);
         Collider wallColl4(glm::vec3(0.05f, 3.0f, 4.747f), false, wallPosColl4, true);
-        Collider wallColl5(glm::vec3(8.3125f, 3.0f, 0.05f), false, wallPosColl5, true);
+        Collider wallColl5(glm::vec3(8.5f, 3.0f, 0.005f), false, wallPosColl5, true);
         Collider wallColl6(glm::vec3(0.05f, 3.0f, 15.75f), false, wallPosColl6, true);
         root_node->add_child(wallsptr);
         wallsptr->setProperties(shaderShad, texturestone, zeroPos, MODEL, walls, 0.01f, false);
