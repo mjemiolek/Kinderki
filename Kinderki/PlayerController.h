@@ -30,6 +30,12 @@ private:
     bool hustawkerMove = false, hustawkerLeft = true;
     float hustawkerSpeed;
     glm::vec3 outlineColor;
+    bool tyrolkerMove = false;
+    bool tyrolkerZero = true;
+    int tyrolkerDir = -1;
+    int tyrolkerAngle = 49;
+    int tyrolkerSpeed = 100;
+    glm::vec3 tramplinerTrigerOfsset = glm::vec3(0.0f, 0.0f, 0.0f);
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -260,6 +266,80 @@ public:
             setFalseStencil(interacter);
             setFalseStencil(seat);
         }
+    }
+
+    void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt)
+    {
+        if (playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z < 5.55)
+        {
+            if (!tyrolkerMove) {
+                seat->m_transform.x_rotation_angle = 0;
+                tyrolkerAngle = 49.0;
+                tyrolkerSpeed = 100.0;
+            }
+            tyrolkerMove = true;
+            playerObject->m_transform.m_position.z += 7.5 * dt;
+            playerObject->m_transform.m_position.y = 1;
+            playerObject->m_transform.m_position.y += 6.0 * dt;
+            std::cout << "taaaaak";
+            seat->m_transform.m_position.z += 7.5 * dt;
+            seat->trigger.setPosition(seat->m_transform.m_position + tramplinerTrigerOfsset);
+            seat->update_transform();
+            
+            if (seat->trigger.getPosition().z > 4.0 && tyrolkerMove && seat->m_transform.x_rotation_angle < 145)
+            {
+                seat->m_transform.x_rotation_angle += 200.0 * dt;
+                tyrolkerZero = false;
+            }
+
+        }
+        else if (!playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z > -10.0)
+        {
+            tyrolkerMove = false;
+            seat->m_transform.m_position.z -= 1.75 * dt;
+            seat->trigger.setPosition(seat->m_transform.m_position + tramplinerTrigerOfsset);
+            seat->update_transform();
+
+//            seat->trigger.getPosition().z > 4.0 &&
+
+            if (!tyrolkerMove && !tyrolkerZero)
+            {
+                seat->m_transform.x_rotation_angle += tyrolkerDir * tyrolkerSpeed * dt;
+
+                //tyrolkerAngle = tyrolkerAngle - 1; seat->m_transform.x_rotation_angle > tyrolkerAngle ||
+                //tyrolkerAngle = tyrolkerAngle - 0.05;
+                
+                if (tyrolkerAngle < 5) {
+                    tyrolkerZero = true;
+                }
+
+                if (tyrolkerSpeed > 45) {
+                    if (seat->m_transform.x_rotation_angle < 0 && tyrolkerDir == -1) { tyrolkerSpeed = tyrolkerSpeed - 0.88; }
+                    if (seat->m_transform.x_rotation_angle > 0 && tyrolkerDir ==  1) { tyrolkerSpeed = tyrolkerSpeed - 0.66; }
+                }
+
+                if (tyrolkerZero) {
+                    seat->m_transform.x_rotation_angle = 0;
+                }
+                else{
+                    if (tyrolkerDir == -1 && seat->m_transform.x_rotation_angle < -tyrolkerAngle) {
+                    tyrolkerDir = 1;
+                    tyrolkerAngle = tyrolkerAngle - 7.0;
+                    //tyrolkerSpeed = tyrolkerSpeed - 5;
+                    }
+                    if (tyrolkerDir == 1 && seat->m_transform.x_rotation_angle > tyrolkerAngle) {
+                    tyrolkerDir = -1;
+                    tyrolkerAngle = tyrolkerAngle - 7.0;
+                    //tyrolkerSpeed = tyrolkerSpeed - 5;
+                    }
+                }
+                
+
+            }
+        }
+        
+        //std::cout << seat->trigger.getPosition().x << "   " << seat->trigger.getPosition().z << std::endl;
+        
     }
 
     void wazker(std::shared_ptr<SceneGraphNode> interacter, float dt) {

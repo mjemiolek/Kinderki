@@ -198,6 +198,7 @@ int main()
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
         gameManager.player->wazker(gameManager.seesawptr, passed_time);
         gameManager.player->slider(gameManager.slideptr, passed_time);
+        gameManager.player->tyrolker(gameManager.aerialrunnwayseatptr, passed_time);
         gui.textureCandyCount = gameManager.candyCount(gameManager.player, refractiontexture, reflectiontexture, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);

@@ -105,7 +105,8 @@ class GameManager {
         glm::vec3 trampolinePos(29.50f, 0.58f, -14.95f);
         glm::vec3 treePos(34.0f, 5.38f, -18.0f);
         glm::vec3 aerialRunnwayPos(34.0f, 0.0f, -2.5f);
-        glm::vec3 aerialRunnwaySeatPos(0.10, 0.1f, -14.0f);
+        glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
+        glm::vec3 aerialRunnwayTrigerPos(34.0, 2.5f, -10.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
         glm::vec3 poolPos(-5.0f, 0.0f, 6.0f);
         glm::vec3 poolWaterPos(-5.05f, waterHeight, 6.0f);
@@ -342,15 +343,15 @@ class GameManager {
 
 
         //tyrolka
-        Collider aerialrunnwayTrigger(0.8f, false, aerialRunnwayPos, true);
+        Collider aerialrunnwayTrigger(glm::vec3(0.2f, 3.0f, 0.2f), false, aerialRunnwayTrigerPos, true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
         aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f,false);
-        aerialrunnwaywholeptr->trigger = aerialrunnwayTrigger;
 
         root_node->add_child(aerialrunnwayseatptr);
         aerialrunnwayseatptr->setProperties(shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, false);
-        //aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
+        //std::cout << aerialRunnwayPos.x + aerialRunnwaySeatPos.x <<"x"<< aerialRunnwayPos.y + aerialRunnwaySeatPos.y << "x" << aerialRunnwayPos.z + aerialRunnwaySeatPos.z << std::endl;
+        aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
 
         tempPos = aerialRunnwayPos;
         tempPos.z -= 8.0f;
@@ -421,8 +422,8 @@ class GameManager {
         Collider AERLF(glm::vec3(0.0001f, 3.0f, 0.0001f), false, tempPos, false);
         aerialrunnwaywholeptr->additionalColliders.push_back(AERLF);
         
-        root_node->add_child(temp);
-        temp->setProperties(shaderShad, textureplanks, aerialRunnwayPos, MODEL, postac_test, 1.0f, false);
+        //root_node->add_child(temp);
+        //temp->setProperties(shaderShad, textureplanks, aerialRunnwayPos, MODEL, postac_test, 1.0f, false);
         /*
         swingColPos.z -= 1.45f;
         swingColPos.x -= 1.2f;
