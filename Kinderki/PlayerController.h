@@ -34,12 +34,14 @@ private:
     bool tyrolkerMove = false;
     bool tyrolkerZero = true;
     bool tyrolkerLaunch = false;
+    bool tyrolkerCola = false;
+    bool tyrolkerMentos = false;
     int tyrolkerLaunchCounter = 0;
-    int tyrolkerLaunchEdge = 15;
+    int tyrolkerLaunchEdge = 20;
     int tyrolkerDir = -1;
     int tyrolkerAngle = 49;
     int tyrolkerSpeed = 100;
-    int tyrolkerScale = 1;
+    float tyrolkerScale = 1;
     float tyrolkerVelocity6 = 6.0f;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
@@ -275,8 +277,24 @@ public:
 
     void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt, std::shared_ptr<SceneGraphNode> cola, std::shared_ptr<SceneGraphNode> mentos)
     {
+        if (seat->trigger.boxToBoxCollisioncheck(cola->trigger) &&  !tyrolkerCola) {
+            //seat->add_child(cola);
+            cola->m_transform.m_position = seat->m_transform.m_position;
+            tyrolkerScale = 1.5;
+            tyrolkerCola = true;
+        }
+        if (seat->trigger.boxToBoxCollisioncheck(mentos->trigger)&& !tyrolkerMentos) {
+            seat->add_child(mentos);
+
+            tyrolkerMentos = true;
+        }
+
+        if (tyrolkerCola && tyrolkerMentos) {
+            tyrolkerScale = 2.5;
+        }
         if (playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z < 5.55)
         {
+
             if (!tyrolkerMove) {
                 seat->m_transform.x_rotation_angle = 0;
                 tyrolkerAngle = 49.0;
@@ -285,17 +303,18 @@ public:
             tyrolkerMove = true;
             tyrolkerZero = false;
             playerObject->m_transform.m_position.z += tyrolkerVelocity6* tyrolkerScale/2 * dt;
-            playerObject->m_transform.m_position.y = 1;
-            playerObject->m_transform.m_position.y += tyrolkerVelocity6* dt;
-            //std::cout << "taaaaak";
+            playerObject->m_transform.m_position.y = 1.1;
+            playerObject->m_transform.m_position.y += tyrolkerVelocity6 * 1.2 * dt;
+            
             seat->m_transform.m_position.z += tyrolkerVelocity6* tyrolkerScale/2 * dt;
             seat->trigger.setPosition(seat->m_transform.m_position);
             seat->update_transform();
+            cola->update_transform();
             
-            if (seat->trigger.getPosition().z > 4.0 && tyrolkerMove && seat->m_transform.x_rotation_angle < 145)
+            if (seat->trigger.getPosition().z > 5.0 && tyrolkerMove && seat->m_transform.x_rotation_angle < 145)
             {
                 tyrolkerLaunch = true;
-                seat->m_transform.x_rotation_angle += 200.0 * dt;
+                seat->m_transform.x_rotation_angle += 50 * tyrolkerScale * dt;
                 //playerObject->m_transform.m_position.z += 6.0 * dt;
                 //playerObject->m_transform.m_position.y += 7.5 * dt;
             }
@@ -304,20 +323,11 @@ public:
         else if (!playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z > -10.0)
         {
             
-            if (tyrolkerLaunch) {
-                playerObject->m_transform.m_position.z += tyrolkerVelocity6 * dt;
-                playerObject->m_transform.m_position.y += 2* tyrolkerVelocity6 * dt;
-                tyrolkerLaunchCounter++;
-                if (tyrolkerLaunchCounter == tyrolkerLaunchEdge* tyrolkerScale) {
-                    tyrolkerLaunch = false;
-                    tyrolkerLaunchCounter = 0;
-                }
-            }
-            
             tyrolkerMove = false;
             seat->m_transform.m_position.z -= 1.75 * dt;
             seat->trigger.setPosition(seat->m_transform.m_position);
             seat->update_transform();
+            cola->update_transform();
 
             if (!tyrolkerMove && !tyrolkerZero)
             {
@@ -345,6 +355,15 @@ public:
                     tyrolkerAngle = tyrolkerAngle - 7.0;
                     }
                 }
+            }
+        }
+        if (tyrolkerLaunch) {
+            playerObject->m_transform.m_position.z += tyrolkerVelocity6 *tyrolkerScale / 1.5 * dt;
+            playerObject->m_transform.m_position.y += 2 * tyrolkerVelocity6 * tyrolkerScale / 1.2 * dt;
+            tyrolkerLaunchCounter++;
+            if (tyrolkerLaunchCounter == tyrolkerLaunchEdge * tyrolkerScale) {
+                tyrolkerLaunch = false;
+                tyrolkerLaunchCounter = 0;
             }
         }
     }

@@ -70,6 +70,10 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> colaptr;
     std::shared_ptr<SceneGraphNode> mentosptr;
 
+    std::shared_ptr<SceneGraphNode> bucketblackptr;
+    std::shared_ptr<SceneGraphNode> bucketpinkptr;
+    std::shared_ptr<SceneGraphNode> bucketredptr;
+
     Shader lightingShader = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     //For shadows
     Shader shaderShad = Shader("res/shaders/shadow_mapping.vert", "res/shaders/shadow_mapping.frag");
@@ -106,7 +110,7 @@ class GameManager {
         glm::vec3 treePos(34.0f, 5.38f, -18.0f);
         glm::vec3 aerialRunnwayPos(34.0f, 0.0f, -2.5f);
         glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
-        glm::vec3 aerialRunnwayTrigerPos(34.0, 0.0f, -10.0f);
+        glm::vec3 aerialRunnwayTrigerPos(34.0, -1.5f, -10.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
         glm::vec3 poolPos(-5.0f, 0.0f, 6.0f);
         glm::vec3 poolWaterPos(-5.05f, waterHeight, 6.0f);
@@ -124,8 +128,12 @@ class GameManager {
 
         glm::vec3 heartPos(2.0f, 0.2f, 2.0f);
         glm::vec3 heartPos2(-2.0f, 0.2f, -2.0f);
-        glm::vec3 colaPos(5.0f, 3.0f, 0.0f);
-        glm::vec3 mentosPos(10.0f, 3.0f, 0.0f);
+        glm::vec3 colaPos(25.0f, 1.0f, -5.0f);
+        glm::vec3 mentosPos(20.0f, 1.0f, -8.0f);
+
+        glm::vec3 bucketBlackPos(25.0f, 0.1f, -8.0f);
+        glm::vec3 bucketPinkPos(30.0f, 0.1f, -8.0f);
+        glm::vec3 bucketRedPos(35.0f, 0.1f, -8.0f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
@@ -219,6 +227,7 @@ class GameManager {
         Model heart("res/models/movable/mentos.obj");
         Model cola("res/models/movable/cola.obj");
         Model mentos("res/models/movable/mentos.obj");
+        Model bucket("res/models/movable/wiadro.obj");
 
         //Model postac_test("res/models/main_character.obj");
         //Model postac_test("res/models/postac_test_kolejny.obj");
@@ -254,10 +263,9 @@ class GameManager {
         unsigned int textree = loadTexture("res/textures/models/textree.png");
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
-        unsigned int texbucketpink = loadTexture("res/textures/models/texbucketpink.png");
-        //unsigned int texbucketpurple = loadTexture("res/textures/models/texbucketpurple.png");
-        //unsigned int texbucketyellow = loadTexture("res/textures/models/texbucketyellow.png");
-        
+        unsigned int texbucketblack = loadTexture("res/textures/models/bucket_black.png");
+        unsigned int texbucketpink = loadTexture("res/textures/models/bucket_pink.png");
+        unsigned int texbucketred = loadTexture("res/textures/models/bucket_red.png");
         
 
         //Allocating storage for the objects
@@ -296,13 +304,16 @@ class GameManager {
         heartptr2 = std::make_shared<SceneGraphNode>();
         colaptr = std::make_shared<SceneGraphNode>();
         mentosptr = std::make_shared<SceneGraphNode>();
+        bucketblackptr = std::make_shared<SceneGraphNode>();
+        bucketpinkptr = std::make_shared<SceneGraphNode>();
+        bucketredptr = std::make_shared<SceneGraphNode>();
 
         temp = std::make_shared<SceneGraphNode>();
         player = std::make_shared<PlayerController>(cube3);
 
 
         collidingObjects.insert(collidingObjects.end(),{
-        cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr,
+        cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr, bucketblackptr, bucketpinkptr , bucketredptr,
         trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr,
         aerialrunnwaywholeptr
             
@@ -343,7 +354,7 @@ class GameManager {
 
 
         //tyrolka
-        Collider aerialrunnwayTrigger(glm::vec3(0.2f, 3.0f, 0.2f), false, aerialRunnwayTrigerPos, true);
+        Collider aerialrunnwayTrigger(glm::vec3(0.2f, 3.0f, 0.5f), false, aerialRunnwayTrigerPos, true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
         aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f,false);
@@ -644,7 +655,10 @@ class GameManager {
         Collider heartTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos, true);
         Collider heartTrigger2(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos2, true);
         Collider colaTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, colaPos, true);
-        Collider mentosTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, colaPos, true);
+        Collider mentosTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, mentosPos, true);
+        Collider bucketblackTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketBlackPos, true);
+        Collider bucketpinkTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketPinkPos, true);
+        Collider bucketredTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketRedPos, true);
         
         root_node->add_child(heartptr);
         heartptr->setProperties(shaderShad, texturewin10, heartPos, MODEL, postac_test, 1.0f, true);
@@ -657,12 +671,24 @@ class GameManager {
 
 
         root_node->add_child(colaptr);
-        colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 0.01f, true);
+        colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 1.0f, true);
         colaptr->trigger = colaTrigger;
 
         root_node->add_child(mentosptr);
         mentosptr->setProperties(shaderShad, texturewin10, mentosPos, MODEL, mentos, 1.0f, true);
         mentosptr->trigger = mentosTrigger;
+
+        root_node->add_child(bucketblackptr);
+        bucketblackptr->setProperties(shaderShad, texbucketblack, bucketBlackPos, MODEL, bucket, 0.1f, true);
+        bucketblackptr->trigger = bucketblackTrigger;
+
+        root_node->add_child(bucketpinkptr);
+        bucketpinkptr->setProperties(shaderShad, texbucketpink, bucketPinkPos, MODEL, bucket, 0.1f, true);
+        bucketpinkptr->trigger = bucketpinkTrigger;
+
+        root_node->add_child(bucketredptr);
+        bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true);
+        bucketredptr->trigger = bucketredTrigger;
 
     }
 

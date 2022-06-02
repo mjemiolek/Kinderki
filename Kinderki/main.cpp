@@ -65,6 +65,8 @@ double frame_time = 1.0 / 60.0;
 
 bool temp = true;
 
+bool showMidDayStories = false;
+
 int mode = 0;
 
 int main()
@@ -133,6 +135,10 @@ int main()
     movableManager->addMovable(gameManager.heartptr);
     movableManager->addMovable(gameManager.heartptr2);
     movableManager->addMovable(gameManager.colaptr);
+    movableManager->addMovable(gameManager.mentosptr);
+    movableManager->addMovable(gameManager.bucketblackptr);
+    movableManager->addMovable(gameManager.bucketpinkptr);
+    movableManager->addMovable(gameManager.bucketredptr);
 
     //water
     unsigned int dudvMap = gameManager.loadTexture("res/textures/water/waterDUDV.png");
@@ -243,6 +249,7 @@ int main()
 
 
         if (should_render) {
+
             should_render = false;
             //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
@@ -346,7 +353,7 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
 
 void daySimulation(float dt)
 {
-    float step = -0.5f;
+    float step = -1.5f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
     lightPosition.x += step * dt;
     if (lightPosition.x < -27.0f) lightPosition.x = 30.0f; //end of day

@@ -12,6 +12,14 @@ float quadVertices[] = {
     0.60f,  0.60f
 };
 
+float fullDisplayVertices[] = {
+    // pozycje
+    -1.0,  -1.0,
+    1.00,  1.0,
+    -1.0,  1.0,
+    1.0,  -1.0
+};
+
 float noteBookVertices[] = {
     // pozycje
     0.80f,  -0.80f,
@@ -76,8 +84,8 @@ float textureCords[] = { 0.0f, 1.0f,
 
 class Gui {
 public:
-    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO;
-    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO;
+    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO;
+    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO;
     unsigned int quadEBO;
     unsigned int progressVAO, progressVBO1, progressVBO2, progressEBO;
     
@@ -96,7 +104,14 @@ public:
     unsigned int textureWallDestroy;
     unsigned int textureSandpit;
     unsigned int textureSlide;
-   
+
+    std::vector<unsigned int> Storylist = { textureSeeSaw, textureAerialRunway, textureSwing, textureTrampoline };
+    unsigned int textureStory;
+    bool visibilityStory = false;
+    int Storycounter = 0;
+    int ct = 0;
+    int lt = 0;
+
     bool visibility = false;
     bool visibilityPageOne = false;
     bool visibilityPageTwo = false;
@@ -225,6 +240,26 @@ public:
         glGenBuffers(1, &candyCountVBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+        //Story square
+        glGenVertexArrays(1, &StoryVAO);
+        glBindVertexArray(StoryVAO);
+
+        glGenBuffers(1, &StoryVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, StoryVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(fullDisplayVertices), fullDisplayVertices, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &StoryVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, StoryVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCords), textureCords, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &StoryVBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
         
         /*
         glGenVertexArrays(1, &progressVAO);
@@ -277,6 +312,13 @@ public:
             glBindVertexArray(0);
         }
 
+        if (visibilityStory) {
+            glBindVertexArray(StoryVAO);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, textureStory);
+            glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
 
         if (visibilityPageOne || visibilityPageTwo || visibilityPageThree || visibilityPageFour) {
             glBindVertexArray(quadVAO);
@@ -315,6 +357,8 @@ public:
         text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
         text2.RenderText(strs2.str(), 50.0f, 100.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 
+
+
         //textCukierki.RenderText(strsCukierki.str(), 1700.0, 900.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 	}
    
@@ -325,6 +369,16 @@ public:
         strs2 << visibilityPageOne;
         strsCukierki.str(std::string());
         strsCukierki << visibilityPageOne;
+    }
+
+    void handleStories() {
+        ct = glfwGetTime()/2;
+        if (ct - lt) { Storycounter++; }
+        //Storycounter = Storycounter % 2;
+        //std::cout << Storycounter << std::endl;
+        ct = ct % 3;
+        textureStory = Storylist[ct];
+
     }
 
     void handleGui(GLFWwindow* window) {
@@ -414,7 +468,13 @@ public:
                 visibilityPageTwo = false;
                 visibilityPageThree = false;
         }
-
+        if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && !visibilityStory) {
+            visibilityStory = true;
+        }
+        else if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && visibilityStory) {
+            visibilityStory = false;
+        }
+        handleStories();
     
     }
 
