@@ -41,7 +41,7 @@ private:
     int tyrolkerDir = -1;
     int tyrolkerAngle = 49;
     int tyrolkerSpeed = 100;
-    float tyrolkerScale = 1;
+    float tyrolkerScale = 1.0;
     float tyrolkerVelocity6 = 6.0f;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
@@ -280,18 +280,19 @@ public:
         if (seat->trigger.boxToBoxCollisioncheck(cola->trigger) &&  !tyrolkerCola) {
             //seat->add_child(cola);
             cola->m_transform.m_position = seat->m_transform.m_position;
-            tyrolkerScale = 1.5;
+            tyrolkerScale = 1.15;
             tyrolkerCola = true;
         }
         if (seat->trigger.boxToBoxCollisioncheck(mentos->trigger)&& !tyrolkerMentos) {
-            seat->add_child(mentos);
+            //seat->add_child(mentos);
 
             tyrolkerMentos = true;
         }
 
         if (tyrolkerCola && tyrolkerMentos) {
-            tyrolkerScale = 2.5;
+            tyrolkerScale = 1.5;
         }
+        //std::cout << tyrolkerScale<< std::endl;
         if (playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z < 5.55)
         {
 
@@ -303,11 +304,13 @@ public:
             tyrolkerMove = true;
             tyrolkerZero = false;
             playerObject->m_transform.m_position.z += tyrolkerVelocity6* tyrolkerScale/2 * dt;
-            playerObject->m_transform.m_position.y = 1.1;
-            playerObject->m_transform.m_position.y += tyrolkerVelocity6 * 1.2 * dt;
+            playerObject->m_transform.m_position.y = 2.0;
+            //playerObject->m_transform.m_position.y += 0.25;
+            //playerObject->m_transform.m_position.y += tyrolkerVelocity6 * 0.75 * dt;
             
             seat->m_transform.m_position.z += tyrolkerVelocity6* tyrolkerScale/2 * dt;
             seat->trigger.setPosition(seat->m_transform.m_position);
+            playerObject->update_transform();
             seat->update_transform();
             cola->update_transform();
             
@@ -359,7 +362,7 @@ public:
         }
         if (tyrolkerLaunch) {
             playerObject->m_transform.m_position.z += tyrolkerVelocity6 *tyrolkerScale / 1.5 * dt;
-            playerObject->m_transform.m_position.y += 2 * tyrolkerVelocity6 * tyrolkerScale / 1.2 * dt;
+            playerObject->m_transform.m_position.y += tyrolkerVelocity6 * tyrolkerScale * dt;
             tyrolkerLaunchCounter++;
             if (tyrolkerLaunchCounter == tyrolkerLaunchEdge * tyrolkerScale) {
                 tyrolkerLaunch = false;

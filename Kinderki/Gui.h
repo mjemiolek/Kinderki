@@ -109,7 +109,7 @@ public:
     unsigned int textureStory;
     bool visibilityStory = false;
     int Storycounter = 0;
-    int ct = 0;
+    unsigned int ct = 0;
     int lt = 0;
 
     bool visibility = false;
@@ -372,12 +372,13 @@ public:
     }
 
     void handleStories() {
-        ct = glfwGetTime()/2;
-        if (ct - lt) { Storycounter++; }
+        ct = glfwGetTime();
+        std::cout << ct << std::endl;
+        //if (ct - lt) { Storycounter++; }
         //Storycounter = Storycounter % 2;
         //std::cout << Storycounter << std::endl;
         ct = ct % 3;
-        textureStory = Storylist[ct];
+        textureStory = Storylist.at(ct);
 
     }
 
