@@ -56,6 +56,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> umbrellaptr;
     std::shared_ptr<SceneGraphNode> walkptr;
     std::shared_ptr<SceneGraphNode> wallsptr;
+    std::shared_ptr<SceneGraphNode> damagedwallptr;
     std::shared_ptr<SceneGraphNode> poolptr;
     std::shared_ptr<SceneGraphNode> poolwaterptr;
     float waterHeight = 1.28f;
@@ -105,7 +106,7 @@ class GameManager {
         glm::vec3 sandPitPos(8.87f, 0.0f, -14.34f);
         glm::vec3 seesawPos(8.0f, 0.8f, -4.5f);
         glm::vec3 ballPos(11.53f, 3.00f, 14.46f);
-        glm::vec3 slidePos(22.50f, 0.38f, -14.0f);
+        glm::vec3 slidePos(21.00f, 0.10f, -14.0f);
         glm::vec3 trampolinePos(29.50f, 0.58f, -14.95f);
         glm::vec3 treePos(34.0f, 5.38f, -18.0f);
         glm::vec3 aerialRunnwayPos(34.0f, 0.0f, -2.5f);
@@ -219,7 +220,8 @@ class GameManager {
         Model tree("res/models/level/tree.obj");
         Model umbrella("res/models/level/umbrella.obj");
         Model walk("res/models/level/walk.obj");
-        Model walls("res/models/level/walls.obj",16.0f,1.0f);
+        Model walls("res/models/level/ogrodzenie.obj");
+        Model damagedwall("res/models/level/dziura_ogrodzenie.obj");
         Model pool("res/models/level/pool.obj");
         Model poolwater("res/models/level/poolwater.obj");
 
@@ -244,6 +246,9 @@ class GameManager {
         unsigned int textureshrek = loadTexture("res/textures/shrek.png");
         unsigned int texturestone = loadTexture("res/textures/stone.jpg");
         unsigned int texturewater = loadTexture("res/textures/water/water.png");
+
+        unsigned int texturewall = loadTexture("res/textures/models/ogrodzenie.png");
+        unsigned int texturedamagedwall = loadTexture("res/textures/models/dziura_ogrodzenie.png");
 
 
         unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
@@ -297,6 +302,7 @@ class GameManager {
         umbrellaptr = std::make_shared<SceneGraphNode>();
         walkptr = std::make_shared<SceneGraphNode>();
         wallsptr = std::make_shared<SceneGraphNode>();
+        damagedwallptr = std::make_shared<SceneGraphNode>();
         poolptr = std::make_shared<SceneGraphNode>();
         poolwaterptr = std::make_shared<SceneGraphNode>();
 
@@ -314,7 +320,7 @@ class GameManager {
 
         collidingObjects.insert(collidingObjects.end(),{
         cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr, bucketblackptr, bucketpinkptr , bucketredptr,
-        trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr,
+        trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr, sandpitptr,
         aerialrunnwaywholeptr
             
             });
@@ -485,6 +491,11 @@ class GameManager {
         gLCP.z += 3.0f;
         Collider goalLeftColliderDown(glm::vec3(0.9f, 3.0f, 0.015f), false, gLCP, false);
         goalLeftptr->additionalColliders.push_back(goalLeftColliderDown);
+        gLCP.z -= 3.0f;
+        //gora os Y
+        gLCP.y += 3.0f;
+        Collider goalLeftUpColliderY(glm::vec3(1.0f, 0.015f, 3.0f), false, gLCP, false);
+        goalLeftptr->additionalColliders.push_back(goalLeftUpColliderY);
 
 
         root_node->add_child(goalRightptr);
@@ -504,6 +515,12 @@ class GameManager {
         gRCP.z += 3.0f;
         Collider goalRightColliderDown(glm::vec3(0.9f, 3.0f, 0.015f), false, gRCP, false);
         goalLeftptr->additionalColliders.push_back(goalRightColliderDown);
+        gRCP.z -= 3.0f;
+        //gora os Y
+        gRCP.y += 3.0f;
+        Collider goalRightUpColliderY(glm::vec3(1.0f, 0.015f, 3.0f), false, gRCP, false);
+        goalLeftptr->additionalColliders.push_back(goalRightUpColliderY);
+
 
 
         //piaskownica
@@ -511,6 +528,27 @@ class GameManager {
         Collider sandPitTrigger(glm::vec3(2.43f, 5.1f, 2.43f), false, sandPitPos, true);
         sandpitptr->setProperties(shaderShad, texsandpit, sandPitPos, MODEL, sandpit, 0.3f, false);
         sandpitptr->trigger = sandPitTrigger;
+
+        sandPitPos.z -= 2.5f;
+        Collider sandPitUpCollider(glm::vec3(2.4f, 0.25f, 0.025f), false, sandPitPos, false);
+        sandpitptr->additionalColliders.push_back(sandPitUpCollider);
+        sandPitPos.z += 2.5f;
+
+        sandPitPos.z += 2.5f;
+        Collider sandPitDownCollider(glm::vec3(2.4f, 0.25f, 0.025f), false, sandPitPos, false);
+        sandpitptr->additionalColliders.push_back(sandPitDownCollider);
+        sandPitPos.z -= 2.5f;
+
+        sandPitPos.x -= 2.5f;
+        Collider sandPitLeftCollider(glm::vec3(0.025f, 0.25f, 2.4f), false, sandPitPos, false);
+        sandpitptr->additionalColliders.push_back(sandPitLeftCollider);
+        sandPitPos.x += 2.5f;
+
+        sandPitPos.x += 2.5f;
+        Collider sandPitRightCollider(glm::vec3(0.025f, 0.25f, 2.4f), false, sandPitPos, false);
+        sandpitptr->additionalColliders.push_back(sandPitRightCollider);
+        sandPitPos.x -= 2.5f;
+
 
 
         //hustawka wazka
@@ -634,6 +672,10 @@ class GameManager {
         root_water->add_child(poolwaterptr);
         poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.14f, false);
 
+        //damaged wall
+        root_node->add_child(damagedwallptr);
+        damagedwallptr->setProperties(shaderShad, texturedamagedwall, glm::vec3(0.0f, -1.6f, 0.0f), MODEL, damagedwall, 0.01f, false);
+
         //sciany
         Collider wallColl1(glm::vec3(0.05f, 3.0f, 21.0f), false, wallPosColl1, true);
         Collider wallColl2(glm::vec3(17.825f, 3.0f, 0.05f), false, wallPosColl2, true);
@@ -642,7 +684,7 @@ class GameManager {
         Collider wallColl5(glm::vec3(8.5f, 3.0f, 0.005f), false, wallPosColl5, true);
         Collider wallColl6(glm::vec3(0.05f, 3.0f, 15.75f), false, wallPosColl6, true);
         root_node->add_child(wallsptr);
-        wallsptr->setProperties(shaderShad, texturestone, zeroPos, MODEL, walls, 0.01f, false);
+        wallsptr->setProperties(shaderShad, texturewall, glm::vec3(0.0f,-1.6f,0.0f), MODEL, walls, 0.01f, false);
         wallsptr->additionalColliders.push_back(wallColl1);
         wallsptr->additionalColliders.push_back(wallColl2);
         wallsptr->additionalColliders.push_back(wallColl3);
