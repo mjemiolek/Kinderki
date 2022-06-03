@@ -392,10 +392,10 @@ public:
         } else {
             if (interacter->get_transform().z_rotation_angle < -1.0f)
             {
-                interacter->get_transform().z_rotation_angle += 140.0f * dt;
+                interacter->get_transform().z_rotation_angle += 120.0f * dt;
             } else if (interacter->get_transform().z_rotation_angle > 1.0f)
             {
-                interacter->get_transform().z_rotation_angle -= 140.0f * dt;
+                interacter->get_transform().z_rotation_angle -= 120.0f * dt;
             }
             else {
                 interacter->setRotation(0.0f, 0.0f, 0.0f);

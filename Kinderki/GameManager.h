@@ -34,6 +34,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> ball;
     std::shared_ptr<SceneGraphNode> progressbar;
     std::vector<std::shared_ptr<SceneGraphNode>> collidingObjects;
+    std::vector<Collider> escapeTriggers;
     std::shared_ptr<GravityManager> gravity;
 
     std::shared_ptr<SceneGraphNode> aerialrunnwaywholeptr;
@@ -117,12 +118,12 @@ class GameManager {
         glm::vec3 poolWaterPos(-5.05f, waterHeight, 6.0f);
         glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
         glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
-        glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f);
-        glm::vec3 wallPosColl2(20.675f, 0.0f, -21.0f);
-        glm::vec3 wallPosColl3(12.1845f, 0.0f, 21.0f);
+        glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f); // left
+        glm::vec3 wallPosColl2(20.675f, 0.0f, -21.0f); //up
+        glm::vec3 wallPosColl3(12.1845f, 0.0f, 21.0f); //down
         glm::vec3 wallPosColl4(21.4975f, 0.0f, 15.823f);
         glm::vec3 wallPosColl5(30.3f, 0.0f, 11.07f);
-        glm::vec3 wallPosColl6(38.5f, 0.0f, -4.68f);
+        glm::vec3 wallPosColl6(38.5f, 0.0f, -4.68f); //right
         glm::vec3 damagedwallPos(21.0f, 0.1f, 18.5f);
 
 
@@ -742,7 +743,6 @@ class GameManager {
         root_water->add_child(poolwaterptr);
         poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.14f, false);
 
-
         //damaged wall
         root_node->add_child(damagedwallptr);
         damagedwallptr->setProperties(shaderShad, texturedamagedwall, glm::vec3(0.0f, -1.6f, 0.0f), MODEL, damagedwall, 0.01f, false);
@@ -803,6 +803,20 @@ class GameManager {
         root_node->add_child(bucketredptr);
         bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true);
         bucketredptr->trigger = bucketredTrigger;
+
+        //Escape triggers
+        glm::vec3 Trigger1LeftPos(2.42f - 50.5f, 0.0f, 0.0f);
+        glm::vec3 Trigger2UpPos(20.675f, 0.0f, -21.0f - 50.5f);
+        glm::vec3 Triger3RightPos(38.5f + 50.5f, 0.0f, -4.68f);
+        glm::vec3 Trigger4DownPos(12.1845f, 0.0f, 21.0f + 50.5f);
+        glm::vec3 Trigger5TheSquarePos(52.0f, 0.0f, 41.5f);
+        Collider escapeTriggerLeft(glm::vec3(50.0f, 0.6f, 50.0f), false, Trigger1LeftPos, false);
+        Collider escapeTriggerUp(glm::vec3(50.0f, 0.6f, 50.0f), false, Trigger2UpPos, false);
+        Collider escapeTriggerRight(glm::vec3(50.0f, 0.6f, 50.0f), false, Triger3RightPos, false);
+        Collider escapeTriggerDown(glm::vec3(50.0f, 0.6f, 50.0f), false, Trigger4DownPos, false);
+        Collider escapeTriggerSquare(glm::vec3(30.0f, 0.6f, 30.0f), false, Trigger5TheSquarePos, false);
+
+        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerLeft, escapeTriggerUp, escapeTriggerRight, escapeTriggerDown, escapeTriggerSquare });
     }
    
 

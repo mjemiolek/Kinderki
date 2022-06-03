@@ -26,6 +26,7 @@
 #include "BallManager.h"
 #include "MovableManager.h"
 #include "WaterFrameBuffers.h"
+#include "WinManager.h"
 
 #include <mmcobj.h>
 
@@ -130,6 +131,7 @@ int main()
     Skybox skybox;
     BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3, gameManager.damagedwallptr);
     AIController* AI = new AIController(gameManager.cube2);
+    WinManager winmanager(gameManager.escapeTriggers,gameManager.cube3);
 
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
     movableManager->addMovable(gameManager.heartptr);
@@ -143,7 +145,6 @@ int main()
     //water
     unsigned int dudvMap = gameManager.loadTexture("res/textures/water/waterDUDV.png");
     unsigned int normalMap = gameManager.loadTexture("res/textures/water/water.png");
-
 
     //load texture to gui
     unsigned int texture = gameManager.loadTexture("res/textures/notebook.png");
@@ -175,15 +176,10 @@ int main()
 
     gui.textureCandy = textureCandy;
 
-
-
-
-
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
 
     bool pressFlagCandy = false;
-
 
     while (!glfwWindowShouldClose(window))
     {
@@ -213,6 +209,7 @@ int main()
         moveFactor = fmod(moveFactor,1.0f);
         gameManager.update(passed_time);
         gui.update(passed_time);
+        winmanager.winInstructions(); //check for win
 
         //robocza modyfikacja candyCount
         if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
@@ -244,7 +241,6 @@ int main()
         while (unprocessed_time >= frame_time) {
             should_render = true;
             unprocessed_time -= frame_time;
-            
         }
 
 

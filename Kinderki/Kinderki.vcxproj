@@ -177,6 +177,7 @@
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="Text.h" />
+    <ClInclude Include="WinManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="antialliasing.frag" />
