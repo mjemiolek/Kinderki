@@ -80,9 +80,6 @@
     <ClInclude Include="AIController.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Pliki nagłówkowe</Filter>
-    </ClInclude>
     <ClInclude Include="PhysicsWorld.h">
       <Filter>Pliki nagłówkowe</Filter>
     </ClInclude>

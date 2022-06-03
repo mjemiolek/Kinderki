@@ -46,7 +46,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> sandpitptr;
     std::shared_ptr<SceneGraphNode> sandsptr;
     std::shared_ptr<SceneGraphNode> seesawptr;
-    std::shared_ptr<SceneGraphNode> seesawreversepts;
+    std::shared_ptr<SceneGraphNode> seesawseatsptr;
     std::shared_ptr<SceneGraphNode> slideptr;
     std::shared_ptr<SceneGraphNode> swingptr;
     std::shared_ptr<SceneGraphNode> swingseatptr;
@@ -118,17 +118,17 @@ class GameManager {
         glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
         glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
         glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f);
-        glm::vec3 wallPosColl2(20.675f, 0.0f, -20.89f);
+        glm::vec3 wallPosColl2(20.675f, 0.0f, -21.0f);
         glm::vec3 wallPosColl3(12.1845f, 0.0f, 21.0f);
         glm::vec3 wallPosColl4(21.4975f, 0.0f, 15.823f);
-        glm::vec3 wallPosColl5(30.1425f, 0.0f, 11.07f);
-        glm::vec3 wallPosColl6(38.455f, 0.0f, -4.68f);
+        glm::vec3 wallPosColl5(30.3f, 0.0f, 11.07f);
+        glm::vec3 wallPosColl6(38.5f, 0.0f, -4.68f);
 
 
         glm::vec3 tempPos(0.0f, 0.0f, 0.0f);
 
-        glm::vec3 heartPos(2.0f, 0.2f, 2.0f);
-        glm::vec3 heartPos2(-2.0f, 0.2f, -2.0f);
+        glm::vec3 heartPos(12.0f, 0.2f, 2.0f);
+        glm::vec3 heartPos2(12.0f, 0.2f, -2.0f);
         glm::vec3 colaPos(25.0f, 1.0f, -5.0f);
         glm::vec3 mentosPos(20.0f, 1.0f, -8.0f);
 
@@ -205,13 +205,11 @@ class GameManager {
 
         Model benches("res/models/level/benches.obj");
         Model floor("res/models/level/floor.obj",256.0f,256.0f);
-        Model footballstuff("res/models/level/footballstuff.obj");
         Model goalLeft("res/models/level/bramkahp.obj");
         Model goalRight("res/models/level/bramkahp.obj");
         Model sandpit("res/models/level/sandpit.obj");
         Model sands("res/models/level/sands.obj");
         Model seesaw("res/models/level/seesaw.obj");
-        Model seesawrevers("res/models/level/seesawreverse.obj");
         Model slide("res/models/level/slide.obj");
         Model swing("res/models/level/swing.obj");
         Model swingseat("res/models/level/swingseat.obj");
@@ -292,7 +290,7 @@ class GameManager {
         sandpitptr = std::make_shared<SceneGraphNode>();
         sandsptr = std::make_shared<SceneGraphNode>();
         seesawptr = std::make_shared<SceneGraphNode>();
-        seesawreversepts = std::make_shared<SceneGraphNode>();
+        seesawseatsptr = std::make_shared<SceneGraphNode>();
         slideptr = std::make_shared<SceneGraphNode>();
         swingptr = std::make_shared<SceneGraphNode>();
         swingseatptr = std::make_shared<SceneGraphNode>();
@@ -320,9 +318,9 @@ class GameManager {
 
         collidingObjects.insert(collidingObjects.end(),{
         cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr, bucketblackptr, bucketpinkptr , bucketredptr,
-        trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr, sandpitptr,
-        aerialrunnwaywholeptr
-            
+        trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr, sandpitptr,benchesptr, tablesptr, treeptr, aerialrunnwaywholeptr,
+        seesawptr
+
             });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
@@ -458,6 +456,18 @@ class GameManager {
         //³awki
         root_node->add_child(benchesptr);
         benchesptr->setProperties(shaderShad, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
+        //benches colliders
+        Collider bench1Collider(glm::vec3(0.15f, 0.45f,1.4f), false, glm::vec3(3.5f, 0.0f, -0.8f), false);
+        benchesptr->additionalColliders.push_back(bench1Collider);
+        Collider bench2Collider(glm::vec3(0.15f, 0.45f, 1.4f), false, glm::vec3(3.5f, 0.0f, -14.0f), false);
+        benchesptr->additionalColliders.push_back(bench2Collider);
+        Collider bench3Collider(glm::vec3(1.4f, 0.45f, 0.15f), false, glm::vec3(9.6f, 0.0f, -19.5f), false);
+        benchesptr->additionalColliders.push_back(bench3Collider);
+        Collider bench4Collider(glm::vec3(0.15f, 0.45f, 1.5f), false, glm::vec3(37.0f, 0.0f, -7.5f), false);
+        benchesptr->additionalColliders.push_back(bench4Collider);
+        Collider bench5Collider(glm::vec3(0.15f, 0.45f, 1.5f), false, glm::vec3(37.0f, 0.0f, 5.5f), false);
+        benchesptr->additionalColliders.push_back(bench5Collider);
+
 
         ////piaski
         //root_node->add_child(sandsptr);
@@ -559,6 +569,23 @@ class GameManager {
         Collider seesawTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, seesawPos, false);
         seesawptr->additionalTriggers.push_back(seesawTriggerOutline);
 
+        //seesaw colliders
+        seesawPos.y -= 0.6f;
+        Collider seesawCollider1(glm::vec3(2.5f, 0.5f, 0.3f), false, seesawPos, false); //seats
+        seesawPos.y += 0.6f;
+        seesawPos.x -= 1.6f;
+        Collider seesawCollider2(glm::vec3(0.01f, 0.5f, 0.20f), false, seesawPos, false); //left handles
+        seesawPos.x += 1.6f;
+        seesawPos.x += 1.6f;
+        Collider seesawCollider3(glm::vec3(0.01f, 0.5f, 0.20f), false, seesawPos, false); //right handles
+        seesawPos.x -= 1.6f;
+
+
+        seesawptr->additionalColliders.push_back(seesawCollider1);
+        seesawptr->additionalColliders.push_back(seesawCollider2);
+        seesawptr->additionalColliders.push_back(seesawCollider3);
+
+
         //root_node->add_child(seesawreversepts);
         //seesawreversepts->setProperties(lightingShader, texturemetal, zeroPos, MODEL, seesawreverse, 0.01f);
 
@@ -573,7 +600,6 @@ class GameManager {
         Collider slideTriggerOutline(glm::vec3(3.30f, 3.30f, 5.30f), false, slidePos, true);
         slideptr->additionalTriggers.push_back(slideTriggerOutline);
 
-
         //hustawka
         glm::vec3 swingTrigPos = swingPos;
         swingTrigPos.y -= 1.5f;
@@ -586,7 +612,7 @@ class GameManager {
         swingColPos.y -= 2.0f;
         //siedzenie
         Collider swingCollider(glm::vec3(0.38f, 0.38f, 0.38f), false, swingColPos, false);
-        swingptr->setProperties(shaderShad, texswing, swingPos, MODEL, swing, 0.02f, true, swingCollider);
+        swingptr->setProperties(shaderShad, texswing, swingPos, MODEL, swing, 0.02f, true);
         swingptr->trigger = swingTrigger;
         swingptr->setRotation(0.0f, 180.0f, 0.0f);
         Collider swingTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, swingTrigPos, false);
@@ -594,20 +620,20 @@ class GameManager {
         
         //lewo gora
         swingColPos.z -= 1.45f;
-        swingColPos.x -= 1.2f;
-        Collider sCLU(glm::vec3(0.15f, 2.5f, 0.03f), false, swingColPos, false); //swing collider left up
+        swingColPos.x -= 1.125f;
+        Collider sCLU(glm::vec3(0.25f, 2.5f, 0.03f), false, swingColPos, false); //swing collider left up
         swingptr->additionalColliders.push_back(sCLU);
         //prawo gora
-        swingColPos.x += 2.4f;
-        Collider sCRU(glm::vec3(0.15f, 2.5f, 0.03f), false, swingColPos, false);
+        swingColPos.x += 2.25f;
+        Collider sCRU(glm::vec3(0.25f, 2.5f, 0.03f), false, swingColPos, false);
         swingptr->additionalColliders.push_back(sCRU);
         //prawo dol
         swingColPos.z += 2.9f;
-        Collider sCRD(glm::vec3(0.15f, 2.5f, 0.03f), false, swingColPos, false);
+        Collider sCRD(glm::vec3(0.25f, 2.5f, 0.03f), false, swingColPos, false);
         swingptr->additionalColliders.push_back(sCRD);
         //lewo dol
-        swingColPos.x -= 2.4f;
-        Collider sCLD(glm::vec3(0.15f, 2.5f, 0.03f), false, swingColPos, false);
+        swingColPos.x -= 2.25f;
+        Collider sCLD(glm::vec3(0.25f, 2.5f, 0.03f), false, swingColPos, false);
         swingptr->additionalColliders.push_back(sCLD);
 
 
@@ -615,7 +641,7 @@ class GameManager {
         root_node->add_child(swingseatptr);
         glm::vec3 swingSeatPos = swingPos;
         swingSeatPos.y += 1.40f;
-        swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, false);
+        swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, false, swingCollider);
         swingseatptr->trigger = swingTrigger;
         swingseatptr->setRotation(0.0f, 180.0f, 0.0f);
 
@@ -623,8 +649,26 @@ class GameManager {
         //stoly
         root_node->add_child(tablesptr);
         tablesptr->setProperties(shaderShad, textureplanks, zeroPos, MODEL, tables, 0.01f, false);
+        //tables colliders
+        Collider table1Collider1(glm::vec3(1.2f, 1.0f, 0.4f), false, glm::vec3(20.2f, 0.0f, 4.0f), false);
+        tablesptr->additionalColliders.push_back(table1Collider1);
+        Collider table1Collider2(glm::vec3(1.2f, 0.5f, 0.05f), false, glm::vec3(20.2f, 0.0f, 4.0f - 1.0f), false);
+        Collider table1Collider3(glm::vec3(1.2f, 0.5f, 0.05f), false, glm::vec3(20.2f, 0.0f, 4.0f + 1.0f), false);
+        tablesptr->additionalColliders.push_back(table1Collider2);
+        tablesptr->additionalColliders.push_back(table1Collider3);
 
-
+        Collider table2Collider1(glm::vec3(0.4f, 1.0f, 1.2f), false, glm::vec3(24.6f, 0.0f, -0.5f), false);
+        tablesptr->additionalColliders.push_back(table2Collider1);
+        Collider table2Collider2(glm::vec3(0.05f, 0.5f, 1.2f), false, glm::vec3(24.6f - 1.0f, 0.0f, -0.5f), false);
+        Collider table2Collider3(glm::vec3(0.05f, 0.5f, 1.2f), false, glm::vec3(24.6f + 1.0f, 0.0f, -0.5f), false);
+        tablesptr->additionalColliders.push_back(table2Collider2);
+        tablesptr->additionalColliders.push_back(table2Collider3);
+        Collider table3Collider1(glm::vec3(0.4f, 1.0f, 1.2f), false, glm::vec3(29.5f, 0.0f, -0.5f), false);
+        tablesptr->additionalColliders.push_back(table3Collider1);
+        Collider table3Collider2(glm::vec3(0.05f, 0.5f, 1.2f), false, glm::vec3(29.5f - 1.0f, 0.0f, -0.5f), false);
+        Collider table3Collider3(glm::vec3(0.05f, 0.5f, 1.2f), false, glm::vec3(29.5f + 1.0f, 0.0f, -0.5f), false);
+        tablesptr->additionalColliders.push_back(table3Collider2);
+        tablesptr->additionalColliders.push_back(table3Collider3);
 
         //trampolina
         glm::vec3 trampolineColliderPos = trampolinePos;
@@ -655,16 +699,26 @@ class GameManager {
         Collider trampolineCollider4(glm::vec3(0.1f, 1.1f, 0.9f), false, trampolineColliderPos, false);
         trampolineptr->additionalColliders.push_back(trampolineCollider4);
 
-
-
         //drzewo
         root_node->add_child(treeptr);
         treeptr->setProperties(shaderShad, textree, treePos, MODEL, tree, 0.7f, false);
         treeptr->setRotation(0.0f, 200.0f, 0.0f);
+        //tree colliders
+        Collider treeCollider1(glm::vec3(0.45f, 10.0f, 0.35f), false, glm::vec3(35.0f, 0.0f, -17.2f), false); //root
+        Collider treeCollider2(0.7f, false, glm::vec3(30.0f, 4.0f, -17.5f), false); //branch leafs
+        Collider treeCollider3(glm::vec3(0.7f, 0.7f, 0.01f), false, glm::vec3(31.3f, 3.7f, -17.8f), false); //branch first part
+        Collider treeCollider3b(glm::vec3(0.7f, 0.7f, 0.01f), false, glm::vec3(33.0f, 3.7f, -18.3f), false); //branch second part
+        Collider treeCollider4(glm::vec3(0.3f, 4.0f, 0.3f), false, glm::vec3(33.5f, 7.8f, -18.3f), false); //branch end
 
-        //parasol
-        root_node->add_child(umbrellaptr);
-        umbrellaptr->setProperties(shaderShad, texturewin10, zeroPos, MODEL, umbrella, 0.01f, false);
+        treeptr->additionalColliders.push_back(treeCollider1);
+        treeptr->additionalColliders.push_back(treeCollider2);
+        treeptr->additionalColliders.push_back(treeCollider3);
+        treeptr->additionalColliders.push_back(treeCollider3b);
+        treeptr->additionalColliders.push_back(treeCollider4);
+
+        //parasol (I dont want to deal with colliders here xd)
+        //root_node->add_child(umbrellaptr);
+        //umbrellaptr->setProperties(shaderShad, texturewin10, zeroPos, MODEL, umbrella, 0.01f, false);
 
         //basen
         root_node->add_child(poolptr);
@@ -692,7 +746,6 @@ class GameManager {
         wallsptr->additionalColliders.push_back(wallColl5);
         wallsptr->additionalColliders.push_back(wallColl6);
 
-
         Collider heartCollider(glm::vec3(0.005f, 1.0f, 0.005f), false, heartPos, true);
         Collider heartTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos, true);
         Collider heartTrigger2(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos2, true);
@@ -710,7 +763,6 @@ class GameManager {
         heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 1.0f, true);
         heartptr2->trigger = heartTrigger2;
         heartptr2->movableType = TOSANDPIT;
-
 
         root_node->add_child(colaptr);
         colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 1.0f, true);
@@ -731,9 +783,7 @@ class GameManager {
         root_node->add_child(bucketredptr);
         bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true);
         bucketredptr->trigger = bucketredTrigger;
-
     }
-
    
 
     unsigned int loadTexture(char const* path)

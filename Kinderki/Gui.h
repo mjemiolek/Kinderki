@@ -373,7 +373,7 @@ public:
 
     void handleStories() {
         ct = glfwGetTime();
-        std::cout << ct << std::endl;
+        //std::cout << ct << std::endl;
         //if (ct - lt) { Storycounter++; }
         //Storycounter = Storycounter % 2;
         //std::cout << Storycounter << std::endl;

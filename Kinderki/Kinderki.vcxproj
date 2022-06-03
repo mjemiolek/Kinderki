@@ -171,7 +171,6 @@
     <ClInclude Include="ParticleGen.h" />
     <ClInclude Include="PhysicsWorld.h" />
     <ClInclude Include="PlayerController.h" />
-    <ClInclude Include="Object.h" />
     <ClInclude Include="SceneGraph.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Shader.h" />

@@ -8,12 +8,16 @@ class BallManager {
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
     std::shared_ptr<SceneGraphNode> ball;
+    float kickpower = 16.0f;
+    float decelerateVar = 0.5f;
 public:
     BallManager(std::shared_ptr<SceneGraphNode> ball, std::shared_ptr<SceneGraphNode> player) {
         this->ball = ball;
         playerObject = player;
     }
-
+    //TODO: 
+    // bouncing off walls
+    // fix of going player into ground (its corelated with sphere collider or smth)
     void manageBall(GLFWwindow* window, float dt)
     {
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
@@ -23,25 +27,28 @@ public:
         //ball logic
         float vectorx = (ball->get_transform().m_position.x - playerObject->get_transform().m_position.x);
         float vectorz = (ball->get_transform().m_position.z - playerObject->get_transform().m_position.z);
+        
         //apply force
         if (ball->collider.sphereToSphereCollisionCheck(playerObject->collider))
         {
-            ball->velocity.x = 8 * vectorx;
-            ball->velocity.z = 8 * vectorz;
+            ball->velocity.x = kickpower * vectorx;
+            ball->velocity.z = kickpower * vectorz;
         }
         float stopVal= 0.01f;
         //decelerate
         if (ball->velocity.x > stopVal || ball->velocity.x < -stopVal)
         {
-            ball->velocity.x -= ball->velocity.x * dt;
-            ball->get_transform().y_rotation_angle += 90.0f * dt;
-            ball->get_transform().x_rotation_angle += 90.0f * dt;
+            ball->velocity.x -= ball->velocity.x * dt * decelerateVar;
+            //fix this or wypierdol this
+            /*ball->get_transform().y_rotation_angle += 90.0f * dt;
+            ball->get_transform().x_rotation_angle += 90.0f * dt;*/
         }
         if (ball->velocity.z > stopVal || ball->velocity.z < -stopVal)
         {
-            ball->velocity.z -= ball->velocity.z * dt;
-            ball->get_transform().y_rotation_angle += 90.0f * dt;
-            ball->get_transform().z_rotation_angle += 90.0f * dt;
+            ball->velocity.z -= ball->velocity.z * dt * decelerateVar;
+            //fix this or wypierdol this 
+            /*ball->get_transform().y_rotation_angle += 90.0f * dt;
+            ball->get_transform().z_rotation_angle += 90.0f * dt;*/
         }
         //stop
         if (ball->velocity.x <= stopVal && ball->velocity.x >= -stopVal)
