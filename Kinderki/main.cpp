@@ -26,7 +26,6 @@
 #include "BallManager.h"
 #include "MovableManager.h"
 #include "WaterFrameBuffers.h"
-#include "WinManager.h"
 
 #include <mmcobj.h>
 
@@ -131,7 +130,6 @@ int main()
     Skybox skybox;
     BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3, gameManager.damagedwallptr);
     AIController* AI = new AIController(gameManager.cube2);
-    WinManager winmanager(gameManager.escapeTriggers,gameManager.cube3);
 
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
     movableManager->addMovable(gameManager.heartptr);
@@ -209,7 +207,7 @@ int main()
         moveFactor = fmod(moveFactor,1.0f);
         gameManager.update(passed_time);
         gui.update(passed_time);
-        winmanager.winInstructions(); //check for win
+        gameManager.checkWin(); //check for win
 
         //robocza modyfikacja candyCount
         if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {

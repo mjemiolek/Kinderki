@@ -1034,5 +1034,16 @@ class GameManager {
             return tex1;
     }
 
+    void checkWin()
+    {
+        for (const auto& trigger : escapeTriggers)
+        {
+            if (cube3->collider.boxToBoxCollisioncheck(trigger))
+            {
+                std::cout << "Win";
+            }
+        }
+    }
+
 
 };
