@@ -374,11 +374,36 @@ public:
     void wazker(std::shared_ptr<SceneGraphNode> interacter, float dt) {
 
         //TODO: 
-
-
-
-
-
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(1))) {
+            if (interacter->get_transform().z_rotation_angle > -15.0f)
+            {
+                interacter->get_transform().z_rotation_angle -= 180.0f * dt;
+            }
+            interacter->additionalColliders.at(0).setPosition(glm::vec3(8.0f, -0.4f, -4.5f));
+            interacter->update_transform();
+        }
+        else if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(2))) {
+            if (interacter->get_transform().z_rotation_angle < 15.0f)
+            {
+                interacter->get_transform().z_rotation_angle += 180.0f * dt;
+            }
+            interacter->additionalColliders.at(0).setPosition(glm::vec3(8.0f, -0.4f, -4.5f));
+            interacter->update_transform();
+        } else {
+            if (interacter->get_transform().z_rotation_angle < -1.0f)
+            {
+                interacter->get_transform().z_rotation_angle += 140.0f * dt;
+            } else if (interacter->get_transform().z_rotation_angle > 1.0f)
+            {
+                interacter->get_transform().z_rotation_angle -= 140.0f * dt;
+            }
+            else {
+                interacter->setRotation(0.0f, 0.0f, 0.0f);
+            }
+            interacter->additionalColliders.at(0).setPosition(glm::vec3(8.0f, 0.2f, -4.5f));
+            interacter->update_transform();
+        }
+        
         //change outline
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
             setTrueStencil(interacter);

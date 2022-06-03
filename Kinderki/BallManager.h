@@ -8,16 +8,19 @@ class BallManager {
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
     std::shared_ptr<SceneGraphNode> ball;
+    std::shared_ptr<SceneGraphNode> damagedwall;
     float kickpower = 16.0f;
     float decelerateVar = 0.5f;
 public:
-    BallManager(std::shared_ptr<SceneGraphNode> ball, std::shared_ptr<SceneGraphNode> player) {
+    BallManager(std::shared_ptr<SceneGraphNode> ball, std::shared_ptr<SceneGraphNode> player, std::shared_ptr<SceneGraphNode> damagedwall) {
         this->ball = ball;
         playerObject = player;
+        this->damagedwall = damagedwall;
     }
     //TODO: 
     // bouncing off walls
     // fix of going player into ground (its corelated with sphere collider or smth)
+    // fix ball going through walls or mask it
     void manageBall(GLFWwindow* window, float dt)
     {
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
@@ -63,8 +66,15 @@ public:
         if (ball->get_transform().m_position.y<-0.01f) ball->get_transform().m_position.y = 0.0f;
 
 
+        //update position
         ball->update_transform();
         ball->collider.setPosition(ball->get_transform().m_position);
+
+        //check for trigger in damagedwall
+        if (ball->collider.boxToBoxCollisioncheck(damagedwall->trigger))
+        {
+            std::cout << "Ball hitted the wall. Good job comrade.\n";
+        }
     }
 };
 

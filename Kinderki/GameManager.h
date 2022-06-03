@@ -46,7 +46,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> sandpitptr;
     std::shared_ptr<SceneGraphNode> sandsptr;
     std::shared_ptr<SceneGraphNode> seesawptr;
-    std::shared_ptr<SceneGraphNode> seesawseatsptr;
+    std::shared_ptr<SceneGraphNode> seesawbaseptr;
     std::shared_ptr<SceneGraphNode> slideptr;
     std::shared_ptr<SceneGraphNode> swingptr;
     std::shared_ptr<SceneGraphNode> swingseatptr;
@@ -123,6 +123,7 @@ class GameManager {
         glm::vec3 wallPosColl4(21.4975f, 0.0f, 15.823f);
         glm::vec3 wallPosColl5(30.3f, 0.0f, 11.07f);
         glm::vec3 wallPosColl6(38.5f, 0.0f, -4.68f);
+        glm::vec3 damagedwallPos(21.0f, 0.1f, 18.5f);
 
 
         glm::vec3 tempPos(0.0f, 0.0f, 0.0f);
@@ -210,6 +211,7 @@ class GameManager {
         Model sandpit("res/models/level/sandpit.obj");
         Model sands("res/models/level/sands.obj");
         Model seesaw("res/models/level/seesaw.obj");
+        Model seesawBase("res/models/level/seesawBase.obj");
         Model slide("res/models/level/slide.obj");
         Model swing("res/models/level/swing.obj");
         Model swingseat("res/models/level/swingseat.obj");
@@ -290,7 +292,7 @@ class GameManager {
         sandpitptr = std::make_shared<SceneGraphNode>();
         sandsptr = std::make_shared<SceneGraphNode>();
         seesawptr = std::make_shared<SceneGraphNode>();
-        seesawseatsptr = std::make_shared<SceneGraphNode>();
+        seesawbaseptr = std::make_shared<SceneGraphNode>();
         slideptr = std::make_shared<SceneGraphNode>();
         swingptr = std::make_shared<SceneGraphNode>();
         swingseatptr = std::make_shared<SceneGraphNode>();
@@ -559,7 +561,9 @@ class GameManager {
         sandpitptr->additionalColliders.push_back(sandPitRightCollider);
         sandPitPos.x -= 2.5f;
 
-
+        //seesawbase
+        root_node->add_child(seesawbaseptr);
+        seesawbaseptr->setProperties(shaderShad, texseesaw, seesawPos, MODEL, seesawBase, 0.2f, false);
 
         //hustawka wazka
         Collider seesawTrigger(0.5f, false, seesawPos, true);
@@ -575,9 +579,21 @@ class GameManager {
         seesawPos.y += 0.6f;
         seesawPos.x -= 1.6f;
         Collider seesawCollider2(glm::vec3(0.01f, 0.5f, 0.20f), false, seesawPos, false); //left handles
+         seesawPos.x -= 0.6f;
+         seesawPos.y -= 0.2f;
+         Collider seesawTriggerLeftSeat(glm::vec3(0.4f, 0.8f, 0.31f), false, seesawPos, false);
+         seesawPos.x += 0.6f;
+         seesawPos.y += 0.2f;
+         seesawptr->additionalTriggers.push_back(seesawTriggerLeftSeat);
         seesawPos.x += 1.6f;
         seesawPos.x += 1.6f;
         Collider seesawCollider3(glm::vec3(0.01f, 0.5f, 0.20f), false, seesawPos, false); //right handles
+         seesawPos.x += 0.6f;
+         seesawPos.y -= 0.2f;
+         Collider seesawTriggerRightSeat(glm::vec3(0.4f, 0.8f, 0.3f), false, seesawPos, false);
+         seesawPos.x -= 0.6f;
+         seesawPos.y += 0.2f;
+         seesawptr->additionalTriggers.push_back(seesawTriggerRightSeat);
         seesawPos.x -= 1.6f;
 
 
@@ -726,17 +742,21 @@ class GameManager {
         root_water->add_child(poolwaterptr);
         poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.14f, false);
 
+
         //damaged wall
         root_node->add_child(damagedwallptr);
         damagedwallptr->setProperties(shaderShad, texturedamagedwall, glm::vec3(0.0f, -1.6f, 0.0f), MODEL, damagedwall, 0.01f, false);
-
-        //sciany
-        Collider wallColl1(glm::vec3(0.05f, 3.0f, 21.0f), false, wallPosColl1, true);
-        Collider wallColl2(glm::vec3(17.825f, 3.0f, 0.05f), false, wallPosColl2, true);
-        Collider wallColl3(glm::vec3(9.3145f, 3.0f, 0.05f), false, wallPosColl3, true);
-        Collider wallColl4(glm::vec3(0.05f, 3.0f, 4.747f), false, wallPosColl4, true);
-        Collider wallColl5(glm::vec3(8.5f, 3.0f, 0.005f), false, wallPosColl5, true);
-        Collider wallColl6(glm::vec3(0.05f, 3.0f, 15.75f), false, wallPosColl6, true);
+        Collider damagedwallTrigger(glm::vec3(0.2f, 0.2f, 0.4f), false, damagedwallPos, false);
+        damagedwallptr->trigger = damagedwallTrigger;
+        
+        //walls
+        float wallHeight = 3.0f;
+        Collider wallColl1(glm::vec3(0.05f, wallHeight, 21.0f), false, wallPosColl1, true);
+        Collider wallColl2(glm::vec3(17.825f, wallHeight, 0.05f), false, wallPosColl2, true);
+        Collider wallColl3(glm::vec3(9.3145f, wallHeight, 0.05f), false, wallPosColl3, true);
+        Collider wallColl4(glm::vec3(0.05f, wallHeight, 4.747f), false, wallPosColl4, true);
+        Collider wallColl5(glm::vec3(8.5f, wallHeight, 0.005f), false, wallPosColl5, true);
+        Collider wallColl6(glm::vec3(0.05f, wallHeight, 15.75f), false, wallPosColl6, true);
         root_node->add_child(wallsptr);
         wallsptr->setProperties(shaderShad, texturewall, glm::vec3(0.0f,-1.6f,0.0f), MODEL, walls, 0.01f, false);
         wallsptr->additionalColliders.push_back(wallColl1);
