@@ -346,7 +346,7 @@ class GameManager {
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, cubePositions[4],true);
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
-        cube3->setProperties(shaderShad, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, true, cube3Collider);
+        cube3->setProperties(shaderShad, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, false, cube3Collider);
 
         //pilka
         root_node->add_child(ball);
