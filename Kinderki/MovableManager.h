@@ -63,7 +63,10 @@ public:
                         rootNode->add_child(vecMovable[iterator]);
                         calculateDir();
                         vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->m_transform.y_rotation_angle;
+                        vecMovable[iterator]->get_transform().m_scale *= playerObject->get_transform().m_scale;
+
                         vecMovable[iterator]->m_transform.m_position = playerObject->get_transform().m_position+ ofset2;
+
                     }
                 }
                 
@@ -100,11 +103,14 @@ public:
                         carringFlag = true;
                         iterator = i;
                         rootNode->detach_child(vecMovable[i]);
+
                         vecMovable[i]->m_transform.m_position = zeroPos;
+                        vecMovable[i]->get_transform().m_scale *= 1 / playerObject->get_transform().m_scale;
+
                         playerObject->add_child(vecMovable[i]);
                         calculateDir();
                         vecMovable[i]->m_transform.m_position += ofset1;
-                    
+
                 }
             }
         }

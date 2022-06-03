@@ -96,9 +96,9 @@ class GameManager {
 
 
     // animacje
-   // Model postac_test = Model("res/models/postac_test_kosci_animacja_v8.fbx");
-   // Animation anim = Animation("res/models/postac_test_kosci_animacja_v8.fbx", &postac_test);
-   // Animator animator = Animator(&anim);
+    Model postac_test = Model("res/models/main_character_TEST_v15.fbx");
+    Animation anim = Animation("res/models/main_character_TEST_ANIMACJA_v4.fbx", &postac_test);
+    Animator animator = Animator(&anim);
 
     GameManager() {
         //settings
@@ -234,7 +234,7 @@ class GameManager {
 
         //Model postac_test("res/models/main_character.obj");
         //Model postac_test("res/models/postac_test_kolejny.obj");
-        Model postac_test("res/models/postac_test_v4.obj");
+       // Model postac_test("res/models/postac_test_v4.obj");
 
 
 
@@ -256,7 +256,7 @@ class GameManager {
         unsigned int specularMap = loadTexture("res/textures/spec.jpg");
 
         //unsigned int texture_postac_test = loadTexture("res/textures/oko_tekstura_test2.png");
-        unsigned int texture_postac_test = loadTexture("res/textures/baking_5.png");
+        unsigned int texture_postac_test = loadTexture("res/textures/main_character_texture.png");
 
         
         unsigned int texaerial = loadTexture("res/textures/models/texaerial.png");
@@ -347,7 +347,7 @@ class GameManager {
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, cubePositions[4],true);
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
-        cube3->setProperties(shaderShad, texture_postac_test, cubePositions[4], MODEL, postac_test, 1.0f, false, cube3Collider);
+        cube3->setProperties(animShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 0.05f, false, cube3Collider);
 
         //pilka
         root_node->add_child(ball);
@@ -776,11 +776,11 @@ class GameManager {
         Collider bucketredTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketRedPos, true);
         
         root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, heartPos, MODEL, postac_test, 1.0f, true);
+        heartptr->setProperties(shaderShad, texturewin10, heartPos, MODEL, postac_test, 0.05f, true);
         heartptr->trigger = heartTrigger;
 
         root_node->add_child(heartptr2);
-        heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 1.0f, true);
+        heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 0.05f, true);
         heartptr2->trigger = heartTrigger2;
         heartptr2->movableType = TOSANDPIT;
 
@@ -861,7 +861,7 @@ class GameManager {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
 
-    //    animator.UpdateAnimation(dt * 60);
+        animator.UpdateAnimation(dt * 60);
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
@@ -950,20 +950,20 @@ class GameManager {
 
         // do animacji
         // 
-        //animShader.use();
-        //projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        //view = camera.GetViewMatrix();
-        //animShader.setMat4("projection", projection);
-        //animShader.setMat4("view", view);
-        //// set light uniforms
-        //animShader.setVec3("viewPos", camera.Position);
-        //animShader.setVec3("lightPos", lightPos);
-        //// animShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-        //auto transforms = animator.GetFinalBoneMatrices();
-        //for (int i = 0; i < transforms.size(); ++i) {
-        //    //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
-        //    animShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        //}
+        animShader.use();
+        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        view = camera.GetViewMatrix();
+        animShader.setMat4("projection", projection);
+        animShader.setMat4("view", view);
+        // set light uniforms
+        animShader.setVec3("viewPos", camera.Position);
+        animShader.setVec3("lightPos", lightPos);
+        // animShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+        auto transforms = animator.GetFinalBoneMatrices();
+        for (int i = 0; i < transforms.size(); ++i) {
+            //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
+            animShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+        }
 
         // Make it so the stencil test always passes
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
