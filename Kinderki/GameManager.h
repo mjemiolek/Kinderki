@@ -202,22 +202,39 @@ class GameManager {
         Model sphere("res/models/sphere.obj");
 
         Model aerialrunnwaywhole("res/models/level/aerialrunnway_whole.obj");
-        Model aerialrunnwayseat("res/models/level/aerialrunnway_seat.obj");
+        Model aerialrunnwaywholeOut("res/models/outline/aerialrunnway_wholeOutline.obj");
 
+        Model aerialrunnwayseat("res/models/level/aerialrunnway_seat.obj");
+        Model aerialrunnwayseatOut("res/models/outline/aerialrunnway_seatOutline.obj");
 
         Model benches("res/models/level/benches.obj");
         Model floor("res/models/level/floor.obj",256.0f,256.0f);
         Model goalLeft("res/models/level/bramkahp.obj");
         Model goalRight("res/models/level/bramkahp.obj");
+
         Model sandpit("res/models/level/sandpit.obj");
+        Model sandpitOut("res/models/outline/sandPitOutline.obj");
+
         Model sands("res/models/level/sands.obj");
         Model seesaw("res/models/level/seesaw.obj");
+        Model seesawOut("res/models/outline/seesawOutline.obj");
+
         Model seesawBase("res/models/level/seesawBase.obj");
+        Model seesawBaseOut("res/models/outline/seesawBaseOutline.obj");
+
         Model slide("res/models/level/slide.obj");
+        Model slideOut("res/models/outline/slideOutline.obj");
+
         Model swing("res/models/level/swing.obj");
+        Model swingOut("res/models/outline/swingOutline.obj");
+
         Model swingseat("res/models/level/swingseat.obj");
+        Model swingseatOut("res/models/outline/swingseatOutline.obj");
+
         Model tables("res/models/level/tables.obj");
         Model trampoline("res/models/level/trampoline.obj");
+        Model trampolineOut("res/models/outline/trampolineOutline.obj");
+
         Model tree("res/models/level/tree.obj");
         Model umbrella("res/models/level/umbrella.obj");
         Model walk("res/models/level/walk.obj");
@@ -229,8 +246,13 @@ class GameManager {
 
         Model heart("res/models/movable/mentos.obj");
         Model cola("res/models/movable/cola.obj");
+        Model colaOut("res/models/outline/colaOutline.obj");
+
         Model mentos("res/models/movable/mentos.obj");
+        Model mentosOut("res/models/outline/mentosOutline.obj");
+
         Model bucket("res/models/movable/wiadro.obj");
+        Model bucketOut("res/models/outline/wiadroOutline.obj");
 
         //Model postac_test("res/models/main_character.obj");
         //Model postac_test("res/models/postac_test_kolejny.obj");
@@ -353,6 +375,7 @@ class GameManager {
         root_node->add_child(ball);
         Collider ballCollider(0.28f, false, glm::vec3(0.0f, 2.0f, -2.0f), true);
         ball->setProperties(shaderShad, textureshrek, glm::vec3(0.0f, 2.0f, -2.0f),MODEL,sphere,0.03f,true,ballCollider);
+        ball->modelOutline = sphere;
 
 
 
@@ -364,12 +387,14 @@ class GameManager {
         Collider aerialrunnwayTrigger(glm::vec3(0.2f, 3.0f, 0.5f), false, aerialRunnwayTrigerPos, true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
-        aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f,false);
+        aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f, true);
+        aerialrunnwaywholeptr->modelOutline = aerialrunnwaywholeOut;
 
         root_node->add_child(aerialrunnwayseatptr);
-        aerialrunnwayseatptr->setProperties(shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, false);
+        aerialrunnwayseatptr->setProperties(shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, true);
         //std::cout << aerialRunnwayPos.x + aerialRunnwaySeatPos.x <<"x"<< aerialRunnwayPos.y + aerialRunnwaySeatPos.y << "x" << aerialRunnwayPos.z + aerialRunnwaySeatPos.z << std::endl;
         aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
+        aerialrunnwayseatptr->modelOutline = aerialrunnwayseatOut;
 
         tempPos = aerialRunnwayPos;
         tempPos.z -= 8.0f;
@@ -541,6 +566,7 @@ class GameManager {
         Collider sandPitTrigger(glm::vec3(2.43f, 5.1f, 2.43f), false, sandPitPos, true);
         sandpitptr->setProperties(shaderShad, texsandpit, sandPitPos, MODEL, sandpit, 0.3f, false);
         sandpitptr->trigger = sandPitTrigger;
+        sandpitptr->modelOutline = sandpitOut;
 
         sandPitPos.z -= 2.5f;
         Collider sandPitUpCollider(glm::vec3(2.4f, 0.25f, 0.025f), false, sandPitPos, false);
@@ -573,6 +599,7 @@ class GameManager {
         seesawptr->trigger = seesawTrigger;
         Collider seesawTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, seesawPos, false);
         seesawptr->additionalTriggers.push_back(seesawTriggerOutline);
+        seesawptr->modelOutline = seesawOut;
 
         //seesaw colliders
         seesawPos.y -= 0.6f;
@@ -616,6 +643,7 @@ class GameManager {
         slidePos.x -= 2.3f;
         Collider slideTriggerOutline(glm::vec3(3.30f, 3.30f, 5.30f), false, slidePos, true);
         slideptr->additionalTriggers.push_back(slideTriggerOutline);
+        slideptr->modelOutline = slideOut;
 
         //hustawka
         glm::vec3 swingTrigPos = swingPos;
@@ -634,6 +662,7 @@ class GameManager {
         swingptr->setRotation(0.0f, 180.0f, 0.0f);
         Collider swingTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, swingTrigPos, false);
         swingptr->additionalTriggers.push_back(swingTriggerOutline);
+        swingptr->modelOutline = swingOut;
         
         //lewo gora
         swingColPos.z -= 1.45f;
@@ -661,6 +690,7 @@ class GameManager {
         swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, false, swingCollider);
         swingseatptr->trigger = swingTrigger;
         swingseatptr->setRotation(0.0f, 180.0f, 0.0f);
+        swingseatptr->modelOutline = swingseatOut;
 
 
         //stoly
@@ -700,6 +730,7 @@ class GameManager {
         trampolineptr->setProperties(shaderShad, textrampoline, trampolinePos, MODEL, trampoline, 0.006f, true, trampolineCollider1, trampolineTrigger);
         Collider trampolineTriggerOutline(glm::vec3(3.0f, 0.6f, 3.0f), false, trampolinePos, true);
         trampolineptr->additionalTriggers.push_back(trampolineTriggerOutline);
+        trampolineptr->modelOutline = trampolineOut;
         //trampolineptr->trigger = trampolineTrigger;
         //dol
         trampolineColliderPos.z += q;
@@ -776,33 +807,38 @@ class GameManager {
         Collider bucketredTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketRedPos, true);
         
         root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, heartPos, MODEL, postac_test, 0.05f, true);
+        heartptr->setProperties(shaderShad, texturewin10, heartPos, MODEL, postac_test, 0.05f, false);
         heartptr->trigger = heartTrigger;
 
         root_node->add_child(heartptr2);
-        heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 0.05f, true);
+        heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 0.05f, false);
         heartptr2->trigger = heartTrigger2;
         heartptr2->movableType = TOSANDPIT;
 
         root_node->add_child(colaptr);
         colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 1.0f, true);
         colaptr->trigger = colaTrigger;
+        colaptr->modelOutline = colaOut;
 
         root_node->add_child(mentosptr);
         mentosptr->setProperties(shaderShad, texturewin10, mentosPos, MODEL, mentos, 1.0f, true);
         mentosptr->trigger = mentosTrigger;
+        mentosptr->modelOutline = mentosOut;
 
         root_node->add_child(bucketblackptr);
         bucketblackptr->setProperties(shaderShad, texbucketblack, bucketBlackPos, MODEL, bucket, 0.1f, true);
         bucketblackptr->trigger = bucketblackTrigger;
+        bucketblackptr->modelOutline = bucketOut;
 
         root_node->add_child(bucketpinkptr);
         bucketpinkptr->setProperties(shaderShad, texbucketpink, bucketPinkPos, MODEL, bucket, 0.1f, true);
         bucketpinkptr->trigger = bucketpinkTrigger;
+        bucketpinkptr->modelOutline = bucketOut;
 
         root_node->add_child(bucketredptr);
         bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true);
         bucketredptr->trigger = bucketredTrigger;
+        bucketredptr->modelOutline = bucketOut;
 
         //Escape triggers
         glm::vec3 Trigger1LeftPos(2.42f - 50.5f, 0.0f, 0.0f);
@@ -999,7 +1035,7 @@ class GameManager {
         outlineShader.setMat4("projection", projection);
         outlineShader.setMat4("view", view);
         //scale
-        outlineShader.setFloat("m_scale", 0.30f);
+       // outlineShader.setFloat("m_scale", 0.30f);
         outlineShader.setVec3("outlineColor", player->getOutlineColor());
 
         root_node->renderSceneWithOutline(true, outlineShader);

@@ -252,7 +252,7 @@ struct SceneGraphNode {
             {
                 if (stencil) {
                     shader.setMat4("model", m_transform.m_world_matrix);
-                    modelTemp.Draw(shader);
+                    modelOutline.Draw(shader);
                 }          
             }
             for (uint32_t i = 0; i < m_children.size(); ++i)
@@ -355,6 +355,7 @@ struct SceneGraphNode {
     Shader shaderTemp = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Shader shaderTemp2 = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Model modelTemp = Model("res/models/box.obj");
+    Model modelOutline = Model("res/models/box.obj");
     GLuint texture;
     renderEnum tempRender;
     unsigned int VAOTemp;
