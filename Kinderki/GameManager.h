@@ -29,8 +29,12 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> root_node;
     std::shared_ptr<SceneGraphNode> root_water;
     std::shared_ptr<SceneGraphNode> cube1;
-    std::shared_ptr<SceneGraphNode> cube2;
+    std::shared_ptr<SceneGraphNode> cube2; //AIKid 1
     std::shared_ptr<SceneGraphNode> cube3; //player
+    std::shared_ptr<SceneGraphNode> cubeKid2;
+    std::shared_ptr<SceneGraphNode> cubeKid3;
+    std::shared_ptr<SceneGraphNode> cubeKid4;
+    std::shared_ptr<SceneGraphNode> cubeKid5;
     std::shared_ptr<SceneGraphNode> ball;
     std::shared_ptr<SceneGraphNode> progressbar;
     std::vector<std::shared_ptr<SceneGraphNode>> collidingObjects;
@@ -128,16 +132,21 @@ class GameManager {
         glm::vec3 mentosPos(10.0f, 3.0f, 0.0f);
 
         glm::vec3 cubePositions[] = {
-        glm::vec3(-0.5f, 2.0f,  3.5f),
-        glm::vec3(2.0f,  2.0f, -15.0f),
-        glm::vec3(0.5f, 2.5f, -1.5f),
-        glm::vec3(-3.8f, 2.0f, -12.3f),
-        glm::vec3(0.0f, 2.0f,  0.0f),
-        glm::vec3(0.0f,  2.0f, 0.0f),
-        glm::vec3(1.3f, 2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -1.5f),
-        glm::vec3(-1.3f,  2.0f, -1.5f)
+        glm::vec3(-0.5f, 2.0f,  3.5f),      //0
+        glm::vec3(2.0f,  2.0f, -15.0f),     //1
+        glm::vec3(0.5f, 2.5f, -1.5f),       //2
+        glm::vec3(-3.8f, 2.0f, -12.3f),     //3
+        glm::vec3(0.0f, 2.0f,  0.0f),       //4
+        glm::vec3(0.0f,  2.0f, 0.0f),       //5
+        glm::vec3(1.3f, 2.0f, -2.5f),       //6
+        glm::vec3(1.5f,  2.0f, -2.5f),      //7
+        glm::vec3(1.5f,  2.0f, -1.5f),      //8
+        glm::vec3(-1.3f,  2.0f, -1.5f),     //9
+        glm::vec3(8.87f, 0.0f, -14.34f),    //10
+        glm::vec3(24.50f, 0.38f, -14.0f),   //11
+        glm::vec3(10.0f, 0.38f, 6.0f),      //12
+        glm::vec3(29.50f, 0.58f, -12.95f),  //13
+
         };
 
         //Initializing gravity
@@ -235,6 +244,7 @@ class GameManager {
         unsigned int textureshrek = loadTexture("res/textures/shrek.png");
         unsigned int texturestone = loadTexture("res/textures/stone.jpg");
         unsigned int texturewater = loadTexture("res/textures/water/water.png");
+        unsigned int textureKidCube = loadTexture("res/textures/cubeOfCubes.png");
 
 
         unsigned int diffuseMap = loadTexture("res/textures/diff.jpg");
@@ -253,6 +263,7 @@ class GameManager {
         unsigned int textrampoline = loadTexture("res/textures/models/textrampoline.png");
         unsigned int textree = loadTexture("res/textures/models/textree.png");
 
+
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
         unsigned int texbucketpink = loadTexture("res/textures/models/texbucketpink.png");
         //unsigned int texbucketpurple = loadTexture("res/textures/models/texbucketpurple.png");
@@ -266,6 +277,10 @@ class GameManager {
         cube1 = std::make_shared<SceneGraphNode>();
         cube2 = std::make_shared<SceneGraphNode>();
         cube3 = std::make_shared<SceneGraphNode>();
+        cubeKid2 = std::make_shared<SceneGraphNode>();
+        cubeKid3 = std::make_shared<SceneGraphNode>();
+        cubeKid4 = std::make_shared<SceneGraphNode>();
+        cubeKid5 = std::make_shared<SceneGraphNode>();
         ball = std::make_shared<SceneGraphNode>();
 
         aerialrunnwaywholeptr = std::make_shared<SceneGraphNode>();
@@ -302,7 +317,7 @@ class GameManager {
 
 
         collidingObjects.insert(collidingObjects.end(),{
-        cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr,
+        cube1,cube2,cube3, cubeKid2, cubeKid3, cubeKid4, cubeKid5, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr,
         trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr,
         aerialrunnwaywholeptr
             
@@ -324,6 +339,22 @@ class GameManager {
         root_node->add_child(cube2);
         Collider cube2Collider(boxColRange, false, cubePositions[2], false);
         cube2->setProperties(shaderShad, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
+
+        root_node->add_child(cubeKid2);
+        Collider cubeKid2Collider(boxColRange, false, cubePositions[10], false);
+        cubeKid2->setProperties(shaderShad, textureKidCube, cubePositions[10], MODEL, box, 0.15f, true, cubeKid2Collider);
+
+        root_node->add_child(cubeKid3);
+        Collider cubeKid3Collider(boxColRange, false, cubePositions[11], false);
+        cubeKid3->setProperties(shaderShad, textureKidCube, cubePositions[11], MODEL, box, 0.15f, false, cubeKid3Collider);
+
+        root_node->add_child(cubeKid4);
+        Collider cubeKid4Collider(boxColRange, false, cubePositions[12], false);
+        cubeKid4->setProperties(shaderShad, textureKidCube, cubePositions[12], MODEL, box, 0.15f, false, cubeKid4Collider);
+
+        root_node->add_child(cubeKid5);
+        Collider cubeKid5Collider(boxColRange, false, cubePositions[13], false);
+        cubeKid5->setProperties(shaderShad, textureKidCube, cubePositions[13], MODEL, box, 0.15f, false, cubeKid5Collider);
         
         //gracz
         root_node->add_child(cube3);

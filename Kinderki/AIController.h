@@ -57,8 +57,11 @@ public:
         }
     }
 
-    bool checkForInteraction(PlayerController* gracz) {
-        if (gracz->triggerCollision(AIObject)) return true;
+    bool checkForInteraction(std::shared_ptr<PlayerController> gracz) {
+        if (gracz->triggerCollision(AIObject)) {
+            std::cout << "press E for interaction" << std::endl;
+                return true;
+        }
         return false;
     }
 
@@ -85,7 +88,7 @@ public:
         AIObject->collider.setPosition(AIObject->get_transform().m_position);
 
     }
-    void ChangeState(GLFWwindow* window, float deltaTime, PlayerController* gracz) {
+    void ChangeState(GLFWwindow* window, float deltaTime, std::shared_ptr<PlayerController> gracz) {
         StateType CurrentState = Move;
         switch (CurrentState)
         {

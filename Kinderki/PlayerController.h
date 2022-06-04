@@ -21,7 +21,11 @@
 
 #include "SceneGraph.h"
 
+
+
+
 class PlayerController {
+
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
     int candyCount;
@@ -75,6 +79,7 @@ public:
 
             playerObject->update_transform();
             playerObject->collider.setPosition(playerObject->get_transform().m_position);
+            //stepSound.playLooped();
 
             //move Player to position (0,2,0)
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
@@ -90,13 +95,14 @@ public:
             //jump
             if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
             {
-                if (playerObject->canJump==true)
+                if (playerObject->canJump == true)
                 {
                     playerObject->velocity.y = 5.0f;
                 }
                 playerObject->canJump = false;
             }
         }
+        //else sandPitCreak.play();
         
 	}
 
