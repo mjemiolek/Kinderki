@@ -65,7 +65,7 @@ public:
                         vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->m_transform.y_rotation_angle;
                         vecMovable[iterator]->get_transform().m_scale *= playerObject->get_transform().m_scale;
 
-                        vecMovable[iterator]->m_transform.m_position = playerObject->get_transform().m_position+ ofset2;
+                        vecMovable[iterator]->m_transform.m_position = playerObject->get_transform().m_position + ofset2;
 
                     }
                 }
@@ -105,11 +105,15 @@ public:
                         rootNode->detach_child(vecMovable[i]);
 
                         vecMovable[i]->m_transform.m_position = zeroPos;
+                        std::cout << " 1. x: " << vecMovable[i]->m_transform.m_position.x << " y: " << vecMovable[i]->m_transform.m_position.y << " z: " << vecMovable[i]->m_transform.m_position.z << std::endl;
+
                         vecMovable[i]->get_transform().m_scale *= 1 / playerObject->get_transform().m_scale;
+                        std::cout << " 2. x: " << vecMovable[i]->m_transform.m_position.x << " y: " << vecMovable[i]->m_transform.m_position.y << " z: " << vecMovable[i]->m_transform.m_position.z << std::endl;
 
                         playerObject->add_child(vecMovable[i]);
                         calculateDir();
-                        vecMovable[i]->m_transform.m_position += ofset1;
+                        vecMovable[i]->m_transform.m_position += ofset1 * (1/ playerObject->get_transform().m_scale);
+                        std::cout << " 3. x: " << vecMovable[i]->m_transform.m_position.x << " y: " << vecMovable[i]->m_transform.m_position.y << " z: " << vecMovable[i]->m_transform.m_position.z << std::endl;
 
                 }
             }
