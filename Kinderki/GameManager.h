@@ -103,6 +103,7 @@ class GameManager {
     GameManager() {
         //settings
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
+        glm::vec3 walkPos(0.0f, 0.1f, 0.0f);
         glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
         glm::vec3 sandPitPos(8.87f, 0.0f, -14.34f);
         glm::vec3 seesawPos(8.0f, 0.8f, -4.5f);
@@ -207,7 +208,7 @@ class GameManager {
         Model aerialrunnwayseat("res/models/level/aerialrunnway_seat.obj");
         Model aerialrunnwayseatOut("res/models/outline/aerialrunnway_seatOutline.obj");
 
-        Model benches("res/models/level/benches.obj");
+        Model benches("res/models/level/benches1.obj");
         Model floor("res/models/level/floor.obj",256.0f,256.0f);
         Model goalLeft("res/models/level/bramkahp.obj");
         Model goalRight("res/models/level/bramkahp.obj");
@@ -489,12 +490,19 @@ class GameManager {
         benchesptr->additionalColliders.push_back(bench1Collider);
         Collider bench2Collider(glm::vec3(0.15f, 0.45f, 1.4f), false, glm::vec3(3.5f, 0.0f, -14.0f), false);
         benchesptr->additionalColliders.push_back(bench2Collider);
-        Collider bench3Collider(glm::vec3(1.4f, 0.45f, 0.15f), false, glm::vec3(9.6f, 0.0f, -19.5f), false);
+        Collider bench3Collider(glm::vec3(1.4f, 0.45f, 0.15f), false, glm::vec3(9.6f, 0.0f, -19.77f), false);
         benchesptr->additionalColliders.push_back(bench3Collider);
-        Collider bench4Collider(glm::vec3(0.15f, 0.45f, 1.5f), false, glm::vec3(37.0f, 0.0f, -7.5f), false);
+        Collider bench4Collider(glm::vec3(0.14f, 0.45f, 1.5f), false, glm::vec3(37.35f, 0.0f, -7.5f), false);
         benchesptr->additionalColliders.push_back(bench4Collider);
-        Collider bench5Collider(glm::vec3(0.15f, 0.45f, 1.5f), false, glm::vec3(37.0f, 0.0f, 5.5f), false);
+        Collider bench5Collider(glm::vec3(0.14f, 0.45f, 1.5f), false, glm::vec3(37.35f, 0.0f, 5.5f), false);
         benchesptr->additionalColliders.push_back(bench5Collider);
+
+        Collider bench6Collider(glm::vec3(1.43f, 0.45f, 0.14f), false, glm::vec3(24.55f, 0.0f, -19.77f), false);
+        benchesptr->additionalColliders.push_back(bench6Collider);
+        Collider bench7Collider(glm::vec3(1.0f, 0.45f, 0.14f), false, glm::vec3(22.65f, 0.0f, 10.1f), false);
+        benchesptr->additionalColliders.push_back(bench7Collider);
+        Collider bench8Collider(glm::vec3(2.2f, 0.45f, 0.14f), false, glm::vec3(12.0f, 0.0f, 20.1f), false);
+        benchesptr->additionalColliders.push_back(bench8Collider);
 
 
         ////piaski
@@ -502,8 +510,8 @@ class GameManager {
         //sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
         ////krawezniki?
-        //root_node->add_child(walkptr);
-        //walkptr->setProperties(lightingShader, textureplanks, zeroPos, MODEL, walk, 0.01f, false);
+        root_node->add_child(walkptr);
+        walkptr->setProperties(lightingShader, textureplanks, walkPos, MODEL, walk, 0.01f, false);
 
         //podloga
         root_node->add_child(floorptr);
