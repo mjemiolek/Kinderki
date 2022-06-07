@@ -163,6 +163,8 @@ int main()
     unsigned int textureCandyx5 = gameManager.loadTexture("res/textures/candy/candyx5.png");
     unsigned int textureCandyx6 = gameManager.loadTexture("res/textures/candy/candyx6.png");
 
+    unsigned int textureIns = gameManager.loadTexture("res/textures/ins.png");
+
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
     gui.textureAerialRunway = textureAerialRunway;
@@ -171,6 +173,8 @@ int main()
     gui.textureWallDestroy = textureWallDestroy;
     gui.textureSandpit = textureSandpit;
     gui.textureSlide = textureSlide;
+
+    gui.textureIns = textureIns;
 
     gui.textureCandy = textureCandy;
 

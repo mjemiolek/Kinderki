@@ -9,8 +9,8 @@ private:
     std::shared_ptr<SceneGraphNode> playerObject;
     std::shared_ptr<SceneGraphNode> ball;
     std::shared_ptr<SceneGraphNode> damagedwall;
-    float kickpower = 16.0f;
-    float decelerateVar = 0.5f;
+    float kickpower = 8.0f;
+    float decelerateVar = 0.69f;
 public:
     BallManager(std::shared_ptr<SceneGraphNode> ball, std::shared_ptr<SceneGraphNode> player, std::shared_ptr<SceneGraphNode> damagedwall) {
         this->ball = ball;
@@ -39,20 +39,28 @@ public:
         }
         float stopVal= 0.01f;
         //decelerate
-        if (ball->velocity.x > stopVal || ball->velocity.x < -stopVal)
+        if (ball->velocity.x > stopVal)
         {
             ball->velocity.x -= ball->velocity.x * dt * decelerateVar;
-            //fix this or wypierdol this
-            /*ball->get_transform().y_rotation_angle += 90.0f * dt;
-            ball->get_transform().x_rotation_angle += 90.0f * dt;*/
+            ball->get_transform().z_rotation_angle += 200 * ball->velocity.x * dt * decelerateVar;
         }
-        if (ball->velocity.z > stopVal || ball->velocity.z < -stopVal)
+        if (ball->velocity.x < -stopVal)
+        {
+            ball->velocity.x -= ball->velocity.x * dt * decelerateVar;
+            ball->get_transform().z_rotation_angle += 200 * ball->velocity.x * dt * decelerateVar;
+        }
+
+        if (ball->velocity.z > stopVal)
         {
             ball->velocity.z -= ball->velocity.z * dt * decelerateVar;
-            //fix this or wypierdol this 
-            /*ball->get_transform().y_rotation_angle += 90.0f * dt;
-            ball->get_transform().z_rotation_angle += 90.0f * dt;*/
+            ball->get_transform().x_rotation_angle -= 200 * ball->velocity.z * dt * decelerateVar;
         }
+        if (ball->velocity.z < -stopVal)
+        {
+            ball->velocity.z -= ball->velocity.z * dt * decelerateVar;
+            ball->get_transform().x_rotation_angle -= 200 * ball->velocity.z * dt * decelerateVar;
+        }
+
         //stop
         if (ball->velocity.x <= stopVal && ball->velocity.x >= -stopVal)
         {
