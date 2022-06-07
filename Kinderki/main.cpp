@@ -350,7 +350,7 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
 
 void daySimulation(float dt)
 {
-    float step = -1.5f;
+    float step = -0.75f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
     lightPosition.x += step * dt;
     if (lightPosition.x < -27.0f) lightPosition.x = 30.0f; //end of day
