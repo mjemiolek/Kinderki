@@ -195,13 +195,12 @@ int main()
         daySimulation(passed_time);
         ballManager->manageBall(window, passed_time);
         movableManager->manageMovable(window);
-        AI->checkForInteraction(gameManager.cube3);
-        AI2->checkForInteraction(gameManager.cube3);
-        AI3->checkForInteraction(gameManager.cube3);
-        AI4->checkForInteraction(gameManager.cube3);
-        AI5->checkForInteraction(gameManager.cube3);
+       // AI3->checkForInteraction(gameManager.cube3);
+       // AI4->checkForInteraction(gameManager.cube3);
+       // AI5->checkForInteraction(gameManager.cube3);
 
         gameManager.player->move(window, passed_time);
+        gameManager.player->checkForInteraction(window, gameManager.cubeKid2);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);

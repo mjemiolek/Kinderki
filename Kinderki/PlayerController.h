@@ -20,8 +20,7 @@
 #include <iostream>
 
 #include "SceneGraph.h"
-
-
+#include "AIController.h"
 
 
 class PlayerController {
@@ -167,7 +166,16 @@ public:
         return false;
     }
 
-    //void checkForInteraction(std::shared_ptr<AIController> ai, )
+    void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AIO1) {
+        if (playerObject->collider.sphereToSphereCollisionCheck(AIO1->collider)) {
+            std::cout << "PRess E to interact with " << std::endl;
+            if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+                std::cout << "Player interacted with AI" << std::endl;
+            }
+
+        }
+        
+    }
 
     void sandPiter(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
         if (playerObject->m_children.size() == 0) {
@@ -426,6 +434,12 @@ public:
         if (interacter->getStencil() != true) {
             interacter->setStencil(true);
         }
+    }
+
+    void setPlayerActions() {
+        //Tu finalnie dodamy wywo³anie wszystkich metod z przekazaniem ich parametrów, 
+        //zeby ostatecznie wywolac jedna funkcje a nie milion
+
     }
 };
 

@@ -29,6 +29,7 @@ class AIController {
 private:
     std::shared_ptr<SceneGraphNode> AIObject;
     enum StateType{Move, Interact};
+    bool awaitInteraction;
 public:
     AIController(std::shared_ptr<SceneGraphNode> AI) {
         this->AIObject = AI;
@@ -36,12 +37,13 @@ public:
 
     
 
-    bool checkForInteraction(std::shared_ptr<SceneGraphNode> gracz) {
+    void checkForInteraction(std::shared_ptr<SceneGraphNode> gracz) {
         if (AIObject->collider.sphereToSphereCollisionCheck(gracz->collider)) {
             std::cout << "PRess E to interact with " << std::endl;
-            return true;
+            awaitInteraction = true;
+            
         }
-        return false;
+        awaitInteraction = false;
     }
 
     void move(GLFWwindow* window, float deltaTime) {
@@ -84,6 +86,11 @@ public:
         int count = 0;
 
 
+
+    }
+
+    bool getAwaitInteraction() {
+        return awaitInteraction;
     }
 };
 
