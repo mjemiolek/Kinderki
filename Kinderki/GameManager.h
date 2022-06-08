@@ -116,8 +116,8 @@ class GameManager {
         glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
         glm::vec3 aerialRunnwayTrigerPos(34.0, -1.5f, -10.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
-        glm::vec3 poolPos(21.00f, 0.0f, -14.0f);
-        glm::vec3 poolWaterPos(21.05f, waterHeight, -14.0f);
+        glm::vec3 poolPos(20.00f, 0.0f, -6.0f);
+        glm::vec3 poolWaterPos(poolPos.x +0.05f, waterHeight, poolPos.z);
         glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
         glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
         glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f); // left
@@ -134,18 +134,18 @@ class GameManager {
         glm::vec3 heartPos(12.0f, 0.2f, 2.0f);
         glm::vec3 heartPos2(7.0f, 0.0f, -11.0f);   //dziala jako lopatka
         glm::vec3 colaPos(37.0f, 0.0f, -9.0f);
-        glm::vec3 mentosPos(36.0f, 0.0f, -3.0f);
+        glm::vec3 mentosPos(29.5f, 1.5f, -1.5f);
 
-        glm::vec3 bucketBlackPos(25.0f, 0.1f, -8.0f);
-        glm::vec3 bucketPinkPos(30.0f, 0.1f, -8.0f);
+        glm::vec3 bucketBlackPos(25.0f, 0.1f, -8.0f); //not used
+        glm::vec3 bucketPinkPos(30.0f, 0.1f, -8.0f);  //not used
         glm::vec3 bucketRedPos(10.0f, 0.0f, -11.0f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
         glm::vec3(2.0f,  2.0f, -15.0f),
         glm::vec3(0.5f, 2.5f, -1.5f),
-        glm::vec3(-3.8f, 2.0f, -12.3f),
-        glm::vec3(0.0f, 2.0f,  0.0f),
+        glm::vec3(12.0f, 0.0f, -16.0f),  
+        glm::vec3(12.0f, 0.0f, -16.0f), //Player position
         glm::vec3(0.0f,  2.0f, 0.0f),
         glm::vec3(1.3f, 2.0f, -2.5f),
         glm::vec3(1.5f,  2.0f, -2.5f),
@@ -782,10 +782,10 @@ class GameManager {
         poolptr->setProperties(shaderShad, texturewin10, poolPos, MODEL, pool, 0.07f, false);
         root_water->add_child(poolwaterptr);
         poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.07f, false);
-        Collider poolColliderUp(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(21.00f, 0.0f, -14.0f - 1.5f), false);
-        Collider poolColliderDown(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(21.00f, 0.0f, -14.0f + 1.5f), false);
-        Collider poolColliderLeft(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(21.00f - 2.2f, 0.0f, -14.0f), false);
-        Collider poolColliderRight(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(21.00f + 2.2f, 0.0f, -14.0f), false);
+        Collider poolColliderUp(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(poolPos.x, 0.0f, poolPos.z - 1.5f), false);
+        Collider poolColliderDown(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(poolPos.x, 0.0f, poolPos.z + 1.5f), false);
+        Collider poolColliderLeft(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(poolPos.x - 2.2f, 0.0f, poolPos.z), false);
+        Collider poolColliderRight(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(poolPos.x + 2.2f, 0.0f, poolPos.z), false);
 
         poolptr->additionalColliders.push_back(poolColliderUp);
         poolptr->additionalColliders.push_back(poolColliderDown);
