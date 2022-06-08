@@ -20,8 +20,11 @@
 #include <iostream>
 
 #include "SceneGraph.h"
+#include "AIController.h"
+
 
 class PlayerController {
+
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
     int candyCount;
@@ -78,6 +81,7 @@ public:
 
             playerObject->update_transform();
             playerObject->collider.setPosition(playerObject->get_transform().m_position);
+            //stepSound.playLooped();
 
             //move Player to position (0,2,0)
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
@@ -94,13 +98,14 @@ public:
             //jump
             if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
             {
-                if (playerObject->canJump==true)
+                if (playerObject->canJump == true)
                 {
                     playerObject->velocity.y = 5.0f;
                 }
                 playerObject->canJump = false;
             }
         }
+        //else sandPitCreak.play();
         
 	}
 
@@ -163,6 +168,17 @@ public:
 
         }
         return false;
+    }
+
+    void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AIO1) {
+        if (playerObject->collider.sphereToSphereCollisionCheck(AIO1->collider)) {
+            std::cout << "PRess E to interact with " << std::endl;
+            if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
+                std::cout << "Player interacted with AI" << std::endl;
+            }
+
+        }
+        
     }
 
     void sandPiter(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
@@ -480,6 +496,12 @@ public:
         if (interacter->getStencil() != true) {
             interacter->setStencil(true);
         }
+    }
+
+    void setPlayerActions() {
+        //Tu finalnie dodamy wywo³anie wszystkich metod z przekazaniem ich parametrów, 
+        //zeby ostatecznie wywolac jedna funkcje a nie milion
+
     }
 };
 

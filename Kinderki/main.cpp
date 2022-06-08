@@ -130,6 +130,10 @@ int main()
     Skybox skybox;
     BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3, gameManager.damagedwallptr,gameManager.wallsptr);
     AIController* AI = new AIController(gameManager.cube2);
+    AIController* AI2 = new AIController(gameManager.cubeKid2);
+    AIController* AI3 = new AIController(gameManager.cubeKid3);
+    AIController* AI4 = new AIController(gameManager.cubeKid4);
+    AIController* AI5 = new AIController(gameManager.cubeKid5);
 
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
     movableManager->addMovable(gameManager.heartptr);
@@ -195,8 +199,12 @@ int main()
         daySimulation(passed_time);
         ballManager->manageBall(window, passed_time);
         movableManager->manageMovable(window);
-        AI->move(window, passed_time);
+       // AI3->checkForInteraction(gameManager.cube3);
+       // AI4->checkForInteraction(gameManager.cube3);
+       // AI5->checkForInteraction(gameManager.cube3);
+
         gameManager.player->move(window, passed_time);
+        gameManager.player->checkForInteraction(window, gameManager.cubeKid2);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
@@ -296,7 +304,7 @@ int main()
    // delete gameManager.player;
     delete ballManager;
     delete buffers;
-    delete AI;
+    delete AI, AI2, AI3, AI4, AI5;
 
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
