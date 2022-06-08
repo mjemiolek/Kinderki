@@ -391,6 +391,14 @@ struct SceneGraphNode {
         
         force = glm::vec3(0.0f, 0.0f, 0.0f); // reset net force
     }
+    void applyOppositeGravity(float deltaTime)
+    {
+        force += mass * gravity; // apply a force of gravity
+
+        velocity -= force / mass * deltaTime;
+
+        force = glm::vec3(0.0f, 0.0f, 0.0f); // reset net force
+    }
     void moveObject(float deltaTime)
     {
         m_transform.m_position += velocity * deltaTime;
