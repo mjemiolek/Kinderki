@@ -163,6 +163,8 @@ int main()
     unsigned int textureCandyx5 = gameManager.loadTexture("res/textures/candy/candyx5.png");
     unsigned int textureCandyx6 = gameManager.loadTexture("res/textures/candy/candyx6.png");
 
+    unsigned int textureIns = gameManager.loadTexture("res/textures/ins.png");
+
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
     gui.textureAerialRunway = textureAerialRunway;
@@ -171,6 +173,8 @@ int main()
     gui.textureWallDestroy = textureWallDestroy;
     gui.textureSandpit = textureSandpit;
     gui.textureSlide = textureSlide;
+
+    gui.textureIns = textureIns;
 
     gui.textureCandy = textureCandy;
 
@@ -346,7 +350,7 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
 
 void daySimulation(float dt)
 {
-    float step = -1.5f;
+    float step = -0.75f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
     lightPosition.x += step * dt;
     if (lightPosition.x < -27.0f) lightPosition.x = 30.0f; //end of day

@@ -509,9 +509,9 @@ class GameManager {
         //root_node->add_child(sandsptr);
         //sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
-        //////krawezniki?
-        //root_node->add_child(walkptr);
-        //walkptr->setProperties(lightingShader, textureplanks, walkPos, MODEL, walk, 0.01f, false);
+        ////krawezniki?
+        root_node->add_child(walkptr);
+        walkptr->setProperties(shaderShad, textureplanks, walkPos, MODEL, walk, 0.01f, false);
 
         //podloga
         root_node->add_child(floorptr);

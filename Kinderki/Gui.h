@@ -42,6 +42,14 @@ float rightPageVertices[] = {
     0.60,  0.2
 };
 
+float InsVertices[] = {
+    // pozycje
+    0.05,  -0.5,
+    0.70,  0.1,
+    0.05,  0.1,
+    0.70,  -0.5
+};
+
 float candyVertices[] = {
     // pozycje
     0.70f,  0.65f,
@@ -84,8 +92,8 @@ float textureCords[] = { 0.0f, 1.0f,
 
 class Gui {
 public:
-    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO;
-    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO;
+    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO;
+    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO;
     unsigned int quadEBO;
     unsigned int progressVAO, progressVBO1, progressVBO2, progressEBO;
     
@@ -95,7 +103,8 @@ public:
 
     unsigned int textureCandy;
     unsigned int textureCandyCount;
-    
+
+    unsigned int textureIns;
 
     unsigned int textureSeeSaw;
     unsigned int textureAerialRunway;
@@ -200,6 +209,26 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+        ////////////////////Ins Side
+        glGenVertexArrays(1, &InsVAO);
+        glBindVertexArray(InsVAO);
+
+        glGenBuffers(1, &InsVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, InsVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(InsVertices), InsVertices, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &InsVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, InsVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCords), textureCords, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+
+        glGenBuffers(1, &quadEBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
         ////////////////////Candy Box
         glGenVertexArrays(1, &candyVAO);
@@ -308,6 +337,14 @@ public:
             glBindVertexArray(rightVAO);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, textureRight);
+            glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
+
+        if (visibilityPageFour) {
+            glBindVertexArray(InsVAO);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, textureIns);
             glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
         }
