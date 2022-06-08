@@ -116,9 +116,9 @@ class GameManager {
         glm::vec3 slidePos(21.00f, 0.10f, -14.0f);
         glm::vec3 trampolinePos(29.50f, 0.58f, -14.95f);
         glm::vec3 treePos(34.0f, 5.38f, -18.0f);
-        glm::vec3 aerialRunnwayPos(33.0f, 0.0f, -2.5f);
+        glm::vec3 aerialRunnwayPos(34.0f, 0.0f, -2.5f);
         glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
-        glm::vec3 aerialRunnwayTrigerPos(33.0f, -1.5f, -10.0f);
+        glm::vec3 aerialRunnwayTrigerPos(34.0, -1.5f, -10.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
         glm::vec3 poolPos(20.00f, 0.0f, -6.0f);
         glm::vec3 poolWaterPos(poolPos.x +0.05f, waterHeight, poolPos.z);
@@ -497,6 +497,19 @@ class GameManager {
         
         //root_node->add_child(temp);
         //temp->setProperties(shaderShad, textureplanks, aerialRunnwayPos, MODEL, postac_test, 1.0f, false);
+        /*
+        swingColPos.z -= 1.45f;
+        swingColPos.x -= 1.2f;
+        Collider sCLU(glm::vec3(0.15f, 2.5f, 0.03f), false, swingColPos, false); //swing collider left up
+        swingptr->additionalColliders.push_back(sCLU);
+        */
+
+
+
+
+
+
+
 
         //³awki
         root_node->add_child(benchesptr);
