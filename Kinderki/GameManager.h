@@ -141,11 +141,11 @@ class GameManager {
         glm::vec3(1.3f, 2.0f, -2.5f),       //6
         glm::vec3(1.5f,  2.0f, -2.5f),      //7
         glm::vec3(1.5f,  2.0f, -1.5f),      //8
-        glm::vec3(-1.3f,  2.0f, -1.5f),     //9
-        glm::vec3(8.87f, 0.0f, -14.34f),    //10
-        glm::vec3(24.50f, 0.38f, -14.0f),   //11
-        glm::vec3(10.0f, 0.38f, 6.0f),      //12
-        glm::vec3(29.50f, 0.58f, -12.95f),  //13
+        glm::vec3(-1.3f,  0.10f, -1.5f),     //9
+        glm::vec3(8.87f, 0.10, -14.34f),    //10
+        glm::vec3(24.50f, 0.10f, -14.0f),   //11
+        glm::vec3(10.0f, 0.10f, 6.0f),      //12
+        glm::vec3(29.50f, 0.10f, -12.95f),  //13
 
         };
 
@@ -325,6 +325,7 @@ class GameManager {
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
         glm::vec3 triggerRange(0.80f, 0.80f, 0.80f);
         glm::vec3 floorColRange(300.0f, 101.0f, 300.0f);
+        glm::vec3 cubeKidRange(0.50f, 0.50f, 0.50f);
 
         ////cube do testow
         //root_node->add_child(cube1);
@@ -337,23 +338,23 @@ class GameManager {
 
         //cube do testu AI
         root_node->add_child(cube2);
-        Collider cube2Collider(boxColRange, false, cubePositions[2], false);
+        Collider cube2Collider(0.54f, false, cubePositions[2], false);
         cube2->setProperties(shaderShad, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
 
         root_node->add_child(cubeKid2);
-        Collider cubeKid2Collider(boxColRange, false, cubePositions[10], false);
+        Collider cubeKid2Collider(0.54f, false, cubePositions[10], false);
         cubeKid2->setProperties(shaderShad, textureKidCube, cubePositions[10], MODEL, box, 0.15f, true, cubeKid2Collider);
 
         root_node->add_child(cubeKid3);
-        Collider cubeKid3Collider(boxColRange, false, cubePositions[11], false);
+        Collider cubeKid3Collider(0.54f, false, cubePositions[11], false);
         cubeKid3->setProperties(shaderShad, textureKidCube, cubePositions[11], MODEL, box, 0.15f, false, cubeKid3Collider);
 
         root_node->add_child(cubeKid4);
-        Collider cubeKid4Collider(boxColRange, false, cubePositions[12], false);
+        Collider cubeKid4Collider(0.54f, false, cubePositions[12], false);
         cubeKid4->setProperties(shaderShad, textureKidCube, cubePositions[12], MODEL, box, 0.15f, false, cubeKid4Collider);
 
         root_node->add_child(cubeKid5);
-        Collider cubeKid5Collider(boxColRange, false, cubePositions[13], false);
+        Collider cubeKid5Collider(0.54f, false, cubePositions[13], false);
         cubeKid5->setProperties(shaderShad, textureKidCube, cubePositions[13], MODEL, box, 0.15f, false, cubeKid5Collider);
         
         //gracz

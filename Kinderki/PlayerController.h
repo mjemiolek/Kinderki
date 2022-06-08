@@ -167,6 +167,8 @@ public:
         return false;
     }
 
+    //void checkForInteraction(std::shared_ptr<AIController> ai, )
+
     void sandPiter(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
         if (playerObject->m_children.size() == 0) {
             setFalseStencil(interacter);
