@@ -114,12 +114,17 @@ public:
     unsigned int textureSandpit;
     unsigned int textureSlide;
 
-    std::vector<unsigned int> Storylist = { textureSeeSaw, textureAerialRunway, textureSwing, textureTrampoline };
+    unsigned int textureFirst;
+    unsigned int textureSecond;
+    unsigned int textureThird;
+
+    std::vector<unsigned int> Storylist = { textureFirst, textureSecond, textureThird};
     unsigned int textureStory;
     bool visibilityStory = false;
     int Storycounter = 0;
     unsigned int ct = 0;
     int lt = 0;
+    int ucieczki = 0;
 
     bool visibility = false;
     bool visibilityPageOne = false;
@@ -134,6 +139,8 @@ public:
     bool pressflagPageFour = false;
     
     
+
+
     Text text;
     Text text2;
     Text textCukierki;
@@ -141,6 +148,7 @@ public:
     std::ostringstream strs;
     std::ostringstream strs2;
     std::ostringstream strsCukierki;
+    std::ostringstream strsUcieczki;
     Gui() {
         ////////////////////NoteBook Side
         glGenVertexArrays(1, &quadVAO);
@@ -324,7 +332,13 @@ public:
         if (visibilityPageFour) {
             textureLeft = textureSlide;
             textureRight = texture;
+
+            Storylist.at(0) = textureAerialRunway;
+            Storylist.at(1) = textureCandy;
+            Storylist.at(2) = textureCandyCount;
         }
+        //textureStory = textureIns;
+        handleStories();
 
 
         if (visibilityPageOne || visibilityPageTwo || visibilityPageThree || visibilityPageFour) {
@@ -395,6 +409,10 @@ public:
         text2.RenderText(strs2.str(), 50.0f, 100.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 
 
+        text2.RenderText(strsUcieczki.str(), 75.0f, 1000.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+        text2.RenderText("/5", 100.0f, 1000.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+
+
 
         //textCukierki.RenderText(strsCukierki.str(), 1700.0, 900.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 	}
@@ -406,15 +424,20 @@ public:
         strs2 << visibilityPageOne;
         strsCukierki.str(std::string());
         strsCukierki << visibilityPageOne;
+
+        strsUcieczki.str(std::string());
+        strsUcieczki << ucieczki;
+
     }
 
     void handleStories() {
-        ct = glfwGetTime();
+        ct = glfwGetTime()/2;
         //std::cout << ct << std::endl;
         //if (ct - lt) { Storycounter++; }
         //Storycounter = Storycounter % 2;
         //std::cout << Storycounter << std::endl;
         ct = ct % 3;
+        //std::cout << ct << std::endl;
         textureStory = Storylist.at(ct);
 
     }
@@ -512,24 +535,8 @@ public:
         else if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && visibilityStory) {
             visibilityStory = false;
         }
-        handleStories();
-    
+        if (ucieczki == 5) {
+            visibilityStory = true;
+        }
     }
-
-    /*
-    void update(double passed_time)
-    {
-    if (x < -0.50f) {
-        x = x + 0.01f;
-        bar[4] = x;
-        bar[6] = x;
-        bar[8] = x;
-        strs.str(std::string());
-        strs << passed_time;
-    }
-    else {
-        x = -0.90f;
-    }
-    }
-    */
 };

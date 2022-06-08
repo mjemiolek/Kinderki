@@ -93,6 +93,7 @@ class GameManager {
 
     std::shared_ptr<PlayerController> player;
     
+    int playerWins = 0;
 
 
     // animacje
@@ -1094,7 +1095,10 @@ class GameManager {
         {
             if (cube3->collider.boxToBoxCollisioncheck(trigger))
             {
+                playerWins++;
                 std::cout << "Win";
+                cube3->get_transform().m_position = glm::vec3(28.0f, 2.0f, 10.0f);
+
             }
         }
     }
