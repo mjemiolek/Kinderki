@@ -373,29 +373,29 @@ public:
 
     void wazker(std::shared_ptr<SceneGraphNode> interacter, float dt) {
 
-        //TODO: 
+        //default seesaw behaviour
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(1))) {
-            if (interacter->get_transform().z_rotation_angle > -15.0f)
+            if (interacter->get_transform().z_rotation_angle > -14.0f)
             {
-                interacter->get_transform().z_rotation_angle -= 180.0f * dt;
+                interacter->get_transform().z_rotation_angle -= 140.0f * dt;
             }
             interacter->additionalColliders.at(0).setPosition(glm::vec3(8.0f, -0.4f, -4.5f));
             interacter->update_transform();
         }
         else if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(2))) {
-            if (interacter->get_transform().z_rotation_angle < 15.0f)
+            if (interacter->get_transform().z_rotation_angle < 14.0f)
             {
-                interacter->get_transform().z_rotation_angle += 180.0f * dt;
+                interacter->get_transform().z_rotation_angle += 140.0f * dt;
             }
             interacter->additionalColliders.at(0).setPosition(glm::vec3(8.0f, -0.4f, -4.5f));
             interacter->update_transform();
         } else {
-            if (interacter->get_transform().z_rotation_angle < -1.0f)
+            if (interacter->get_transform().z_rotation_angle < -2.0f)
             {
-                interacter->get_transform().z_rotation_angle += 120.0f * dt;
-            } else if (interacter->get_transform().z_rotation_angle > 1.0f)
+                interacter->get_transform().z_rotation_angle += 80.0f * dt;
+            } else if (interacter->get_transform().z_rotation_angle > 2.0f)
             {
-                interacter->get_transform().z_rotation_angle -= 120.0f * dt;
+                interacter->get_transform().z_rotation_angle -= 80.0f * dt;
             }
             else {
                 interacter->setRotation(0.0f, 0.0f, 0.0f);
@@ -403,6 +403,7 @@ public:
             interacter->additionalColliders.at(0).setPosition(glm::vec3(8.0f, 0.2f, -4.5f));
             interacter->update_transform();
         }
+
         
         //change outline
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {

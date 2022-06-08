@@ -616,9 +616,9 @@ class GameManager {
         seesawPos.y += 0.6f;
         seesawPos.x -= 1.6f;
         Collider seesawCollider2(glm::vec3(0.01f, 0.5f, 0.20f), false, seesawPos, false); //left handles
-         seesawPos.x -= 0.6f;
+         seesawPos.x -= 0.7f;
          seesawPos.y -= 0.2f;
-         Collider seesawTriggerLeftSeat(glm::vec3(0.4f, 0.8f, 0.31f), false, seesawPos, false);
+         Collider seesawTriggerLeftSeat(glm::vec3(0.6f, 0.8f, 0.5f), false, seesawPos, false);
          seesawPos.x += 0.6f;
          seesawPos.y += 0.2f;
          seesawptr->additionalTriggers.push_back(seesawTriggerLeftSeat);
@@ -627,7 +627,7 @@ class GameManager {
         Collider seesawCollider3(glm::vec3(0.01f, 0.5f, 0.20f), false, seesawPos, false); //right handles
          seesawPos.x += 0.6f;
          seesawPos.y -= 0.2f;
-         Collider seesawTriggerRightSeat(glm::vec3(0.4f, 0.8f, 0.3f), false, seesawPos, false);
+         Collider seesawTriggerRightSeat(glm::vec3(0.6f, 0.8f, 0.5f), false, seesawPos, false);
          seesawPos.x -= 0.6f;
          seesawPos.y += 0.2f;
          seesawptr->additionalTriggers.push_back(seesawTriggerRightSeat);
