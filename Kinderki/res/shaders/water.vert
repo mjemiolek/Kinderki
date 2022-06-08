@@ -15,7 +15,7 @@ uniform mat4 view; //viewMatrix
 uniform vec3 cameraPosition;
 uniform vec3 lightPosition;
 
-const float tiling = 1.0;
+const float tiling = 0.2;
 
 void main()
 {

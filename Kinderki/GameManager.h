@@ -60,7 +60,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> damagedwallptr;
     std::shared_ptr<SceneGraphNode> poolptr;
     std::shared_ptr<SceneGraphNode> poolwaterptr;
-    float waterHeight = 1.28f;
+    float waterHeight = 0.58f;
 
 
     std::shared_ptr<SceneGraphNode> temp;
@@ -115,8 +115,8 @@ class GameManager {
         glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
         glm::vec3 aerialRunnwayTrigerPos(34.0, -1.5f, -10.0f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
-        glm::vec3 poolPos(-5.0f, 0.0f, 6.0f);
-        glm::vec3 poolWaterPos(-5.05f, waterHeight, 6.0f);
+        glm::vec3 poolPos(21.00f, 0.0f, -14.0f);
+        glm::vec3 poolWaterPos(21.05f, waterHeight, -14.0f);
         glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
         glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
         glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f); // left
@@ -131,13 +131,13 @@ class GameManager {
         glm::vec3 tempPos(0.0f, 0.0f, 0.0f);
 
         glm::vec3 heartPos(12.0f, 0.2f, 2.0f);
-        glm::vec3 heartPos2(12.0f, 0.2f, -2.0f);
-        glm::vec3 colaPos(25.0f, 1.0f, -5.0f);
-        glm::vec3 mentosPos(20.0f, 1.0f, -8.0f);
+        glm::vec3 heartPos2(7.0f, 0.0f, -11.0f);   //dziala jako lopatka
+        glm::vec3 colaPos(37.0f, 0.0f, -9.0f);
+        glm::vec3 mentosPos(36.0f, 0.0f, -3.0f);
 
         glm::vec3 bucketBlackPos(25.0f, 0.1f, -8.0f);
         glm::vec3 bucketPinkPos(30.0f, 0.1f, -8.0f);
-        glm::vec3 bucketRedPos(35.0f, 0.1f, -8.0f);
+        glm::vec3 bucketRedPos(10.0f, 0.0f, -11.0f);
 
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),
@@ -345,7 +345,7 @@ class GameManager {
         collidingObjects.insert(collidingObjects.end(),{
         cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr, bucketblackptr, bucketpinkptr , bucketredptr,
         trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr, sandpitptr,benchesptr, tablesptr, treeptr, aerialrunnwaywholeptr,
-        seesawptr
+        seesawptr, poolptr
 
             });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
@@ -501,7 +501,7 @@ class GameManager {
         benchesptr->additionalColliders.push_back(bench6Collider);
         Collider bench7Collider(glm::vec3(1.0f, 0.45f, 0.14f), false, glm::vec3(22.65f, 0.0f, 10.1f), false);
         benchesptr->additionalColliders.push_back(bench7Collider);
-        Collider bench8Collider(glm::vec3(2.2f, 0.45f, 0.14f), false, glm::vec3(12.0f, 0.0f, 20.1f), false);
+        Collider bench8Collider(glm::vec3(2.2f, 0.45f, 0.14f), false, glm::vec3(12.0f, 0.0f, 19.8f), false);
         benchesptr->additionalColliders.push_back(bench8Collider);
 
 
@@ -510,8 +510,8 @@ class GameManager {
         //sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
         ////krawezniki?
-        root_node->add_child(walkptr);
-        walkptr->setProperties(shaderShad, textureplanks, walkPos, MODEL, walk, 0.01f, false);
+        /*root_node->add_child(walkptr);
+        walkptr->setProperties(shaderShad, textureplanks, walkPos, MODEL, walk, 0.01f, false);*/
 
         //podloga
         root_node->add_child(floorptr);
@@ -643,7 +643,7 @@ class GameManager {
 
 
         //zjezdzalnia
-        Collider slideTrigger(1.2f, false, slidePos, true);
+        /*Collider slideTrigger(1.2f, false, slidePos, true);
         root_node->add_child(slideptr);
         slideptr->setProperties(shaderShad, texslide, slidePos, MODEL, slide, 0.035f, false);
         slideptr->setRotation(0.0f, -90.0f, 0.0f);
@@ -651,7 +651,7 @@ class GameManager {
         slidePos.x -= 2.3f;
         Collider slideTriggerOutline(glm::vec3(3.30f, 3.30f, 5.30f), false, slidePos, true);
         slideptr->additionalTriggers.push_back(slideTriggerOutline);
-        slideptr->modelOutline = slideOut;
+        slideptr->modelOutline = slideOut;*/
 
         //hustawka
         glm::vec3 swingTrigPos = swingPos;
@@ -778,9 +778,19 @@ class GameManager {
 
         //basen
         root_node->add_child(poolptr);
-        poolptr->setProperties(shaderShad, texturewin10, poolPos, MODEL, pool, 0.14f, false);
+        poolptr->setProperties(shaderShad, texturewin10, poolPos, MODEL, pool, 0.07f, false);
         root_water->add_child(poolwaterptr);
-        poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.14f, false);
+        poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.07f, false);
+        Collider poolColliderUp(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(21.00f, 0.0f, -14.0f - 1.5f), false);
+        Collider poolColliderDown(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(21.00f, 0.0f, -14.0f + 1.5f), false);
+        Collider poolColliderLeft(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(21.00f - 2.2f, 0.0f, -14.0f), false);
+        Collider poolColliderRight(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(21.00f + 2.2f, 0.0f, -14.0f), false);
+
+        poolptr->additionalColliders.push_back(poolColliderUp);
+        poolptr->additionalColliders.push_back(poolColliderDown);
+        poolptr->additionalColliders.push_back(poolColliderLeft);
+        poolptr->additionalColliders.push_back(poolColliderRight);
+
 
         //damaged wall
         root_node->add_child(damagedwallptr);
@@ -814,9 +824,9 @@ class GameManager {
         Collider bucketpinkTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketPinkPos, true);
         Collider bucketredTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketRedPos, true);
         
-        root_node->add_child(heartptr);
+        /*root_node->add_child(heartptr);
         heartptr->setProperties(shaderShad, texturewin10, heartPos, MODEL, postac_test, 0.05f, false);
-        heartptr->trigger = heartTrigger;
+        heartptr->trigger = heartTrigger;*/
 
         root_node->add_child(heartptr2);
         heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 0.05f, false);
@@ -833,7 +843,7 @@ class GameManager {
         mentosptr->trigger = mentosTrigger;
         mentosptr->modelOutline = mentosOut;
 
-        root_node->add_child(bucketblackptr);
+        /*root_node->add_child(bucketblackptr);
         bucketblackptr->setProperties(shaderShad, texbucketblack, bucketBlackPos, MODEL, bucket, 0.1f, true);
         bucketblackptr->trigger = bucketblackTrigger;
         bucketblackptr->modelOutline = bucketOut;
@@ -841,7 +851,7 @@ class GameManager {
         root_node->add_child(bucketpinkptr);
         bucketpinkptr->setProperties(shaderShad, texbucketpink, bucketPinkPos, MODEL, bucket, 0.1f, true);
         bucketpinkptr->trigger = bucketpinkTrigger;
-        bucketpinkptr->modelOutline = bucketOut;
+        bucketpinkptr->modelOutline = bucketOut;*/
 
         root_node->add_child(bucketredptr);
         bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true);
