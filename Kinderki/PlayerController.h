@@ -27,6 +27,7 @@ private:
     int candyCount;
     float speed = 2.5f;
     bool sandMove = false;
+    bool goInGround = false;
     bool hustawkerMove = false, hustawkerLeft = true;
     float hustawkerSpeed;
     glm::vec3 outlineColor;
@@ -82,6 +83,7 @@ public:
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
             {
                 playerObject->get_transform().m_position = glm::vec3(13.0f, 0.0f, -13.0f);
+                playerObject->canInToGround = false;
             }
             //go up
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -175,14 +177,21 @@ public:
                 setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f)); //zielony
             }
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-                playerObject->get_transform().m_position.y -= 2.0f * dt;
-                if (playerObject->get_transform().m_position.y <= -1.5f) {
-                    playerObject->get_transform().m_position.y += 2.0f * dt;
-                    sandMove = true;
-                    //playerObject->get_transform().m_position.x = -5.0f;
-                }
+                playerObject->canInToGround = true;
+                goInGround = true;
             }
         }
+        if (goInGround)
+        {
+            playerObject->get_transform().m_position.y -= 2.0f * dt;
+            if (playerObject->get_transform().m_position.y < -1.5f) {
+                playerObject->get_transform().m_position.y += 2.0f * dt;
+                sandMove = true;
+                goInGround = false;
+                //playerObject->get_transform().m_position.x = -5.0f;
+            }
+        }
+
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && !playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
             setTrueStencil(interacter);
             if (getOutlineColor() != glm::vec3(1.0f, 0.0f, 0.0f)) {
@@ -201,6 +210,7 @@ public:
                 playerObject->get_transform().m_position.y += 2.0f * dt;
                 if (playerObject->get_transform().m_position.y >= 0.01f) {
                     sandMove = false;
+                    playerObject->canInToGround = false;
                 }
             }
             

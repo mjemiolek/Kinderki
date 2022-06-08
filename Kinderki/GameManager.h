@@ -92,7 +92,7 @@ class GameManager {
 
 
     std::shared_ptr<PlayerController> player;
-    
+    glm::vec3 playerPos = glm::vec3(13.0f, 0.2f, -13.0f); //Player position
     int playerWins = 0;
 
 
@@ -123,10 +123,10 @@ class GameManager {
         glm::vec3 wallPosColl1(2.42f, 0.0f, 0.0f); // left
         glm::vec3 wallPosColl2(20.675f, 0.0f, -21.0f); //up
         glm::vec3 wallPosColl3(12.1845f, 0.0f, 21.0f); //down
-        glm::vec3 wallPosColl4(21.4975f, 0.0f, 15.823f);
+        glm::vec3 wallPosColl4(21.5f, 0.0f, 15.8f);
         glm::vec3 wallPosColl5(30.3f, 0.0f, 11.07f);
         glm::vec3 wallPosColl6(38.5f, 0.0f, -4.68f); //right
-        glm::vec3 damagedwallPos(21.0f, 0.1f, 18.5f);
+        glm::vec3 damagedwallPos(21.0f, 0.1f, 20.5f);
 
 
         glm::vec3 tempPos(0.0f, 0.0f, 0.0f);
@@ -145,7 +145,7 @@ class GameManager {
         glm::vec3(2.0f,  2.0f, -15.0f),
         glm::vec3(0.5f, 2.5f, -1.5f),
         glm::vec3(12.0f, 0.0f, -16.0f),  
-        glm::vec3(12.0f, 0.0f, -16.0f), //Player position
+        glm::vec3(13.0f, 0.0f, -13.0f), //Player position
         glm::vec3(0.0f,  2.0f, 0.0f),
         glm::vec3(1.3f, 2.0f, -2.5f),
         glm::vec3(1.5f,  2.0f, -2.5f),
@@ -371,12 +371,12 @@ class GameManager {
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, cubePositions[4],true);
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
-        cube3->setProperties(animShader, texture_postac_test, cubePositions[4], MODEL, postac_test, 0.05f, false, cube3Collider);
+        cube3->setProperties(animShader, texture_postac_test, playerPos, MODEL, postac_test, 0.05f, false, cube3Collider);
 
         //pilka
         root_node->add_child(ball);
-        Collider ballCollider(0.28f, false, glm::vec3(0.0f, 2.0f, -2.0f), true);
-        ball->setProperties(shaderShad, textureshrek, glm::vec3(0.0f, 2.0f, -2.0f),MODEL,sphere,0.03f,true,ballCollider);
+        Collider ballCollider(0.350005f, false, glm::vec3(12.0f, 2.5f, 15.0f), true); //dont change 0.350005f (important)
+        ball->setProperties(shaderShad, textureshrek, glm::vec3(12.0f, 2.5f, 15.0f),MODEL,sphere,0.03f,true,ballCollider);
         ball->modelOutline = sphere;
 
 
@@ -618,7 +618,7 @@ class GameManager {
         Collider seesawCollider2(glm::vec3(0.01f, 0.5f, 0.20f), false, seesawPos, false); //left handles
          seesawPos.x -= 0.7f;
          seesawPos.y -= 0.2f;
-         Collider seesawTriggerLeftSeat(glm::vec3(0.6f, 0.8f, 0.5f), false, seesawPos, false);
+         Collider seesawTriggerLeftSeat(glm::vec3(0.65f, 0.8f, 0.5f), false, seesawPos, false);
          seesawPos.x += 0.6f;
          seesawPos.y += 0.2f;
          seesawptr->additionalTriggers.push_back(seesawTriggerLeftSeat);
@@ -627,7 +627,7 @@ class GameManager {
         Collider seesawCollider3(glm::vec3(0.01f, 0.5f, 0.20f), false, seesawPos, false); //right handles
          seesawPos.x += 0.6f;
          seesawPos.y -= 0.2f;
-         Collider seesawTriggerRightSeat(glm::vec3(0.6f, 0.8f, 0.5f), false, seesawPos, false);
+         Collider seesawTriggerRightSeat(glm::vec3(0.65f, 0.8f, 0.5f), false, seesawPos, false);
          seesawPos.x -= 0.6f;
          seesawPos.y += 0.2f;
          seesawptr->additionalTriggers.push_back(seesawTriggerRightSeat);
@@ -800,13 +800,13 @@ class GameManager {
         damagedwallptr->trigger = damagedwallTrigger;
         
         //walls
-        float wallHeight = 3.0f;
-        Collider wallColl1(glm::vec3(0.05f, wallHeight, 21.0f), false, wallPosColl1, true);
-        Collider wallColl2(glm::vec3(17.825f, wallHeight, 0.05f), false, wallPosColl2, true);
-        Collider wallColl3(glm::vec3(9.3145f, wallHeight, 0.05f), false, wallPosColl3, true);
-        Collider wallColl4(glm::vec3(0.05f, wallHeight, 4.747f), false, wallPosColl4, true);
-        Collider wallColl5(glm::vec3(8.5f, wallHeight, 0.005f), false, wallPosColl5, true);
-        Collider wallColl6(glm::vec3(0.05f, wallHeight, 15.75f), false, wallPosColl6, true);
+        float wallHeight = 2.0f;
+        Collider wallColl1(glm::vec3(0.05f, wallHeight, 21.0f), false, wallPosColl1, true);  //left
+        Collider wallColl2(glm::vec3(17.825f, wallHeight, 0.05f), false, wallPosColl2, true);  //up
+        Collider wallColl3(glm::vec3(9.3145f, wallHeight, 0.05f), false, wallPosColl3, true);  //down
+        Collider wallColl4(glm::vec3(0.05f, wallHeight, 4.747f), false, wallPosColl4, true); //inside down
+        Collider wallColl5(glm::vec3(8.5f, wallHeight, 0.005f), false, wallPosColl5, true); //inside up
+        Collider wallColl6(glm::vec3(0.05f, wallHeight, 15.75f), false, wallPosColl6, true);  //right
         root_node->add_child(wallsptr);
         wallsptr->setProperties(shaderShad, texturewall, glm::vec3(0.0f,-1.6f,0.0f), MODEL, walls, 0.01f, false);
         wallsptr->additionalColliders.push_back(wallColl1);
@@ -1097,11 +1097,8 @@ class GameManager {
             {
                 playerWins++;
                 std::cout << "Win";
-                cube3->get_transform().m_position = glm::vec3(28.0f, 2.0f, 10.0f);
-
+                //cube3->get_transform().m_position = playerPos; //its off beacuse of sandpiter
             }
         }
     }
-
-
 };

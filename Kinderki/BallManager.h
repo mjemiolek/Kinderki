@@ -9,13 +9,15 @@ private:
     std::shared_ptr<SceneGraphNode> playerObject;
     std::shared_ptr<SceneGraphNode> ball;
     std::shared_ptr<SceneGraphNode> damagedwall;
-    float kickpower = 8.0f;
+    std::shared_ptr<SceneGraphNode> wall;
+    float kickpower = 16.0f;
     float decelerateVar = 0.69f;
 public:
-    BallManager(std::shared_ptr<SceneGraphNode> ball, std::shared_ptr<SceneGraphNode> player, std::shared_ptr<SceneGraphNode> damagedwall) {
+    BallManager(std::shared_ptr<SceneGraphNode> ball, std::shared_ptr<SceneGraphNode> playerObject, std::shared_ptr<SceneGraphNode> damagedwall, std::shared_ptr<SceneGraphNode> wall) {
         this->ball = ball;
-        playerObject = player;
+        this->playerObject = playerObject;
         this->damagedwall = damagedwall;
+        this->wall = wall;
     }
     //TODO: 
     // bouncing off walls
@@ -70,8 +72,9 @@ public:
         {
             ball->velocity.z = 0.0f;
         }
+
         //Don't let the ball to go into ground
-        if (ball->get_transform().m_position.y<-0.01f) ball->get_transform().m_position.y = 0.0f;
+        if (ball->get_transform().m_position.y<0.25f) ball->get_transform().m_position.y = 0.26f;
 
 
         //update position
@@ -81,7 +84,12 @@ public:
         //check for trigger in damagedwall
         if (ball->collider.boxToBoxCollisioncheck(damagedwall->trigger))
         {
-            std::cout << "Ball hitted the wall. Good job comrade.\n";
+            //change model (maybe it can be done better)
+            Model destroyedwall("res/models/level/dziura_ogrodzenie_destroyed.obj"); 
+            damagedwall->modelTemp = destroyedwall;
+            //replace colliders
+            wall->additionalColliders.at(2).setPosition(glm::vec3(11.7f, 0.0f, 21.0f)); //down
+            wall->additionalColliders.at(3).setPosition(glm::vec3(21.5f, 0.0f, 15.4f)); //right
         }
     }
 };

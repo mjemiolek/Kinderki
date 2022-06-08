@@ -381,6 +381,8 @@ struct SceneGraphNode {
     glm::vec3 force = glm::vec3(0.0f, 0.0f, 0.0f);
     float mass = 1.0f;
 
+    bool canInToGround = false;
+
     void applyGravity(float deltaTime)
     {
         force += mass * gravity; // apply a force of gravity

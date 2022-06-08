@@ -45,8 +45,11 @@ public:
 						object->collider = tempCollider;
 
 					}
-					//Don't go into ground
-					//if (player->get_transform().m_position.y < 1.8f) player->get_transform().m_position.y = 1.8f;
+					//Don't let player go into ground
+					if (player->get_transform().m_position.y < 0.0f && player->canInToGround == false)
+					{
+						player->get_transform().m_position.y = 0.001f;
+					}
 					//std::cout<< player->get_transform().m_position.y << std::endl;
 				}
 			}
@@ -58,7 +61,6 @@ public:
 		glm::vec3 p = object->collider.getPosition();
 		glm::vec3 colR = object->collider.getCollisionRange();
 		float x = play.x - p.x, y = play.y - p.y, z = play.z - p.z; //distance from player in all 3 directions
-		//There is so problem for not perfect cube boxes
 		//For box to box//			   It's not trigger           //         If it is box         //   player have box collider
 		if (object->collider.getIsTrigger() == false && object->collider.getRadius() <= 0 && player->collider.getRadius() <= 0 &&
 			player->collider.boxToBoxCollisioncheck(object->collider))
@@ -145,7 +147,14 @@ public:
 		if (object->collider.getIsTrigger() == false && object->collider.getRadius() <= 0 && player->collider.getRadius() > 0)
 		{
 			//Create temporary box collider for player beacuse I'm lazy
-			Collider* tempCollider = new Collider(glm::vec3(0.38f, 0.38f, 0.38f), false, player->collider.getPosition(), true);
+			glm::vec3 dimensions = glm::vec3(0.38f, 0.38f, 0.38f);
+			//Special if for ball
+			if (player->collider.getRadius() > 0.350004f && player->collider.getRadius() < 0.350006f)
+			{
+				dimensions = glm::vec3(0.5f, 0.5f, 0.5f);
+			}
+			
+			Collider* tempCollider = new Collider(dimensions, false, player->collider.getPosition(), true);
 			//Copy-paste from above
 			if (tempCollider->boxToBoxCollisioncheck(object->collider))
 			{

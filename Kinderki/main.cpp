@@ -128,7 +128,7 @@ int main()
     PhysicsWorld physicsWorld(gameManager.collidingObjects);
     Gui gui;
     Skybox skybox;
-    BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3, gameManager.damagedwallptr);
+    BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3, gameManager.damagedwallptr,gameManager.wallsptr);
     AIController* AI = new AIController(gameManager.cube2);
 
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
@@ -249,7 +249,6 @@ int main()
         if (should_render) {
             should_render = false;
             //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
-            gui.ucieczki = gameManager.playerWins;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);
