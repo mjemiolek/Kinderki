@@ -20,11 +20,8 @@
 #include <iostream>
 
 #include "SceneGraph.h"
-#include "AIController.h"
-
 
 class PlayerController {
-
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
     int candyCount;
@@ -81,7 +78,6 @@ public:
 
             playerObject->update_transform();
             playerObject->collider.setPosition(playerObject->get_transform().m_position);
-            //stepSound.playLooped();
 
             //move Player to position (0,2,0)
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
@@ -98,14 +94,13 @@ public:
             //jump
             if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
             {
-                if (playerObject->canJump == true)
+                if (playerObject->canJump==true)
                 {
                     playerObject->velocity.y = 5.0f;
                 }
                 playerObject->canJump = false;
             }
         }
-        //else sandPitCreak.play();
         
 	}
 
@@ -113,7 +108,7 @@ public:
     {
         float angle = 0.0f;
         float step = 600.0f;
-        float deviation = (step/100.0f)*2.2f;
+        float deviation = (step/100.0f)*3.0f;
         //Specify direction
         if (direction.x == 0.0f && direction.z == 0.0f) { angle = playerObject->get_transform().y_rotation_angle; }
         else if (direction.x == speed && direction.z == 0.0f) { angle = 90.0f; }              //right
@@ -168,17 +163,6 @@ public:
 
         }
         return false;
-    }
-
-    void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AIO1) {
-        if (playerObject->collider.sphereToSphereCollisionCheck(AIO1->collider)) {
-            std::cout << "PRess E to interact with " << std::endl;
-            if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-                std::cout << "Player interacted with AI" << std::endl;
-            }
-
-        }
-        
     }
 
     void sandPiter(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
@@ -262,7 +246,6 @@ public:
             hustawkerMove = true;
             playerObject->velocity.y = 10.0f;
             hustawkerSpeed = 135.0f;
-            std::cout << "dobrzej";
         }
         if (hustawkerMove)
         {
@@ -303,12 +286,14 @@ public:
 
     void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt, std::shared_ptr<SceneGraphNode> cola, std::shared_ptr<SceneGraphNode> mentos)
     {
+        //check for cola
         if (seat->trigger.boxToBoxCollisioncheck(cola->trigger) &&  !tyrolkerCola) {
             //seat->add_child(cola);
             cola->m_transform.m_position = seat->m_transform.m_position;
             tyrolkerScale = 1.15;
             tyrolkerCola = true;
         }
+        //check for mentos
         if (seat->trigger.boxToBoxCollisioncheck(mentos->trigger)&& !tyrolkerMentos) {
             //seat->add_child(mentos);
 
@@ -318,7 +303,7 @@ public:
         if (tyrolkerCola && tyrolkerMentos) {
             tyrolkerScale = 1.5;
         }
-        //std::cout << tyrolkerScale<< std::endl;
+        //if player is on seat and aerial is not at the end yet
         if (playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z < 5.55)
         {
 
@@ -330,31 +315,34 @@ public:
             tyrolkerMove = true;
             tyrolkerZero = false;
             playerObject->m_transform.m_position.z += tyrolkerVelocity6* tyrolkerScale/2 * dt;
-            playerObject->m_transform.m_position.y = 2.0;
-            //playerObject->m_transform.m_position.y += 0.25;
-            //playerObject->m_transform.m_position.y += tyrolkerVelocity6 * 0.75 * dt;
+            //keep player at position
+            playerObject->m_transform.m_position.y = 1.4f;
+            playerObject->velocity.y = 0.0f;
+            playerObject->applyOppositeGravity(dt);
             
             seat->m_transform.m_position.z += tyrolkerVelocity6* tyrolkerScale/2 * dt;
-            seat->trigger.setPosition(seat->m_transform.m_position);
+            //seat->trigger.setPosition(seat->m_transform.m_position); //errrrrrrrrorrrrrrrrrrr
+            seat->trigger.setPosition(glm::vec3(seat->m_transform.m_position.x,-1.5f,seat->m_transform.m_position.z));
             playerObject->update_transform();
             seat->update_transform();
             cola->update_transform();
             
+
             if (seat->trigger.getPosition().z > 5.0 && tyrolkerMove && seat->m_transform.x_rotation_angle < 145)
             {
                 tyrolkerLaunch = true;
                 seat->m_transform.x_rotation_angle += 50 * tyrolkerScale * dt;
-                //playerObject->m_transform.m_position.z += 6.0 * dt;
-                //playerObject->m_transform.m_position.y += 7.5 * dt;
             }
 
         }
         else if (!playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z > -10.0)
         {
+
             
             tyrolkerMove = false;
             seat->m_transform.m_position.z -= 1.75 * dt;
-            seat->trigger.setPosition(seat->m_transform.m_position);
+            //seat->trigger.setPosition(seat->m_transform.m_position); //errrrrrrrrorrrrrrrrrrr
+            seat->trigger.setPosition(glm::vec3(seat->m_transform.m_position.x, -1.5f, seat->m_transform.m_position.z));
             seat->update_transform();
             cola->update_transform();
 
@@ -492,12 +480,6 @@ public:
         if (interacter->getStencil() != true) {
             interacter->setStencil(true);
         }
-    }
-
-    void setPlayerActions() {
-        //Tu finalnie dodamy wywo³anie wszystkich metod z przekazaniem ich parametrów, 
-        //zeby ostatecznie wywolac jedna funkcje a nie milion
-
     }
 };
 

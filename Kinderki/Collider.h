@@ -103,6 +103,9 @@ public:
 	void setPosition(glm::vec3 pos) {
 		position = pos;
 	}
+	void setDynamic(bool t) {
+		isDynamic = t;
+	}
 	float getRadius() {
 		return radius;
 	}

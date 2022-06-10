@@ -129,11 +129,7 @@ int main()
     Gui gui;
     Skybox skybox;
     BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3, gameManager.damagedwallptr,gameManager.wallsptr);
-    //AIController* AI = new AIController(gameManager.cube2);
-    //AIController* AI2 = new AIController(gameManager.cubeKid2);
-    //AIController* AI3 = new AIController(gameManager.cubeKid3);
-    //AIController* AI4 = new AIController(gameManager.cubeKid4);
-    //AIController* AI5 = new AIController(gameManager.cubeKid5);
+    AIController* AI = new AIController(gameManager.cube2);
 
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
     movableManager->addMovable(gameManager.heartptr);
@@ -199,19 +195,15 @@ int main()
         daySimulation(passed_time);
         ballManager->manageBall(window, passed_time);
         movableManager->manageMovable(window);
-       // AI3->checkForInteraction(gameManager.cube3);
-       // AI4->checkForInteraction(gameManager.cube3);
-       // AI5->checkForInteraction(gameManager.cube3);
-
+        AI->move(window, passed_time);
         gameManager.player->move(window, passed_time);
-        gameManager.player->checkForInteraction(window, gameManager.cube2);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
         gameManager.player->wazker(gameManager.seesawptr, passed_time);
         /*gameManager.player->slider(gameManager.slideptr, passed_time);*/
         gameManager.player->tyrolker(gameManager.aerialrunnwayseatptr, passed_time, gameManager.colaptr, gameManager.mentosptr);
-        gui.textureCandyCount = gameManager.candyCount(gameManager.player, refractiontexture, reflectiontexture, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
+        gui.textureCandyCount = gameManager.candyCount(gameManager.player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);
         gui.handleGui(window);
@@ -304,7 +296,7 @@ int main()
    // delete gameManager.player;
     delete ballManager;
     delete buffers;
-    //delete AI, AI2, AI3, AI4, AI5;
+    delete AI;
 
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
