@@ -130,6 +130,10 @@ int main()
     Skybox skybox;
     BallManager* ballManager = new BallManager(gameManager.ball, gameManager.cube3, gameManager.damagedwallptr,gameManager.wallsptr);
     AIController* AI = new AIController(gameManager.cube2);
+    AIController* AI2 = new AIController(gameManager.cubeKid2);
+    AIController* AI3 = new AIController(gameManager.cubeKid3);
+    AIController* AI4 = new AIController(gameManager.cubeKid4);
+    AIController* AI5 = new AIController(gameManager.cubeKid5);
 
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
     movableManager->addMovable(gameManager.heartptr);
@@ -195,7 +199,7 @@ int main()
         daySimulation(passed_time);
         ballManager->manageBall(window, passed_time);
         movableManager->manageMovable(window);
-        AI->move(window, passed_time);
+        gameManager.player->checkForInteraction(window, gameManager.cubeKid2, gameManager.cubeKid3, gameManager.cubeKid4, gameManager.cubeKid5);
         gameManager.player->move(window, passed_time);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);

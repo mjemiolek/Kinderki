@@ -29,6 +29,7 @@ private:
     bool sandMove = false;
     bool goInGround = false;
     bool hustawkerMove = false, hustawkerLeft = true;
+    bool canInteract = false;
     float hustawkerSpeed;
     glm::vec3 outlineColor;
    
@@ -162,6 +163,24 @@ public:
             return true;
 
         }
+        return false;
+    }
+
+    bool checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AI1, std::shared_ptr<SceneGraphNode> AI2, std::shared_ptr<SceneGraphNode> AI3, std::shared_ptr<SceneGraphNode> AI4) {
+        if ((playerObject->collider.sphereToSphereCollisionCheck(AI1->trigger)) || 
+            (playerObject->collider.sphereToSphereCollisionCheck(AI2->trigger)) ||
+            (playerObject->collider.sphereToSphereCollisionCheck(AI3->trigger)) ||
+            (playerObject->collider.sphereToSphereCollisionCheck(AI4->trigger))) {
+            std::cout << "Press E to interact with kid" << std::endl;
+            canInteract = true;
+        }
+        if (canInteract = true) {
+            if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+                std::cout << "Player interacted with Kid" << std::endl;
+                return true;
+            }
+        }
+        canInteract = false;
         return false;
     }
 

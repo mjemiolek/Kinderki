@@ -31,6 +31,10 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> cube1;
     std::shared_ptr<SceneGraphNode> cube2;
     std::shared_ptr<SceneGraphNode> cube3; //player
+    std::shared_ptr<SceneGraphNode> cubeKid2; 
+    std::shared_ptr<SceneGraphNode> cubeKid3; 
+    std::shared_ptr<SceneGraphNode> cubeKid4; 
+    std::shared_ptr<SceneGraphNode> cubeKid5; 
     std::shared_ptr<SceneGraphNode> ball;
     std::shared_ptr<SceneGraphNode> progressbar;
     std::vector<std::shared_ptr<SceneGraphNode>> collidingObjects;
@@ -141,16 +145,20 @@ class GameManager {
         glm::vec3 bucketRedPos(10.0f, 0.0f, -11.0f);
 
         glm::vec3 cubePositions[] = {
-        glm::vec3(-0.5f, 2.0f,  3.5f),
-        glm::vec3(2.0f,  2.0f, -15.0f),
-        glm::vec3(0.5f, 2.5f, -1.5f),
-        glm::vec3(12.0f, 0.0f, -16.0f),  
+        glm::vec3(-0.5f, 2.0f,  3.5f),      //0
+        glm::vec3(2.0f,  2.0f, -15.0f),     //1
+        glm::vec3(0.5f, 2.5f, -1.5f),       //2
+        glm::vec3(12.0f, 0.0f, -16.0f),     //3  
         glm::vec3(13.0f, 0.0f, -13.0f), //Player position
-        glm::vec3(0.0f,  2.0f, 0.0f),
-        glm::vec3(1.3f, 2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -2.5f),
-        glm::vec3(1.5f,  2.0f, -1.5f),
-        glm::vec3(-1.3f,  2.0f, -1.5f)
+        glm::vec3(0.0f,  2.0f, 0.0f),       //5
+        glm::vec3(1.3f, 2.0f, -2.5f),       //6
+        glm::vec3(1.5f,  2.0f, -2.5f),      //7
+        glm::vec3(1.5f,  2.0f, -1.5f),      //8
+        glm::vec3(-1.3f,  2.0f, -1.5f),     //9
+        glm::vec3(8.87f,  0.10f, -14.34f),  //10
+        glm::vec3(24.50f,  0.10f, -14.0f),  //11
+        glm::vec3(10.0f,  0.10f, 6.0f),     //12
+        glm::vec3(29.50f,  0.10f, -12.95f)  //13
         };
 
         //Initializing gravity
@@ -304,6 +312,10 @@ class GameManager {
         cube1 = std::make_shared<SceneGraphNode>();
         cube2 = std::make_shared<SceneGraphNode>();
         cube3 = std::make_shared<SceneGraphNode>();
+        cubeKid2 = std::make_shared<SceneGraphNode>();
+        cubeKid3 = std::make_shared<SceneGraphNode>();
+        cubeKid4 = std::make_shared<SceneGraphNode>();
+        cubeKid5 = std::make_shared<SceneGraphNode>();
         ball = std::make_shared<SceneGraphNode>();
 
         aerialrunnwaywholeptr = std::make_shared<SceneGraphNode>();
@@ -344,7 +356,7 @@ class GameManager {
 
 
         collidingObjects.insert(collidingObjects.end(),{
-        cube1,cube2,cube3, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr, bucketblackptr, bucketpinkptr , bucketredptr,
+        cube1,cube2,cube3, cubeKid2, cubeKid3, cubeKid4, cubeKid5, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr, bucketblackptr, bucketpinkptr , bucketredptr,
         trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr, sandpitptr,benchesptr, tablesptr, treeptr, aerialrunnwaywholeptr,
         seesawptr, poolptr
 
@@ -364,8 +376,32 @@ class GameManager {
 
         //cube do testu AI
         root_node->add_child(cube2);
-        Collider cube2Collider(boxColRange, false, cubePositions[2], false);
+        Collider cube2Collider(0.54f, false, cubePositions[2], false);
         cube2->setProperties(shaderShad, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
+
+        root_node->add_child(cubeKid2);
+        Collider cubeKid2Collider(0.54f, false, cubePositions[10], false);
+        cubeKid2->setProperties(shaderShad, texturewin10, cubePositions[10], MODEL, box, 0.15f, true, cubeKid2Collider);
+        Collider cubeKid2Trigger(0.9f, false, cubePositions[10], true);
+        cubeKid2->trigger = cubeKid2Trigger;
+
+        root_node->add_child(cubeKid3);
+        Collider cubeKid3Collider(0.54f, false, cubePositions[11], false);
+        cubeKid3->setProperties(shaderShad, texturewin10, cubePositions[11], MODEL, box, 0.15f, true, cubeKid3Collider);
+        Collider cubeKid3Trigger(0.9f, false, cubePositions[11], true);
+        cubeKid3->trigger = cubeKid3Trigger;
+
+        root_node->add_child(cubeKid4);
+        Collider cubeKid4Collider(0.54f, false, cubePositions[12], false);
+        cubeKid4->setProperties(shaderShad, texturewin10, cubePositions[12], MODEL, box, 0.15f, true, cubeKid4Collider);
+        Collider cubeKid4Trigger(0.9f, false, cubePositions[12], true);
+        cubeKid4->trigger = cubeKid4Trigger;
+
+        root_node->add_child(cubeKid5);
+        Collider cubeKid5Collider(0.54f, false, cubePositions[13], false);
+        cubeKid5->setProperties(shaderShad, texturewin10, cubePositions[13], MODEL, box, 0.15f, true, cubeKid5Collider);
+        Collider cubeKid5Trigger(0.9f, false, cubePositions[13], true);
+        cubeKid5->trigger = cubeKid5Trigger;
         
         //gracz
         root_node->add_child(cube3);
