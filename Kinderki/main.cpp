@@ -213,6 +213,7 @@ int main()
         gui.handleGui(window);
         moveFactor += 0.03f * passed_time;
         moveFactor = fmod(moveFactor,1.0f);
+        gameManager.getTutorialState()->update(window,gameManager.player,gameManager.cubeKid2,gameManager.sandpitptr);
         gameManager.update(passed_time);
         gui.update(passed_time);
         gameManager.checkWin(); //check for win
@@ -281,10 +282,10 @@ int main()
 
             //render game
             gameManager.renderwithShadows(mode);
-            gameManager.renderWithOutline();
             gameManager.renderWater(refractiontexture, reflectiontexture,dudvMap,normalMap,moveFactor);
             skybox.render();
             gui.render();
+            gameManager.getTutorialState()->render();
 
             glfwPollEvents();
             glfwSwapBuffers(window);

@@ -20,6 +20,7 @@
 #include "Animator.h"
 #include <mmcobj.h>
 #include <vector>
+#include "TutorialState.h"
 
 
 
@@ -79,6 +80,8 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> bucketblackptr;
     std::shared_ptr<SceneGraphNode> bucketpinkptr;
     std::shared_ptr<SceneGraphNode> bucketredptr;
+
+    std::shared_ptr<TutorialState> tutorialState;
 
     Shader lightingShader = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     //For shadows
@@ -155,7 +158,7 @@ class GameManager {
         glm::vec3(1.5f,  2.0f, -2.5f),      //7
         glm::vec3(1.5f,  2.0f, -1.5f),      //8
         glm::vec3(-1.3f,  2.0f, -1.5f),     //9
-        glm::vec3(8.87f,  0.10f, -14.34f),  //10
+        glm::vec3(12.87f,  0.10f, -14.34f),  //10
         glm::vec3(24.50f,  0.10f, -14.0f),  //11
         glm::vec3(10.0f,  0.10f, 6.0f),     //12
         glm::vec3(29.50f,  0.10f, -12.95f)  //13
@@ -353,6 +356,7 @@ class GameManager {
 
         temp = std::make_shared<SceneGraphNode>();
         player = std::make_shared<PlayerController>(cube3);
+        tutorialState = std::make_shared<TutorialState>();
 
 
         collidingObjects.insert(collidingObjects.end(),{
@@ -935,7 +939,7 @@ class GameManager {
         return textureID;
     }
     
-    void update(float dt) {
+    void update(double dt) {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
 
@@ -1062,8 +1066,6 @@ class GameManager {
         //glBindTexture(GL_TEXTURE_2D, depthMap);
         //renderQuad();
 
-    }
-    void renderWithOutline() {
         // Make it so only the pixels without the value 1 pass the test
         glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
         // Disable modifying of the stencil buffer
@@ -1072,8 +1074,8 @@ class GameManager {
         glDisable(GL_DEPTH_TEST);
 
         outlineShader.use();
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
+        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        view = camera.GetViewMatrix();
         outlineShader.setMat4("projection", projection);
         outlineShader.setMat4("view", view);
         //scale
@@ -1123,5 +1125,9 @@ class GameManager {
                 //cube3->get_transform().m_position = playerPos; //its off beacuse of sandpiter
             }
         }
+    }
+
+    std::shared_ptr<TutorialState> getTutorialState() {
+        return tutorialState;
     }
 };
