@@ -44,7 +44,7 @@ void daySimulation(float dt);
 
 GLFWwindow* window = nullptr;
 //light
-glm::vec3 lightPosition(30.0f, 35.0f, -5.0f);
+glm::vec3 lightPosition(30.0f, 35.0f, 10.f);
 // camera
 glm::vec3 cameraPos(0.0f, 16.0f, 5.0f);
 float lastX = SCR_WIDTH / 2.0f;
@@ -168,6 +168,7 @@ int main()
     unsigned int textureCandyx6 = gameManager.loadTexture("res/textures/candy/candyx6.png");
 
     unsigned int textureIns = gameManager.loadTexture("res/textures/ins.png");
+    unsigned int textureTime = gameManager.loadTexture("res/textures/gui/tim.png");
 
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
@@ -181,6 +182,8 @@ int main()
     gui.textureIns = textureIns;
 
     gui.textureCandy = textureCandy;
+
+    gui.textureTime = textureTime;
 
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
@@ -343,7 +346,7 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
 //    cube2->get_transform().z_rotation_angle += 9.0f * passed_time;
 //if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
-        lightPosition.x = 30.0f;
+        lightPosition.x = 35.0f;
     }
     camera.Position.x = player->get_transform().m_position.x + cameraPos.x;  //attach camera to player
     camera.Position.z = player->get_transform().m_position.z + cameraPos.z;  //attach camera to player
@@ -355,10 +358,10 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
 
 void daySimulation(float dt)
 {
-    float step = -0.75f;
+    //float step = -0.3f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
-    lightPosition.x += step * dt;
-    if (lightPosition.x < -27.0f) lightPosition.x = 30.0f; //end of day
+    lightPosition.x += -0.3f * dt;
+    if (lightPosition.x < -25.0f) lightPosition.x = 35.0f; //end of day
 }
 
 

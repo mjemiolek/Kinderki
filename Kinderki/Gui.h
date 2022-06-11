@@ -20,6 +20,14 @@ float fullDisplayVertices[] = {
     1.0,  -1.0
 };
 
+float timeVertices[] = {
+    // pozycje
+    0.95f,  0.30f,
+    0.70f,  0.65f,
+    0.95f,  0.65f,
+    0.70f,  0.30f
+};
+
 float noteBookVertices[] = {
     // pozycje
     0.80f,  -0.80f,
@@ -52,18 +60,18 @@ float InsVertices[] = {
 
 float candyVertices[] = {
     // pozycje
-    0.70f,  0.65f,
-    0.55f,  0.80f,
-    0.70f,  0.80f,
-    0.55f,  0.65f
+    0.80f,  0.65f,
+    0.65f,  0.80f,
+    0.80f,  0.80f,
+    0.65f,  0.65f
 };
 
 float candyCountVertices[] = {
     // pozycje
-    0.85f,  0.65f,
-    0.70f,  0.80f,
-    0.85f,  0.80f,
-    0.70f,  0.65f
+    0.95f,  0.65f,
+    0.80f,  0.80f,
+    0.95f,  0.80f,
+    0.80f,  0.65f
 };
 
 
@@ -92,8 +100,8 @@ float textureCords[] = { 0.0f, 1.0f,
 
 class Gui {
 public:
-    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO;
-    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO;
+    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO, TimeVAO;
+    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO, TimeVBO;
     unsigned int quadEBO;
     unsigned int progressVAO, progressVBO1, progressVBO2, progressEBO;
     
@@ -137,18 +145,27 @@ public:
     bool pressflagPageTwo = false;
     bool pressflagPageThree = false;
     bool pressflagPageFour = false;
-    
-    
+
+
+    bool minchangeflag = true;
+    Text textCzas;
+    int czasmin = 0;
+    int czassec = 0;
+    std::ostringstream strsCzas;
+    glm::vec3 czascolor = glm::vec3(1.0, 1.0f, 0.8f);
+    unsigned int textureTime;
 
 
     Text text;
     Text text2;
     Text textCukierki;
+    Text textUcieczki;
 
     std::ostringstream strs;
     std::ostringstream strs2;
     std::ostringstream strsCukierki;
     std::ostringstream strsUcieczki;
+
     Gui() {
         ////////////////////NoteBook Side
         glGenVertexArrays(1, &quadVAO);
@@ -298,6 +315,26 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
         
+        //Time square
+        glGenVertexArrays(1, &TimeVAO);
+        glBindVertexArray(TimeVAO);
+
+        glGenBuffers(1, &TimeVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, TimeVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(timeVertices), timeVertices, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &TimeVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, TimeVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCords), textureCords, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &TimeVBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
         /*
         glGenVertexArrays(1, &progressVAO);
         glBindVertexArray(progressVAO);
@@ -390,6 +427,14 @@ public:
         glBindTexture(GL_TEXTURE_2D, textureCandyCount);
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+
+
+       
+        glBindVertexArray(TimeVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureTime);
+        glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
        
 
         //rendering progressbar
@@ -406,11 +451,14 @@ public:
 
         //rendering text
         text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-        text2.RenderText(strs2.str(), 50.0f, 100.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+        //text2.RenderText(strs2.str(), 50.0f, 100.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 
 
-        text2.RenderText(strsUcieczki.str(), 75.0f, 1000.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+        textUcieczki.RenderText(strsUcieczki.str(), 75.0f, 1000.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
         text2.RenderText("/5", 100.0f, 1000.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+
+        textCzas.RenderText(strsCzas.str(), 750.0f, 750.0f, 1.0f, czascolor);
+
 
 
 
@@ -428,6 +476,26 @@ public:
         strsUcieczki.str(std::string());
         strsUcieczki << ucieczki;
 
+        handleTimer();
+
+        strsCzas.str(std::string());
+        strsCzas << czasmin << ":" << czassec;
+
+    }
+
+    void handleTimer() {
+        czassec = glfwGetTime();
+        czassec = 59 - czassec % 60;
+        if (!czassec && minchangeflag) {
+            minchangeflag = false;
+            czasmin--;
+        }
+        if (czassec) {
+            minchangeflag = true;
+        }
+        if (!czasmin && czassec < 15 && minchangeflag) {
+            czascolor = glm::vec3(0.9, 0.0f, 0.25f);
+        }
     }
 
     void handleStories() {

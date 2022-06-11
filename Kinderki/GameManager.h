@@ -117,8 +117,8 @@ class GameManager {
         glm::vec3 seesawPos(8.0f, 0.8f, -4.5f);
         glm::vec3 ballPos(11.53f, 3.00f, 14.46f);
         glm::vec3 slidePos(21.00f, 0.10f, -14.0f);
-        glm::vec3 trampolinePos(29.50f, 0.58f, -14.95f);
-        glm::vec3 treePos(34.0f, 5.38f, -18.0f);
+        glm::vec3 trampolinePos(22.50f, 0.58f, -13.0f);
+        glm::vec3 treePos(22.75f, 0.0f, -14.25f);
         glm::vec3 aerialRunnwayPos(33.0f, 0.0f, -2.5f);
         glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
         glm::vec3 aerialRunnwayTrigerPos(33.0f, -1.5f, -10.0f);
@@ -132,7 +132,7 @@ class GameManager {
         glm::vec3 wallPosColl3(12.1845f, 0.0f, 21.0f); //down
         glm::vec3 wallPosColl4(21.5f, 0.0f, 15.8f);
         glm::vec3 wallPosColl5(30.3f, 0.0f, 11.07f);
-        glm::vec3 wallPosColl6(38.5f, 0.0f, -4.68f); //right
+        glm::vec3 wallPosColl6(38.6f, 0.0f, -4.68f); //right
         glm::vec3 damagedwallPos(21.0f, 0.1f, 20.5f);
 
 
@@ -248,7 +248,7 @@ class GameManager {
         Model trampoline("res/models/level/trampoline.obj");
         Model trampolineOut("res/models/outline/trampolineOutline.obj");
 
-        Model tree("res/models/level/tree.obj");
+        Model tree("res/models/level/tree1.obj");
         Model umbrella("res/models/level/umbrella.obj");
         Model walk("res/models/level/walk.obj");
         Model walls("res/models/level/ogrodzenie.obj");
@@ -784,6 +784,7 @@ class GameManager {
         trampolineptr->additionalColliders.push_back(trampolineCollider4);
 
         //drzewo
+        /*
         root_node->add_child(treeptr);
         treeptr->setProperties(shaderShad, textree, treePos, MODEL, tree, 0.7f, false);
         treeptr->setRotation(0.0f, 200.0f, 0.0f);
@@ -799,6 +800,11 @@ class GameManager {
         treeptr->additionalColliders.push_back(treeCollider3);
         treeptr->additionalColliders.push_back(treeCollider3b);
         treeptr->additionalColliders.push_back(treeCollider4);
+        */
+
+        root_node->add_child(treeptr);
+        treeptr->setProperties(shaderShad, textree, treePos, MODEL, tree, 0.90f, false);
+        //treeptr->setRotation(0.0f, 270.0f, 0.0f);
 
         //parasol (I dont want to deal with colliders here xd)
         //root_node->add_child(umbrellaptr);
@@ -833,7 +839,7 @@ class GameManager {
         Collider wallColl3(glm::vec3(9.3145f, wallHeight, 0.05f), false, wallPosColl3, true);  //down
         Collider wallColl4(glm::vec3(0.05f, wallHeight, 4.747f), false, wallPosColl4, true); //inside down
         Collider wallColl5(glm::vec3(8.5f, wallHeight, 0.005f), false, wallPosColl5, true); //inside up
-        Collider wallColl6(glm::vec3(0.05f, wallHeight, 15.75f), false, wallPosColl6, true);  //right
+        Collider wallColl6(glm::vec3(0.05f, wallHeight+0.69f, 15.75f), false, wallPosColl6, true);  //right
         root_node->add_child(wallsptr);
         wallsptr->setProperties(shaderShad, texturewall, glm::vec3(0.0f,-1.6f,0.0f), MODEL, walls, 0.01f, false);
         wallsptr->additionalColliders.push_back(wallColl1);

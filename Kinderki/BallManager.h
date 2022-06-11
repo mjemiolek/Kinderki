@@ -10,8 +10,11 @@ private:
     std::shared_ptr<SceneGraphNode> ball;
     std::shared_ptr<SceneGraphNode> damagedwall;
     std::shared_ptr<SceneGraphNode> wall;
-    float kickpower = 16.0f;
+    float kickpower = 6.9f;
     float decelerateVar = 0.69f;
+    float stopVal = 0.01f;
+    bool shouldbounceeoffx = false;
+    bool shouldbounceeoffz = false;
 public:
     BallManager(std::shared_ptr<SceneGraphNode> ball, std::shared_ptr<SceneGraphNode> playerObject, std::shared_ptr<SceneGraphNode> damagedwall, std::shared_ptr<SceneGraphNode> wall) {
         this->ball = ball;
@@ -33,13 +36,14 @@ public:
         float vectorx = (ball->get_transform().m_position.x - playerObject->get_transform().m_position.x);
         float vectorz = (ball->get_transform().m_position.z - playerObject->get_transform().m_position.z);
         
+        //if(ball->velocity)
+
         //apply force
         if (ball->collider.sphereToSphereCollisionCheck(playerObject->collider))
         {
             ball->velocity.x = kickpower * vectorx;
             ball->velocity.z = kickpower * vectorz;
         }
-        float stopVal= 0.01f;
         //decelerate
         if (ball->velocity.x > stopVal)
         {
@@ -67,10 +71,13 @@ public:
         if (ball->velocity.x <= stopVal && ball->velocity.x >= -stopVal)
         {
             ball->velocity.x = 0.0f;
+            shouldbounceeoffx = false;
         }
         if (ball->velocity.z <= stopVal && ball->velocity.z >= -stopVal)
         {
             ball->velocity.z = 0.0f;
+            shouldbounceeoffz = false;
+
         }
 
         //Don't let the ball to go into ground
