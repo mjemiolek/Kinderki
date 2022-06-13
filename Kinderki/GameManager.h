@@ -105,7 +105,7 @@ class GameManager {
 
     // animacje
     Model postac_test = Model("res/models/main_character_TEST_v15.fbx");
-    Animation anim = Animation("res/models/main_character_TEST_ANIMACJA_v4.fbx", &postac_test);
+    Animation anim = Animation("res/models/main_character_walking.fbx", &postac_test);
     Animator animator = Animator(&anim);
 
     //to checkWin()
