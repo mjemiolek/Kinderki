@@ -17,6 +17,7 @@ class TutorialState {
 	std::string tutorialString;
 	unsigned int ct;
 	unsigned int dt;
+	float x;
 public:
 	TutorialState() {
 		checkArrowsKeyMove = true;
@@ -35,6 +36,7 @@ public:
 	void ManageTutorialThings(GLFWwindow* window, std::shared_ptr<PlayerController> player, std::shared_ptr<SceneGraphNode> interacterAI, std::shared_ptr<SceneGraphNode> sandPiter) {
 		if (checkArrowsKeyMove) {
 			tutorialString = "Press arrows key to move the character";
+			x = 618.0f;
 			if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
@@ -57,6 +59,7 @@ public:
 			}
 		}
 		if (findSandpit && ct - dt > 2) {
+			x = 852.0f;
 			tutorialString = "Find sandpit";
 			if (player->getPlayerObject()->collider.boxToBoxCollisioncheck(sandPiter->trigger)) {
 				dt = ct;
@@ -67,6 +70,7 @@ public:
 
 
 		if (checkInteractionWithKid) {
+			x = 708.0f;
 			tutorialString = "Press E to interact with kid";
 			if (interacterAI->trigger.sphereToSphereCollisionCheck(player->getPlayerObject()->collider)) {
 				if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
@@ -77,6 +81,7 @@ public:
 			}
 		}
 		if (checkInteractionWithMovable) {
+			x = 681.0f;
 			tutorialString = "To pick up item just go into it";
 			if (player->getPlayerObject()->m_children.size() == 1) {
 				dt = ct;
@@ -85,6 +90,7 @@ public:
 			}
 		}
 		if (checkInteractionWithSandpit) {
+			x = 411.0f;
 			tutorialString = "Press E to interact with sandpit if you have the correct item";
 			if (player->getPlayerObject()->m_children.size() == 0) {
 				return;
@@ -107,6 +113,6 @@ public:
 	}
 	void render() {
 		if(renderText)
-			text->RenderText(tutorialStream.str(), 400.0f, 100.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+			text->RenderText(tutorialStream.str(), x, 100.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 	}
 };
