@@ -99,7 +99,7 @@ class GameManager {
 
 
     std::shared_ptr<PlayerController> player;
-    glm::vec3 playerPos = glm::vec3(13.0f, 0.2f, -13.0f); //Player position
+    glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
     int playerWins = 0;
 
 

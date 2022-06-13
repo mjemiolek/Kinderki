@@ -10,6 +10,7 @@ class TutorialState {
 	bool checkInteractionWithKid;
 	bool checkInteractionWithMovable;
 	bool checkInteractionWithSandpit;
+	bool findSandpit;
 	bool renderText;
 	std::shared_ptr<Text> text;
 	std::ostringstream tutorialStream;
@@ -22,6 +23,7 @@ public:
 		checkInteractionWithKid = false;
 		checkInteractionWithMovable = false;
 		checkInteractionWithSandpit = false;
+		findSandpit = false;
 		renderText = true;
 		tutorialString = "";
 		tutorialStream.str(std::string());
@@ -36,25 +38,35 @@ public:
 			if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
-				checkInteractionWithKid = true;
+				findSandpit = true;
 			}
 			if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
-				checkInteractionWithKid = true;
+				findSandpit = true;
 			}
 			if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
-				checkInteractionWithKid = true;
+				findSandpit = true;
 			}
 			if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
+				findSandpit = true;
+			}
+		}
+		if (findSandpit && ct - dt > 2) {
+			tutorialString = "Find sandpit";
+			if (player->getPlayerObject()->collider.boxToBoxCollisioncheck(sandPiter->trigger)) {
+				dt = ct;
+				findSandpit = false;
 				checkInteractionWithKid = true;
 			}
 		}
-		if (checkInteractionWithKid && ct - dt > 2) {
+
+
+		if (checkInteractionWithKid) {
 			tutorialString = "Press E to interact with kid";
 			if (interacterAI->trigger.sphereToSphereCollisionCheck(player->getPlayerObject()->collider)) {
 				if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
@@ -64,7 +76,7 @@ public:
 				}
 			}
 		}
-		if (checkInteractionWithMovable && ct - dt > 1) {
+		if (checkInteractionWithMovable) {
 			tutorialString = "To pick up item just go into it";
 			if (player->getPlayerObject()->m_children.size() == 1) {
 				dt = ct;
@@ -72,7 +84,7 @@ public:
 				checkInteractionWithSandpit = true;
 			}
 		}
-		if (checkInteractionWithSandpit && ct - dt > 1) {
+		if (checkInteractionWithSandpit) {
 			tutorialString = "Press E to interact with sandpit if you have the correct item";
 			if (player->getPlayerObject()->m_children.size() == 0) {
 				return;
