@@ -99,7 +99,7 @@ class GameManager {
 
 
     std::shared_ptr<PlayerController> player;
-    glm::vec3 playerPos = glm::vec3(28.0f, 0.2f, 10.5f); //Player position
+    glm::vec3 playerPos = glm::vec3(13.0f, 0.2f, -13.0f); //Player position
     int playerWins = 0;
 
 
@@ -107,6 +107,11 @@ class GameManager {
     Model postac_test = Model("res/models/main_character_TEST_v15.fbx");
     Animation anim = Animation("res/models/main_character_TEST_ANIMACJA_v4.fbx", &postac_test);
     Animator animator = Animator(&anim);
+
+    //to checkWin()
+    unsigned int ct;
+    unsigned int st;
+    bool ifWin = false;
 
     GameManager() {
         //settings
@@ -948,6 +953,7 @@ class GameManager {
     void update(double dt) {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
+        st = glfwGetTime();
 
         animator.UpdateAnimation(dt * 60);
         cube2->update_transform();
@@ -1077,7 +1083,7 @@ class GameManager {
         // Disable modifying of the stencil buffer
         glStencilMask(0x00);
         // Disable the depth buffer
-        glDisable(GL_DEPTH_TEST);
+      //  glDisable(GL_DEPTH_TEST);
 
         outlineShader.use();
         projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
@@ -1093,7 +1099,7 @@ class GameManager {
         // Clear stencil buffer
         glStencilFunc(GL_ALWAYS, 0, 0xFF);
         // Enable the depth buffer
-        glEnable(GL_DEPTH_TEST);
+      //  glEnable(GL_DEPTH_TEST);
     }
 
     void renderWater(unsigned int refractiontexture, unsigned int reflectiontexture, unsigned int dudvMap, unsigned int normalMap, float moveFactor)
@@ -1126,10 +1132,20 @@ class GameManager {
         {
             if (cube3->collider.boxToBoxCollisioncheck(trigger))
             {
+               // std::cout << "ct: " << ct << " st: " << st << std::endl;
+                if (!ifWin) {
+                    ct = st;
+                    ifWin = true;
+                }
+                
+            }
+            if (st - ct >= 2 && ifWin == true) {
                 playerWins++;
                 std::cout << "Win";
                 cube3->get_transform().m_position = playerPos; //its off beacuse of sandpiter
+                ifWin = false;
             }
+            
         }
     }
 

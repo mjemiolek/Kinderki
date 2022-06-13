@@ -83,7 +83,7 @@ public:
             //move Player to position (28.0f, 0.2f, 10.5f)
             if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
             {
-                playerObject->get_transform().m_position = glm::vec3(28.0f, 0.2f, 10.5f);
+                playerObject->get_transform().m_position = glm::vec3(13.0f, 0.0f, -13.0f);
                 playerObject->canInToGround = false;
             }
             //go up
