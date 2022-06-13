@@ -170,6 +170,17 @@ int main()
     unsigned int textureIns = gameManager.loadTexture("res/textures/ins.png");
     unsigned int textureTime = gameManager.loadTexture("res/textures/gui/tim.png");
 
+    unsigned int kidIntTexture = gameManager.loadTexture("res/textures/tutorial/kidInt.png");
+    unsigned int findIntTexture = gameManager.loadTexture("res/textures/tutorial/findInt.png");
+    unsigned int itemIntTexture = gameManager.loadTexture("res/textures/tutorial/itemInt.png");
+    unsigned int moveIntTexture = gameManager.loadTexture("res/textures/tutorial/moveInt.png");
+    unsigned int sandpitIntTexture = gameManager.loadTexture("res/textures/tutorial/SandpitInt.png");
+    gameManager.tutorialState->setTexture1(moveIntTexture);
+    gameManager.tutorialState->setTexture2(findIntTexture);
+    gameManager.tutorialState->setTexture3(kidIntTexture);
+    gameManager.tutorialState->setTexture4(itemIntTexture);
+    gameManager.tutorialState->setTexture5(sandpitIntTexture);
+
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
     gui.textureAerialRunway = textureAerialRunway;
@@ -185,6 +196,7 @@ int main()
 
     gui.textureTime = textureTime;
 
+    
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
 
