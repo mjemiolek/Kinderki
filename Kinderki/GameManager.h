@@ -99,7 +99,7 @@ class GameManager {
 
 
     std::shared_ptr<PlayerController> player;
-    glm::vec3 playerPos = glm::vec3(13.0f, 0.2f, -13.0f); //Player position
+    glm::vec3 playerPos = glm::vec3(28.0f, 0.2f, 10.5f); //Player position
     int playerWins = 0;
 
 
@@ -409,7 +409,7 @@ class GameManager {
         
         //gracz
         root_node->add_child(cube3);
-        Collider cube3Collider(0.34f, false, cubePositions[4],true);
+        Collider cube3Collider(0.34f, false, playerPos,true);
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
         cube3->setProperties(animShader, texture_postac_test, playerPos, MODEL, postac_test, 0.05f, false, cube3Collider);
 
@@ -1128,7 +1128,7 @@ class GameManager {
             {
                 playerWins++;
                 std::cout << "Win";
-                //cube3->get_transform().m_position = playerPos; //its off beacuse of sandpiter
+                cube3->get_transform().m_position = playerPos; //its off beacuse of sandpiter
             }
         }
     }

@@ -52,10 +52,10 @@ float rightPageVertices[] = {
 
 float InsVertices[] = {
     // pozycje
-    0.05,  -0.5,
-    0.70,  0.1,
-    0.05,  0.1,
-    0.70,  -0.5
+    -0.70,  -0.5,
+    -0.05,  0.1,
+    -0.70,  0.1,
+    -0.05,  -0.5
 };
 
 float candyVertices[] = {
@@ -79,18 +79,6 @@ float candyCountVertices[] = {
 uint32_t indices[] = { 3, 1, 2,
                       2, 0, 3 };
 
-float x = -0.90f;
-
-float bar[] = {
-    // pozycje       // kolory
-    -0.95f,  -0.95f,
-    -0.95f, -0.90f,
-    x, -0.90f,
-    x, -0.90f,
-    x,  -0.95f,
-    -0.95f,  -0.95f
-};
-
 
 float textureCords[] = { 0.0f, 1.0f,
                      1.0f, 0.0f,
@@ -103,7 +91,6 @@ public:
     unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO, TimeVAO;
     unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO, TimeVBO;
     unsigned int quadEBO;
-    unsigned int progressVAO, progressVBO1, progressVBO2, progressEBO;
     
     unsigned int texture;
     unsigned int textureLeft;
@@ -129,16 +116,17 @@ public:
     std::vector<unsigned int> Storylist = { textureFirst, textureSecond, textureThird};
     unsigned int textureStory;
     bool visibilityStory = false;
+    bool storiesflag = true;
     int Storycounter = 0;
     unsigned int ct = 0;
     int lt = 0;
     int ucieczki = 0;
 
     bool visibility = false;
-    bool visibilityPageOne = false;
+    bool visibilityPageOne = true;
     bool visibilityPageTwo = false;
     bool visibilityPageThree = false;
-    bool visibilityPageFour = true;
+    bool visibilityPageFour = false;
     
     bool pressflag = false;
     bool pressflagPageOne = false;
@@ -147,12 +135,16 @@ public:
     bool pressflagPageFour = false;
 
 
-    bool minchangeflag = true;
+    bool minchangeflag = false;
+    bool colorchangeflag = false;
+    bool changeday = false;
     Text textCzas;
-    int czasmin = 0;
+    int czasmin = 2;
     int czassec = 0;
+    int czastemp = 0;
+    int czastemp2 = 0;
     std::ostringstream strsCzas;
-    glm::vec3 czascolor = glm::vec3(1.0, 1.0f, 0.8f);
+    glm::vec3 czascolor = glm::vec3(0.7, 1.0f, 0.2f);
     unsigned int textureTime;
 
 
@@ -275,7 +267,7 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-        //CandyCount square
+        ////////////////////CandyCount square
         glGenVertexArrays(1, &candyCountVAO);
         glBindVertexArray(candyCountVAO);
 
@@ -295,7 +287,7 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-        //Story square
+        ////////////////////Story square
         glGenVertexArrays(1, &StoryVAO);
         glBindVertexArray(StoryVAO);
 
@@ -315,7 +307,7 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
         
-        //Time square
+        ////////////////////Time square
         glGenVertexArrays(1, &TimeVAO);
         glBindVertexArray(TimeVAO);
 
@@ -334,47 +326,37 @@ public:
         glGenBuffers(1, &TimeVBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-        /*
-        glGenVertexArrays(1, &progressVAO);
-        glBindVertexArray(progressVAO);
-
-        glGenBuffers(1, &progressVBO1);
-        glBindBuffer(GL_ARRAY_BUFFER, progressVBO1);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(bar), &bar, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-        */
     }
 	void render()
 	{
         Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
-        Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
+        //Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
         //rendering image
         testShader.use();
 
-
         if (visibilityPageOne) {
-            textureLeft = textureSeeSaw;
-            textureRight = textureAerialRunway;
-        }
-        if (visibilityPageTwo) {
-            textureLeft = textureSwing;
-            textureRight = textureTrampoline;
-        }
-        if (visibilityPageThree) {
-            textureLeft = textureWallDestroy;
+            textureLeft = texture;
             textureRight = textureSandpit;
-        }
-        if (visibilityPageFour) {
-            textureLeft = textureSlide;
-            textureRight = texture;
+
 
             Storylist.at(0) = textureAerialRunway;
             Storylist.at(1) = textureCandy;
             Storylist.at(2) = textureCandyCount;
+
         }
-        //textureStory = textureIns;
+        if (visibilityPageTwo) {
+            textureLeft = textureAerialRunway;
+            textureRight = textureTrampoline;
+        }
+        if (visibilityPageThree) {
+            textureLeft = textureWallDestroy;
+            textureRight = textureSeeSaw;
+        }
+        if (visibilityPageFour) {
+            textureLeft = textureSwing;
+            textureRight = texture;
+        }
+
         handleStories();
 
 
@@ -392,7 +374,7 @@ public:
             glBindVertexArray(0);
         }
 
-        if (visibilityPageFour) {
+        if (visibilityPageOne) {
             glBindVertexArray(InsVAO);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, textureIns);
@@ -416,6 +398,8 @@ public:
             glBindVertexArray(0);
         }
 
+        
+
         glBindVertexArray(candyVAO);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureCandy);
@@ -428,41 +412,27 @@ public:
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-
        
+        textCzas.RenderText(strsCzas.str(), 1725.0f, 770.0f, 0.69f, czascolor);
+       
+        testShader.use();
+
         glBindVertexArray(TimeVAO);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, textureTime);
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-       
-
-        //rendering progressbar
-
-        /*
-        test2Shader.use();
-        glBindBuffer(GL_ARRAY_BUFFER, progressVBO1);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(bar), &bar, GL_DYNAMIC_DRAW);
-
-        glBindVertexArray(progressVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 18);
-        glBindVertexArray(0);
-        */
+        
 
         //rendering text
         text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
         //text2.RenderText(strs2.str(), 50.0f, 100.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 
 
-        textUcieczki.RenderText(strsUcieczki.str(), 75.0f, 1000.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
-        text2.RenderText("/5", 100.0f, 1000.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+        textUcieczki.RenderText(strsUcieczki.str(), 75.0f, 950.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+        text2.RenderText("/5", 100.0f, 950.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 
-        textCzas.RenderText(strsCzas.str(), 750.0f, 750.0f, 1.0f, czascolor);
-
-
-
-
-        //textCukierki.RenderText(strsCukierki.str(), 1700.0, 900.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+ 
 	}
    
     void update(double passed_time) {
@@ -486,28 +456,57 @@ public:
     void handleTimer() {
         czassec = glfwGetTime();
         czassec = 59 - czassec % 60;
-        if (!czassec && minchangeflag) {
-            minchangeflag = false;
+        
+        if (!czassec && !minchangeflag) {
+            minchangeflag = true;
+            
+        }
+        if (czassec && minchangeflag) {
+            minchangeflag = false; 
             czasmin--;
         }
-        if (czassec) {
-            minchangeflag = true;
+        
+        if (czasmin == 1 && !colorchangeflag)
+        {
+            czascolor = glm::vec3(0.3, 0.5f, 0.9f);
+            colorchangeflag = true;
         }
-        if (!czasmin && czassec < 15 && minchangeflag) {
+        else if(!czasmin && czassec > 15 && colorchangeflag)
+        {
+            czascolor = glm::vec3(0.9, 0.8f, 0.25f);
+            colorchangeflag = false;
+        }
+        else if (!czasmin && czassec < 15 && !colorchangeflag) {
             czascolor = glm::vec3(0.9, 0.0f, 0.25f);
+            colorchangeflag = true;
+        }
+        if (czasmin == -1) {
+            czasmin = 2;
+            czascolor = glm::vec3(0.7, 1.0f, 0.2f);
+            colorchangeflag = false;
+            visibilityStory = true;
+            changeday = true;
+            czastemp = glfwGetTime();
+        }
+        if (visibilityStory && glfwGetTime() > czastemp + 5.0f) {
+            changeday = false;
+            visibilityStory = false;
         }
     }
 
     void handleStories() {
-        ct = glfwGetTime()/2;
-        //std::cout << ct << std::endl;
-        //if (ct - lt) { Storycounter++; }
-        //Storycounter = Storycounter % 2;
-        //std::cout << Storycounter << std::endl;
-        ct = ct % 3;
-        //std::cout << ct << std::endl;
-        textureStory = Storylist.at(ct);
-
+        if (visibilityStory) {
+            if (storiesflag) {
+                storiesflag = false;
+                czastemp2 = glfwGetTime();
+            }
+            if (glfwGetTime() >= czastemp2 + 2) {
+                ct++;
+                storiesflag = true;
+            }
+            if (ct == 3) { ct = 0; }
+            textureStory = Storylist.at(ct);
+        }
     }
 
     void handleGui(GLFWwindow* window) {
@@ -597,6 +596,7 @@ public:
                 visibilityPageTwo = false;
                 visibilityPageThree = false;
         }
+        
         if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && !visibilityStory) {
             visibilityStory = true;
         }
