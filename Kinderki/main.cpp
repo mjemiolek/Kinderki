@@ -40,7 +40,7 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player);
 //boolean checkForCollisions(PlayerController* player, std::vector<std::shared_ptr<SceneGraphNode>> objects, std::shared_ptr<SceneGraphNode> cube);
 //void render();
 void render_gui();
-void daySimulation(float dt,bool changeday);
+void daySimulation(float dt,bool changeday, std::shared_ptr<SceneGraphNode> playerObject);
 
 GLFWwindow* window = nullptr;
 //light
@@ -211,7 +211,7 @@ int main()
 
 
         input(window, gameManager.cube3);
-        daySimulation(passed_time, gui.changeday);
+        daySimulation(passed_time, gui.changeday, gameManager.cube3);
         ballManager->manageBall(window, passed_time);
         movableManager->manageMovable(window);
         gameManager.player->checkForInteraction(window, gameManager.cubeKid2, gameManager.cubeKid3, gameManager.cubeKid4, gameManager.cubeKid5);
@@ -368,12 +368,15 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
     lightPos.z = player->get_transform().m_position.z + lightPosition.z;     //attach light to player
 }
 
-void daySimulation(float dt, bool changeday)
+void daySimulation(float dt, bool changeday, std::shared_ptr<SceneGraphNode> playerObject)
 {
     //float step = -0.3f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
     lightPosition.x += -0.325f * dt;
-    if (changeday) lightPosition.x = 35.0f; //end of day
+    if (changeday) {
+        lightPosition.x = 35.0f; //end of day
+        playerObject->get_transform().m_position = glm::vec3(27.0f, 0.2f, 9.17f); // dzieciak na start
+    }
 }
 
 

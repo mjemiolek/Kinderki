@@ -10,9 +10,12 @@ private:
     std::shared_ptr<SceneGraphNode> ball;
     std::shared_ptr<SceneGraphNode> damagedwall;
     std::shared_ptr<SceneGraphNode> wall;
-    float kickpower = 6.9f;
+    float kickpower = 9.6f;
     float decelerateVar = 0.69f;
-    float stopVal = 0.01f;
+    float stopVal = 0.25f;
+
+    float lastvelocityx = 0.0;
+    float lastvelocityz = 0.0;
     bool shouldbounceeoffx = false;
     bool shouldbounceeoffz = false;
 public:
@@ -43,42 +46,68 @@ public:
         {
             ball->velocity.x = kickpower * vectorx;
             ball->velocity.z = kickpower * vectorz;
+
+            shouldbounceeoffx = true;
+            shouldbounceeoffz = true;
         }
+
+        if(ball->velocity.x){ lastvelocityx = ball->velocity.x; }
+        if(ball->velocity.z){ lastvelocityz = ball->velocity.z; }
+
         //decelerate
         if (ball->velocity.x > stopVal)
         {
             ball->velocity.x -= ball->velocity.x * dt * decelerateVar;
-            ball->get_transform().z_rotation_angle += 200 * ball->velocity.x * dt * decelerateVar;
         }
         if (ball->velocity.x < -stopVal)
         {
             ball->velocity.x -= ball->velocity.x * dt * decelerateVar;
-            ball->get_transform().z_rotation_angle += 200 * ball->velocity.x * dt * decelerateVar;
         }
+        ball->get_transform().z_rotation_angle += 200 * ball->velocity.x * dt * decelerateVar;
+
 
         if (ball->velocity.z > stopVal)
         {
             ball->velocity.z -= ball->velocity.z * dt * decelerateVar;
-            ball->get_transform().x_rotation_angle -= 200 * ball->velocity.z * dt * decelerateVar;
         }
         if (ball->velocity.z < -stopVal)
         {
             ball->velocity.z -= ball->velocity.z * dt * decelerateVar;
-            ball->get_transform().x_rotation_angle -= 200 * ball->velocity.z * dt * decelerateVar;
         }
+        ball->get_transform().x_rotation_angle -= 200 * ball->velocity.z * dt * decelerateVar;
+
+        
+
+
+        if(ball->velocity.x < 0.5 && ball->velocity.x > -0.5 && shouldbounceeoffx){
+            ball->velocity.x = 0.69*-lastvelocityx;
+        }
+        if (ball->velocity.z < 0.5 && ball->velocity.z > -0.5 && shouldbounceeoffz) {
+            ball->velocity.z = 0.69*-lastvelocityz;
+        }
+
+        //off bouncing
+        if (lastvelocityx > -1.5 && lastvelocityx < 1.5 && shouldbounceeoffx) {
+            shouldbounceeoffx = false;
+        }
+        if (lastvelocityz > -1.5 && lastvelocityz < 1.5 && shouldbounceeoffz) {
+            shouldbounceeoffz = false;
+        }
+
+       // std::cout << shouldbounceeoffx << "---"<< shouldbounceeoffz << std::endl
+       //if (ball->velocity.x || ball->velocity.z) {    std::cout<< shouldbounceeoffx << "---"<< shouldbounceeoffz <<" +++ " << ball->velocity.x << "   " << lastvelocityx << std::endl; }
 
         //stop
         if (ball->velocity.x <= stopVal && ball->velocity.x >= -stopVal)
         {
             ball->velocity.x = 0.0f;
-            shouldbounceeoffx = false;
         }
         if (ball->velocity.z <= stopVal && ball->velocity.z >= -stopVal)
         {
             ball->velocity.z = 0.0f;
-            shouldbounceeoffz = false;
 
         }
+
 
         //Don't let the ball to go into ground
         if (ball->get_transform().m_position.y<0.25f) ball->get_transform().m_position.y = 0.26f;
