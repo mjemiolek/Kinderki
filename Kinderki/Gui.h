@@ -139,7 +139,7 @@ public:
     bool colorchangeflag = false;
     bool changeday = false;
     Text textCzas;
-    int czasmin = 2;
+    int czasmin = 3;
     int czassec = 0;
     int czastemp = 0;
     int czastemp2 = 0;
@@ -481,7 +481,7 @@ public:
             colorchangeflag = true;
         }
         if (czasmin == -1) {
-            czasmin = 2;
+            czasmin = 3;
             czascolor = glm::vec3(0.7, 1.0f, 0.2f);
             colorchangeflag = false;
             visibilityStory = true;

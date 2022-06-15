@@ -268,7 +268,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-            //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);
@@ -372,7 +372,7 @@ void daySimulation(float dt, bool changeday, std::shared_ptr<SceneGraphNode> pla
 {
     //float step = -0.3f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
-    lightPosition.x += -0.325f * dt;
+    lightPosition.x += -0.300f * dt;
     if (changeday) {
         lightPosition.x = 35.0f; //end of day
         playerObject->get_transform().m_position = glm::vec3(27.0f, 0.2f, 9.17f); // dzieciak na start
