@@ -220,6 +220,8 @@ int main()
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
         gameManager.player->wazker(gameManager.seesawptr, passed_time);
+        gameManager.player->candier(gameManager.candyCane1ptr, gameManager.candyCane2ptr, gameManager.candyCane3ptr, gameManager.candyCane4ptr,
+            gameManager.candyCane5ptr, gameManager.candyCane6ptr, passed_time);
         /*gameManager.player->slider(gameManager.slideptr, passed_time);*/
         gameManager.player->tyrolker(gameManager.aerialrunnwayseatptr, passed_time, gameManager.colaptr, gameManager.mentosptr);
         gui.textureCandyCount = gameManager.candyCount(gameManager.player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
@@ -233,32 +235,6 @@ int main()
         gui.update(passed_time);
         gameManager.checkWin(); //check for win
 
-        //robocza modyfikacja candyCount
-        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS) {
-            if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && !pressFlagCandy) {
-                pressFlagCandy = true;
-                if (gameManager.player->getCandyCount() >= 1) {
-                    gameManager.player->setCandyCount(gameManager.player->getCandyCount() - 1);
-                }
-            }
-        }
-
-
-        //robocza modyfikacja candyCount
-        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS) {
-            if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && !pressFlagCandy) {
-                pressFlagCandy = true;
-                if (gameManager.player->getCandyCount() <= 5) {
-                    gameManager.player->setCandyCount(gameManager.player->getCandyCount() + 1);
-                }
-            }
-        }
-
-        if (glfwGetKey(window, GLFW_KEY_O) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE && pressFlagCandy) {
-            pressFlagCandy = false;
-
-        }
-
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
@@ -268,7 +244,8 @@ int main()
 
         if (should_render) {
             should_render = false;
-            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+            //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " <<
+            //gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);

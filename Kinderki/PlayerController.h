@@ -45,10 +45,17 @@ private:
     int tyrolkerSpeed = 100;
     float tyrolkerScale = 1.0;
     float tyrolkerVelocity6 = 6.0f;
+
+    bool candy1collected = false;
+    bool candy2collected = false;
+    bool candy3collected = false;
+    bool candy4collected = false;
+    bool candy5collected = false;
+    bool candy6collected = false;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
-        candyCount = 6;
+        candyCount = 0;
         outlineColor = glm::vec3(1.0f, 1.0f, 1.0f);
         std::cout << "candy count: " << candyCount << std::endl;
     }
@@ -448,6 +455,76 @@ public:
         else {
             setFalseStencil(interacter);
         }
+    }
+
+    void candier(std::shared_ptr<SceneGraphNode> candy1, std::shared_ptr<SceneGraphNode> candy2, std::shared_ptr<SceneGraphNode> candy3,
+        std::shared_ptr<SceneGraphNode> candy4, std::shared_ptr<SceneGraphNode> candy5, std::shared_ptr<SceneGraphNode> candy6, float dt)
+    {
+        //check for candy1
+        if (playerObject->collider.boxToBoxCollisioncheck(candy1->trigger) && !candy1collected) {
+            //remove candy
+                //change model to nothing
+                Model nothing("res/models/movable/nothing.obj");
+                candy1->modelTemp = nothing;
+            candy1collected = true;
+            //actualize candy count
+            candyCount++;
+        }
+
+        //check for candy2
+        if (playerObject->collider.boxToBoxCollisioncheck(candy2->trigger) && !candy2collected) {
+            Model nothing("res/models/movable/nothing.obj");
+            candy2->modelTemp = nothing;
+            candy2collected = true;
+            candyCount++;
+        }
+
+        //check for candy3
+        if (playerObject->collider.boxToBoxCollisioncheck(candy3->trigger) && !candy3collected) {
+            Model nothing("res/models/movable/nothing.obj");
+            candy3->modelTemp = nothing;
+            candy3collected = true;
+            candyCount++;
+        }
+
+        //check for candy4
+        if (playerObject->collider.boxToBoxCollisioncheck(candy4->trigger) && !candy4collected) {
+            Model nothing("res/models/movable/nothing.obj");
+            candy4->modelTemp = nothing;
+            candy4collected = true;
+            candyCount++;
+        }
+
+        //check for candy5
+        if (playerObject->collider.boxToBoxCollisioncheck(candy5->trigger) && !candy5collected) {
+            Model nothing("res/models/movable/nothing.obj");
+            candy5->modelTemp = nothing;
+            candy5collected = true;
+            candyCount++;
+        }
+
+        //check for candy6
+        if (playerObject->collider.boxToBoxCollisioncheck(candy6->trigger) && !candy6collected) {
+            Model nothing("res/models/movable/nothing.obj");
+            candy6->modelTemp = nothing;
+            candy6collected = true;
+            candyCount++;
+        }
+
+        //Candy rotation
+        candy1->get_transform().y_rotation_angle -= 100.0f * dt;
+        candy1->update_transform();
+        candy2->get_transform().y_rotation_angle -= 100.0f * dt;
+        candy2->update_transform();
+        candy3->get_transform().y_rotation_angle -= 100.0f * dt;
+        candy3->update_transform();
+        candy4->get_transform().y_rotation_angle -= 100.0f * dt;
+        candy4->update_transform();
+        candy5->get_transform().y_rotation_angle -= 100.0f * dt;
+        candy5->update_transform();
+        candy6->get_transform().y_rotation_angle -= 100.0f * dt;
+        candy6->update_transform();
+
     }
     //void slider(std::shared_ptr<SceneGraphNode> interacter, float dt) {
 

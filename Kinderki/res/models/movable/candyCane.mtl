@@ -1,0 +1,16 @@
+# 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
+# File Created: 16.06.2022 16:11:41
+
+newmtl candyCane_candy_cane
+	Kd 1.000000 1.000000 1.000000
+	Ks 0.720000 0.720000 0.720000
+	Tr 0.000000
+	d 1.000000
+	Tf 1.000000 1.000000 1.000000
+	Pr 0.850000
+	Pm 0.000000
+	Pc 0.000000
+	Pcr 0.000000
+	Ni 1.500000
+	Ke 0.000000 0.000000 0.000000
+	illum 2

@@ -8,7 +8,6 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "ModelAnimation.h"
-//#include "Model.h"
 #include "SceneGraph.h"
 #include "PlayerController.h"
 #include "Text.h"
@@ -76,6 +75,15 @@ class GameManager {
 
     std::shared_ptr<SceneGraphNode> colaptr;
     std::shared_ptr<SceneGraphNode> mentosptr;
+    std::shared_ptr<SceneGraphNode> candyCane1ptr;
+    std::shared_ptr<SceneGraphNode> candyCane2ptr;
+    std::shared_ptr<SceneGraphNode> candyCane3ptr;
+    std::shared_ptr<SceneGraphNode> candyCane4ptr;
+    std::shared_ptr<SceneGraphNode> candyCane5ptr;
+    std::shared_ptr<SceneGraphNode> candyCane6ptr;
+
+
+
 
     std::shared_ptr<SceneGraphNode> bucketblackptr;
     std::shared_ptr<SceneGraphNode> bucketpinkptr;
@@ -149,6 +157,14 @@ class GameManager {
         glm::vec3 heartPos2(7.0f, 0.0f, -11.0f);   //dziala jako lopatka
         glm::vec3 colaPos(37.0f, 0.0f, -9.0f);
         glm::vec3 mentosPos(29.5f, 1.5f, -1.5f);
+
+        glm::vec3 candyCane1Pos(20.5f, 1.0f, -1.0f);
+        glm::vec3 candyCane2Pos(20.0f, 1.0f, -1.0f);
+        glm::vec3 candyCane3Pos(19.5f, 1.0f, -1.0f);
+        glm::vec3 candyCane4Pos(19.0f, 1.0f, -1.0f);
+        glm::vec3 candyCane5Pos(18.5f, 1.0f, -1.0f);
+        glm::vec3 candyCane6Pos(18.0f, 1.0f, -1.0f);
+
 
         glm::vec3 bucketBlackPos(25.0f, 0.1f, -8.0f); //not used
         glm::vec3 bucketPinkPos(30.0f, 0.1f, -8.0f);  //not used
@@ -266,6 +282,7 @@ class GameManager {
 
         Model heart("res/models/movable/mentos.obj");
         Model cola("res/models/movable/cola.obj");
+        Model candyCane("res/models/movable/candyCane.obj");
         Model colaOut("res/models/outline/colaOutline.obj");
 
         Model mentos("res/models/movable/mentos.obj");
@@ -314,6 +331,7 @@ class GameManager {
         unsigned int texbucketblack = loadTexture("res/textures/models/bucket_black.png");
         unsigned int texbucketpink = loadTexture("res/textures/models/bucket_pink.png");
         unsigned int texbucketred = loadTexture("res/textures/models/bucket_red.png");
+        unsigned int texCandyCane = loadTexture("res/textures/candy_cane_diffuse.jpg");
         
 
         //Allocating storage for the objects
@@ -356,6 +374,13 @@ class GameManager {
         heartptr = std::make_shared<SceneGraphNode>();
         heartptr2 = std::make_shared<SceneGraphNode>();
         colaptr = std::make_shared<SceneGraphNode>();
+        candyCane1ptr = std::make_shared<SceneGraphNode>();
+        candyCane2ptr = std::make_shared<SceneGraphNode>();
+        candyCane3ptr = std::make_shared<SceneGraphNode>();
+        candyCane4ptr = std::make_shared<SceneGraphNode>();
+        candyCane5ptr = std::make_shared<SceneGraphNode>();
+        candyCane6ptr = std::make_shared<SceneGraphNode>();
+
         mentosptr = std::make_shared<SceneGraphNode>();
         bucketblackptr = std::make_shared<SceneGraphNode>();
         bucketpinkptr = std::make_shared<SceneGraphNode>();
@@ -1015,6 +1040,38 @@ class GameManager {
         mentosptr->trigger = mentosTrigger;
         mentosptr->modelOutline = mentosOut;
 
+        Collider candyCane1Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane1Pos, true);
+        Collider candyCane2Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane2Pos, true);
+        Collider candyCane3Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane3Pos, true);
+        Collider candyCane4Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane4Pos, true);
+        Collider candyCane5Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane5Pos, true);
+        Collider candyCane6Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane6Pos, true);
+
+        root_node->add_child(candyCane1ptr);
+        candyCane1ptr->setProperties(shaderShad, texCandyCane, candyCane1Pos , MODEL, candyCane, 0.5f, false);
+        candyCane1ptr->trigger = candyCane1Trigger;
+
+        root_node->add_child(candyCane2ptr);
+        candyCane2ptr->setProperties(shaderShad, texCandyCane, candyCane2Pos, MODEL, candyCane, 0.5f, false);
+        candyCane2ptr->trigger = candyCane2Trigger;
+
+        root_node->add_child(candyCane3ptr);
+        candyCane3ptr->setProperties(shaderShad, texCandyCane, candyCane3Pos, MODEL, candyCane, 0.5f, false);
+        candyCane3ptr->trigger = candyCane3Trigger;
+
+        root_node->add_child(candyCane4ptr);
+        candyCane4ptr->setProperties(shaderShad, texCandyCane, candyCane4Pos, MODEL, candyCane, 0.5f, false);
+        candyCane4ptr->trigger = candyCane4Trigger;
+
+        root_node->add_child(candyCane5ptr);
+        candyCane5ptr->setProperties(shaderShad, texCandyCane, candyCane5Pos, MODEL, candyCane, 0.5f, false);
+        candyCane5ptr->trigger = candyCane5Trigger;
+
+        root_node->add_child(candyCane6ptr);
+        candyCane6ptr->setProperties(shaderShad, texCandyCane, candyCane6Pos, MODEL, candyCane, 0.5f, false);
+        candyCane6ptr->trigger = candyCane6Trigger;
+
+
         /*root_node->add_child(bucketblackptr);
         bucketblackptr->setProperties(shaderShad, texbucketblack, bucketBlackPos, MODEL, bucket, 0.1f, true);
         bucketblackptr->trigger = bucketblackTrigger;
@@ -1255,7 +1312,7 @@ class GameManager {
             return tex3;
         if (player->getCandyCount() == 1)
             return tex2;
-        if (player->getCandyCount() == 0)
+        if (player->getCandyCount() <= 0)
             return tex1;
     }
 
