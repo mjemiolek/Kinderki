@@ -537,7 +537,6 @@ public:
         candy5->update_transform();
         candy6->get_transform().y_rotation_angle -= 100.0f * dt;
         candy6->update_transform();
-
     }
     //void slider(std::shared_ptr<SceneGraphNode> interacter, float dt) {
 

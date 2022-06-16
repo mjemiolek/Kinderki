@@ -159,12 +159,12 @@ class GameManager {
         glm::vec3 colaPos(37.0f, 0.0f, -9.0f);
         glm::vec3 mentosPos(29.5f, 1.5f, -1.5f);
 
-        glm::vec3 candyCane1Pos(20.5f, 1.0f, -1.0f);
-        glm::vec3 candyCane2Pos(20.0f, 1.0f, -1.0f);
-        glm::vec3 candyCane3Pos(19.5f, 1.0f, -1.0f);
-        glm::vec3 candyCane4Pos(19.0f, 1.0f, -1.0f);
-        glm::vec3 candyCane5Pos(18.5f, 1.0f, -1.0f);
-        glm::vec3 candyCane6Pos(18.0f, 1.0f, -1.0f);
+        glm::vec3 candyCane1Pos(31.0f, 12.0f, -12.0f);  //tree
+        glm::vec3 candyCane2Pos(20.0f, 1.0f, -5.5f);    //pool
+        glm::vec3 candyCane3Pos(5.0f, 0.5f, 19.0f);     //behind goal
+        glm::vec3 candyCane4Pos(34.5f, 0.5f, -12.0f);   //behind aerial
+        glm::vec3 candyCane5Pos(3.5f, 1.0f, 0.0f);      //on bench
+        glm::vec3 candyCane6Pos(33.0f, 4.5f, 5.8f);     //on aerial
 
 
         glm::vec3 bucketBlackPos(25.0f, 0.1f, -8.0f); //not used
@@ -329,6 +329,7 @@ class GameManager {
         unsigned int textree = loadTexture("res/textures/models/textree.png");
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
+        unsigned int texmentos = loadTexture("res/textures/models/mentos_textura.png");
         unsigned int texbucketblack = loadTexture("res/textures/models/bucket_black.png");
         unsigned int texbucketpink = loadTexture("res/textures/models/bucket_pink.png");
         unsigned int texbucketred = loadTexture("res/textures/models/bucket_red.png");
@@ -1149,9 +1150,11 @@ class GameManager {
         colaptr->modelOutline = colaOut;
 
         root_node->add_child(mentosptr);
-        mentosptr->setProperties(shaderShad, texturewin10, mentosPos, MODEL, mentos, 1.0f, true);
+        mentosptr->setProperties(shaderShad, texmentos, mentosPos, MODEL, mentos, 0.7f, false);
+        //mentosptr->get_transform().y_rotation_angle += 30.0f;
+        //mentosptr->get_transform().x_rotation_angle += 30.0f;
         mentosptr->trigger = mentosTrigger;
-        mentosptr->modelOutline = mentosOut;
+        //mentosptr->modelOutline = mentosOut;
 
         Collider candyCane1Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane1Pos, true);
         Collider candyCane2Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane2Pos, true);
