@@ -114,8 +114,9 @@ class GameManager {
 
     // animacje
     Model postac_test = Model("res/models/main_character_TEST_v15.fbx");
-    Animation anim = Animation("res/models/main_character_walking.fbx", &postac_test);
-    Animator animator = Animator(&anim);
+    Animation anim1 = Animation("res/animations/main_character_walking.fbx", &postac_test);
+    Animation anim2 = Animation("res/animations/main_character_jumping.fbx", &postac_test);
+    Animator animator = Animator(&anim1);
 
     //to checkWin()
     unsigned int ct;
@@ -1256,8 +1257,20 @@ class GameManager {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
         st = glfwGetTime();
+        if (player->getPlayerObject()->canJump && player->getMoveAnimation()) {
+            if (!(animator.getCurrentAnimation() == &anim1)) {
+                animator.PlayAnimation(&anim1);
+            }
+            animator.UpdateAnimation(dt * 60);
+        }
+        if (!player->getPlayerObject()->canJump && !player->getMoveAnimation()) {
+            if (!(animator.getCurrentAnimation() == &anim2)) {
+                animator.PlayAnimation(&anim2);
+            }
+            animator.UpdateAnimation(dt * 45);
+        }
 
-        animator.UpdateAnimation(dt * 60);
+        std::cout << "can jump: " << player->getPlayerObject()->canJump << " can move: " << player->getMoveAnimation() << std::endl;
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);

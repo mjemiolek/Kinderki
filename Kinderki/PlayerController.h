@@ -52,6 +52,8 @@ private:
     bool candy4collected = false;
     bool candy5collected = false;
     bool candy6collected = false;
+
+    bool moveAnimation = false;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -67,15 +69,22 @@ public:
             playerObject->velocity.x = 0.0f;
             if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
                 playerObject->velocity.z = -(speed);
+                moveAnimation = true;
+            }
+            else {
+                moveAnimation = false;
             }
             if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
                 playerObject->velocity.z = speed;
+                moveAnimation = true;
             }
             if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
                 playerObject->velocity.x = -(speed);
+                moveAnimation = true;
             }
             if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
                 playerObject->velocity.x = speed;
+                moveAnimation = true;
             }
             rotate(playerObject->velocity, deltaTime);
             //debuowanie postaci
@@ -104,9 +113,13 @@ public:
             {
                 if (playerObject->canJump==true)
                 {
+                    moveAnimation = false;
                     playerObject->velocity.y = 5.0f;
                 }
                 playerObject->canJump = false;
+            }
+            if (!playerObject->canJump) {
+                moveAnimation = false;
             }
         }
         
@@ -576,6 +589,9 @@ public:
         if (interacter->getStencil() != true) {
             interacter->setStencil(true);
         }
+    }
+    bool getMoveAnimation() {
+        return moveAnimation;
     }
 };
 

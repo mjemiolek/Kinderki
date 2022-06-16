@@ -71,6 +71,10 @@ public:
 		return m_FinalBoneMatrices;
 	}
 
+	Animation* getCurrentAnimation() {
+		return m_CurrentAnimation;
+	}
+
 private:
 	std::vector<glm::mat4> m_FinalBoneMatrices;
 	Animation* m_CurrentAnimation;
