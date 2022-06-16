@@ -84,7 +84,7 @@ int main()
     glfwWindowHint(GLFW_SAMPLES, 4); // for MSAA rendering to default framebuffer
 
     // Create window with graphics context
-    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Dear ImGui GLFW+OpenGL3 example", NULL, NULL);
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Kindergarten Escape", NULL, NULL);
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);

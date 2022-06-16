@@ -938,11 +938,109 @@ class GameManager {
 
         Collider treeColider12(glm::vec3(0.20f, 0.1f, 0.25f), false, tempPos, false);
 
-        root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+        tempPos = treePos;
+        tempPos.x += 2.25;
+        tempPos.y += 6.0;
+        tempPos.z += -0.30;
+
+        Collider treeColider13(glm::vec3(0.64f, 2.f, 0.25f), false, tempPos, false);
+
+        //glm::vec3 treePos(23.0f, 0.0f, -13.f);
+        tempPos = treePos;
+        tempPos.x += 5.0;
+        tempPos.y += 6.0;
+        //tempPos.z -= .25;
 
 
-        
+        Collider treeColider14(glm::vec3(0.65f, 0.5f, 0.33f), false, tempPos, false);
+
+
+        tempPos.x += -1.0;
+        tempPos.y += 1.3;
+        tempPos.z += .15;
+
+
+        Collider treeColider15(glm::vec3(0.15f, 0.3f, 0.15f), false, tempPos, false);
+
+        tempPos.x -= 0.5;
+        tempPos.y -= 1.5;
+        tempPos.z -= .15;
+
+        Collider treeColider16(glm::vec3(0.35f, 1.75f, 0.05f), false, tempPos, false);
+
+        tempPos = treePos;
+        tempPos.x += 4.0;
+        tempPos.y += 7.04;
+        tempPos.z -= 0.4;
+
+        Collider treeColider17(glm::vec3(2.f, 1.12f, 0.0001f), false, tempPos, false);
+
+        //w przód
+        tempPos.x += -1.0;
+        //tempPos.y += 7.0;
+        tempPos.z -= 0.69;
+
+        Collider treeColider18(glm::vec3(0.001f, 1.12f, 0.069f), false, tempPos, false);
+
+        tempPos.x += .5;
+        tempPos.y += 1.69;
+        tempPos.z -= 0.30;
+
+        Collider treeColider19(glm::vec3(0.25f, 0.11f, 0.13f), false, tempPos, false);
+
+
+
+        tempPos.x += -1.5;
+        tempPos.y += .33;
+        tempPos.z += 2.;
+
+        Collider treeColider20(glm::vec3(0.25f, 0.5f, 0.15f), false, tempPos, false);
+
+        tempPos.x += -1.;
+        tempPos.y += 1.1;
+        //tempPos.z += -.1;
+
+        Collider treeColider21(glm::vec3(0.25f, 0.5f, 0.16f), false, tempPos, false);
+
+        tempPos.x += .9;
+        tempPos.y += .60;
+        tempPos.z += -.89;
+
+        Collider treeColider22(glm::vec3(0.27f, 0.5f, 0.16f), false, tempPos, false);
+
+        tempPos = treePos;
+        tempPos.x += 6.45;
+        tempPos.y += 9;
+        tempPos.z += -0.69;
+
+        Collider treeColider23(glm::vec3(0.85f, 0.69f, 0.69f), false, tempPos, false);
+
+
+        tempPos.x += -.69;
+        tempPos.y += 0.90;
+        tempPos.z += -0.34;
+
+        Collider treeColider24(glm::vec3(0.17f, 0.25f, 0.27f), false, tempPos, false);
+
+        tempPos.x += 1.69;
+        tempPos.y += 0.33;
+        tempPos.z += 1.15;
+
+        Collider treeColider25(glm::vec3(0.50f, 0.33f, 0.30f), false, tempPos, false);
+
+
+        tempPos.x += .69;
+        tempPos.y += 0.35;
+        tempPos.z += .69;
+
+        Collider treeColider26(glm::vec3(0.4f, 0.35f, 0.25f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+
+
+
 
         treeptr->additionalColliders.push_back(treeColider0);
         treeptr->additionalColliders.push_back(treeColider01);
@@ -960,6 +1058,20 @@ class GameManager {
         treeptr->additionalColliders.push_back(treeColider10);
         treeptr->additionalColliders.push_back(treeColider11);
         treeptr->additionalColliders.push_back(treeColider12);
+        treeptr->additionalColliders.push_back(treeColider13);
+        treeptr->additionalColliders.push_back(treeColider14);
+        treeptr->additionalColliders.push_back(treeColider15);
+        treeptr->additionalColliders.push_back(treeColider16);
+        treeptr->additionalColliders.push_back(treeColider17);
+        treeptr->additionalColliders.push_back(treeColider18);
+        treeptr->additionalColliders.push_back(treeColider19);
+        treeptr->additionalColliders.push_back(treeColider20);
+        treeptr->additionalColliders.push_back(treeColider21);
+        treeptr->additionalColliders.push_back(treeColider22);
+        treeptr->additionalColliders.push_back(treeColider23);
+        treeptr->additionalColliders.push_back(treeColider24);
+        treeptr->additionalColliders.push_back(treeColider25);
+        treeptr->additionalColliders.push_back(treeColider26);
 
 
 

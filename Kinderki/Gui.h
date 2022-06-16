@@ -412,7 +412,7 @@ public:
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-       
+       /*
         textCzas.RenderText(strsCzas.str(), 1725.0f, 770.0f, 0.69f, czascolor);
        
         testShader.use();
@@ -422,7 +422,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, textureTime);
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-        
+        */
 
         //rendering text
         text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
