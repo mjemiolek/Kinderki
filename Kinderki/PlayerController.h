@@ -545,25 +545,6 @@ public:
         candy6->get_transform().y_rotation_angle -= 100.0f * dt;
         candy6->update_transform();
     }
-    //void slider(std::shared_ptr<SceneGraphNode> interacter, float dt) {
-
-    //    //TODO: 
-
-
-
-
-    //    //change outline
-    //    if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
-    //        setTrueStencil(interacter);
-    //        if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
-    //            setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
-    //        }
-    //    }
-    //    else {
-    //        setFalseStencil(interacter);
-    //    }
-    //}
-
 
     void setPlayerObject(std::shared_ptr<SceneGraphNode> tempObject) {
         playerObject = tempObject;

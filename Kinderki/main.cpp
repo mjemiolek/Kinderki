@@ -67,6 +67,10 @@ bool temp = true;
 
 bool showMidDayStories = false;
 
+
+int playerWins = 0;
+int escapeN = NULL;
+
 int mode = 0;
 
 int main()
@@ -234,7 +238,6 @@ int main()
         gameManager.player->wazker(gameManager.seesawptr, passed_time);
         gameManager.player->candier(gameManager.candyCane1ptr, gameManager.candyCane2ptr, gameManager.candyCane3ptr, gameManager.candyCane4ptr,
             gameManager.candyCane5ptr, gameManager.candyCane6ptr, passed_time);
-        /*gameManager.player->slider(gameManager.slideptr, passed_time);*/
         gameManager.player->tyrolker(gameManager.aerialrunnwayseatptr, passed_time, gameManager.colaptr, gameManager.mentosptr);
         gui.textureCandyCount = gameManager.candyCount(gameManager.player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
@@ -244,9 +247,10 @@ int main()
         moveFactor = fmod(moveFactor,1.0f);
         gameManager.getTutorialState()->update(window,gameManager.player,gameManager.cubeKid2,gameManager.sandpitptr);
         gameManager.update(passed_time);
-        gui.update(passed_time);
-        gameManager.checkWin(); //check for win
 
+        gameManager.checkWin(); //check for win
+        playerWins = gameManager.playerWins;
+        gui.update(passed_time, escapeN, playerWins);
 
         while (unprocessed_time >= frame_time) {
             should_render = true;
@@ -256,8 +260,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-            //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " <<
-            //gameManager.cube3->m_transform.m_position.z << std::endl;
+            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);

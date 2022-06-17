@@ -1205,6 +1205,7 @@ class GameManager {
         bucketredptr->modelOutline = bucketOut;
 
         //Escape triggers
+        /*
         glm::vec3 Trigger1LeftPos(2.42f - 50.5f, 0.0f, 0.0f);
         glm::vec3 Trigger2UpPos(20.675f, 0.0f, -21.0f - 50.5f);
         glm::vec3 Triger3RightPos(38.5f + 50.5f, 0.0f, -4.68f);
@@ -1217,6 +1218,16 @@ class GameManager {
         Collider escapeTriggerSquare(glm::vec3(30.0f, 0.6f, 30.0f), false, Trigger5TheSquarePos, false);
 
         escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerLeft, escapeTriggerUp, escapeTriggerRight, escapeTriggerDown, escapeTriggerSquare });
+        */
+        glm::vec3 Trigger1WallBang(22.25, 0.0f, 21.5f);
+        Collider escapeTriggerWallBang(glm::vec3(1.0f, 1.5f, 1.0f), false, Trigger1WallBang, false);
+
+
+
+        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang });
+
+        root_node->add_child(heartptr);
+        heartptr->setProperties(shaderShad, texturewin10, Trigger1WallBang, MODEL, postac_test, 0.05f, false);
     }
    
 
@@ -1280,7 +1291,7 @@ class GameManager {
             animator.UpdateAnimation(dt * 45);
         }
 
-       // std::cout << "can jump: " << player->getPlayerObject()->canJump << " can move: " << player->getMoveAnimation() << std::endl;
+        //std::cout << "can jump: " << player->getPlayerObject()->canJump << " can move: " << player->getMoveAnimation() << std::endl;
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
@@ -1457,7 +1468,6 @@ class GameManager {
         {
             if (cube3->collider.boxToBoxCollisioncheck(trigger))
             {
-               // std::cout << "ct: " << ct << " st: " << st << std::endl;
                 if (!ifWin) {
                     ct = st;
                     ifWin = true;
@@ -1467,7 +1477,7 @@ class GameManager {
             if (st - ct >= 2 && ifWin == true) {
                 playerWins++;
                 std::cout << "Win";
-                cube3->get_transform().m_position = playerPos; //its off beacuse of sandpiter
+                cube3->get_transform().m_position = playerPos;
                 ifWin = false;
             }
             
