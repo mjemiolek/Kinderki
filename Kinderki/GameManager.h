@@ -116,6 +116,7 @@ class GameManager {
     Model postac_test = Model("res/models/main_character_TEST_v15.fbx");
     Animation anim1 = Animation("res/animations/main_character_walking.fbx", &postac_test);
     Animation anim2 = Animation("res/animations/main_character_jumping.fbx", &postac_test);
+    Animation anim3 = Animation("res/animations/main_character_idle.fbx", &postac_test);
     Animator animator = Animator(&anim1);
 
     //to checkWin()
@@ -1272,8 +1273,14 @@ class GameManager {
             }
             animator.UpdateAnimation(dt * 45);
         }
+        if (player->getPlayerObject()->canJump && !player->getMoveAnimation()) {
+            if (!(animator.getCurrentAnimation() == &anim3)) {
+                animator.PlayAnimation(&anim3);
+            }
+            animator.UpdateAnimation(dt * 45);
+        }
 
-        std::cout << "can jump: " << player->getPlayerObject()->canJump << " can move: " << player->getMoveAnimation() << std::endl;
+       // std::cout << "can jump: " << player->getPlayerObject()->canJump << " can move: " << player->getMoveAnimation() << std::endl;
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
