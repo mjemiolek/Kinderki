@@ -88,8 +88,8 @@ float textureCords[] = { 0.0f, 1.0f,
 
 class Gui {
 public:
-    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO, TimeVAO;
-    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO, TimeVBO;
+    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO, TimeVAO, EscapeVAO;
+    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO, TimeVBO, EscapeVBO;
     unsigned int quadEBO;
     
     unsigned int texture;
@@ -117,10 +117,7 @@ public:
     unsigned int midday1;
     unsigned int midday2;
     unsigned int midday3;
-
-
-
-    std::vector<unsigned int> Storylist = { midday1, midday2, midday3 };
+    std::vector<unsigned int> Storylist = { midday1, midday2, midday3, midday3, midday3 };
     unsigned int textureStory;
     bool visibilityStory = false;
     bool storiesflag = true;
@@ -128,6 +125,13 @@ public:
     unsigned int ct = 0;
     int lt = 0;
     int ucieczki = 0;
+    int ucieczkiold = 0;
+
+    unsigned int textureEscape;
+    bool visibilityEscape = false;
+    bool escapeflag = false;
+    int escapeNumber = NULL;
+
 
     bool visibility = false;
     bool visibilityPageOne = true;
@@ -146,10 +150,11 @@ public:
     bool colorchangeflag = false;
     bool changeday = false;
     Text textCzas;
-    int czasmin = 3;
+    int czasmin = 0;
     int czassec = 0;
     int czastemp = 0;
     int czastemp2 = 0;
+    int czastempE = 0;
     std::ostringstream strsCzas;
     glm::vec3 czascolor = glm::vec3(0.7, 1.0f, 0.2f);
     unsigned int textureTime;
@@ -313,6 +318,26 @@ public:
         glGenBuffers(1, &StoryVBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+        ////////////////////Escape square
+        glGenVertexArrays(1, &EscapeVAO);
+        glBindVertexArray(EscapeVAO);
+
+        glGenBuffers(1, &EscapeVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, EscapeVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(fullDisplayVertices), fullDisplayVertices, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &EscapeVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, EscapeVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCords), textureCords, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &EscapeVBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
         
         ////////////////////Time square
         glGenVertexArrays(1, &TimeVAO);
@@ -345,11 +370,6 @@ public:
             textureLeft = texture;
             textureRight = textureSandpit;
 
-
-            Storylist.at(0) = midday1;
-            Storylist.at(1) = midday2;
-            Storylist.at(2) = midday3;
-
         }
         if (visibilityPageTwo) {
             textureLeft = textureAerialRunway;
@@ -364,7 +384,28 @@ public:
             textureRight = texture;
         }
 
-        handleStories();
+        if (visibilityStory) {
+            Storylist.at(0) = midday1;
+            Storylist.at(1) = midday2;
+            Storylist.at(2) = midday1;
+            Storylist.at(3) = midday2;
+            Storylist.at(4) = midday3;
+        }
+
+        if (visibilityEscape) {
+            {
+                //if (escapeNumber == 0) {
+                    Storylist.at(0) = texture;
+                    Storylist.at(1) = textureWallDestroy;
+                    Storylist.at(2) = midday3;
+                    Storylist.at(3) = midday2;
+                    Storylist.at(4) = textureWallDestroy;
+                //}
+            }
+        }
+
+
+        handleStories(Storylist);
 
 
         if (visibilityPageOne || visibilityPageTwo || visibilityPageThree || visibilityPageFour) {
@@ -389,14 +430,6 @@ public:
             glBindVertexArray(0);
         }
 
-        if (visibilityStory) {
-            glBindVertexArray(StoryVAO);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textureStory);
-            glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
-        }
-
         if (visibilityPageOne || visibilityPageTwo || visibilityPageThree || visibilityPageFour) {
             glBindVertexArray(quadVAO);
             glActiveTexture(GL_TEXTURE0);
@@ -406,6 +439,22 @@ public:
         }
 
         
+        if (visibilityStory || visibilityEscape) {
+            glBindVertexArray(StoryVAO);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, textureStory);
+            glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
+        /*
+        if (visibilityEscape) {
+            glBindVertexArray(EscapeVAO);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, textureEscape);
+            glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
+        */
 
         glBindVertexArray(candyVAO);
         glActiveTexture(GL_TEXTURE0);
@@ -419,7 +468,7 @@ public:
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-       /*
+       
         textCzas.RenderText(strsCzas.str(), 1725.0f, 770.0f, 0.69f, czascolor);
        
         testShader.use();
@@ -429,7 +478,7 @@ public:
         glBindTexture(GL_TEXTURE_2D, textureTime);
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-        */
+        
 
         //rendering text
         text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
@@ -442,7 +491,7 @@ public:
  
 	}
    
-    void update(double passed_time) {
+    void update(double passed_time, int escapeN, int ucieczki) {
         strs.str(std::string());
         strs << passed_time;
         strs2.str(std::string());
@@ -452,6 +501,18 @@ public:
 
         strsUcieczki.str(std::string());
         strsUcieczki << ucieczki;
+
+        if (ucieczki != ucieczkiold && !escapeflag) {
+            escapeflag = true;
+            ucieczkiold = ucieczki;
+        }
+
+        if (escapeflag) {
+            visibilityEscape = true;
+            escapeflag = false;
+            czastempE = glfwGetTime();
+        }
+
 
         handleTimer();
 
@@ -466,7 +527,6 @@ public:
         
         if (!czassec && !minchangeflag) {
             minchangeflag = true;
-            
         }
         if (czassec && minchangeflag) {
             minchangeflag = false; 
@@ -487,22 +547,33 @@ public:
             czascolor = glm::vec3(0.9, 0.0f, 0.25f);
             colorchangeflag = true;
         }
+
         if (czasmin == -1) {
             czasmin = 3;
             czascolor = glm::vec3(0.7, 1.0f, 0.2f);
             colorchangeflag = false;
+
             visibilityStory = true;
             changeday = true;
             czastemp = glfwGetTime();
         }
-        if (visibilityStory && glfwGetTime() > czastemp + 5.0f) {
+        if (visibilityStory && glfwGetTime() > czastemp + 10.0f) {
             changeday = false;
             visibilityStory = false;
         }
+
+        if (visibilityEscape && glfwGetTime() > czastempE + 10.0f) {
+            czasmin = 3;
+            escapeflag = false;
+            visibilityEscape = false;
+            if (czassec < 50) {
+                czasmin += 1;
+            }
+        }
     }
 
-    void handleStories() {
-        if (visibilityStory) {
+    void handleStories(std::vector<unsigned int> story) {
+        if (visibilityStory || visibilityEscape) {
             if (storiesflag) {
                 storiesflag = false;
                 czastemp2 = glfwGetTime();
@@ -511,8 +582,8 @@ public:
                 ct++;
                 storiesflag = true;
             }
-            if (ct == 3) { ct = 0; }
-            textureStory = Storylist.at(ct);
+            if (ct == 5) { ct = 0; }
+            textureStory = story.at(ct);
         }
     }
 
@@ -603,7 +674,7 @@ public:
                 visibilityPageTwo = false;
                 visibilityPageThree = false;
         }
-        
+        /*
         if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS && !visibilityStory) {
             visibilityStory = true;
         }
@@ -613,5 +684,6 @@ public:
         if (ucieczki == 5) {
             visibilityStory = true;
         }
+        */
     }
 };
