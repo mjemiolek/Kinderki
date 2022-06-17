@@ -14,6 +14,7 @@ private:
     glm::vec3 ofset2 = glm::vec3(0.0f, 0.0f, -0.5f);
     bool carringFlag = false;
     int iterator = 0;
+    bool scaleCola = true;
 public:
     MovableManager(std::shared_ptr<SceneGraphNode> root, std::shared_ptr<SceneGraphNode> player) {
         playerObject = player;
@@ -68,6 +69,8 @@ public:
 
             }
         }
+        mentosColaCheck();
+
 
         //if (glfwGetKey(window, GLFW_KEY_N) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE && carringFlag) {
         //    carringFlag = false;
@@ -97,7 +100,7 @@ public:
         if (!carringFlag) {
             for (int i = 0; i < vecMovable.size(); i++) {
                 if (playerObject->collider.boxToBoxCollisioncheck(vecMovable[i]->trigger)) {
-                    
+                    if (playerObject->m_children.size() == 0) {
                         carringFlag = true;
                         iterator = i;
                         rootNode->detach_child(vecMovable[i]);
@@ -106,12 +109,15 @@ public:
                         //std::cout << " 1. x: " << vecMovable[i]->m_transform.m_position.x << " y: " << vecMovable[i]->m_transform.m_position.y << " z: " << vecMovable[i]->m_transform.m_position.z << std::endl;
 
                         vecMovable[i]->get_transform().m_scale *= 1 / playerObject->get_transform().m_scale;
+
                         //std::cout << " 2. x: " << vecMovable[i]->m_transform.m_position.x << " y: " << vecMovable[i]->m_transform.m_position.y << " z: " << vecMovable[i]->m_transform.m_position.z << std::endl;
 
                         playerObject->add_child(vecMovable[i]);
                         calculateDir();
-                        vecMovable[i]->m_transform.m_position += ofset1 * (1/ playerObject->get_transform().m_scale);
+                        vecMovable[i]->m_transform.m_position += ofset1 * (1 / playerObject->get_transform().m_scale);
                         //std::cout << " 3. x: " << vecMovable[i]->m_transform.m_position.x << " y: " << vecMovable[i]->m_transform.m_position.y << " z: " << vecMovable[i]->m_transform.m_position.z << std::endl;
+                    }
+                        
                 }
             }
         }
@@ -175,7 +181,7 @@ public:
         //[2]-cola [3]-mentos
         if (vecMovable[2]->trigger.boxToBoxCollisioncheck(vecMovable[3]->trigger))
         {
-            carringFlag = false;
+           // carringFlag = false;
             Model nothing("res/models/movable/nothing.obj");
             //Hide mentos and attach it to cola
             vecMovable[3]->modelTemp = nothing;
@@ -184,7 +190,10 @@ public:
             //change cola model
             Model puffedCola("res/models/movable/puffed_cola.obj");
             vecMovable[2]->modelTemp = puffedCola;
-            vecMovable[2]->m_transform.m_scale = 13.0f;
+            if (scaleCola) {
+                vecMovable[2]->m_transform.m_scale *= 13.0f;
+                scaleCola = false;
+            }
             vecMovable[2]->modelOutline = nothing;
         }
     }

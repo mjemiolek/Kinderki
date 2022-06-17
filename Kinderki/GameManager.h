@@ -117,6 +117,7 @@ class GameManager {
     Animation anim1 = Animation("res/animations/main_character_walking.fbx", &postac_test);
     Animation anim2 = Animation("res/animations/main_character_jumping.fbx", &postac_test);
     Animation anim3 = Animation("res/animations/main_character_idle.fbx", &postac_test);
+    Animation anim4 = Animation("res/animations/main_character_lifting.fbx", &postac_test);
     Animator animator = Animator(&anim1);
 
     //to checkWin()
@@ -124,6 +125,8 @@ class GameManager {
     unsigned int st;
     bool ifWin = false;
 
+    //to check carry
+    bool tempCheckCarry = false;
     GameManager() {
         //settings
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
@@ -1291,7 +1294,8 @@ class GameManager {
             animator.UpdateAnimation(dt * 45);
         }
 
-        //std::cout << "can jump: " << player->getPlayerObject()->canJump << " can move: " << player->getMoveAnimation() << std::endl;
+
+
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
