@@ -185,6 +185,14 @@ int main()
     unsigned int midday1 = gameManager.loadTexture("res/textures/stories/midday/story1.png");
     unsigned int midday2 = gameManager.loadTexture("res/textures/stories/midday/story2.png");
     unsigned int midday3 = gameManager.loadTexture("res/textures/stories/midday/story3.png");
+    unsigned int midday4 = gameManager.loadTexture("res/textures/stories/midday/story4.png");
+    unsigned int midday5 = gameManager.loadTexture("res/textures/stories/midday/story5.png");
+
+
+    unsigned int tyrolker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
+    unsigned int tyrolker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
+    unsigned int tyrolker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int tyrolker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
 
     gameManager.tutorialState->setTexture1(moveIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
@@ -211,6 +219,14 @@ int main()
     gui.midday1 = midday1;
     gui.midday2 = midday2;
     gui.midday3 = midday3;
+    gui.midday4 = midday4;
+    gui.midday5 = midday5;
+
+
+    gui.tyrolker1 = tyrolker1;
+    gui.tyrolker2 = tyrolker2;
+    gui.tyrolker3 = tyrolker3;
+    gui.tyrolker4 = tyrolker4;
 
     
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
@@ -250,6 +266,7 @@ int main()
 
         gameManager.checkWin(); //check for win
         playerWins = gameManager.playerWins;
+        escapeN = gameManager.ESC;
         gui.update(passed_time, escapeN, playerWins);
 
         while (unprocessed_time >= frame_time) {

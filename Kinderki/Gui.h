@@ -109,17 +109,15 @@ public:
     unsigned int textureSandpit;
     unsigned int textureSlide;
 
-    unsigned int textureFirst;
-    unsigned int textureSecond;
-    unsigned int textureThird;
-
-
     unsigned int midday1;
     unsigned int midday2;
     unsigned int midday3;
-    std::vector<unsigned int> Storylist = { midday1, midday2, midday3, midday3, midday3 };
+    unsigned int midday4;
+    unsigned int midday5;
+    std::vector<unsigned int> Storylist = { midday1, midday2, midday3, midday4, midday5 };
     unsigned int textureStory;
     bool visibilityStory = false;
+    bool visibilityEnding = false;
     bool storiesflag = true;
     int Storycounter = 0;
     unsigned int ct = 0;
@@ -131,6 +129,14 @@ public:
     bool visibilityEscape = false;
     bool escapeflag = false;
     int escapeNumber = NULL;
+
+    unsigned int tyrolker1;
+    unsigned int tyrolker3;
+    unsigned int tyrolker2;
+    unsigned int tyrolker4;
+
+
+
 
 
     bool visibility = false;
@@ -155,6 +161,7 @@ public:
     int czastemp = 0;
     int czastemp2 = 0;
     int czastempE = 0;
+    int czastempEnd = 0;
     std::ostringstream strsCzas;
     glm::vec3 czascolor = glm::vec3(0.7, 1.0f, 0.2f);
     unsigned int textureTime;
@@ -387,21 +394,35 @@ public:
         if (visibilityStory) {
             Storylist.at(0) = midday1;
             Storylist.at(1) = midday2;
-            Storylist.at(2) = midday1;
-            Storylist.at(3) = midday2;
-            Storylist.at(4) = midday3;
+            Storylist.at(2) = midday3;
+            Storylist.at(3) = midday4;
+            Storylist.at(4) = midday5;
         }
 
         if (visibilityEscape) {
             {
-                //if (escapeNumber == 0) {
+                 if(escapeNumber == 0) {
                     Storylist.at(0) = texture;
                     Storylist.at(1) = textureWallDestroy;
-                    Storylist.at(2) = midday3;
-                    Storylist.at(3) = midday2;
-                    Storylist.at(4) = textureWallDestroy;
-                //}
+                    Storylist.at(2) = texture;
+                    Storylist.at(3) = textureWallDestroy;
+                    Storylist.at(4) = midday5;
+                 }
+                 if (escapeNumber == 1) {
+                     Storylist.at(0) = tyrolker1;
+                     Storylist.at(1) = tyrolker2;
+                     Storylist.at(2) = tyrolker3;
+                     Storylist.at(3) = tyrolker4;
+                     Storylist.at(4) = midday5;
+                 }
             }
+        }
+        if (visibilityEnding) {
+            Storylist.at(0) = textureSwing;
+            Storylist.at(1) = textureSeeSaw;
+            Storylist.at(2) = textureAerialRunway;
+            Storylist.at(3) = textureSeeSaw;
+            Storylist.at(4) = textureAerialRunway;
         }
 
 
@@ -439,22 +460,13 @@ public:
         }
 
         
-        if (visibilityStory || visibilityEscape) {
+        if (visibilityStory || visibilityEscape || visibilityEnding) {
             glBindVertexArray(StoryVAO);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, textureStory);
             glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
             glBindVertexArray(0);
         }
-        /*
-        if (visibilityEscape) {
-            glBindVertexArray(EscapeVAO);
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textureEscape);
-            glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
-            glBindVertexArray(0);
-        }
-        */
 
         glBindVertexArray(candyVAO);
         glActiveTexture(GL_TEXTURE0);
@@ -505,6 +517,7 @@ public:
         if (ucieczki != ucieczkiold && !escapeflag) {
             escapeflag = true;
             ucieczkiold = ucieczki;
+            escapeNumber = escapeN;
         }
 
         if (escapeflag) {
@@ -566,14 +579,22 @@ public:
             czasmin = 3;
             escapeflag = false;
             visibilityEscape = false;
+            escapeNumber = NULL;
             if (czassec < 50) {
                 czasmin += 1;
             }
+            if (ucieczkiold == 5) {
+                visibilityEnding = true;
+                czastempEnd = glfwGetTime();
+            }
+        }
+        if (visibilityEscape && glfwGetTime() > czastempEnd + 10.0f) {
+            visibilityEnding = false;
         }
     }
 
     void handleStories(std::vector<unsigned int> story) {
-        if (visibilityStory || visibilityEscape) {
+        if (visibilityStory || visibilityEscape || visibilityEnding) {
             if (storiesflag) {
                 storiesflag = false;
                 czastemp2 = glfwGetTime();

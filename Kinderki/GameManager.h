@@ -124,6 +124,7 @@ class GameManager {
     unsigned int ct;
     unsigned int st;
     bool ifWin = false;
+    int ESC = false;
 
     GameManager() {
         //settings
@@ -1223,12 +1224,14 @@ class GameManager {
         glm::vec3 Trigger1WallBang(22.25, 0.0f, 21.5f);
         Collider escapeTriggerWallBang(glm::vec3(1.0f, 1.5f, 1.0f), false, Trigger1WallBang, false);
 
+        glm::vec3 Trigger2Tyrolker(33.15, 2.5f, 11.5f);
+        Collider escapeTriggerTyrolker(glm::vec3(4.0f, 3.2f, 0.5f), false, Trigger2Tyrolker, false);
 
 
-        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang });
+        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker });
 
-        root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, Trigger1WallBang, MODEL, postac_test, 0.05f, false);
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, Trigger1WallBang, MODEL, postac_test, 0.05f, false);
     }
    
 
@@ -1475,6 +1478,7 @@ class GameManager {
 
     void checkWin()
     {
+        int escape = 0;
         for (const auto& trigger : escapeTriggers)
         {
             if (cube3->collider.boxToBoxCollisioncheck(trigger))
@@ -1482,6 +1486,7 @@ class GameManager {
                 if (!ifWin) {
                     ct = st;
                     ifWin = true;
+                    ESC = escape;
                 }
                 
             }
@@ -1491,7 +1496,7 @@ class GameManager {
                 cube3->get_transform().m_position = playerPos;
                 ifWin = false;
             }
-            
+            escape++;
         }
     }
 
