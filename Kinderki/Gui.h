@@ -113,7 +113,14 @@ public:
     unsigned int textureSecond;
     unsigned int textureThird;
 
-    std::vector<unsigned int> Storylist = { textureFirst, textureSecond, textureThird};
+
+    unsigned int midday1;
+    unsigned int midday2;
+    unsigned int midday3;
+
+
+
+    std::vector<unsigned int> Storylist = { midday1, midday2, midday3 };
     unsigned int textureStory;
     bool visibilityStory = false;
     bool storiesflag = true;
@@ -339,9 +346,9 @@ public:
             textureRight = textureSandpit;
 
 
-            Storylist.at(0) = textureAerialRunway;
-            Storylist.at(1) = textureCandy;
-            Storylist.at(2) = textureCandyCount;
+            Storylist.at(0) = midday1;
+            Storylist.at(1) = midday2;
+            Storylist.at(2) = midday3;
 
         }
         if (visibilityPageTwo) {

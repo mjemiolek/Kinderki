@@ -175,6 +175,13 @@ int main()
     unsigned int itemIntTexture = gameManager.loadTexture("res/textures/tutorial/itemInt.png");
     unsigned int moveIntTexture = gameManager.loadTexture("res/textures/tutorial/moveInt.png");
     unsigned int sandpitIntTexture = gameManager.loadTexture("res/textures/tutorial/SandpitInt.png");
+
+
+
+    unsigned int midday1 = gameManager.loadTexture("res/textures/stories/midday/story1.png");
+    unsigned int midday2 = gameManager.loadTexture("res/textures/stories/midday/story2.png");
+    unsigned int midday3 = gameManager.loadTexture("res/textures/stories/midday/story3.png");
+
     gameManager.tutorialState->setTexture1(moveIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
     gameManager.tutorialState->setTexture3(kidIntTexture);
@@ -195,6 +202,11 @@ int main()
     gui.textureCandy = textureCandy;
 
     gui.textureTime = textureTime;
+
+
+    gui.midday1 = midday1;
+    gui.midday2 = midday2;
+    gui.midday3 = midday3;
 
     
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
