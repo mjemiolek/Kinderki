@@ -139,7 +139,7 @@ int main()
     AIController* AI4 = new AIController(gameManager.cubeKid4);
     AIController* AI5 = new AIController(gameManager.cubeKid5);
 
-    MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
+    MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.player);
     movableManager->addMovable(gameManager.heartptr);
     movableManager->addMovable(gameManager.heartptr2);
     movableManager->addMovable(gameManager.colaptr);

@@ -74,6 +74,9 @@ public:
 	Animation* getCurrentAnimation() {
 		return m_CurrentAnimation;
 	}
+	float getCurrentTime() {
+		return m_CurrentTime;
+	}
 
 private:
 	std::vector<glm::mat4> m_FinalBoneMatrices;

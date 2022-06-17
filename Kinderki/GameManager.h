@@ -125,8 +125,6 @@ class GameManager {
     unsigned int st;
     bool ifWin = false;
 
-    //to check carry
-    bool tempCheckCarry = false;
     GameManager() {
         //settings
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
@@ -1275,25 +1273,34 @@ class GameManager {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
         st = glfwGetTime();
-        if (player->getPlayerObject()->canJump && player->getMoveAnimation()) {
+        if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(animator.getCurrentAnimation() == &anim1)) {
                 animator.PlayAnimation(&anim1);
             }
             animator.UpdateAnimation(dt * 60);
         }
-        if (!player->getPlayerObject()->canJump && !player->getMoveAnimation()) {
+        if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(animator.getCurrentAnimation() == &anim2)) {
                 animator.PlayAnimation(&anim2);
             }
             animator.UpdateAnimation(dt * 45);
         }
-        if (player->getPlayerObject()->canJump && !player->getMoveAnimation()) {
+        if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(animator.getCurrentAnimation() == &anim3)) {
                 animator.PlayAnimation(&anim3);
             }
             animator.UpdateAnimation(dt * 45);
         }
-
+        if (player->checkCarry() && player->getTempCheckCarry()) {
+            if (!(animator.getCurrentAnimation() == &anim4)) {
+                animator.PlayAnimation(&anim4);
+            }
+            animator.UpdateAnimation(dt * 300);
+            std::cout << "current time: " << animator.getCurrentTime() << " getDuration: " << animator.getCurrentAnimation()->GetDuration() << std::endl;
+            if (animator.getCurrentTime() > animator.getCurrentAnimation()->GetDuration() - 300) {
+                player->setTempCheckCarry(false);
+            }
+        }
 
 
         cube2->update_transform();

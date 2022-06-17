@@ -54,7 +54,7 @@ private:
     bool candy6collected = false;
 
     bool moveAnimation = false;
-    bool checkCarry = false;
+    bool tempCheckCarry = false;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -581,13 +581,19 @@ public:
     bool getMoveAnimation() {
         return moveAnimation;
     }
-    void setCheckCarry() {
+    bool checkCarry() {
         if (playerObject->m_children.size() == 0) {
-            checkCarry = false;
+            return false;
         }
         if (playerObject->m_children.size() > 0) {
-            checkCarry = true;
+            return true;
         }
+    }
+    bool getTempCheckCarry() {
+        return tempCheckCarry;
+    }
+    void setTempCheckCarry(bool temp) {
+        tempCheckCarry = temp;
     }
 };
 
