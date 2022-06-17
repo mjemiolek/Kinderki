@@ -13,7 +13,6 @@ private:
     glm::vec3 ofset1 = glm::vec3(0.0f, 0.0f, -0.5f);
     glm::vec3 ofset2 = glm::vec3(0.0f, 0.0f, -0.5f);
     bool carringFlag = false;
-    bool overlapFlag = false;
     int iterator = 0;
 public:
     MovableManager(std::shared_ptr<SceneGraphNode> root, std::shared_ptr<SceneGraphNode> player) {
@@ -54,26 +53,26 @@ public:
         */
 
         interact(vecMovable);
-        
-                if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-                    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && carringFlag) {
-                        carringFlag = false;
-                        //movableFlag = false;
-                        playerObject->detach_child(vecMovable[iterator]);
-                        rootNode->add_child(vecMovable[iterator]);
-                        calculateDir();
-                        vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->m_transform.y_rotation_angle;
-                        vecMovable[iterator]->get_transform().m_scale *= playerObject->get_transform().m_scale;
 
-                        vecMovable[iterator]->m_transform.m_position = playerObject->get_transform().m_position + ofset2;
+        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+            if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && carringFlag) {
+                carringFlag = false;
+                //movableFlag = false;
+                playerObject->detach_child(vecMovable[iterator]);
+                rootNode->add_child(vecMovable[iterator]);
+                calculateDir();
+                vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->m_transform.y_rotation_angle;
+                vecMovable[iterator]->get_transform().m_scale *= playerObject->get_transform().m_scale;
 
-                    }
-                }
+                vecMovable[iterator]->m_transform.m_position = playerObject->get_transform().m_position + ofset2;
+
+            }
+        }
+
+        //if (glfwGetKey(window, GLFW_KEY_N) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE && carringFlag) {
+        //    carringFlag = false;
+        //}
                 
-                 //if (glfwGetKey(window, GLFW_KEY_N) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE && carringFlag) {
-                 //    carringFlag = false;
-                 //}
-
         vecMovable[iterator]->update_transform();
         vecMovable[iterator]->trigger.setPosition(vecMovable[iterator]->get_transform().m_position);
     }
@@ -99,7 +98,6 @@ public:
             for (int i = 0; i < vecMovable.size(); i++) {
                 if (playerObject->collider.boxToBoxCollisioncheck(vecMovable[i]->trigger)) {
                     
-                        overlapFlag = true;
                         carringFlag = true;
                         iterator = i;
                         rootNode->detach_child(vecMovable[i]);
@@ -114,20 +112,82 @@ public:
                         calculateDir();
                         vecMovable[i]->m_transform.m_position += ofset1 * (1/ playerObject->get_transform().m_scale);
                         //std::cout << " 3. x: " << vecMovable[i]->m_transform.m_position.x << " y: " << vecMovable[i]->m_transform.m_position.y << " z: " << vecMovable[i]->m_transform.m_position.z << std::endl;
-
                 }
             }
         }
     }
 
-    float retX(int i) {
-        return vecMovable[i]->m_transform.m_position.x;
+    //TODO: Make absolutely smooth offsetting
+    //Little bit more smooth 
+    void calculateDir2() {
+        if (playerObject->m_transform.y_rotation_angle >= 0.0f && playerObject->m_transform.y_rotation_angle < 45.0f) { ofset2 = glm::vec3(0.0f, 0.0f, -0.5f); }
+        else if (playerObject->m_transform.y_rotation_angle >= 45.0f && playerObject->m_transform.y_rotation_angle < 90.0f) { ofset2 = glm::vec3(0.33f, 0.0f, -0.33f); }
+        else if (playerObject->m_transform.y_rotation_angle >= 90.0f && playerObject->m_transform.y_rotation_angle < 135.0f) { ofset2 = glm::vec3(0.5f, 0.0f, 0.0f); }
+        else if (playerObject->m_transform.y_rotation_angle >= 135.0f && playerObject->m_transform.y_rotation_angle < 180.0f) { ofset2 = glm::vec3(0.33f, 0.0f, 0.33f); }
+        else if (playerObject->m_transform.y_rotation_angle >= 180.0f && playerObject->m_transform.y_rotation_angle < 225.0f) { ofset2 = glm::vec3(0.0f, 0.0f, 0.5f); }
+        else if (playerObject->m_transform.y_rotation_angle >= 225.0f && playerObject->m_transform.y_rotation_angle < 270.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, 0.33f); }
+        else if (playerObject->m_transform.y_rotation_angle >= 270.0f && playerObject->m_transform.y_rotation_angle < 315.0f) { ofset2 = glm::vec3(-0.5f, 0.0f, 0.0f); }
+        else if (playerObject->m_transform.y_rotation_angle >= 315.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, -0.33f); }
     }
 
-    float retZ(int i) {
-        return vecMovable[i]->m_transform.m_position.z;
+    void manageMovable2(GLFWwindow* window)
+    {
+        //check for interaction
+        interact2(vecMovable);
+        calculateDir2();
+        //apply new position to carried object
+        if (carringFlag)
+        {
+            vecMovable[iterator]->m_transform.y_rotation_angle = playerObject->m_transform.y_rotation_angle; //apply rotation
+            vecMovable[iterator]->m_transform.m_position = playerObject->get_transform().m_position + ofset2; //new position
+        }
+        mentosColaCheck();
+        //Drop Item on M
+        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && carringFlag)
+        {
+            carringFlag = false;
+            vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->m_transform.y_rotation_angle;
+            vecMovable[iterator]->m_transform.m_position = playerObject->get_transform().m_position + ofset2;
+        }
+
+        vecMovable[iterator]->update_transform();
+        vecMovable[iterator]->trigger.setPosition(vecMovable[iterator]->get_transform().m_position);
     }
-    
+
+
+
+    //check for interaction and mark movable object with iterator
+    void interact2(std::vector<std::shared_ptr<SceneGraphNode>> vecMovable) {
+        if (!carringFlag) {
+            for (int i = 0; i < vecMovable.size(); i++) {
+                if (!carringFlag) {
+                    if (playerObject->collider.boxToBoxCollisioncheck(vecMovable[i]->trigger)) {
+                        carringFlag = true;
+                        iterator = i;
+                    }
+                }
+            }
+        }
+    }
+
+    void mentosColaCheck()
+    {
+        //[2]-cola [3]-mentos
+        if (vecMovable[2]->trigger.boxToBoxCollisioncheck(vecMovable[3]->trigger))
+        {
+            carringFlag = false;
+            Model nothing("res/models/movable/nothing.obj");
+            //Hide mentos and attach it to cola
+            vecMovable[3]->modelTemp = nothing;
+            vecMovable[3]->m_transform.m_position = glm::vec3(-500.0f, -2.0f, 0.0f);
+
+            //change cola model
+            Model puffedCola("res/models/movable/puffed_cola.obj");
+            vecMovable[2]->modelTemp = puffedCola;
+            vecMovable[2]->m_transform.m_scale = 13.0f;
+            vecMovable[2]->modelOutline = nothing;
+        }
+    }
 };
 
 #endif

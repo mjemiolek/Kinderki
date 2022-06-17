@@ -225,7 +225,7 @@ int main()
         input(window, gameManager.cube3);
         daySimulation(passed_time, gui.changeday, gameManager.cube3);
         ballManager->manageBall(window, passed_time);
-        movableManager->manageMovable(window);
+        movableManager->manageMovable2(window);
         gameManager.player->checkForInteraction(window, gameManager.cubeKid2, gameManager.cubeKid3, gameManager.cubeKid4, gameManager.cubeKid5);
         gameManager.player->move(window, passed_time);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);

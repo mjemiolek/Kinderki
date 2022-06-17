@@ -325,27 +325,36 @@ public:
 
     void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt, std::shared_ptr<SceneGraphNode> cola, std::shared_ptr<SceneGraphNode> mentos)
     {
-        //check for cola
-        if (seat->trigger.boxToBoxCollisioncheck(cola->trigger) &&  !tyrolkerCola) {
-            //seat->add_child(cola);
-            cola->m_transform.m_position = seat->m_transform.m_position;
-            tyrolkerScale = 1.15;
-            tyrolkerCola = true;
-        }
-        //check for mentos
-        if (seat->trigger.boxToBoxCollisioncheck(mentos->trigger)&& !tyrolkerMentos) {
-            //seat->add_child(mentos);
 
-            tyrolkerMentos = true;
+        //check for puffed_cola with mentos
+        if (seat->trigger.boxToBoxCollisioncheck(cola->trigger) &&  !tyrolkerCola) {
+            if (cola->m_transform.m_scale > 12.0f) //this means its puffed_cola
+            {
+                //Hide Cola
+                Model nothing("res/models/movable/nothing.obj");
+                cola->modelTemp = nothing;
+                cola->update_transform();
+                Model seatWithCola("res/models/level/aerialrunnway_seat_with_cola.obj");
+                seat->modelTemp = seatWithCola;
+                seat->m_transform.m_scale = 10.0f;
+                seat->modelOutline = nothing;
+                seat->update_transform();
+                //change seat model                
+                tyrolkerCola = true;
+                tyrolkerMentos = true;
+            }
         }
 
         if (tyrolkerCola && tyrolkerMentos) {
-            tyrolkerScale = 1.5;
+            //change seat model
+            
+            tyrolkerScale = 1.5f;
+            tyrolkerVelocity6 = 12.0f;
         }
+
         //if player is on seat and aerial is not at the end yet
         if (playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z < 5.55)
         {
-
             if (!tyrolkerMove) {
                 seat->m_transform.x_rotation_angle = 0;
                 tyrolkerAngle = 49.0;
@@ -364,7 +373,6 @@ public:
             seat->trigger.setPosition(glm::vec3(seat->m_transform.m_position.x,-1.5f,seat->m_transform.m_position.z));
             playerObject->update_transform();
             seat->update_transform();
-            cola->update_transform();
             
 
             if (seat->trigger.getPosition().z > 5.0 && tyrolkerMove && seat->m_transform.x_rotation_angle < 145)
@@ -372,24 +380,22 @@ public:
                 tyrolkerLaunch = true;
                 seat->m_transform.x_rotation_angle += 50 * tyrolkerScale * dt;
             }
-
         }
+
+        //if player is not on seat and aerial is not at beggining
         else if (!playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z > -10.0)
         {
-
-            
             tyrolkerMove = false;
             seat->m_transform.m_position.z -= 1.75 * dt;
             //seat->trigger.setPosition(seat->m_transform.m_position); //errrrrrrrrorrrrrrrrrrr
             seat->trigger.setPosition(glm::vec3(seat->m_transform.m_position.x, -1.5f, seat->m_transform.m_position.z));
             seat->update_transform();
-            cola->update_transform();
 
             if (!tyrolkerMove && !tyrolkerZero)
             {
                 seat->m_transform.x_rotation_angle += tyrolkerDir * tyrolkerSpeed * dt;
                 
-                if (tyrolkerAngle < 5) {
+                if (tyrolkerAngle < 5 || seat->trigger.getPosition().z < -9.9f) {
                     tyrolkerZero = true;
                 }
 
@@ -413,6 +419,7 @@ public:
                 }
             }
         }
+
         if (tyrolkerLaunch) {
             playerObject->m_transform.m_position.z += tyrolkerVelocity6 *tyrolkerScale / 1.5 * dt;
             playerObject->m_transform.m_position.y += tyrolkerVelocity6 * tyrolkerScale * dt;
