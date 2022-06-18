@@ -71,6 +71,8 @@ bool showMidDayStories = false;
 int playerWins = 0;
 int escapeN = NULL;
 
+bool already = false;
+
 int mode = 0;
 
 int main()
@@ -265,6 +267,7 @@ int main()
         gameManager.update(passed_time);
 
         gameManager.checkWin(); //check for win
+        gameManager.player->alreadyescapedTyrolker = gameManager.already;
         playerWins = gameManager.playerWins;
         escapeN = gameManager.ESC;
         gui.update(passed_time, escapeN, playerWins);
