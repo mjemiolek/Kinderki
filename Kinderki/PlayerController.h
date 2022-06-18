@@ -38,6 +38,7 @@ private:
     bool tyrolkerMove = false;
     bool tyrolkerZero = true;
     bool tyrolkerLaunch = false;
+    float tyrolkerVelocity6 = 6.0f;
     bool tyrolkerCola = false;
     bool tyrolkerMentos = false;
     int tyrolkerLaunchCounter = 0;
@@ -46,7 +47,7 @@ private:
     int tyrolkerAngle = 49;
     int tyrolkerSpeed = 100;
     float tyrolkerScale = 1.0;
-    float tyrolkerVelocity6 = 6.0f;
+    
 
     bool candy1collected = false;
     bool candy2collected = false;
@@ -64,6 +65,8 @@ private:
     bool moveAnimation = false;
     bool tempCheckCarry = false;
 public:
+    bool alreadyescapedTyrolker = false;
+
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
         candyCount = 0;
@@ -362,16 +365,17 @@ public:
                 seat->modelOutline = nothing;
                 seat->update_transform();
                 //change seat model                
-                tyrolkerCola = true;
-                tyrolkerMentos = true;
+                //tyrolkerCola = true;
+                //tyrolkerMentos = true;
+                tyrolkerScale = 1.5f;
+                tyrolkerVelocity6 = 9.0f;
             }
         }
 
-        if (tyrolkerCola && tyrolkerMentos) {
-            //change seat model
-            
-            tyrolkerScale = 1.5f;
-            tyrolkerVelocity6 = 12.0f;
+        if (alreadyescapedTyrolker) {
+            //change seat model 
+            tyrolkerScale = 1.1f;
+            tyrolkerVelocity6 = 6.9f;
         }
 
         //if player is on seat and aerial is not at the end yet

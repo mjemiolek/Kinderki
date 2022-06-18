@@ -110,6 +110,7 @@ class GameManager {
     glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
     //glm::vec3 playerPos = glm::vec3(25.0f, 0.2f, -10.0); //Player position
     int playerWins = 0;
+    bool already = false;
 
 
     // animacje
@@ -278,10 +279,12 @@ class GameManager {
         Model tree("res/models/level/tree.obj");
         Model umbrella("res/models/level/umbrella.obj");
         Model walk("res/models/level/walk.obj");
-        Model walls("res/models/level/ogrodzenie.obj");
-        Model damagedwall("res/models/level/dziura_ogrodzenie.obj");
+
         Model pool("res/models/level/pool.obj");
         Model poolwater("res/models/level/poolwater.obj");
+
+        Model walls("res/models/level/ogrodzenie.obj");
+        Model damagedwall("res/models/level/dziura_ogrodzenie.obj");
 
 
         Model heart("res/models/movable/mentos.obj");
@@ -453,7 +456,7 @@ class GameManager {
         //pilka
         root_node->add_child(ball);
         Collider ballCollider(0.350005f, false, glm::vec3(12.0f, 2.5f, 15.0f), true); //dont change 0.350005f (important)
-        ball->setProperties(shaderShad, textureshrek, glm::vec3(12.0f, 2.5f, 15.0f),MODEL,sphere,0.03f,true,ballCollider);
+        ball->setProperties(shaderShad, textureshrek, glm::vec3(25.5f, 2.5f, 0.0f),MODEL,sphere,0.03f,true,ballCollider);
         ball->modelOutline = sphere;
 
 
@@ -1213,8 +1216,8 @@ class GameManager {
         glm::vec3 Trigger1WallBang(22.25, 0.0f, 21.5f);
         Collider escapeTriggerWallBang(glm::vec3(1.0f, 1.5f, 1.0f), false, Trigger1WallBang, false);
 
-        glm::vec3 Trigger2Tyrolker(33.15, 2.5f, 11.5f);
-        Collider escapeTriggerTyrolker(glm::vec3(4.0f, 3.2f, 0.5f), false, Trigger2Tyrolker, false);
+        glm::vec3 Trigger2Tyrolker(33.15, 15.5f, 11.5f);
+        Collider escapeTriggerTyrolker(glm::vec3(4.0f, 40.2f, 0.5f), false, Trigger2Tyrolker, false);
 
 
         escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker });
@@ -1484,9 +1487,30 @@ class GameManager {
                 std::cout << "Win";
                 cube3->get_transform().m_position = playerPos;
                 ifWin = false;
+               
+
+                if(ESC == 0){
+                    Model wallsfixed("res/models/level/ogrodzenie_fixed.obj");
+                    wallsptr->modelTemp = wallsfixed;
+                    Model model0("res/models/level/model0.obj");
+                    damagedwallptr->modelTemp = model0;
+                    wallsptr->additionalColliders.at(2).setPosition(glm::vec3(12.1845f, 0.0f, 21.0f)); //down
+                    wallsptr->additionalColliders.at(3).setPosition(glm::vec3(21.5f, 0.0f, 15.8f)); //right
+                    damagedwallptr->trigger.setPosition(glm::vec3(0.f, -100.0f, 0.0f));
+                    ball->m_transform.m_position = glm::vec3(12.0f, 2.5f, 15.0f);
+                }
+                if (ESC == 1) {
+                    Model aerialrunnwayseat("res/models/level/aerialrunnway_seat.obj");
+
+                    aerialrunnwayseatptr->modelTemp = aerialrunnwayseat;
+                    aerialrunnwayseatptr->m_transform.m_scale = 1.0f;
+                    already = true;
+                }
             }
             escape++;
         }
+
+
     }
 
     std::shared_ptr<TutorialState> getTutorialState() {

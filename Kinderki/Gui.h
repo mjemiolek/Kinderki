@@ -561,7 +561,7 @@ public:
             colorchangeflag = true;
         }
 
-        if (czasmin == -1) {
+        if (czasmin == -1 && !visibilityEscape) {
             czasmin = 3;
             czascolor = glm::vec3(0.7, 1.0f, 0.2f);
             colorchangeflag = false;
@@ -577,10 +577,11 @@ public:
 
         if (visibilityEscape && glfwGetTime() > czastempE + 10.0f) {
             czasmin = 3;
+            czascolor = glm::vec3(0.7, 1.0f, 0.2f);
             escapeflag = false;
             visibilityEscape = false;
             escapeNumber = NULL;
-            if (czassec < 50) {
+            if (czassec < 31) {
                 czasmin += 1;
             }
             if (ucieczkiold == 5) {
