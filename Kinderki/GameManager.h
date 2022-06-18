@@ -186,7 +186,7 @@ class GameManager {
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),      //0
         glm::vec3(2.0f,  2.0f, -15.0f),     //1
-        glm::vec3(9.2f, 0.10f, -6.5f),       //2
+        glm::vec3(9.2f, 0.10f, -6.5f),      //2
         glm::vec3(12.0f, 0.0f, -16.0f),     //3  
         glm::vec3(13.0f, 0.0f, -13.0f), //Player position
         glm::vec3(0.0f,  2.0f, 0.0f),       //5
@@ -195,7 +195,7 @@ class GameManager {
         glm::vec3(1.5f,  2.0f, -1.5f),      //8
         glm::vec3(-1.3f,  2.0f, -1.5f),     //9
         glm::vec3(8.87f,  0.10f, -14.34f),  //10
-        glm::vec3(24.50f,  0.10f, -14.0f),  //11
+        glm::vec3(20.5f, 0.0f, 12.5f),      //11
         glm::vec3(10.0f,  0.10f, 6.0f),     //12
         glm::vec3(29.50f,  0.10f, -12.95f)  //13
         };
@@ -430,7 +430,9 @@ class GameManager {
         //cube do testu AI
         root_node->add_child(cube2);
         Collider cube2Collider(0.54f, false, cubePositions[2], false);
-        cube2->setProperties(shaderShad, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
+        cube2->setProperties(animShader, texturewin10, cubePositions[2], MODEL, box, 0.05f, true, cube2Collider);
+        Collider cube2Trigger(0.9f, false, cubePositions[2], true);
+        cube2->trigger = cube2Trigger;
 
         root_node->add_child(cubeKid2);
         Collider cubeKid2Collider(0.54f, false, cubePositions[10], false);

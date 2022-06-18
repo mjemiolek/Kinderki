@@ -118,6 +118,7 @@ public:
     unsigned int textureInt3;
     unsigned int textureInt4;
     unsigned int textureInt5;
+    unsigned int textureInt6;
 
 
     unsigned int textureIns;
@@ -558,6 +559,7 @@ public:
             else if (texNumber == 3) textureInteraction = textureInt3;
             else if (texNumber == 4) textureInteraction = textureInt4;
             else if (texNumber == 5) textureInteraction = textureInt5;
+            else if (texNumber == 6) textureInteraction = textureInt6;
             canInteractionBeRendered = canBeRendered;
         }
         return condition;

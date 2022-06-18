@@ -68,7 +68,7 @@ private:
     bool hustawkerBoyPaid = false; //TODO: Make it -false and change it based on payment to boii
 
     float wazkerTimeToWait = 1.0f; //seconds
-    bool wazkerBoyPaid = true; //TODO: Make it -false and change it based on payment to boii
+    bool wazkerBoyPaid = false; //TODO: Make it -false and change it based on payment to boii
     bool wazkerWait=false, wazkerMove=false;
 
     bool moveAnimation = false;
@@ -197,7 +197,7 @@ playerObject->velocity.y = speed;
         //std::cout << playerObject->get_transform().y_rotation_angle<<std::endl;
     }
 
-    void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AI1, std::shared_ptr<SceneGraphNode> AI2, std::shared_ptr<SceneGraphNode> AI3, std::shared_ptr<SceneGraphNode> AI4) {
+    void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AI1, std::shared_ptr<SceneGraphNode> AI2, std::shared_ptr<SceneGraphNode> AI3, std::shared_ptr<SceneGraphNode> AI4, std::shared_ptr<SceneGraphNode> AI5) {
         if ((playerObject->collider.sphereToSphereCollisionCheck(AI1->trigger))) {
             std::cout << "Press E to interact with kid" << std::endl;
             whichKidInteractedWith = 1;
@@ -218,6 +218,12 @@ playerObject->velocity.y = speed;
             whichKidInteractedWith = 4;
             canInteract = true;
         }
+        if (playerObject->collider.sphereToSphereCollisionCheck(AI5->trigger)) {
+            std::cout << "Press E to interact with kid" << std::endl;
+            whichKidInteractedWith = 5;
+            canInteract = true;
+        }
+
         if ((finishedTutorial == true) && (canInteract == true) && (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)) {
             //Here interaction happens
             canMove = false;
@@ -244,7 +250,7 @@ playerObject->velocity.y = speed;
                 }
                 else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     candyCount -= 1;
-                    textureLayer = 3;
+                    textureLayer = 5;
                 }
                 break;
             case 3:
@@ -255,7 +261,7 @@ playerObject->velocity.y = speed;
                 else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     hustawkerBoyPaid = true;
                     candyCount -= 1;
-                    textureLayer = 4;
+                    textureLayer = 6;
                 }
                 break;
             case 4:
@@ -266,6 +272,17 @@ playerObject->velocity.y = speed;
                 else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     candyCount -= 1;
                     textureLayer = 4;
+                }
+                break;
+            case 5:
+                std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0) && (ct - dt > 2)) {
+                    textureLayer = 2;
+                }
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
+                    wazkerBoyPaid = true;
+                    candyCount -= 1;
+                    textureLayer = 6;
                 }
                 break;
             }

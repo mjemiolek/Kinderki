@@ -188,12 +188,14 @@ int main()
     unsigned int pilkaPlotHintTexture = gameManager.loadTexture("res/textures/gui/pilkaPlotHint.png");
     unsigned int tyrolkerHintTexture = gameManager.loadTexture("res/textures/gui/tyrolkerHint.png");
     unsigned int sandPitHintTexture = gameManager.loadTexture("res/textures/gui/sandPitHint.png");
+    unsigned int boyHelpingHintTexture = gameManager.loadTexture("res/textures/gui/boyHelpingHint.png");
 
     gui.textureInt1 = buyHintWindowTexture;
     gui.textureInt2 = notEnoughCandyTexture;
     gui.textureInt5 = pilkaPlotHintTexture;
     gui.textureInt4 = tyrolkerHintTexture;
     gui.textureInt3 = sandPitHintTexture;
+    gui.textureInt6 = boyHelpingHintTexture;
 
     unsigned int midday1 = gameManager.loadTexture("res/textures/stories/midday/story1.png");
     unsigned int midday2 = gameManager.loadTexture("res/textures/stories/midday/story2.png");
@@ -259,7 +261,7 @@ int main()
         daySimulation(passed_time, gui.changeday, gameManager.cube3);
         ballManager->manageBall(window, passed_time);
         movableManager->manageMovable(window);
-        gameManager.player->checkForInteraction(window, gameManager.cubeKid2, gameManager.cubeKid3, gameManager.cubeKid4, gameManager.cubeKid5);
+        gameManager.player->checkForInteraction(window, gameManager.cubeKid2, gameManager.cubeKid3, gameManager.cubeKid4, gameManager.cubeKid5, gameManager.cube2);
         gui.setInteractionTexture(gameManager.player->getTextureLayer(), gameManager.player->getFinishedTutorial());
         gameManager.player->move(window, passed_time, current_time);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
