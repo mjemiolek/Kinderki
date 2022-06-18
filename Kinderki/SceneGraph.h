@@ -10,6 +10,7 @@
 #include "Settings.h"
 #include "Collider.h"
 #include "Frustum.h"
+#include "Animator.h"
 
 
 glm::vec3 lightPos = glm::vec3(5.0f, 35.0f, -30.0f);
@@ -231,6 +232,13 @@ struct SceneGraphNode {
                     glStencilMask(0x00);
                 }
                 shaderTemp.use();
+                if (isAnimated) {
+                    auto transforms = tempAnim.GetFinalBoneMatrices();
+                    for (int i = 0; i < transforms.size(); ++i) {
+                        //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
+                        shaderTemp.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+                    }
+                }
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture);
                 glActiveTexture(GL_TEXTURE1);
@@ -356,6 +364,8 @@ struct SceneGraphNode {
     Shader shaderTemp2 = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Model modelTemp = Model("res/models/box.obj");
     Model modelOutline = Model("res/models/box.obj");
+    Animator tempAnim = Animator();
+    bool isAnimated = false;
     GLuint texture;
     renderEnum tempRender;
     unsigned int VAOTemp;
