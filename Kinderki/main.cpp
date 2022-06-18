@@ -90,7 +90,7 @@ int main()
     glfwWindowHint(GLFW_SAMPLES, 4); // for MSAA rendering to default framebuffer
 
     // Create window with graphics context
-    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Kindergarten Escape", NULL, NULL);
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Playground Escape", NULL, NULL);
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);
@@ -140,6 +140,7 @@ int main()
     AIController* AI3 = new AIController(gameManager.cubeKid3);
     AIController* AI4 = new AIController(gameManager.cubeKid4);
     AIController* AI5 = new AIController(gameManager.cubeKid5);
+    //AI2 - AI near sandPit, AI5 - near Tyrolka 
 
     MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.player);
     movableManager->addMovable(gameManager.heartptr);
@@ -182,7 +183,17 @@ int main()
     unsigned int moveIntTexture = gameManager.loadTexture("res/textures/tutorial/moveInt.png");
     unsigned int sandpitIntTexture = gameManager.loadTexture("res/textures/tutorial/SandpitInt.png");
 
+    unsigned int buyHintWindowTexture = gameManager.loadTexture("res/textures/gui/interaction.png");
+    unsigned int notEnoughCandyTexture = gameManager.loadTexture("res/textures/gui/notEnoughCandy.png");
+    unsigned int pilkaPlotHintTexture = gameManager.loadTexture("res/textures/gui/pilkaPlotHint.png");
+    unsigned int tyrolkerHintTexture = gameManager.loadTexture("res/textures/gui/tyrolkerHint.png");
+    unsigned int sandPitHintTexture = gameManager.loadTexture("res/textures/gui/sandPitHint.png");
 
+    gui.textureInt1 = buyHintWindowTexture;
+    gui.textureInt2 = notEnoughCandyTexture;
+    gui.textureInt5 = pilkaPlotHintTexture;
+    gui.textureInt4 = tyrolkerHintTexture;
+    gui.textureInt3 = sandPitHintTexture;
 
     unsigned int midday1 = gameManager.loadTexture("res/textures/stories/midday/story1.png");
     unsigned int midday2 = gameManager.loadTexture("res/textures/stories/midday/story2.png");
@@ -249,6 +260,7 @@ int main()
         ballManager->manageBall(window, passed_time);
         movableManager->manageMovable(window);
         gameManager.player->checkForInteraction(window, gameManager.cubeKid2, gameManager.cubeKid3, gameManager.cubeKid4, gameManager.cubeKid5);
+        gui.setInteractionTexture(gameManager.player->getTextureLayer(), gameManager.player->getFinishedTutorial());
         gameManager.player->move(window, passed_time, current_time);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
@@ -313,6 +325,7 @@ int main()
             skybox.render();
             gui.render();
             gameManager.getTutorialState()->render();
+            //gui.render_interaction();
 
             glfwPollEvents();
             glfwSwapBuffers(window);
@@ -328,7 +341,7 @@ int main()
    // delete gameManager.player;
     delete ballManager;
     delete buffers;
-    delete AI;
+    delete AI, AI2, AI3, AI4, AI5;
 
 
     // glfw: terminate, clearing all previously allocated GLFW resources.

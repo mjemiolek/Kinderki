@@ -178,7 +178,7 @@ class GameManager {
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),      //0
         glm::vec3(2.0f,  2.0f, -15.0f),     //1
-        glm::vec3(0.5f, 2.5f, -1.5f),       //2
+        glm::vec3(9.2f, 0.10f, -6.5f),       //2
         glm::vec3(12.0f, 0.0f, -16.0f),     //3  
         glm::vec3(13.0f, 0.0f, -13.0f), //Player position
         glm::vec3(0.0f,  2.0f, 0.0f),       //5
