@@ -430,7 +430,7 @@ class GameManager {
         //cube do testu AI
         root_node->add_child(cube2);
         Collider cube2Collider(0.54f, false, cubePositions[2], false);
-        cube2->setProperties(animShader, texturewin10, cubePositions[2], MODEL, box, 0.05f, true, cube2Collider);
+        cube2->setProperties(animShader, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
         Collider cube2Trigger(0.9f, false, cubePositions[2], true);
         cube2->trigger = cube2Trigger;
 
