@@ -119,7 +119,15 @@ class GameManager {
     Animation anim2 = Animation("res/animations/main_character_jumping.fbx", &postac_test);
     Animation anim3 = Animation("res/animations/main_character_idle.fbx", &postac_test);
     Animation anim4 = Animation("res/animations/main_character_lifting.fbx", &postac_test);
-    Animator animator = Animator(&anim1);
+    Animator animatorMainCharacter = Animator(&anim1);
+
+    Model animatedBucket = Model("res/models/bucket.fbx");
+    Animation aniamtionBucket = Animation("res/animations/bucket_animation.fbx", &animatedBucket);
+    Animator animatorBucket = Animator(&aniamtionBucket);
+
+    Model kidSandPit = Model("res/models/main_character_TEST_v15.fbx");
+    Animation animationKidSandPit = Animation("res/animations/first_character_bucket_animation.fbx", &kidSandPit);
+    Animator animatorKidSandPit = Animator(&animationKidSandPit);
 
     //to checkWin()
     unsigned int ct;
@@ -186,7 +194,7 @@ class GameManager {
         glm::vec3(1.5f,  2.0f, -2.5f),      //7
         glm::vec3(1.5f,  2.0f, -1.5f),      //8
         glm::vec3(-1.3f,  2.0f, -1.5f),     //9
-        glm::vec3(12.87f,  0.10f, -14.34f),  //10
+        glm::vec3(8.87f,  0.10f, -14.34f),  //10
         glm::vec3(24.50f,  0.10f, -14.0f),  //11
         glm::vec3(10.0f,  0.10f, 6.0f),     //12
         glm::vec3(29.50f,  0.10f, -12.95f)  //13
@@ -323,6 +331,7 @@ class GameManager {
 
         //unsigned int texture_postac_test = loadTexture("res/textures/oko_tekstura_test2.png");
         unsigned int texture_postac_test = loadTexture("res/textures/main_character_texture.png");
+        unsigned int kidSandPitTexture = loadTexture("res/textures/kids/character_1_texture_v1.png");
 
         
         unsigned int texaerial = loadTexture("res/textures/models/texaerial.png");
@@ -425,9 +434,16 @@ class GameManager {
 
         root_node->add_child(cubeKid2);
         Collider cubeKid2Collider(0.54f, false, cubePositions[10], false);
-        cubeKid2->setProperties(shaderShad, texturewin10, cubePositions[10], MODEL, box, 0.15f, true, cubeKid2Collider);
+        cubeKid2->setProperties(animShader, kidSandPitTexture, cubePositions[10], MODEL, kidSandPit, 0.05f, false, cubeKid2Collider);
         Collider cubeKid2Trigger(0.9f, false, cubePositions[10], true);
         cubeKid2->trigger = cubeKid2Trigger;
+        cubeKid2->isAnimated = true;
+        cubeKid2->tempAnim = animatorKidSandPit;
+
+        root_node->add_child(bucketblackptr);
+        bucketblackptr->setProperties(animShader, texbucketred, cubePositions[10], MODEL, animatedBucket, 0.05f, false);
+        bucketblackptr->isAnimated = true;
+        bucketblackptr->tempAnim = animatorBucket;
 
         root_node->add_child(cubeKid3);
         Collider cubeKid3Collider(0.54f, false, cubePositions[11], false);
@@ -447,11 +463,12 @@ class GameManager {
         Collider cubeKid5Trigger(0.9f, false, cubePositions[13], true);
         cubeKid5->trigger = cubeKid5Trigger;
         
-        //gracz
         root_node->add_child(cube3);
-        Collider cube3Collider(0.34f, false, playerPos,true);
+        Collider cube3Collider(0.34f, false, playerPos, true);
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
         cube3->setProperties(animShader, texture_postac_test, playerPos, MODEL, postac_test, 0.05f, false, cube3Collider);
+        cube3->isAnimated = true;
+        cube3->tempAnim = animatorMainCharacter;
 
         //pilka
         root_node->add_child(ball);
@@ -1183,15 +1200,10 @@ class GameManager {
         candyCane6ptr->trigger = candyCane6Trigger;
 
 
-        /*root_node->add_child(bucketblackptr);
-        bucketblackptr->setProperties(shaderShad, texbucketblack, bucketBlackPos, MODEL, bucket, 0.1f, true);
-        bucketblackptr->trigger = bucketblackTrigger;
-        bucketblackptr->modelOutline = bucketOut;
-
-        root_node->add_child(bucketpinkptr);
-        bucketpinkptr->setProperties(shaderShad, texbucketpink, bucketPinkPos, MODEL, bucket, 0.1f, true);
-        bucketpinkptr->trigger = bucketpinkTrigger;
-        bucketpinkptr->modelOutline = bucketOut;*/
+        //root_node->add_child(bucketpinkptr);
+        //bucketpinkptr->setProperties(shaderShad, texbucketpink, bucketPinkPos, MODEL, bucket, 0.1f, true);
+        //bucketpinkptr->trigger = bucketpinkTrigger;
+        //bucketpinkptr->modelOutline = bucketOut;
 
         root_node->add_child(bucketredptr);
         bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true);
@@ -1269,34 +1281,38 @@ class GameManager {
         //gravity->updateGravityInNegativeY(cube2, dt);
         st = glfwGetTime();
         if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry()) {
-            if (!(animator.getCurrentAnimation() == &anim1)) {
-                animator.PlayAnimation(&anim1);
+            if (!(cube3->tempAnim.getCurrentAnimation() == &anim1)) {
+                cube3->tempAnim.PlayAnimation(&anim1);
             }
-            animator.UpdateAnimation(dt * 60);
+            cube3->tempAnim.UpdateAnimation(dt * 60);
         }
         if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
-            if (!(animator.getCurrentAnimation() == &anim2)) {
-                animator.PlayAnimation(&anim2);
+            if (!(cube3->tempAnim.getCurrentAnimation() == &anim2)) {
+                cube3->tempAnim.PlayAnimation(&anim2);
             }
-            animator.UpdateAnimation(dt * 45);
+            cube3->tempAnim.UpdateAnimation(dt * 45);
         }
         if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
-            if (!(animator.getCurrentAnimation() == &anim3)) {
-                animator.PlayAnimation(&anim3);
+            if (!(cube3->tempAnim.getCurrentAnimation() == &anim3)) {
+                cube3->tempAnim.PlayAnimation(&anim3);
             }
-            animator.UpdateAnimation(dt * 45);
+            cube3->tempAnim.UpdateAnimation(dt * 45);
         }
         if (player->checkCarry() && player->getTempCheckCarry()) {
-            if (!(animator.getCurrentAnimation() == &anim4)) {
-                animator.PlayAnimation(&anim4);
+            if (!(cube3->tempAnim.getCurrentAnimation() == &anim4)) {
+                cube3->tempAnim.PlayAnimation(&anim4);
             }
-            animator.UpdateAnimation(dt * 300);
-            std::cout << "current time: " << animator.getCurrentTime() << " getDuration: " << animator.getCurrentAnimation()->GetDuration() << std::endl;
-            if (animator.getCurrentTime() > animator.getCurrentAnimation()->GetDuration() - 300) {
+            cube3->tempAnim.UpdateAnimation(dt * 300);
+            if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 300) {
                 player->setTempCheckCarry(false);
             }
         }
 
+        cubeKid2->tempAnim.UpdateAnimation(dt * 60);
+        bucketblackptr->tempAnim.UpdateAnimation(dt * 60);
+        bucketblackptr->tempAnim.setCurrentTime(cubeKid2->tempAnim.getCurrentTime());
+        //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
+        //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
 
         cube2->update_transform();
         cube3->update_transform();
@@ -1395,11 +1411,6 @@ class GameManager {
         animShader.setVec3("viewPos", camera.Position);
         animShader.setVec3("lightPos", lightPos);
         // animShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
-        auto transforms = animator.GetFinalBoneMatrices();
-        for (int i = 0; i < transforms.size(); ++i) {
-            //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
-            animShader.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
-        }
 
         // Make it so the stencil test always passes
         glStencilFunc(GL_ALWAYS, 1, 0xFF);

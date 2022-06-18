@@ -11,6 +11,9 @@
 class Animator
 {
 public:
+	Animator() {
+
+	}
 	Animator(Animation* animation)
 	{
 		m_CurrentTime = 0.0;
@@ -76,6 +79,9 @@ public:
 	}
 	float getCurrentTime() {
 		return m_CurrentTime;
+	}
+	void setCurrentTime(float d) {
+		m_CurrentTime = d;
 	}
 
 private:
