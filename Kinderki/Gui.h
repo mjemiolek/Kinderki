@@ -140,7 +140,7 @@ public:
 
 
     bool visibility = false;
-    bool visibilityPageOne = true;
+    bool visibilityPageOne = false;
     bool visibilityPageTwo = false;
     bool visibilityPageThree = false;
     bool visibilityPageFour = false;
