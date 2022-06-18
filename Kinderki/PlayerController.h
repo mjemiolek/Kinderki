@@ -59,7 +59,11 @@ private:
     float timeVariable = 0.0f;
 
     float hustawkerTimeToWait = 1.0f; //seconds
-    bool hustawkerBoyPaid = true;
+    bool hustawkerBoyPaid = true; //TODO: Make it -false and change it based on payment to boii
+
+    float wazkerTimeToWait = 1.0f; //seconds
+    bool wazkerBoyPaid = true; //TODO: Make it -false and change it based on payment to boii
+    bool wazkerWait=false, wazkerMove=false;
 
     bool moveAnimation = false;
     bool tempCheckCarry = false;
@@ -453,9 +457,66 @@ public:
         }
     }
 
-    void wazker(std::shared_ptr<SceneGraphNode> interacter, float dt) {
-
+    void wazker(std::shared_ptr<SceneGraphNode> interacter, float dt) 
+    {
         //default seesaw behaviour
+        if (!wazkerBoyPaid)
+        {
+            defaultWazkerBehaviour(interacter,dt);
+        }
+        //behaviour when wazker boy paid
+        if (wazkerBoyPaid && playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(1)) && !wazkerWait && !wazkerMove) //wazkerBoyPaid nad proper position
+        {
+            //Go To delay
+            wazkerWait = true;
+            timeVariable = nowTime;
+        }
+        else 
+        {
+            defaultWazkerBehaviour(interacter, dt);
+        }
+        if (wazkerWait)
+        {
+            defaultWazkerBehaviour(interacter, dt);
+            if (nowTime - timeVariable >= wazkerTimeToWait)  //time to wait
+            {
+                wazkerWait = false;
+                //go to wazker move
+                wazkerMove = true;
+                timeVariable = nowTime;
+                playerObject->velocity.y = 12.0f;
+            }
+        }
+        if (wazkerMove)
+        {
+            if (nowTime - timeVariable >= 0.5f)
+            {
+                wazkerMove = false;
+            }
+            else
+            {
+                if (interacter->get_transform().z_rotation_angle < 14.0f)
+                {
+                    interacter->get_transform().z_rotation_angle += 140.0f * dt;
+                }
+                interacter->update_transform();
+            }
+        }
+
+        //change outline
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
+            setTrueStencil(interacter);
+            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+        }
+        else {
+            setFalseStencil(interacter);
+        }
+    }
+
+    void defaultWazkerBehaviour(std::shared_ptr<SceneGraphNode> interacter, float dt)
+    {
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(1))) {
             if (interacter->get_transform().z_rotation_angle > -14.0f)
             {
@@ -471,11 +532,13 @@ public:
             }
             interacter->additionalColliders.at(0).setPosition(glm::vec3(8.0f, -0.4f, -4.5f));
             interacter->update_transform();
-        } else {
+        }
+        else {
             if (interacter->get_transform().z_rotation_angle < -2.0f)
             {
                 interacter->get_transform().z_rotation_angle += 80.0f * dt;
-            } else if (interacter->get_transform().z_rotation_angle > 2.0f)
+            }
+            else if (interacter->get_transform().z_rotation_angle > 2.0f)
             {
                 interacter->get_transform().z_rotation_angle -= 80.0f * dt;
             }
@@ -484,18 +547,6 @@ public:
             }
             interacter->additionalColliders.at(0).setPosition(glm::vec3(8.0f, 0.2f, -4.5f));
             interacter->update_transform();
-        }
-
-        
-        //change outline
-        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
-            setTrueStencil(interacter);
-            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
-                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
-            }
-        }
-        else {
-            setFalseStencil(interacter);
         }
     }
 
