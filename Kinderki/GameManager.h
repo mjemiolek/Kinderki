@@ -117,12 +117,14 @@ class GameManager {
     Animation anim1 = Animation("res/animations/main_character_walking.fbx", &postac_test);
     Animation anim2 = Animation("res/animations/main_character_jumping.fbx", &postac_test);
     Animation anim3 = Animation("res/animations/main_character_idle.fbx", &postac_test);
+    Animation anim4 = Animation("res/animations/main_character_lifting.fbx", &postac_test);
     Animator animator = Animator(&anim1);
 
     //to checkWin()
     unsigned int ct;
     unsigned int st;
     bool ifWin = false;
+    int ESC = false;
 
     GameManager() {
         //settings
@@ -1211,12 +1213,14 @@ class GameManager {
         glm::vec3 Trigger1WallBang(22.25, 0.0f, 21.5f);
         Collider escapeTriggerWallBang(glm::vec3(1.0f, 1.5f, 1.0f), false, Trigger1WallBang, false);
 
+        glm::vec3 Trigger2Tyrolker(33.15, 2.5f, 11.5f);
+        Collider escapeTriggerTyrolker(glm::vec3(4.0f, 3.2f, 0.5f), false, Trigger2Tyrolker, false);
 
 
-        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang });
+        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker });
 
-        root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, Trigger1WallBang, MODEL, postac_test, 0.05f, false);
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, Trigger1WallBang, MODEL, postac_test, 0.05f, false);
     }
    
 
@@ -1261,26 +1265,36 @@ class GameManager {
 
         //gravity->updateGravityInNegativeY(cube2, dt);
         st = glfwGetTime();
-        if (player->getPlayerObject()->canJump && player->getMoveAnimation()) {
+        if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(animator.getCurrentAnimation() == &anim1)) {
                 animator.PlayAnimation(&anim1);
             }
             animator.UpdateAnimation(dt * 60);
         }
-        if (!player->getPlayerObject()->canJump && !player->getMoveAnimation()) {
+        if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(animator.getCurrentAnimation() == &anim2)) {
                 animator.PlayAnimation(&anim2);
             }
             animator.UpdateAnimation(dt * 45);
         }
-        if (player->getPlayerObject()->canJump && !player->getMoveAnimation()) {
+        if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(animator.getCurrentAnimation() == &anim3)) {
                 animator.PlayAnimation(&anim3);
             }
             animator.UpdateAnimation(dt * 45);
         }
+        if (player->checkCarry() && player->getTempCheckCarry()) {
+            if (!(animator.getCurrentAnimation() == &anim4)) {
+                animator.PlayAnimation(&anim4);
+            }
+            animator.UpdateAnimation(dt * 300);
+            std::cout << "current time: " << animator.getCurrentTime() << " getDuration: " << animator.getCurrentAnimation()->GetDuration() << std::endl;
+            if (animator.getCurrentTime() > animator.getCurrentAnimation()->GetDuration() - 300) {
+                player->setTempCheckCarry(false);
+            }
+        }
 
-        //std::cout << "can jump: " << player->getPlayerObject()->canJump << " can move: " << player->getMoveAnimation() << std::endl;
+
         cube2->update_transform();
         cube3->update_transform();
         root_node->update(Transform(), false);
@@ -1453,6 +1467,7 @@ class GameManager {
 
     void checkWin()
     {
+        int escape = 0;
         for (const auto& trigger : escapeTriggers)
         {
             if (cube3->collider.boxToBoxCollisioncheck(trigger))
@@ -1460,6 +1475,7 @@ class GameManager {
                 if (!ifWin) {
                     ct = st;
                     ifWin = true;
+                    ESC = escape;
                 }
                 
             }
@@ -1469,7 +1485,7 @@ class GameManager {
                 cube3->get_transform().m_position = playerPos;
                 ifWin = false;
             }
-            
+            escape++;
         }
     }
 

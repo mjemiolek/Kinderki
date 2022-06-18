@@ -62,6 +62,7 @@ private:
     bool hustawkerBoyPaid = true;
 
     bool moveAnimation = false;
+    bool tempCheckCarry = false;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -600,6 +601,20 @@ public:
     }
     bool getMoveAnimation() {
         return moveAnimation;
+    }
+    bool checkCarry() {
+        if (playerObject->m_children.size() == 0) {
+            return false;
+        }
+        if (playerObject->m_children.size() > 0) {
+            return true;
+        }
+    }
+    bool getTempCheckCarry() {
+        return tempCheckCarry;
+    }
+    void setTempCheckCarry(bool temp) {
+        tempCheckCarry = temp;
     }
 };
 

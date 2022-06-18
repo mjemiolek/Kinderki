@@ -139,7 +139,7 @@ int main()
     AIController* AI4 = new AIController(gameManager.cubeKid4);
     AIController* AI5 = new AIController(gameManager.cubeKid5);
 
-    MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.cube3);
+    MovableManager* movableManager = new MovableManager(gameManager.root_node, gameManager.player);
     movableManager->addMovable(gameManager.heartptr);
     movableManager->addMovable(gameManager.heartptr2);
     movableManager->addMovable(gameManager.colaptr);
@@ -185,6 +185,14 @@ int main()
     unsigned int midday1 = gameManager.loadTexture("res/textures/stories/midday/story1.png");
     unsigned int midday2 = gameManager.loadTexture("res/textures/stories/midday/story2.png");
     unsigned int midday3 = gameManager.loadTexture("res/textures/stories/midday/story3.png");
+    unsigned int midday4 = gameManager.loadTexture("res/textures/stories/midday/story4.png");
+    unsigned int midday5 = gameManager.loadTexture("res/textures/stories/midday/story5.png");
+
+
+    unsigned int tyrolker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
+    unsigned int tyrolker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
+    unsigned int tyrolker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int tyrolker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
 
     gameManager.tutorialState->setTexture1(moveIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
@@ -211,6 +219,14 @@ int main()
     gui.midday1 = midday1;
     gui.midday2 = midday2;
     gui.midday3 = midday3;
+    gui.midday4 = midday4;
+    gui.midday5 = midday5;
+
+
+    gui.tyrolker1 = tyrolker1;
+    gui.tyrolker2 = tyrolker2;
+    gui.tyrolker3 = tyrolker3;
+    gui.tyrolker4 = tyrolker4;
 
     
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
@@ -229,7 +245,7 @@ int main()
         input(window, gameManager.cube3);
         daySimulation(passed_time, gui.changeday, gameManager.cube3);
         ballManager->manageBall(window, passed_time);
-        movableManager->manageMovable2(window);
+        movableManager->manageMovable(window);
         gameManager.player->checkForInteraction(window, gameManager.cubeKid2, gameManager.cubeKid3, gameManager.cubeKid4, gameManager.cubeKid5);
         gameManager.player->move(window, passed_time, current_time);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
@@ -237,7 +253,7 @@ int main()
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
         gameManager.player->wazker(gameManager.seesawptr, passed_time);
         gameManager.player->candier(gameManager.candyCane1ptr, gameManager.candyCane2ptr, gameManager.candyCane3ptr, gameManager.candyCane4ptr,
-            gameManager.candyCane5ptr, gameManager.candyCane6ptr, passed_time);
+        gameManager.candyCane5ptr, gameManager.candyCane6ptr, passed_time);
         gameManager.player->tyrolker(gameManager.aerialrunnwayseatptr, passed_time, gameManager.colaptr, gameManager.mentosptr);
         gui.textureCandyCount = gameManager.candyCount(gameManager.player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
@@ -250,6 +266,7 @@ int main()
 
         gameManager.checkWin(); //check for win
         playerWins = gameManager.playerWins;
+        escapeN = gameManager.ESC;
         gui.update(passed_time, escapeN, playerWins);
 
         while (unprocessed_time >= frame_time) {
@@ -260,7 +277,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-            //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+           // std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);
