@@ -837,9 +837,6 @@ class GameManager {
         treeptr->additionalColliders.push_back(treeCollider4);
         */
 
-
-
-
         root_node->add_child(treeptr);
         treeptr->setProperties(shaderShad, textree, treePos, MODEL, tree, 0.90f, false);
         
@@ -1075,14 +1072,6 @@ class GameManager {
         treeptr->additionalColliders.push_back(treeColider24);
         treeptr->additionalColliders.push_back(treeColider25);
         treeptr->additionalColliders.push_back(treeColider26);
-
-
-
-
-
-
-
-
 
         //parasol (I dont want to deal with colliders here xd)
         //root_node->add_child(umbrellaptr);

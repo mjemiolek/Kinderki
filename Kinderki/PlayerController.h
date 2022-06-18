@@ -19,6 +19,8 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include <mmcobj.h>
+
 #include "SceneGraph.h"
 
 class PlayerController {
@@ -28,7 +30,7 @@ private:
     float speed = 2.5f;
     bool sandMove = false;
     bool goInGround = false;
-    bool hustawkerMove = false, hustawkerLeft = true;
+    bool hustawkerMove = false, hustawkerLeft = true, hustawkerWait=false;
     bool canInteract = false;
     float hustawkerSpeed;
     glm::vec3 outlineColor;
@@ -53,6 +55,12 @@ private:
     bool candy5collected = false;
     bool candy6collected = false;
 
+    float nowTime = 0.0f;
+    float timeVariable = 0.0f;
+
+    float hustawkerTimeToWait = 1.0f; //seconds
+    bool hustawkerBoyPaid = true;
+
     bool moveAnimation = false;
 public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
@@ -62,7 +70,7 @@ public:
         std::cout << "candy count: " << candyCount << std::endl;
     }
     ~PlayerController() {}
-    void move(GLFWwindow* window, float deltaTime)
+    void move(GLFWwindow* window, float deltaTime,float actualTime)
     {
         if (!sandMove) {
             playerObject->velocity.z = 0.0f;
@@ -122,7 +130,8 @@ public:
                 moveAnimation = false;
             }
         }
-        
+
+        nowTime = actualTime; //updating time
 	}
 
     void rotate(glm::vec3 direction,float deltaTime)
@@ -275,16 +284,28 @@ public:
         else {
             setFalseStencil(interacter);
         }
-
     }
 
     void hustawker(std::shared_ptr<SceneGraphNode> interacter, std::shared_ptr<SceneGraphNode> seat, float dt)
     {
-        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) 
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && hustawkerBoyPaid) 
         {
-            hustawkerMove = true;
-            playerObject->velocity.y = 10.0f;
-            hustawkerSpeed = 135.0f;
+            hustawkerWait = true;
+            timeVariable = nowTime;
+            hustawkerBoyPaid = false;
+        }
+        if (hustawkerWait)
+        {
+            //std::cout << nowTime << "   " << timeVariable << std::endl;
+            if (nowTime - timeVariable >= hustawkerTimeToWait)  //time to wait
+            {
+                hustawkerWait = false;
+                hustawkerMove = true;
+                hustawkerBoyPaid = true;
+                playerObject->velocity.y = 10.0f;
+                hustawkerSpeed = 135.0f;
+            }
+            
         }
         if (hustawkerMove)
         {
