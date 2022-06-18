@@ -325,7 +325,7 @@ int main()
             skybox.render();
             gui.render();
             gameManager.getTutorialState()->render();
-            //gui.render_interaction();
+            gui.render_interaction();                         
 
             glfwPollEvents();
             glfwSwapBuffers(window);

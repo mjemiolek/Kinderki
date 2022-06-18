@@ -37,6 +37,8 @@ private:
     int whichKidInteractedWith ;
     float hustawkerSpeed;
     glm::vec3 outlineColor;
+
+    unsigned int dt, ct;
    
     bool tyrolkerMove = false;
     bool tyrolkerZero = true;
@@ -77,6 +79,7 @@ public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
         candyCount = 0;
+        ct = 0;
         outlineColor = glm::vec3(1.0f, 1.0f, 1.0f);
         std::cout << "candy count: " << candyCount << std::endl;
     }
@@ -196,7 +199,6 @@ playerObject->velocity.y = speed;
 
     void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AI1, std::shared_ptr<SceneGraphNode> AI2, std::shared_ptr<SceneGraphNode> AI3, std::shared_ptr<SceneGraphNode> AI4) {
         if ((playerObject->collider.sphereToSphereCollisionCheck(AI1->trigger))) {
-
             std::cout << "Press E to interact with kid" << std::endl;
             whichKidInteractedWith = 1;
             canInteract = true;
@@ -221,15 +223,16 @@ playerObject->velocity.y = speed;
             canMove = false;
             std::cout << "Player interacted with Kid" << std::endl;
 
-
+            ct = glfwGetTime();
             switch (getWichKidInteractedWith()) {
                 textureLayer = 1;
+                dt = ct;
             case 1:
                 std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
-                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0)) {
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0) && (ct - dt > 2)) {
                     textureLayer = 2;
                 }
-                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0)) {
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     candyCount -= 1;
                     textureLayer = 3;
                   }
@@ -239,17 +242,17 @@ playerObject->velocity.y = speed;
                 if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0)) {
                     textureLayer = 2;
                 }
-                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0)) {
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     candyCount -= 1;
                     textureLayer = 3;
                 }
                 break;
             case 3:
                 std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
-                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0)) {
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0) && (ct - dt > 2)) {
                     textureLayer = 2;
                 }
-                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0)) {
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     hustawkerBoyPaid = true;
                     candyCount -= 1;
                     textureLayer = 4;
@@ -257,10 +260,10 @@ playerObject->velocity.y = speed;
                 break;
             case 4:
                 std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
-                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0)) {
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0) && (ct - dt > 2)) {
                     textureLayer = 2;
                 }
-                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0)) {
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     candyCount -= 1;
                     textureLayer = 4;
                 }
@@ -736,6 +739,13 @@ playerObject->velocity.y = speed;
     int getTextureLayer() {
         return textureLayer;
     }
+    bool getCanInteract() {
+        return canInteract;
+    }
+    //bool CanRenderInteraction() {
+    //    if ((getFinishedTutorial() == false)/* || (getCanInteract() == false) */ ) return false;
+    //    else return true;
+    //}
 };
 
 #endif

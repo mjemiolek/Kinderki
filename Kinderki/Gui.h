@@ -91,6 +91,11 @@ float textureCords[] = { 0.0f, 1.0f,
                      0.0f, 0.0f,
                      1.0f, 1.0f };
 
+float textureCordsInteraction[] = { 1.0f, 1.0f,
+                     0.0f, 0.0f,
+                     1.0f, 0.0f,
+                     0.0f, 1.0f };
+
 
 class Gui {
 public:
@@ -334,11 +339,11 @@ public:
 
         glGenBuffers(1, &InteractionVBO);
         glBindBuffer(GL_ARRAY_BUFFER, InteractionVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCords), textureCords, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCordsInteraction), textureCordsInteraction, GL_STATIC_DRAW);
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
-        glGenBuffers(1, &InteractionVBO);
+        glGenBuffers(1, &InteractionEBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, InteractionEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
