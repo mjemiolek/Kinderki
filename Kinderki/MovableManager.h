@@ -14,7 +14,6 @@ private:
     glm::vec3 ofset2 = glm::vec3(0.0f, 0.0f, -0.5f);
     bool carringFlag = false;
     int iterator = 0;
-    bool scaleCola = true;
 public:
     MovableManager(std::shared_ptr<SceneGraphNode> root, std::shared_ptr<PlayerController> player) {
         playerObject = player;
@@ -62,7 +61,7 @@ public:
                 //movableFlag = false;
                 playerObject->getPlayerObject()->detach_child(vecMovable[iterator]);
                 rootNode->add_child(vecMovable[iterator]);
-                calculateDir();
+                calculateDir2();
                 vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->getPlayerObject()->m_transform.y_rotation_angle;
                 vecMovable[iterator]->get_transform().m_scale *= playerObject->getPlayerObject()->get_transform().m_scale;
 
@@ -192,10 +191,6 @@ public:
             //change cola model
             Model puffedCola("res/models/movable/puffed_cola.obj");
             vecMovable[2]->modelTemp = puffedCola;
-            if (scaleCola) {
-                vecMovable[2]->m_transform.m_scale *= 13.0f;
-                scaleCola = false;
-            }
             vecMovable[2]->modelOutline = nothing;
         }
     }

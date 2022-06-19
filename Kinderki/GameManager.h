@@ -724,21 +724,32 @@ class GameManager {
         //hustawka
         glm::vec3 swingTrigPos = swingPos;
         swingTrigPos.y -= 1.5f;
-        Collider swingTrigger(glm::vec3(0.30f, 0.30f, 0.30f), false, swingTrigPos, false);
-
-
+        Collider swingTrigger(glm::vec3(0.13f, 0.30f, 0.30f), false, swingTrigPos, false);
 
         root_node->add_child(swingptr);
         glm::vec3 swingColPos = swingPos;
         swingColPos.y -= 2.0f;
         //siedzenie
-        Collider swingCollider(glm::vec3(0.38f, 0.38f, 0.38f), false, swingColPos, false);
+        Collider swingCollider(glm::vec3(0.20f, 0.38f, 0.38f), false, swingColPos, false);
         swingptr->setProperties(shaderShad, texswing, swingPos, MODEL, swing, 0.02f, true);
         swingptr->trigger = swingTrigger;
         swingptr->setRotation(0.0f, 180.0f, 0.0f);
         Collider swingTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, swingTrigPos, false);
         swingptr->additionalTriggers.push_back(swingTriggerOutline);
         swingptr->modelOutline = swingOut;
+
+        ////////niedziala i raczej nie bêdzie
+        ////lewa porecz
+        //swingColPos.z -= 0.25f;
+        //Collider leftCollider(glm::vec3(0.001f, 2.38f, 0.001f), false, swingColPos, false);
+        ////prawa porecz
+        //swingColPos.z += 0.5f;
+        //Collider rightCollider(glm::vec3(0.001f, 2.38f, 0.001f), false, swingColPos, false);
+        //swingColPos.z -= 0.25f;
+        //swingptr->additionalColliders.push_back(leftCollider);
+        //swingptr->additionalColliders.push_back(rightCollider);
+
+
         
         //lewo gora
         swingColPos.z -= 1.45f;
