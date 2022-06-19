@@ -375,6 +375,11 @@ playerObject->velocity.y = speed;
         }
         if (hustawkerWait)
         {
+            if (!playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) //if you jump from hustawker before boost delete boost
+            {
+                hustawkerWait = false;
+            }
+
             //std::cout << nowTime << "   " << timeVariable << std::endl;
             if (nowTime - timeVariable >= hustawkerTimeToWait)  //time to wait
             {
@@ -541,7 +546,7 @@ playerObject->velocity.y = speed;
             defaultWazkerBehaviour(interacter,dt);
         }
         //behaviour when wazker boy paid
-        if (wazkerBoyPaid && playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(1)) && !wazkerWait && !wazkerMove) //wazkerBoyPaid nad proper position
+        if (wazkerBoyPaid && playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(1)) && !wazkerWait && !wazkerMove) //wazkerBoyPaid and proper position
         {
             //Go To delay
             wazkerWait = true;
@@ -553,6 +558,10 @@ playerObject->velocity.y = speed;
         }
         if (wazkerWait)
         {
+            if (!playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(1))) //if you jump from wazker before boost delete boost
+            {
+                wazkerWait = false;
+            }
             defaultWazkerBehaviour(interacter, dt);
             if (nowTime - timeVariable >= wazkerTimeToWait)  //time to wait
             {
