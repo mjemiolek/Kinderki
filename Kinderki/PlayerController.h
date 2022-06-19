@@ -428,20 +428,21 @@ playerObject->velocity.y = speed;
 
         //check for puffed_cola with mentos
         if (seat->trigger.boxToBoxCollisioncheck(cola->trigger) &&  !tyrolkerCola) {
-            if (cola->m_transform.m_scale > 12.0f) //this means its puffed_cola
+            if (cola->m_transform.m_scale > 1.19f) //this means its puffed_cola
             {
                 //Hide Cola
                 Model nothing("res/models/movable/nothing.obj");
                 cola->modelTemp = nothing;
                 cola->update_transform();
+                //change seat model    
                 Model seatWithCola("res/models/level/aerialrunnway_seat_with_cola.obj");
                 seat->modelTemp = seatWithCola;
                 seat->m_transform.m_scale = 10.0f;
                 seat->modelOutline = nothing;
                 seat->update_transform();
-                //change seat model                
-                //tyrolkerCola = true;
-                //tyrolkerMentos = true;
+                            
+                tyrolkerCola = true;
+                tyrolkerMentos = true;
                 tyrolkerScale = 1.5f;
                 tyrolkerVelocity6 = 9.0f;
             }

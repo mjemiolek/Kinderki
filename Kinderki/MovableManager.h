@@ -13,6 +13,7 @@ private:
     glm::vec3 ofset1 = glm::vec3(0.0f, 0.0f, -0.5f);
     glm::vec3 ofset2 = glm::vec3(0.0f, 0.0f, -0.5f);
     bool carringFlag = false;
+    bool mentosColaInteracted = false;
     int iterator = 0;
 public:
     MovableManager(std::shared_ptr<SceneGraphNode> root, std::shared_ptr<PlayerController> player) {
@@ -69,7 +70,8 @@ public:
 
             }
         }
-        mentosColaCheck();
+        if (mentosColaInteracted == false) { mentosColaCheck(); }
+        
 
 
         //if (glfwGetKey(window, GLFW_KEY_N) == GLFW_RELEASE && glfwGetKey(window, GLFW_KEY_M) == GLFW_RELEASE && carringFlag) {
@@ -182,6 +184,7 @@ public:
         //[2]-cola [3]-mentos
         if (vecMovable[2]->trigger.boxToBoxCollisioncheck(vecMovable[3]->trigger))
         {
+            mentosColaInteracted = true;
            // carringFlag = false;
             Model nothing("res/models/movable/nothing.obj");
             //Hide mentos and attach it to cola
@@ -191,6 +194,7 @@ public:
             //change cola model
             Model puffedCola("res/models/movable/puffed_cola.obj");
             vecMovable[2]->modelTemp = puffedCola;
+            vecMovable[2]->m_transform.m_scale = 1.2f;
             vecMovable[2]->modelOutline = nothing;
         }
     }
