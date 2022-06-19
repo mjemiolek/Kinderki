@@ -2,6 +2,7 @@
 #include <rapidjson/document.h>
 #include <rapidjson/writer.h>
 #include <rapidjson/stringbuffer.h>
+#include <cmath>
 
 #include <irrKlang/ik_ISound.h>
 
@@ -113,6 +114,7 @@ class GameManager {
     //glm::vec3 playerPos = glm::vec3(25.0f, 0.2f, -10.0); //Player position
     int playerWins = 0;
     bool already = false;
+    bool isSoundPlaying = false;
 
 
     // animacje
@@ -1329,7 +1331,7 @@ class GameManager {
         return textureID;
     }
 
-    Sound walkingsound = Sound("res/sounds/grass-step.wav");
+    Sound walkingsound = Sound("res/sounds/grass_step.wav");
     Sound jumpingsound = Sound("res/sounds/jump.wav");
     Sound liftingsound = Sound("res/sounds/pick-up.wav");
     
@@ -1340,9 +1342,21 @@ class GameManager {
         if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim1)) {
                 cube3->tempAnim.PlayAnimation(&anim1);
-                walkingsound.playLooped();
+                if (!isSoundPlaying) {
+                    walkingsound.playLooped();
+                    isSoundPlaying = true;
+                }
+
             }
+            else {
+                if (fmod(st, 5.0) == 0) {
+                    walkingsound.stop();
+                    isSoundPlaying = false;
+                }
+            }
+          
             cube3->tempAnim.UpdateAnimation(dt);
+            
         }
         //jumping
         if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {

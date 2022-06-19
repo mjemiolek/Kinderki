@@ -26,4 +26,7 @@ public:
     {
         SoundEngine->play2D(data,true);
     }
+    void stop() {
+        SoundEngine->stopAllSounds();
+    }
 };
