@@ -203,11 +203,26 @@ int main()
     unsigned int midday4 = gameManager.loadTexture("res/textures/stories/midday/story4.png");
     unsigned int midday5 = gameManager.loadTexture("res/textures/stories/midday/story5.png");
 
-
     unsigned int tyrolker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
     unsigned int tyrolker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
     unsigned int tyrolker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
     unsigned int tyrolker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+
+    //TODO: podmiana tekstur na prawid³owe
+    unsigned int piaskownicer1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
+    unsigned int piaskownicer2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
+    unsigned int piaskownicer3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int piaskownicer4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+
+    unsigned int hustawker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
+    unsigned int hustawker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
+    unsigned int hustawker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int hustawker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+
+    unsigned int wazker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
+    unsigned int wazker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
+    unsigned int wazker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int wazker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
 
     gameManager.tutorialState->setTexture1(moveIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
@@ -242,6 +257,22 @@ int main()
     gui.tyrolker2 = tyrolker2;
     gui.tyrolker3 = tyrolker3;
     gui.tyrolker4 = tyrolker4;
+
+    gui.piaskownicer1 = piaskownicer1;
+    gui.piaskownicer2 = piaskownicer2;
+    gui.piaskownicer3 = piaskownicer3;
+    gui.piaskownicer4 = piaskownicer4;
+
+    gui.hustawker1 = hustawker1;
+    gui.hustawker2 = hustawker2;
+    gui.hustawker3 = hustawker3;
+    gui.hustawker4 = hustawker4;
+
+    gui.wazker1 = wazker1;
+    gui.wazker2 = wazker2;
+    gui.wazker3 = wazker3;
+    gui.wazker4 = wazker4;
+
 
     
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
@@ -294,7 +325,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-           // std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);

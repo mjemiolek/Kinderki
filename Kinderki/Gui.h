@@ -157,6 +157,21 @@ public:
     unsigned int tyrolker2;
     unsigned int tyrolker4;
 
+    unsigned int piaskownicer1;
+    unsigned int piaskownicer3;
+    unsigned int piaskownicer2;
+    unsigned int piaskownicer4;
+
+    unsigned int hustawker1;
+    unsigned int hustawker3;
+    unsigned int hustawker2;
+    unsigned int hustawker4;
+
+    unsigned int wazker1;
+    unsigned int wazker3;
+    unsigned int wazker2;
+    unsigned int wazker4;
+
 
 
 
@@ -443,18 +458,39 @@ public:
 
         if (visibilityEscape) {
             {
-                 if(escapeNumber == 0) {
+                 if(escapeNumber == 0) { //ball and wall
                     Storylist.at(0) = texture;
                     Storylist.at(1) = textureWallDestroy;
                     Storylist.at(2) = texture;
                     Storylist.at(3) = textureWallDestroy;
                     Storylist.at(4) = midday5;
                  }
-                 if (escapeNumber == 1) {
+                 if (escapeNumber == 1) { //tyrolker
                      Storylist.at(0) = tyrolker1;
                      Storylist.at(1) = tyrolker2;
                      Storylist.at(2) = tyrolker3;
                      Storylist.at(3) = tyrolker4;
+                     Storylist.at(4) = midday5;
+                 }
+                 if (escapeNumber == 2) { //piaskownicer
+                     Storylist.at(0) = piaskownicer1;
+                     Storylist.at(1) = piaskownicer2;
+                     Storylist.at(2) = piaskownicer3;
+                     Storylist.at(3) = piaskownicer4;
+                     Storylist.at(4) = midday5;
+                 }
+                 if (escapeNumber == 3) { //hustawker
+                     Storylist.at(0) = hustawker1;
+                     Storylist.at(1) = hustawker2;
+                     Storylist.at(2) = hustawker3;
+                     Storylist.at(3) = hustawker4;
+                     Storylist.at(4) = midday5;
+                 }
+                 if (escapeNumber == 4) { //wazker
+                     Storylist.at(0) = wazker1;
+                     Storylist.at(1) = wazker2;
+                     Storylist.at(2) = wazker3;
+                     Storylist.at(3) = wazker4;
                      Storylist.at(4) = midday5;
                  }
             }

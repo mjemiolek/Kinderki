@@ -1235,9 +1235,9 @@ class GameManager {
         Collider escapeTriggerRight(glm::vec3(50.0f, 0.6f, 50.0f), false, Triger3RightPos, false);
         Collider escapeTriggerDown(glm::vec3(50.0f, 0.6f, 50.0f), false, Trigger4DownPos, false);
         Collider escapeTriggerSquare(glm::vec3(30.0f, 0.6f, 30.0f), false, Trigger5TheSquarePos, false);
-
         escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerLeft, escapeTriggerUp, escapeTriggerRight, escapeTriggerDown, escapeTriggerSquare });
         */
+
         glm::vec3 Trigger1WallBang(22.25, 0.0f, 21.5f);
         Collider escapeTriggerWallBang(glm::vec3(1.0f, 1.5f, 1.0f), false, Trigger1WallBang, false);
 
@@ -1245,7 +1245,19 @@ class GameManager {
         Collider escapeTriggerTyrolker(glm::vec3(4.0f, 40.2f, 0.5f), false, Trigger2Tyrolker, false);
 
 
-        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker });
+        //TODO: Check if adjusments are needed. If displacement is good. Leave it as it is.
+        glm::vec3 Trigger3Piaskownicer(-1.0f, 0.0f, -14.0f);
+        Collider escapeTriggerPiaskownicer(glm::vec3(2.9f, 0.3f, 5.0f), false, Trigger3Piaskownicer, false);
+
+        glm::vec3 Trigger4Hustawker(1.0f, 5.0f, 6.0f);
+        Collider escapeTriggerHustawker(glm::vec3(1.6f, 2.5f, 4.0f), false, Trigger4Hustawker, false);
+
+        glm::vec3 Trigger5Wazker(1.0f, 5.0f, -4.5f);
+        Collider escapeTriggerWazker(glm::vec3(1.6f, 2.5f, 4.0f), false, Trigger5Wazker, false);
+
+        
+
+        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker, escapeTriggerPiaskownicer,  escapeTriggerHustawker, escapeTriggerWazker });
 
         //root_node->add_child(heartptr);
         //heartptr->setProperties(shaderShad, texturewin10, Trigger1WallBang, MODEL, postac_test, 0.05f, false);
@@ -1513,7 +1525,7 @@ class GameManager {
                 ifWin = false;
                
 
-                if(ESC == 0){
+                if(ESC == 0){ //Ogrodzenie i pilka
                     Model wallsfixed("res/models/level/ogrodzenie_fixed.obj");
                     wallsptr->modelTemp = wallsfixed;
                     Model model0("res/models/level/model0.obj");
@@ -1523,12 +1535,21 @@ class GameManager {
                     damagedwallptr->trigger.setPosition(glm::vec3(0.f, -100.0f, 0.0f));
                     ball->m_transform.m_position = glm::vec3(12.0f, 2.5f, 15.0f);
                 }
-                if (ESC == 1) {
+                if (ESC == 1) { //Tyrolka
                     Model aerialrunnwayseat("res/models/level/aerialrunnway_seat.obj");
 
                     aerialrunnwayseatptr->modelTemp = aerialrunnwayseat;
                     aerialrunnwayseatptr->m_transform.m_scale = 1.0f;
                     already = true;
+                }
+                if (ESC == 2) { //piaskownica
+
+                }
+                if (ESC == 3) { //hustawka
+
+                }
+                if (ESC == 4) { //wazka
+
                 }
             }
             escape++;
