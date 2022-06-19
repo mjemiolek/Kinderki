@@ -500,11 +500,13 @@ class GameManager {
         //tyrolka
         Collider aerialrunnwayTrigger(glm::vec3(0.2f, 3.0f, 0.2f), false, aerialRunnwayTrigerPos, true);
         Collider aerialrunnwayLinerTrigger(glm::vec3(1.5f, 1.f, 0.69f), false, aerialRunnwayLinerTrigerPos, true);
+        Collider aerialrunnwayLinerTriggerOut(glm::vec3(3.5f, 3.f, 11.00f), false,glm::vec3(33.0f,0.13f,-2.6f), true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
         aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f, true);
         aerialrunnwaywholeptr->modelOutline = aerialrunnwaywholeOut;
         aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTrigger);
+        aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTriggerOut);
 
         root_node->add_child(heartptr);
         heartptr->setProperties(shaderShad, texturewin10, aerialRunnwayLinerTrigerPos, MODEL, postac_test, 0.05f, false);
@@ -1194,7 +1196,7 @@ class GameManager {
         heartptr2->movableType = TOSANDPIT;
 
         root_node->add_child(colaptr);
-        colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 1.0f, true);
+        colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 1.0f, false);
         colaptr->trigger = colaTrigger;
         colaptr->modelOutline = colaOut;
 
