@@ -365,6 +365,14 @@ playerObject->velocity.y = speed;
         }
     }
 
+    void liner(Collider interacter)
+    {
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter)) {
+            playerObject->velocity.x += 1.69f;
+        }
+    }
+
+
     void hustawker(std::shared_ptr<SceneGraphNode> interacter, std::shared_ptr<SceneGraphNode> seat, float dt)
     {
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && hustawkerBoyPaid) 

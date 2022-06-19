@@ -209,6 +209,20 @@ int main()
     unsigned int tyrolker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
     unsigned int tyrolker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
 
+
+    unsigned int sandpit1 = gameManager.loadTexture("res/textures/stories/sandpit/sandpit1.png");
+    unsigned int sandpit2 = gameManager.loadTexture("res/textures/stories/sandpit/sandpit2.png");
+    unsigned int sandpit3 = gameManager.loadTexture("res/textures/stories/sandpit/sandpit3.png");
+    unsigned int sandpit4 = gameManager.loadTexture("res/textures/stories/sandpit/sandpit3.png");
+
+
+    unsigned int wallbang1 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang1.png");
+    unsigned int wallbang2 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang2.png");
+    unsigned int wallbang3 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang1.png");
+    unsigned int wallbang4 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang2.png");
+
+
+
     gameManager.tutorialState->setTexture1(moveIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
     gameManager.tutorialState->setTexture3(kidIntTexture);
@@ -243,6 +257,18 @@ int main()
     gui.tyrolker3 = tyrolker3;
     gui.tyrolker4 = tyrolker4;
 
+
+    gui.sandpit1 = sandpit1;
+    gui.sandpit2 = sandpit2;
+    gui.sandpit3 = sandpit3;
+    gui.sandpit4 = sandpit4;
+
+
+    gui.wallbang1 = wallbang1;
+    gui.wallbang2 = wallbang2;
+    gui.wallbang3 = wallbang3;
+    gui.wallbang4 = wallbang4;
+
     
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
     sound.play();
@@ -268,6 +294,7 @@ int main()
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
         gameManager.player->wazker(gameManager.seesawptr, passed_time);
+        gameManager.player->liner(gameManager.aerialrunnwaywholeptr->additionalTriggers.at(0));
         gameManager.player->candier(gameManager.candyCane1ptr, gameManager.candyCane2ptr, gameManager.candyCane3ptr, gameManager.candyCane4ptr,
         gameManager.candyCane5ptr, gameManager.candyCane6ptr, passed_time);
         gameManager.player->tyrolker(gameManager.aerialrunnwayseatptr, passed_time, gameManager.colaptr, gameManager.mentosptr);
@@ -294,7 +321,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-           // std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);

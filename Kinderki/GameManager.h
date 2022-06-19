@@ -64,6 +64,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> damagedwallptr;
     std::shared_ptr<SceneGraphNode> poolptr;
     std::shared_ptr<SceneGraphNode> poolwaterptr;
+    std::shared_ptr<SceneGraphNode> tabptr;
     float waterHeight = 0.58f;
 
 
@@ -150,6 +151,7 @@ class GameManager {
         glm::vec3 aerialRunnwayPos(33.0f, 0.0f, -2.5f);
         glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
         glm::vec3 aerialRunnwayTrigerPos(33.0f, -1.5f, -10.0f);
+        glm::vec3 aerialRunnwayLinerTrigerPos(36.5f, 4.0f, 5.5f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
         glm::vec3 poolPos(20.00f, 0.0f, -6.0f);
         glm::vec3 poolWaterPos(poolPos.x +0.05f, waterHeight, poolPos.z);
@@ -162,6 +164,9 @@ class GameManager {
         glm::vec3 wallPosColl5(30.3f, 0.0f, 11.07f);
         glm::vec3 wallPosColl6(38.6f, 0.0f, -4.68f); //right
         glm::vec3 damagedwallPos(21.0f, 0.1f, 20.5f);
+
+
+        glm::vec3 tabPos(35.0f, 3.5f, 5.75f);
 
 
         glm::vec3 tempPos(0.0f, 0.0f, 0.0f);
@@ -249,6 +254,8 @@ class GameManager {
         //Initializing models and textures
         Model box("res/models/box.obj");
         Model sphere("res/models/sphere.obj");
+
+        Model tab("res/models/level/tab.obj");
 
         Model aerialrunnwaywhole("res/models/level/aerialrunnway_whole.obj");
         Model aerialrunnwaywholeOut("res/models/outline/aerialrunnway_wholeOutline.obj");
@@ -342,6 +349,7 @@ class GameManager {
         unsigned int texswing = loadTexture("res/textures/models/texswing.png");
         unsigned int textrampoline = loadTexture("res/textures/models/textrampoline.png");
         unsigned int textree = loadTexture("res/textures/models/textree.png");
+        unsigned int textab = loadTexture("res/textures/models/textab.png");
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
         unsigned int texmentos = loadTexture("res/textures/models/mentos_textura.png");
@@ -387,6 +395,7 @@ class GameManager {
         damagedwallptr = std::make_shared<SceneGraphNode>();
         poolptr = std::make_shared<SceneGraphNode>();
         poolwaterptr = std::make_shared<SceneGraphNode>();
+        tabptr = std::make_shared<SceneGraphNode>();
 
         heartptr = std::make_shared<SceneGraphNode>();
         heartptr2 = std::make_shared<SceneGraphNode>();
@@ -485,11 +494,16 @@ class GameManager {
 
 
         //tyrolka
-        Collider aerialrunnwayTrigger(glm::vec3(0.2f, 3.0f, 0.5f), false, aerialRunnwayTrigerPos, true);
+        Collider aerialrunnwayTrigger(glm::vec3(0.2f, 3.0f, 0.2f), false, aerialRunnwayTrigerPos, true);
+        Collider aerialrunnwayLinerTrigger(glm::vec3(1.5f, 1.f, 0.69f), false, aerialRunnwayLinerTrigerPos, true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
         aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f, true);
         aerialrunnwaywholeptr->modelOutline = aerialrunnwaywholeOut;
+        aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTrigger);
+
+        root_node->add_child(heartptr);
+        heartptr->setProperties(shaderShad, texturewin10, aerialRunnwayLinerTrigerPos, MODEL, postac_test, 0.05f, false);
 
         root_node->add_child(aerialrunnwayseatptr);
         aerialrunnwayseatptr->setProperties(shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, true);
@@ -1134,6 +1148,12 @@ class GameManager {
         Collider damagedwallTrigger(glm::vec3(0.2f, 0.2f, 0.4f), false, damagedwallPos, false);
         damagedwallptr->trigger = damagedwallTrigger;
         
+        root_node->add_child(tabptr);
+        tabptr->setProperties(shaderShad, textab, tabPos, MODEL, tab, .03f, false);
+        tabptr->m_transform.y_rotation_angle = 150;
+        //Collider damagedwallTrigger(glm::vec3(0.2f, 0.2f, 0.4f), false, damagedwallPos, false);
+        //damagedwallptr->trigger = damagedwallTrigger;
+
         //walls
         float wallHeight = 2.0f;
         Collider wallColl1(glm::vec3(0.05f, wallHeight, 21.0f), false, wallPosColl1, true);  //left

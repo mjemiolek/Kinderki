@@ -158,7 +158,15 @@ public:
     unsigned int tyrolker4;
 
 
+    unsigned int sandpit1;
+    unsigned int sandpit2;
+    unsigned int sandpit3;
+    unsigned int sandpit4;
 
+    unsigned int wallbang1;
+    unsigned int wallbang2;
+    unsigned int wallbang3;
+    unsigned int wallbang4;
 
 
     bool visibility = false;
@@ -444,10 +452,10 @@ public:
         if (visibilityEscape) {
             {
                  if(escapeNumber == 0) {
-                    Storylist.at(0) = texture;
-                    Storylist.at(1) = textureWallDestroy;
-                    Storylist.at(2) = texture;
-                    Storylist.at(3) = textureWallDestroy;
+                    Storylist.at(0) = wallbang1;
+                    Storylist.at(1) = wallbang2;
+                    Storylist.at(2) = wallbang3;
+                    Storylist.at(3) = wallbang4;
                     Storylist.at(4) = midday5;
                  }
                  if (escapeNumber == 1) {
