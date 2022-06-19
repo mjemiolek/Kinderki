@@ -32,6 +32,18 @@ public:
         else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle == 315.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, -0.33f);}
     }
 
+    //Little bit more smooth 
+    void calculateDir2() {
+        if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 0.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 45.0f) { ofset2 = glm::vec3(0.0f, 0.0f, -0.5f); }
+        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 45.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 90.0f) { ofset2 = glm::vec3(0.33f, 0.0f, -0.33f); }
+        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 90.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 135.0f) { ofset2 = glm::vec3(0.5f, 0.0f, 0.0f); }
+        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 135.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 180.0f) { ofset2 = glm::vec3(0.33f, 0.0f, 0.33f); }
+        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 180.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 225.0f) { ofset2 = glm::vec3(0.0f, 0.0f, 0.5f); }
+        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 225.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 270.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, 0.33f); }
+        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 270.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 315.0f) { ofset2 = glm::vec3(-0.5f, 0.0f, 0.0f); }
+        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 315.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, -0.33f); }
+    }
+
     void manageMovable(GLFWwindow* window)
     {
         /*
@@ -126,58 +138,47 @@ public:
         }
     }
 
-    //TODO: Make absolutely smooth offsetting
-    //Little bit more smooth 
-    void calculateDir2() {
-        if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 0.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 45.0f) { ofset2 = glm::vec3(0.0f, 0.0f, -0.5f); }
-        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 45.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 90.0f) { ofset2 = glm::vec3(0.33f, 0.0f, -0.33f); }
-        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 90.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 135.0f) { ofset2 = glm::vec3(0.5f, 0.0f, 0.0f); }
-        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 135.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 180.0f) { ofset2 = glm::vec3(0.33f, 0.0f, 0.33f); }
-        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 180.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 225.0f) { ofset2 = glm::vec3(0.0f, 0.0f, 0.5f); }
-        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 225.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 270.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, 0.33f); }
-        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 270.0f && playerObject->getPlayerObject()->m_transform.y_rotation_angle < 315.0f) { ofset2 = glm::vec3(-0.5f, 0.0f, 0.0f); }
-        else if (playerObject->getPlayerObject()->m_transform.y_rotation_angle >= 315.0f) { ofset2 = glm::vec3(-0.33f, 0.0f, -0.33f); }
-    }
+    
 
-    void manageMovable2(GLFWwindow* window)
-    {
-        //check for interaction
-        interact2(vecMovable);
-        calculateDir2();
-        //apply new position to carried object
-        if (carringFlag)
-        {
-            vecMovable[iterator]->m_transform.y_rotation_angle = playerObject->getPlayerObject()->m_transform.y_rotation_angle; //apply rotation
-            vecMovable[iterator]->m_transform.m_position = playerObject->getPlayerObject()->get_transform().m_position + ofset2; //new position
-        }
-        mentosColaCheck();
-        //Drop Item on M
-        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && carringFlag)
-        {
-            carringFlag = false;
-            vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->getPlayerObject()->m_transform.y_rotation_angle;
-            vecMovable[iterator]->m_transform.m_position = playerObject->getPlayerObject()->get_transform().m_position + ofset2;
-        }
+    //void manageMovable2(GLFWwindow* window)
+    //{
+    //    //check for interaction
+    //    interact2(vecMovable);
+    //    calculateDir2();
+    //    //apply new position to carried object
+    //    if (carringFlag)
+    //    {
+    //        vecMovable[iterator]->m_transform.y_rotation_angle = playerObject->getPlayerObject()->m_transform.y_rotation_angle; //apply rotation
+    //        vecMovable[iterator]->m_transform.m_position = playerObject->getPlayerObject()->get_transform().m_position + ofset2; //new position
+    //    }
+    //    mentosColaCheck();
+    //    //Drop Item on M
+    //    if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && carringFlag)
+    //    {
+    //        carringFlag = false;
+    //        vecMovable[iterator]->m_transform.y_rotation_angle += playerObject->getPlayerObject()->m_transform.y_rotation_angle;
+    //        vecMovable[iterator]->m_transform.m_position = playerObject->getPlayerObject()->get_transform().m_position + ofset2;
+    //    }
 
-        vecMovable[iterator]->update_transform();
-        vecMovable[iterator]->trigger.setPosition(vecMovable[iterator]->get_transform().m_position);
-    }
+    //    vecMovable[iterator]->update_transform();
+    //    vecMovable[iterator]->trigger.setPosition(vecMovable[iterator]->get_transform().m_position);
+    //}
 
 
 
-    //check for interaction and mark movable object with iterator
-    void interact2(std::vector<std::shared_ptr<SceneGraphNode>> vecMovable) {
-        if (!carringFlag) {
-            for (int i = 0; i < vecMovable.size(); i++) {
-                if (!carringFlag) {
-                    if (playerObject->getPlayerObject()->collider.boxToBoxCollisioncheck(vecMovable[i]->trigger)) {
-                        carringFlag = true;
-                        iterator = i;
-                    }
-                }
-            }
-        }
-    }
+    ////check for interaction and mark movable object with iterator
+    //void interact2(std::vector<std::shared_ptr<SceneGraphNode>> vecMovable) {
+    //    if (!carringFlag) {
+    //        for (int i = 0; i < vecMovable.size(); i++) {
+    //            if (!carringFlag) {
+    //                if (playerObject->getPlayerObject()->collider.boxToBoxCollisioncheck(vecMovable[i]->trigger)) {
+    //                    carringFlag = true;
+    //                    iterator = i;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     void mentosColaCheck()
     {
