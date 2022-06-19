@@ -191,7 +191,7 @@ class GameManager {
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),      //0
         glm::vec3(2.0f,  2.0f, -15.0f),     //1
-        glm::vec3(9.2f, 0.10f, -6.5f),      //2
+        glm::vec3(9.2f, 1.10f, -6.5f),      //2
         glm::vec3(12.0f, 0.0f, -16.0f),     //3  
         glm::vec3(13.0f, 0.0f, -13.0f), //Player position
         glm::vec3(0.0f,  2.0f, 0.0f),       //5
@@ -317,7 +317,7 @@ class GameManager {
         //Model postac_test("res/models/postac_test_kolejny.obj");
        // Model postac_test("res/models/postac_test_v4.obj");
 
-
+        Model fatKid("res/models/second_character.fbx");
 
 
         unsigned int texturewin10 = loadTexture("res/textures/win.png");
@@ -339,6 +339,10 @@ class GameManager {
         //unsigned int texture_postac_test = loadTexture("res/textures/oko_tekstura_test2.png");
         unsigned int texture_postac_test = loadTexture("res/textures/main_character_texture.png");
         unsigned int kidSandPitTexture = loadTexture("res/textures/kids/character_1_texture_v1.png");
+        unsigned int kid3texture = loadTexture("res/textures/kids/character_1_texture_v2.png");
+        unsigned int kid4texture = loadTexture("res/textures/kids/character_1_texture_v3.png");
+        unsigned int kid5texture = loadTexture("res/textures/kids/character_1_texture_v4.png");
+        unsigned int fatkidtexture = loadTexture("res/textures/kids/character_2_texture_v1.png");
 
         
         unsigned int texaerial = loadTexture("res/textures/models/texaerial.png");
@@ -439,7 +443,7 @@ class GameManager {
         //cube do testu AI
         root_node->add_child(cube2);
         Collider cube2Collider(0.54f, false, cubePositions[2], false);
-        cube2->setProperties(animShader, texturewin10, cubePositions[2], MODEL, box, 0.15f, true, cube2Collider);
+        cube2->setProperties(shaderShad, fatkidtexture, cubePositions[2], MODEL, fatKid, 0.05f, false, cube2Collider);
         Collider cube2Trigger(0.9f, false, cubePositions[2], true);
         cube2->trigger = cube2Trigger;
 
@@ -458,19 +462,19 @@ class GameManager {
 
         root_node->add_child(cubeKid3);
         Collider cubeKid3Collider(0.54f, false, cubePositions[11], false);
-        cubeKid3->setProperties(shaderShad, texturewin10, cubePositions[11], MODEL, box, 0.15f, true, cubeKid3Collider);
+        cubeKid3->setProperties(shaderShad, kid5texture, cubePositions[11], MODEL, postac_test, 0.05f, false, cubeKid3Collider);
         Collider cubeKid3Trigger(0.9f, false, cubePositions[11], true);
         cubeKid3->trigger = cubeKid3Trigger;
 
         root_node->add_child(cubeKid4);
         Collider cubeKid4Collider(0.54f, false, cubePositions[12], false);
-        cubeKid4->setProperties(shaderShad, texturewin10, cubePositions[12], MODEL, box, 0.15f, true, cubeKid4Collider);
+        cubeKid4->setProperties(shaderShad, kid3texture, cubePositions[12], MODEL, postac_test, 0.05f, false, cubeKid4Collider);
         Collider cubeKid4Trigger(0.9f, false, cubePositions[12], true);
         cubeKid4->trigger = cubeKid4Trigger;
 
         root_node->add_child(cubeKid5);
         Collider cubeKid5Collider(0.54f, false, cubePositions[13], false);
-        cubeKid5->setProperties(shaderShad, texturewin10, cubePositions[13], MODEL, box, 0.15f, true, cubeKid5Collider);
+        cubeKid5->setProperties(shaderShad, kid4texture, cubePositions[13], MODEL, postac_test, 0.05f, false, cubeKid5Collider);
         Collider cubeKid5Trigger(0.9f, false, cubePositions[13], true);
         cubeKid5->trigger = cubeKid5Trigger;
         
