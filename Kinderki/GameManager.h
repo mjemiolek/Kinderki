@@ -5,6 +5,7 @@
 
 #include <irrKlang/ik_ISound.h>
 
+#include "Sound.h"
 #include "Shader.h"
 #include "Camera.h"
 #include "ModelAnimation.h"
@@ -135,6 +136,7 @@ class GameManager {
     unsigned int st;
     bool ifWin = false;
     int ESC = false;
+
 
     GameManager() {
         //settings
@@ -1326,32 +1328,42 @@ class GameManager {
 
         return textureID;
     }
+
+    Sound walkingsound = Sound("res/sounds/grass-step.wav");
+    Sound jumpingsound = Sound("res/sounds/jump.wav");
+    Sound liftingsound = Sound("res/sounds/pick-up.wav");
     
     void update(double dt) {
-
         //gravity->updateGravityInNegativeY(cube2, dt);
         st = glfwGetTime();
+        //walking
         if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim1)) {
                 cube3->tempAnim.PlayAnimation(&anim1);
+                walkingsound.playLooped();
             }
             cube3->tempAnim.UpdateAnimation(dt);
         }
+        //jumping
         if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim2)) {
                 cube3->tempAnim.PlayAnimation(&anim2);
+                jumpingsound.play();
             }
             cube3->tempAnim.UpdateAnimation(dt * 0.75);
         }
+        //idle
         if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim3)) {
                 cube3->tempAnim.PlayAnimation(&anim3);
             }
             cube3->tempAnim.UpdateAnimation(dt * 0.75);
         }
+        //picking up
         if (player->checkCarry() && player->getTempCheckCarry()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim4)) {
                 cube3->tempAnim.PlayAnimation(&anim4);
+                liftingsound.play();
             }
             cube3->tempAnim.UpdateAnimation(dt * 5);
             if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 5) {
