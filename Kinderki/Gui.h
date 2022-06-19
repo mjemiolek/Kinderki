@@ -477,10 +477,10 @@ public:
                      Storylist.at(4) = midday5;
                  }
                  if (escapeNumber == 2) { //piaskownicer
-                     Storylist.at(0) = piaskownicer1;
-                     Storylist.at(1) = piaskownicer2;
-                     Storylist.at(2) = piaskownicer3;
-                     Storylist.at(3) = piaskownicer4;
+                     Storylist.at(0) = sandpit1;
+                     Storylist.at(1) = sandpit2;
+                     Storylist.at(2) = sandpit3;
+                     Storylist.at(3) = sandpit4;
                      Storylist.at(4) = midday5;
                  }
                  if (escapeNumber == 3) { //hustawker
