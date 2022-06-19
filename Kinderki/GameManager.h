@@ -1335,7 +1335,7 @@ class GameManager {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim2)) {
                 cube3->tempAnim.PlayAnimation(&anim2);
             }
-            cube3->tempAnim.UpdateAnimation(dt*0.75);
+            cube3->tempAnim.UpdateAnimation(dt * 0.75);
         }
         if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim3)) {
