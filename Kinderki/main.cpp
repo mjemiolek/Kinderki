@@ -295,7 +295,9 @@ int main()
 
     
     Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
+    Sound bgSound("res/sounds/mixkit-comical-2.mp3");
     sound.play();
+    bgSound.playLooped();
 
     bool pressFlagCandy = false;
 
