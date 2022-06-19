@@ -31,6 +31,7 @@ private:
     bool sandMove = false;
     bool goInGround = false;
     bool hustawkerMove = false, hustawkerLeft = true, hustawkerWait=false;
+    bool paidBoy1 = false, paidBoy2 = false, paidBoy3 = false, paidBoy4 = false, paidBoy5 = false;
     bool canInteract = false;
     bool canMove = true;
     bool finishedTutorial = false;
@@ -199,39 +200,64 @@ playerObject->velocity.y = speed;
 
     void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AI1, std::shared_ptr<SceneGraphNode> AI2, std::shared_ptr<SceneGraphNode> AI3, std::shared_ptr<SceneGraphNode> AI4, std::shared_ptr<SceneGraphNode> AI5) {
         if ((playerObject->collider.sphereToSphereCollisionCheck(AI1->trigger))) {
-            std::cout << "Press E to interact with kid" << std::endl;
-            whichKidInteractedWith = 1;
-            canInteract = true;
+            if (!paidBoy1) {
+                std::cout << "Press E to interact with kid" << std::endl;
+                whichKidInteractedWith = 1;
+                canInteract = true;
+            }
+            else {
+                std::cout << "This Kid already helped you" << std::endl;
+            }
         }
         if (playerObject->collider.sphereToSphereCollisionCheck(AI2->trigger)) {
-            std::cout << "Press E to interact with kid" << std::endl;
-            whichKidInteractedWith = 2;
-            canInteract = true;
+            if (!paidBoy2) {
+                std::cout << "Press E to interact with kid" << std::endl;
+                whichKidInteractedWith = 2;
+                canInteract = true;
+            }
+            else {
+                std::cout << "This Kid already helped you" << std::endl;
+            }
         }
         if (playerObject->collider.sphereToSphereCollisionCheck(AI3->trigger)) {
-            std::cout << "Press E to interact with kid" << std::endl;
-            whichKidInteractedWith = 3;
-            canInteract = true;
+            if (!paidBoy3) {
+                std::cout << "Press E to interact with kid" << std::endl;
+                whichKidInteractedWith = 3;
+                canInteract = true;
+            }
+            else {
+                std::cout << "This Kid already helped you" << std::endl;
+            }
         }
         if (playerObject->collider.sphereToSphereCollisionCheck(AI4->trigger)) {
-            std::cout << "Press E to interact with kid" << std::endl;
-            whichKidInteractedWith = 4;
-            canInteract = true;
+            if (!paidBoy4) {
+                std::cout << "Press E to interact with kid" << std::endl;
+                whichKidInteractedWith = 4;
+                canInteract = true;
+            }
+            else {
+                std::cout << "This Kid already helped you" << std::endl;
+            }
         }
         if (playerObject->collider.sphereToSphereCollisionCheck(AI5->trigger)) {
-            std::cout << "Press E to interact with kid" << std::endl;
-            whichKidInteractedWith = 5;
-            canInteract = true;
+            if (!paidBoy5) {
+                std::cout << "Press E to interact with kid" << std::endl;
+                whichKidInteractedWith = 5;
+                canInteract = true;
+            }
+            else {
+                std::cout << "This Kid already helped you" << std::endl;
+            }
         }
 
         if ((finishedTutorial == true) && (canInteract == true) && (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)) {
             //Here interaction happens
             canMove = false;
             std::cout << "Player interacted with Kid" << std::endl;
-
+            textureLayer = 1;
             ct = glfwGetTime();
             switch (getWichKidInteractedWith()) {
-                textureLayer = 1;
+             
                 dt = ct;
             case 1:
                 std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
@@ -241,6 +267,7 @@ playerObject->velocity.y = speed;
                 else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     candyCount -= 1;
                     textureLayer = 3;
+                    paidBoy1 = true;
                   }
                  break;
             case 2:
@@ -251,6 +278,7 @@ playerObject->velocity.y = speed;
                 else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     candyCount -= 1;
                     textureLayer = 5;
+                    paidBoy2 = true;
                 }
                 break;
             case 3:
@@ -262,6 +290,7 @@ playerObject->velocity.y = speed;
                     hustawkerBoyPaid = true;
                     candyCount -= 1;
                     textureLayer = 6;
+                    paidBoy3 = true;
                 }
                 break;
             case 4:
@@ -272,6 +301,7 @@ playerObject->velocity.y = speed;
                 else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
                     candyCount -= 1;
                     textureLayer = 4;
+                    paidBoy4 = true;
                 }
                 break;
             case 5:
@@ -283,6 +313,7 @@ playerObject->velocity.y = speed;
                     wazkerBoyPaid = true;
                     candyCount -= 1;
                     textureLayer = 6;
+                    paidBoy5 = true;
                 }
                 break;
             }
@@ -364,6 +395,14 @@ playerObject->velocity.y = speed;
             setFalseStencil(interacter);
         }
     }
+
+    void liner(Collider interacter)
+    {
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter)) {
+            playerObject->velocity.x += 1.69f;
+        }
+    }
+
 
     void hustawker(std::shared_ptr<SceneGraphNode> interacter, std::shared_ptr<SceneGraphNode> seat, float dt)
     {

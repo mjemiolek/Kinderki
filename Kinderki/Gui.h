@@ -157,11 +157,11 @@ public:
     unsigned int tyrolker2;
     unsigned int tyrolker4;
 
-    unsigned int piaskownicer1;
-    unsigned int piaskownicer3;
-    unsigned int piaskownicer2;
-    unsigned int piaskownicer4;
 
+    unsigned int sandpit1;
+    unsigned int sandpit2;
+    unsigned int sandpit3;
+    unsigned int sandpit4;
     unsigned int hustawker1;
     unsigned int hustawker3;
     unsigned int hustawker2;
@@ -171,6 +171,10 @@ public:
     unsigned int wazker3;
     unsigned int wazker2;
     unsigned int wazker4;
+    unsigned int wallbang1;
+    unsigned int wallbang2;
+    unsigned int wallbang3;
+    unsigned int wallbang4;
 
 
 
@@ -458,11 +462,11 @@ public:
 
         if (visibilityEscape) {
             {
-                 if(escapeNumber == 0) { //ball and wall
-                    Storylist.at(0) = texture;
-                    Storylist.at(1) = textureWallDestroy;
-                    Storylist.at(2) = texture;
-                    Storylist.at(3) = textureWallDestroy;
+                 if(escapeNumber == 0) {
+                    Storylist.at(0) = wallbang1;
+                    Storylist.at(1) = wallbang2;
+                    Storylist.at(2) = wallbang3;
+                    Storylist.at(3) = wallbang4;
                     Storylist.at(4) = midday5;
                  }
                  if (escapeNumber == 1) { //tyrolker
