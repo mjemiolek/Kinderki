@@ -145,7 +145,7 @@ class GameManager {
         glm::vec3 seesawPos(8.0f, 0.8f, -4.5f);
         glm::vec3 ballPos(11.53f, 3.00f, 14.46f);
         glm::vec3 slidePos(21.00f, 0.10f, -14.0f);
-        glm::vec3 trampolinePos(22.50f, 0.58f, -13.0f);
+        glm::vec3 trampolinePos(20.50f, 0.58f, -11.0f);
         glm::vec3 treePos(23.0f, 0.0f, -13.f);
         //glm::vec3 treePos(30.0f, 0.0f, -18.0f);
         glm::vec3 aerialRunnwayPos(33.0f, 0.0f, -2.5f);
