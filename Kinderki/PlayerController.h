@@ -467,9 +467,19 @@ playerObject->velocity.y = speed;
         }
     }
 
-    void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt, std::shared_ptr<SceneGraphNode> cola, std::shared_ptr<SceneGraphNode> mentos)
+    void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt, std::shared_ptr<SceneGraphNode> cola, std::shared_ptr<SceneGraphNode> mentos, std::shared_ptr<SceneGraphNode> tyrol)
     {
-
+        if (playerObject->collider.boxToBoxCollisioncheck(tyrol->additionalTriggers.at(1))) {
+            setTrueStencil(tyrol);
+            setTrueStencil(seat);
+            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+            }
+        }
+        else {
+            setFalseStencil(tyrol);
+            setFalseStencil(seat);
+        }
         //check for puffed_cola with mentos
         if (seat->trigger.boxToBoxCollisioncheck(cola->trigger) &&  !tyrolkerCola) {
             if (cola->m_transform.m_scale > 1.19f) //this means its puffed_cola
