@@ -127,7 +127,6 @@ int main()
     unsigned int reflectiontexture=0;
     float moveFactor = 0.0f;
 
-
     //Creating game components
     GameManager gameManager;
     ColliderManager colManager(gameManager.collidingObjects);
@@ -208,19 +207,15 @@ int main()
     unsigned int tyrolker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
     unsigned int tyrolker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
 
-
     unsigned int sandpit1 = gameManager.loadTexture("res/textures/stories/sandpit/sandpit1.png");
     unsigned int sandpit2 = gameManager.loadTexture("res/textures/stories/sandpit/sandpit2.png");
     unsigned int sandpit3 = gameManager.loadTexture("res/textures/stories/sandpit/sandpit3.png");
     unsigned int sandpit4 = gameManager.loadTexture("res/textures/stories/sandpit/sandpit3.png");
 
-
     unsigned int wallbang1 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang1.png");
     unsigned int wallbang2 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang2.png");
     unsigned int wallbang3 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang1.png");
     unsigned int wallbang4 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang2.png");
-
-
 
     //TODO: podmiana tekstur na prawid³owe
 
@@ -255,19 +250,16 @@ int main()
 
     gui.textureTime = textureTime;
 
-
     gui.midday1 = midday1;
     gui.midday2 = midday2;
     gui.midday3 = midday3;
     gui.midday4 = midday4;
     gui.midday5 = midday5;
 
-
     gui.tyrolker1 = tyrolker1;
     gui.tyrolker2 = tyrolker2;
     gui.tyrolker3 = tyrolker3;
     gui.tyrolker4 = tyrolker4;
-
 
     gui.hustawker1 = hustawker1;
     gui.hustawker2 = hustawker2;
@@ -279,35 +271,26 @@ int main()
     gui.wazker3 = wazker3;
     gui.wazker4 = wazker4;
 
-
-    
-
     gui.sandpit1 = sandpit1;
     gui.sandpit2 = sandpit2;
     gui.sandpit3 = sandpit3;
     gui.sandpit4 = sandpit4;
 
-
     gui.wallbang1 = wallbang1;
     gui.wallbang2 = wallbang2;
     gui.wallbang3 = wallbang3;
     gui.wallbang4 = wallbang4;
-
     
-    Sound sound("res/sounds/CasualGameSounds/ziuuum.wav");
-    Sound bgSound("res/sounds/mixkit-comical-2.wav");
-    //sound.playLooped();
+    Sound bgSound("res/sounds/background-music.wav");
     bgSound.playLooped();
 
     bool pressFlagCandy = false;
-
     while (!glfwWindowShouldClose(window))
     {
         current_time = glfwGetTime();
         passed_time = current_time - last_time;
         last_time = current_time;
         unprocessed_time += passed_time;
-
 
         input(window, gameManager.cube3);
         daySimulation(passed_time, gui.changeday, gameManager.cube3);
@@ -323,7 +306,7 @@ int main()
         gameManager.player->liner(gameManager.aerialrunnwaywholeptr->additionalTriggers.at(0));
         gameManager.player->candier(gameManager.candyCane1ptr, gameManager.candyCane2ptr, gameManager.candyCane3ptr, gameManager.candyCane4ptr,
         gameManager.candyCane5ptr, gameManager.candyCane6ptr, passed_time);
-        gameManager.player->tyrolker(gameManager.aerialrunnwayseatptr, passed_time, gameManager.colaptr, gameManager.mentosptr);
+        gameManager.player->tyrolker(gameManager.aerialrunnwayseatptr, passed_time, gameManager.colaptr, gameManager.mentosptr,gameManager.aerialrunnwaywholeptr);
         gui.textureCandyCount = gameManager.candyCount(gameManager.player, textureCandyx0, textureCandyx1, textureCandyx2, textureCandyx3, textureCandyx4, textureCandyx5, textureCandyx6);
         //colManager.manageCollisions(passed_time);
         physicsWorld.step(passed_time);
@@ -347,7 +330,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+            //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);
@@ -397,7 +380,6 @@ int main()
     delete ballManager;
     delete buffers;
     delete AI, AI2, AI3, AI4, AI5;
-
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
