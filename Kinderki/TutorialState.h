@@ -158,6 +158,7 @@ public:
 					dt = ct;
 					checkInteractionWithSandpit = false;
 					renderText = false;
+					player->setFinishedTutorial(true);
 				}
 			}
 		}

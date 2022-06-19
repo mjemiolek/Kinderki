@@ -34,33 +34,7 @@ public:
         this->AIObject = AI;
     }
 
-    bool triggerCollision(std::shared_ptr<SceneGraphNode> player) {
-        //Posistion
-        glm::vec3 thisAI = AIObject->get_transform().m_position;
-        glm::vec3 pla = player->trigger.getPosition();
-        //distance
-        float distance = sqrt((pla.x - thisAI.x) * (pla.x - thisAI.x) + (pla.y - thisAI.y) * (pla.y - thisAI.y) + (pla.z - thisAI.z) * (pla.z - thisAI.z));
-        //std::cout << "x: " << playerObject->get_transform().m_position.x << "y: " << playerObject->get_transform().m_position.y << "z: " << playerObject->get_transform().m_position.z << std::endl;
-        if (distance < player->trigger.getRadius()) {
-
-            return true;
-
-        }
-        return false;
-    }
-    void interact(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,PlayerController* gracz, float dt) {
-        if (triggerCollision(interacter)) {
-            if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-                gracz->setCandyCount(gracz->getCandyCount() - 1);
-                std::cout << "Interaction. " << std::endl;
-            }
-        }
-    }
-
-    bool checkForInteraction(PlayerController* gracz) {
-        if (gracz->triggerCollision(AIObject)) return true;
-        return false;
-    }
+   
 
     void move(GLFWwindow* window, float deltaTime) {
         std::srand(time(NULL));
@@ -83,21 +57,6 @@ public:
         }
         AIObject->update_transform();
         AIObject->collider.setPosition(AIObject->get_transform().m_position);
-
-    }
-    void ChangeState(GLFWwindow* window, float deltaTime, PlayerController* gracz) {
-        StateType CurrentState = Move;
-        switch (CurrentState)
-        {
-        case Move:
-            move(window, deltaTime);
-            if (checkForInteraction(gracz)) CurrentState = Interact;
-            break;
-        case Interact:
-            if (!checkForInteraction(gracz)) CurrentState = Move;
-        }
-        int count = 0;
-
 
     }
 };

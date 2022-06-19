@@ -73,6 +73,12 @@ float candyCountVertices[] = {
     0.95f,  0.80f,
     0.80f,  0.65f
 };
+float InteractionVertices[] = {
+     0.7f, -0.9f,
+    -0.7f, -0.5f,
+     0.7f, -0.5f,
+    -0.7f, -0.9f
+};
 
 
 
@@ -85,12 +91,19 @@ float textureCords[] = { 0.0f, 1.0f,
                      0.0f, 0.0f,
                      1.0f, 1.0f };
 
+float textureCordsInteraction[] = { 1.0f, 1.0f,
+                     0.0f, 0.0f,
+                     1.0f, 0.0f,
+                     0.0f, 1.0f };
+
 
 class Gui {
 public:
-    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO, TimeVAO, EscapeVAO;
-    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO, TimeVBO, EscapeVBO;
-    unsigned int quadEBO;
+    bool canInteractionBeRendered = false;
+    int condition = 0;
+    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO, TimeVAO, EscapeVAO, InteractionVAO;
+    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO, TimeVBO, EscapeVBO, InteractionVBO;
+    unsigned int quadEBO, InteractionEBO;
     
     unsigned int texture;
     unsigned int textureLeft;
@@ -98,6 +111,15 @@ public:
 
     unsigned int textureCandy;
     unsigned int textureCandyCount;
+
+    unsigned int textureInteraction;
+    unsigned int textureInt1;
+    unsigned int textureInt2;
+    unsigned int textureInt3;
+    unsigned int textureInt4;
+    unsigned int textureInt5;
+    unsigned int textureInt6;
+
 
     unsigned int textureIns;
 
@@ -306,6 +328,26 @@ public:
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+        //Interaction text with texture
+        glGenVertexArrays(1, &InteractionVAO);
+        glBindVertexArray(InteractionVAO);
+
+        glGenBuffers(1, &InteractionVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, InteractionVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(InteractionVertices), InteractionVertices, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &InteractionVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, InteractionVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCordsInteraction), textureCordsInteraction, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &InteractionEBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, InteractionEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
         ////////////////////Story square
         glGenVertexArrays(1, &StoryVAO);
         glBindVertexArray(StoryVAO);
@@ -480,6 +522,12 @@ public:
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
+        /*glBindVertexArray(InteractionVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, textureInteraction);
+        glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);*/
+
        
         textCzas.RenderText(strsCzas.str(), 1725.0f, 770.0f, 0.69f, czascolor);
        
@@ -502,6 +550,38 @@ public:
 
  
 	}
+
+    int setInteractionTexture(int texNumber, bool canBeRendered) {
+         condition = texNumber;
+        if (canBeRendered) {
+            if (texNumber == 1) textureInteraction = textureInt1;
+            else if (texNumber == 2) textureInteraction = textureInt2;
+            else if (texNumber == 3) textureInteraction = textureInt3;
+            else if (texNumber == 4) textureInteraction = textureInt4;
+            else if (texNumber == 5) textureInteraction = textureInt5;
+            else if (texNumber == 6) textureInteraction = textureInt6;
+            canInteractionBeRendered = canBeRendered;
+        }
+        return condition;
+    }
+
+    void render_interaction() {
+        Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
+        //Shader test2Shader("res/shaders/basic2.vert", "res/shaders/basic2.frag");
+        //rendering image
+        testShader.use();
+        
+        if ((canInteractionBeRendered) && (condition != 0)) {
+
+            glBindVertexArray(InteractionVAO);
+            glActiveTexture(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, textureInteraction);
+            glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
+            glBindVertexArray(0);
+        }
+
+
+    }
    
     void update(double passed_time, int escapeN, int ucieczki) {
         strs.str(std::string());

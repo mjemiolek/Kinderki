@@ -26,14 +26,19 @@
 class PlayerController {
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
-    int candyCount;
+    int candyCount, textureLayer = 0;
     float speed = 2.5f;
     bool sandMove = false;
     bool goInGround = false;
     bool hustawkerMove = false, hustawkerLeft = true, hustawkerWait=false;
     bool canInteract = false;
+    bool canMove = true;
+    bool finishedTutorial = false;
+    int whichKidInteractedWith ;
     float hustawkerSpeed;
     glm::vec3 outlineColor;
+
+    unsigned int dt, ct;
    
     bool tyrolkerMove = false;
     bool tyrolkerZero = true;
@@ -60,10 +65,10 @@ private:
     float timeVariable = 0.0f;
 
     float hustawkerTimeToWait = 1.0f; //seconds
-    bool hustawkerBoyPaid = true; //TODO: Make it -false and change it based on payment to boii
+    bool hustawkerBoyPaid = false; //TODO: Make it -false and change it based on payment to boii
 
     float wazkerTimeToWait = 1.0f; //seconds
-    bool wazkerBoyPaid = true; //TODO: Make it -false and change it based on payment to boii
+    bool wazkerBoyPaid = false; //TODO: Make it -false and change it based on payment to boii
     bool wazkerWait=false, wazkerMove=false;
 
     bool moveAnimation = false;
@@ -74,79 +79,83 @@ public:
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
         candyCount = 0;
+        ct = 0;
         outlineColor = glm::vec3(1.0f, 1.0f, 1.0f);
         std::cout << "candy count: " << candyCount << std::endl;
     }
     ~PlayerController() {}
     void move(GLFWwindow* window, float deltaTime,float actualTime)
     {
-        if (!sandMove) {
-            playerObject->velocity.z = 0.0f;
-            playerObject->velocity.x = 0.0f;
-            if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-                playerObject->velocity.z = -(speed);
-                moveAnimation = true;
-            }
-            else {
-                moveAnimation = false;
-            }
-            if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-                playerObject->velocity.z = speed;
-                moveAnimation = true;
-            }
-            if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-                playerObject->velocity.x = -(speed);
-                moveAnimation = true;
-            }
-            if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-                playerObject->velocity.x = speed;
-                moveAnimation = true;
-            }
-            rotate(playerObject->velocity, deltaTime);
-            //debuowanie postaci
-            if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
-                playerObject->get_transform().m_position.x += 2.5f * deltaTime;
-                playerObject->get_transform().x_rotation_angle += 90.0f * deltaTime;
-            }
-
-            playerObject->update_transform();
-            playerObject->collider.setPosition(playerObject->get_transform().m_position);
-
-            //move Player to position (28.0f, 0.2f, 10.5f)
-            if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
-            {
-                playerObject->get_transform().m_position = glm::vec3(27.0f, 0.2f, 9.17f);
-                playerObject->canInToGround = false;
-            }
-            //go up
-            if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-            {
-                //playerObject->get_transform().m_position.y += 0.1f;
-                playerObject->velocity.y = speed;
-            }
-            //jump
-            if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-            {
-                if (playerObject->canJump==true)
-                {
-                    moveAnimation = false;
-                    playerObject->velocity.y = 5.0f;
+        if (canMove) {
+            if (!sandMove) {
+                playerObject->velocity.z = 0.0f;
+                playerObject->velocity.x = 0.0f;
+                if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+                    playerObject->velocity.z = -(speed);
+                    moveAnimation = true;
                 }
-                playerObject->canJump = false;
+                else {
+                    moveAnimation = false;
+                }
+                if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+                    playerObject->velocity.z = speed;
+                    moveAnimation = true;
+                }
+                if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+                    playerObject->velocity.x = -(speed);
+                    moveAnimation = true;
+                }
+                if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+                    playerObject->velocity.x = speed;
+                    moveAnimation = true;
+                }
+                rotate(playerObject->velocity, deltaTime);
+                //debuowanie postaci
+                if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+                    playerObject->get_transform().m_position.x += 2.5f * deltaTime;
+                    playerObject->get_transform().x_rotation_angle += 90.0f * deltaTime;
+                }
+
+                playerObject->update_transform();
+                playerObject->collider.setPosition(playerObject->get_transform().m_position);
+
+                //move Player to position (28.0f, 0.2f, 10.5f)
+                if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+                {
+                    playerObject->get_transform().m_position = glm::vec3(27.0f, 0.2f, 9.17f);
+                    playerObject->canInToGround = false;
+                }
+                //go up
+                if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+                {
+//playerObject->get_transform().m_position.y += 0.1f;
+playerObject->velocity.y = speed;
+                }
+                //jump
+                if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+                {
+                    if (playerObject->canJump == true)
+                    {
+                        moveAnimation = false;
+                        playerObject->velocity.y = 5.0f;
+                    }
+                    playerObject->canJump = false;
+                }
+                if (!playerObject->canJump) {
+                    moveAnimation = false;
+                }
             }
-            if (!playerObject->canJump) {
-                moveAnimation = false;
-            }
+
+            nowTime = actualTime; //updating time
         }
 
-        nowTime = actualTime; //updating time
-	}
+    }
 
-    void rotate(glm::vec3 direction,float deltaTime)
+    void rotate(glm::vec3 direction, float deltaTime)
     {
         float angle = 0.0f;
         float step = 600.0f;
-        float deviation = (step/100.0f)*3.0f;
+        float deviation = (step / 100.0f) * 3.0f;
         //Specify direction
         if (direction.x == 0.0f && direction.z == 0.0f) { angle = playerObject->get_transform().y_rotation_angle; }
         else if (direction.x == speed && direction.z == 0.0f) { angle = 90.0f; }              //right
@@ -156,12 +165,12 @@ public:
         else if (direction.x == speed && direction.z == speed) { angle = 135.0f; }    //right-down
         else if (direction.z == speed && direction.x == -speed) { angle = 225.0f; }   //down-left
         else if (direction.x == -speed && direction.z == -speed) { angle = 315.0f; }  //left-up
-                                                            else { angle = 45.0f; }   //up-right
-        //Rotate player towards direction
+        else { angle = 45.0f; }   //up-right
+//Rotate player towards direction
         if (playerObject->get_transform().y_rotation_angle < angle - deviation || playerObject->get_transform().y_rotation_angle > angle + deviation)
         {
-            float angle1= playerObject->get_transform().y_rotation_angle - angle,
-                  angle2= angle - playerObject->get_transform().y_rotation_angle;
+            float angle1 = playerObject->get_transform().y_rotation_angle - angle,
+                angle2 = angle - playerObject->get_transform().y_rotation_angle;
             if (angle1 < 0.0f) angle1 += 360.0f;
             if (angle2 < 0.0f) angle2 += 360.0f;
             if (angle1 < angle2)
@@ -187,39 +196,101 @@ public:
         }
         //std::cout << playerObject->get_transform().y_rotation_angle<<std::endl;
     }
-   
-    bool triggerCollision(std::shared_ptr<SceneGraphNode> obstacle) {
-        //Posistion
-        glm::vec3 pla = playerObject->get_transform().m_position;
-        glm::vec3 obst = obstacle->trigger.getPosition();
-        //distance
-        float distance = sqrt((obst.x - pla.x) * (obst.x - pla.x) + (obst.y - pla.y) * (obst.y - pla.y) + (obst.z - pla.z) * (obst.z - pla.z));
-        //std::cout << "x: " << playerObject->get_transform().m_position.x << "y: " << playerObject->get_transform().m_position.y << "z: " << playerObject->get_transform().m_position.z << std::endl;
-        if (distance < obstacle->trigger.getRadius()) {
-            
-            return true;
 
-        }
-        return false;
-    }
-
-    bool checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AI1, std::shared_ptr<SceneGraphNode> AI2, std::shared_ptr<SceneGraphNode> AI3, std::shared_ptr<SceneGraphNode> AI4) {
-        if ((playerObject->collider.sphereToSphereCollisionCheck(AI1->trigger)) || 
-            (playerObject->collider.sphereToSphereCollisionCheck(AI2->trigger)) ||
-            (playerObject->collider.sphereToSphereCollisionCheck(AI3->trigger)) ||
-            (playerObject->collider.sphereToSphereCollisionCheck(AI4->trigger))) {
+    void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AI1, std::shared_ptr<SceneGraphNode> AI2, std::shared_ptr<SceneGraphNode> AI3, std::shared_ptr<SceneGraphNode> AI4, std::shared_ptr<SceneGraphNode> AI5) {
+        if ((playerObject->collider.sphereToSphereCollisionCheck(AI1->trigger))) {
             std::cout << "Press E to interact with kid" << std::endl;
+            whichKidInteractedWith = 1;
             canInteract = true;
         }
-        if (canInteract = true) {
-            if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-                std::cout << "Player interacted with Kid" << std::endl;
-                return true;
+        if (playerObject->collider.sphereToSphereCollisionCheck(AI2->trigger)) {
+            std::cout << "Press E to interact with kid" << std::endl;
+            whichKidInteractedWith = 2;
+            canInteract = true;
+        }
+        if (playerObject->collider.sphereToSphereCollisionCheck(AI3->trigger)) {
+            std::cout << "Press E to interact with kid" << std::endl;
+            whichKidInteractedWith = 3;
+            canInteract = true;
+        }
+        if (playerObject->collider.sphereToSphereCollisionCheck(AI4->trigger)) {
+            std::cout << "Press E to interact with kid" << std::endl;
+            whichKidInteractedWith = 4;
+            canInteract = true;
+        }
+        if (playerObject->collider.sphereToSphereCollisionCheck(AI5->trigger)) {
+            std::cout << "Press E to interact with kid" << std::endl;
+            whichKidInteractedWith = 5;
+            canInteract = true;
+        }
+
+        if ((finishedTutorial == true) && (canInteract == true) && (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)) {
+            //Here interaction happens
+            canMove = false;
+            std::cout << "Player interacted with Kid" << std::endl;
+
+            ct = glfwGetTime();
+            switch (getWichKidInteractedWith()) {
+                textureLayer = 1;
+                dt = ct;
+            case 1:
+                std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0) && (ct - dt > 2)) {
+                    textureLayer = 2;
+                }
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
+                    candyCount -= 1;
+                    textureLayer = 3;
+                  }
+                 break;
+            case 2:
+                std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0)) {
+                    textureLayer = 2;
+                }
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
+                    candyCount -= 1;
+                    textureLayer = 5;
+                }
+                break;
+            case 3:
+                std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0) && (ct - dt > 2)) {
+                    textureLayer = 2;
+                }
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
+                    hustawkerBoyPaid = true;
+                    candyCount -= 1;
+                    textureLayer = 6;
+                }
+                break;
+            case 4:
+                std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0) && (ct - dt > 2)) {
+                    textureLayer = 2;
+                }
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
+                    candyCount -= 1;
+                    textureLayer = 4;
+                }
+                break;
+            case 5:
+                std::cout << "interacted with: " << whichKidInteractedWith << std::endl;
+                if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount == 0) && (ct - dt > 2)) {
+                    textureLayer = 2;
+                }
+                else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
+                    wazkerBoyPaid = true;
+                    candyCount -= 1;
+                    textureLayer = 6;
+                }
+                break;
             }
+            canMove = true;
         }
         canInteract = false;
-        return false;
     }
+
 
     void sandPiter(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
         if (playerObject->m_children.size() == 0) {
@@ -634,6 +705,9 @@ public:
     int getCandyCount() {
         return candyCount;
     }
+    int getWichKidInteractedWith() {
+        return whichKidInteractedWith;
+    }
     std::shared_ptr<SceneGraphNode> getPlayerObject() {
         return playerObject;
     }
@@ -671,6 +745,24 @@ public:
     void setTempCheckCarry(bool temp) {
         tempCheckCarry = temp;
     }
+
+    void setFinishedTutorial(bool swap) {
+        finishedTutorial = swap;
+    }
+
+    bool getFinishedTutorial() {
+        return finishedTutorial;
+    }
+    int getTextureLayer() {
+        return textureLayer;
+    }
+    bool getCanInteract() {
+        return canInteract;
+    }
+    //bool CanRenderInteraction() {
+    //    if ((getFinishedTutorial() == false)/* || (getCanInteract() == false) */ ) return false;
+    //    else return true;
+    //}
 };
 
 #endif
