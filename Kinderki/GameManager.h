@@ -178,7 +178,7 @@ class GameManager {
         glm::vec3 heartPos(12.0f, 0.2f, 2.0f);
         glm::vec3 heartPos2(7.0f, 0.0f, -11.0f);   //dziala jako lopatka
         glm::vec3 colaPos(37.0f, 0.0f, -9.0f);
-        glm::vec3 mentosPos(29.5f, 1.5f, -1.5f);
+        glm::vec3 mentosPos(29.5f, 1.5f, -2.5f);
 
         glm::vec3 candyCane1Pos(31.0f, 12.0f, -12.0f);  //tree
         glm::vec3 candyCane2Pos(20.0f, 1.0f, -5.5f);    //pool
@@ -315,6 +315,7 @@ class GameManager {
         Model mentos("res/models/movable/mentos.obj");
         Model mentosOut("res/models/outline/mentosOutline.obj");
 
+        Model shovel("res/models/movable/lopata.obj");
         Model bucket("res/models/movable/wiadro.obj");
         Model bucketOut("res/models/outline/wiadroOutline.obj");
 
@@ -362,6 +363,7 @@ class GameManager {
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
         unsigned int texmentos = loadTexture("res/textures/models/mentos_textura.png");
+        unsigned int texshowel = loadTexture("res/textures/models/lopata_tex.png");
         unsigned int texbucketblack = loadTexture("res/textures/models/bucket_black.png");
         unsigned int texbucketpink = loadTexture("res/textures/models/bucket_pink.png");
         unsigned int texbucketred = loadTexture("res/textures/models/bucket_red.png");
@@ -1193,22 +1195,31 @@ class GameManager {
         heartptr->setProperties(shaderShad, texturewin10, heartPos, MODEL, postac_test, 0.05f, false);
         heartptr->trigger = heartTrigger;*/
 
+        Collider showelGravitationer(0.01f, false, colaPos, true);
         root_node->add_child(heartptr2);
-        heartptr2->setProperties(shaderShad, textureplanks, heartPos2, MODEL, postac_test, 0.05f, false);
+        heartptr2->setProperties(shaderShad, texshowel, heartPos2, MODEL, shovel, 0.01f, false, showelGravitationer);
         heartptr2->trigger = heartTrigger2;
         heartptr2->movableType = TOSANDPIT;
 
+        Collider colaGravitationer(0.01f, false, colaPos, true);
         root_node->add_child(colaptr);
-        colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 1.0f, false);
+        colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 1.0f, true, colaGravitationer);
         colaptr->trigger = colaTrigger;
         colaptr->modelOutline = colaOut;
 
+        Collider mentosGravitationer(0.01f, false, mentosPos, true);
         root_node->add_child(mentosptr);
-        mentosptr->setProperties(shaderShad, texmentos, mentosPos, MODEL, mentos, 0.7f, false);
+        mentosptr->setProperties(shaderShad, texmentos, mentosPos, MODEL, mentos, 0.7f, false, mentosGravitationer);
+        mentosptr->trigger = mentosTrigger;
         //mentosptr->get_transform().y_rotation_angle += 30.0f;
         //mentosptr->get_transform().x_rotation_angle += 30.0f;
-        mentosptr->trigger = mentosTrigger;
         //mentosptr->modelOutline = mentosOut;
+
+        Collider bucketGravitationer(0.01f, false, mentosPos, true);
+        root_node->add_child(bucketredptr);
+        bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true, bucketGravitationer);
+        bucketredptr->trigger = bucketredTrigger;
+        bucketredptr->modelOutline = bucketOut;
 
         Collider candyCane1Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane1Pos, true);
         Collider candyCane2Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane2Pos, true);
@@ -1246,11 +1257,6 @@ class GameManager {
         //bucketpinkptr->setProperties(shaderShad, texbucketpink, bucketPinkPos, MODEL, bucket, 0.1f, true);
         //bucketpinkptr->trigger = bucketpinkTrigger;
         //bucketpinkptr->modelOutline = bucketOut;
-
-        root_node->add_child(bucketredptr);
-        bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true);
-        bucketredptr->trigger = bucketredTrigger;
-        bucketredptr->modelOutline = bucketOut;
 
         //Escape triggers
         /*
