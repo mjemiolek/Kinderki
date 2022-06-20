@@ -130,8 +130,8 @@ public:
                 //go up
                 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
                 {
-//playerObject->get_transform().m_position.y += 0.1f;
-playerObject->velocity.y = speed;
+                    //playerObject->get_transform().m_position.y += 0.1f;
+                    playerObject->velocity.y = speed;
                 }
                 //jump
                 if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
