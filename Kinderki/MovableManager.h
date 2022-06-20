@@ -67,8 +67,8 @@ public:
 
         interact(vecMovable);
 
-        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
-            if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS && carringFlag) {
+        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+            if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && carringFlag) {
                 carringFlag = false;
                 playerObject->setTempCheckCarry(false);
                 //movableFlag = false;

@@ -305,11 +305,11 @@ int main()
         input(window, gameManager.cube3);
         daySimulation(passed_time, gui.changeday, gameManager.cube3);
         ballManager->manageBall(window, passed_time);
+        gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time, gameManager.heartptr2);
         movableManager->manageMovable(window);
         gameManager.player->checkForInteraction(window, gameManager.cubeKid2, gameManager.cubeKid3, gameManager.cubeKid4, gameManager.cubeKid5, gameManager.cube2);
         gui.setInteractionTexture(gameManager.player->getTextureLayer(), gameManager.player->getFinishedTutorial());
         gameManager.player->move(window, passed_time, current_time);
-        gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time);
         gameManager.player->trampoliner(gameManager.trampolineptr, passed_time);
         gameManager.player->hustawker(gameManager.swingptr, gameManager.swingseatptr, passed_time);
         gameManager.player->wazker(gameManager.seesawptr, passed_time);

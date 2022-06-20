@@ -76,6 +76,7 @@ private:
     bool tempCheckCarry = false;
 public:
     bool alreadyescapedTyrolker = false;
+    bool moveShovel = false;
 
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -323,7 +324,33 @@ playerObject->velocity.y = speed;
     }
 
 
-    void sandPiter(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt) {
+    void sandPiter(GLFWwindow* window, std::shared_ptr<SceneGraphNode> interacter,float dt, std::shared_ptr<SceneGraphNode> lopatka) {
+        if (sandMove) {
+            if (playerObject->get_transform().m_position.x >= 1.0f) {
+                playerObject->get_transform().m_position.x -= 4.5f * dt;
+            }
+            if (playerObject->get_transform().m_position.x <= 1.0f) {
+                playerObject->get_transform().m_position.y += 2.0f * dt;
+                if (playerObject->get_transform().m_position.y >= 0.01f) {
+                    sandMove = false;
+                    playerObject->canInToGround = false;
+                }
+            }
+        }
+        if (goInGround)
+        {
+            if (moveShovel) {
+                lopatka->get_transform().m_position.x = -50.0f;
+                lopatka->update_transform();
+                moveShovel = false;
+            }
+            playerObject->get_transform().m_position.y -= 2.0f * dt;
+            if (playerObject->get_transform().m_position.y < -1.5f) {
+                playerObject->get_transform().m_position.y += 2.0f * dt;
+                sandMove = true;
+                goInGround = false;
+            }
+        }
         if (playerObject->m_children.size() == 0) {
             setFalseStencil(interacter);
             return;
@@ -337,19 +364,9 @@ playerObject->velocity.y = speed;
             if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
                 playerObject->canInToGround = true;
                 goInGround = true;
+                moveShovel = true;
             }
         }
-        if (goInGround)
-        {
-            playerObject->get_transform().m_position.y -= 2.0f * dt;
-            if (playerObject->get_transform().m_position.y < -1.5f) {
-                playerObject->get_transform().m_position.y += 2.0f * dt;
-                sandMove = true;
-                goInGround = false;
-                //playerObject->get_transform().m_position.x = -5.0f;
-            }
-        }
-
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && !playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
             setTrueStencil(interacter);
             if (getOutlineColor() != glm::vec3(1.0f, 0.0f, 0.0f)) {
@@ -357,23 +374,7 @@ playerObject->velocity.y = speed;
             }
 
         } 
-        
-        //std::cout << sandMove << std::endl;
 
-        if (sandMove) {
-            if (playerObject->get_transform().m_position.x >= 1.0f) {
-                playerObject->get_transform().m_position.x -= 4.5f * dt;
-            }
-            if (playerObject->get_transform().m_position.x <= 1.0f) {
-                playerObject->get_transform().m_position.y += 2.0f * dt;
-                if (playerObject->get_transform().m_position.y >= 0.01f) {
-                    sandMove = false;
-                    playerObject->canInToGround = false;
-                }
-            }
-            
-
-        }
 
     }
 
