@@ -1340,7 +1340,7 @@ class GameManager {
         return textureID;
     }
 
-    Sound walkingsound = Sound("res/sounds/grass_step.wav");
+    Sound walkingsound = Sound("res/sounds/walk-sound.wav");
     Sound jumpingsound = Sound("res/sounds/jump.wav");
     Sound liftingsound = Sound("res/sounds/pick-up.wav");
     
