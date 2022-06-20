@@ -906,11 +906,11 @@ class GameManager {
         tempPos = treePos; //(22.0f, 0.0f, -13.0f);
         //tempPos.y += 1.20;
 
-        tempPos.y += 0.6;
+        tempPos.y += 0.5;
 
         Collider treeColider0(0.6f, false, tempPos, false);
 
-        tempPos.y += 0.6;
+        tempPos.y += 0.7;
 
         Collider treeColider01(0.6f, false, tempPos, false);
 
@@ -987,16 +987,21 @@ class GameManager {
 
         Collider treeColider10(glm::vec3(0.25f, 0.3f, 0.25f), false, tempPos, false);
 
-        tempPos.x -= 0.40;
+        tempPos.x -= 0.35;
         tempPos.y += 0.6;
-        tempPos.z += 2.35;
+        tempPos.z += 2.25;
 
-        Collider treeColider11(glm::vec3(0.33f, 0.45f, 0.33f), false, tempPos, false);
+        root_node->add_child(heartptr);
+        heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        Collider treeColider11(glm::vec3(0.37f, 0.45f, 0.46f), false, tempPos, false);
 
 
-        tempPos.x -= 0.87;
-        tempPos.y += -0.43;
-        tempPos.z += 0.3;
+        tempPos.x -= 1.;
+        //tempPos.y += -0.13;
+        tempPos.z += 0.4;
+
+
 
         Collider treeColider12(glm::vec3(0.20f, 0.1f, 0.25f), false, tempPos, false);
 

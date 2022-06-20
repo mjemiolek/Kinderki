@@ -513,6 +513,7 @@ public:
         //if player is on seat and aerial is not at the end yet
         if (playerObject->collider.boxToBoxCollisioncheck(seat->trigger) && seat->trigger.getPosition().z < 5.55)
         {
+            playerObject->canJump = false;
             if (!tyrolkerMove) {
                 seat->m_transform.x_rotation_angle = 0;
                 tyrolkerAngle = 49.0;
