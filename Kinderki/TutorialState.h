@@ -33,6 +33,8 @@ class TutorialState {
 	bool checkInteractionWithSandpit;
 	bool findSandpit;
 	bool renderText;
+	bool putOffMovable;
+	bool carry;
 	std::shared_ptr<Text> text;
 	std::ostringstream tutorialStream;
 	std::string tutorialString;
@@ -58,6 +60,8 @@ public:
 		checkInteractionWithSandpit = false;
 		findSandpit = false;
 		renderText = true;
+		putOffMovable = false;
+		carry = true;
 		tutorialString = "";
 		tutorialStream.str(std::string());
 		text = std::make_shared<Text>();
@@ -143,9 +147,29 @@ public:
 			if (player->getPlayerObject()->m_children.size() == 1) {
 				dt = ct;
 				checkInteractionWithMovable = false;
-				checkInteractionWithSandpit = true;
+				putOffMovable = true;
 			}
 		}
+
+
+
+		if (putOffMovable) {
+			//need texture
+			textureText = texture1;
+			if (player->getPlayerObject()->m_children.size() > 0) {
+				carry = true;
+			}
+			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+				carry = false;
+			}
+			std::cout << "carry: " << carry << std::endl;
+			if(player->getPlayerObject()->m_children.size() == 0 && !carry){
+				putOffMovable = false;
+				checkInteractionWithSandpit = true;
+			}		
+		}
+
+
 		if (checkInteractionWithSandpit) {
 			//x = 411.0f;
 		//	tutorialString = "Press E to interact with sandpit if you have the correct item";

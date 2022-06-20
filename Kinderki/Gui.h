@@ -204,7 +204,7 @@ public:
     bool colorchangeflag = false;
     bool changeday = false;
     Text textCzas;
-    int czasmin = 0;
+    int czasmin = 3;
     int czassec = 0;
     int czastemp = 0;
     int czastemp2 = 0;
