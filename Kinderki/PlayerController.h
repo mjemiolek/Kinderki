@@ -77,6 +77,7 @@ private:
 public:
     bool alreadyescapedTyrolker = false;
     bool moveShovel = false;
+    bool canJumpAnimation = true;
 
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -139,6 +140,7 @@ public:
                     if (playerObject->canJump == true)
                     {
                         moveAnimation = false;
+                        canJumpAnimation = true;
                         playerObject->velocity.y = 5.0f;
                     }
                     playerObject->canJump = false;
@@ -820,6 +822,12 @@ public:
     }
     bool getCanInteract() {
         return canInteract;
+    }
+    bool getCanJumpAnimation() {
+        return canJumpAnimation;
+    }
+    void setCanJumpAnimation(bool dt) {
+        canJumpAnimation = dt;
     }
     //bool CanRenderInteraction() {
     //    if ((getFinishedTutorial() == false)/* || (getCanInteract() == false) */ ) return false;

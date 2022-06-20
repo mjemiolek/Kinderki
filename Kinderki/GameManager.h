@@ -1362,13 +1362,16 @@ class GameManager {
             
         }
         //jumping
-        if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
+        if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry() && player->getCanJumpAnimation()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim2)) {
                 cube3->tempAnim.PlayAnimation(&anim2);
                 jumpingsound.play();
                 walkingsound.stop();
             }
             cube3->tempAnim.UpdateAnimation(dt * 0.75);
+            if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 0.75) {
+                player->setCanJumpAnimation(false);
+            }
         }
         //idle
         if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
