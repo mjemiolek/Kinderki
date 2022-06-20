@@ -170,7 +170,7 @@ class GameManager {
         glm::vec3 damagedwallPos(21.0f, 0.1f, 20.5f);
 
 
-        glm::vec3 tabPos(35.0f, 3.5f, 5.75f);
+        glm::vec3 tabPos(38.25f, 3.5f, 5.75f);
 
 
         glm::vec3 tempPos(0.0f, 0.0f, 0.0f);
@@ -260,6 +260,7 @@ class GameManager {
         Model sphere("res/models/sphere.obj");
 
         Model tab("res/models/level/tab.obj");
+        Model model0("res/models/level/model0.obj");
 
         Model aerialrunnwaywhole("res/models/level/aerialrunnway_whole.obj");
         Model aerialrunnwaywholeOut("res/models/outline/aerialrunnway_wholeOutline.obj");
@@ -425,10 +426,10 @@ class GameManager {
         tutorialState = std::make_shared<TutorialState>();
 
 
-        collidingObjects.insert(collidingObjects.end(),{
+        collidingObjects.insert(collidingObjects.end(), {
         cube1,cube2,cube3, cubeKid2, cubeKid3, cubeKid4, cubeKid5, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr, bucketblackptr, bucketpinkptr , bucketredptr,
         trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr, sandpitptr,benchesptr, tablesptr, treeptr, aerialrunnwaywholeptr,
-        seesawptr, poolptr
+        seesawptr, poolptr, tabptr
 
             });
         glm::vec3 boxColRange(2.5f, 0.5f, 0.7f);
@@ -512,8 +513,8 @@ class GameManager {
         aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTrigger);
         aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTriggerOut);
 
-        root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, aerialRunnwayLinerTrigerPos, MODEL, postac_test, 0.05f, false);
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, aerialRunnwayLinerTrigerPos, MODEL, postac_test, 0.05f, false);
 
         root_node->add_child(aerialrunnwayseatptr);
         aerialrunnwayseatptr->setProperties(shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, true);
@@ -1159,10 +1160,8 @@ class GameManager {
         damagedwallptr->trigger = damagedwallTrigger;
         
         root_node->add_child(tabptr);
-        tabptr->setProperties(shaderShad, textab, tabPos, MODEL, tab, .03f, false);
-        tabptr->m_transform.y_rotation_angle = 150;
-        //Collider damagedwallTrigger(glm::vec3(0.2f, 0.2f, 0.4f), false, damagedwallPos, false);
-        //damagedwallptr->trigger = damagedwallTrigger;
+        tabptr->setProperties(shaderShad, textab, tabPos, MODEL, model0, .03f, false);
+        tabptr->m_transform.y_rotation_angle = 169;
 
         //walls
         float wallHeight = 2.0f;
@@ -1285,12 +1284,16 @@ class GameManager {
         glm::vec3 Trigger5Wazker(1.0f, 5.0f, -4.5f);
         Collider escapeTriggerWazker(glm::vec3(1.6f, 2.5f, 4.0f), false, Trigger5Wazker, false);
 
+        glm::vec3 Trigger6liner(39.0f, 3.0f, 5.75f);
+        Collider escapeTriggerLiner(glm::vec3(0.69f, 2.0f, 5.0f), false, Trigger6liner, false);
+
         
-
-        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker, escapeTriggerPiaskownicer,  escapeTriggerHustawker, escapeTriggerWazker });
-
         //root_node->add_child(heartptr);
-        //heartptr->setProperties(shaderShad, texturewin10, Trigger1WallBang, MODEL, postac_test, 0.05f, false);
+        //heartptr->setProperties(shaderShad, texturewin10, Trigger6liner, MODEL, postac_test, 0.05f, false);
+
+        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker, escapeTriggerPiaskownicer,  escapeTriggerHustawker, escapeTriggerWazker, escapeTriggerLiner });
+
+        
     }
    
 
@@ -1593,6 +1596,14 @@ class GameManager {
                 }
                 if (ESC == 4) { //wazka
 
+                }
+                if (ESC == 5) { //wazka
+                    Model tab("res/models/level/tab.obj");
+                    Collider TabColider(glm::vec3(0.2f, 3.0f, 2.0f), false, glm::vec3(38.25f, 3.5f, 5.75f), false);
+                    tabptr->modelTemp = tab;
+                    //tabptr->additionalColliders.push_back(TabColider);
+                    tabptr->collider = TabColider;
+                    aerialrunnwaywholeptr->additionalTriggers.at(0).setPosition(glm::vec3(36.5f, -10.0f, 5.5f));
                 }
             }
             escape++;

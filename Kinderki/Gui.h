@@ -162,6 +162,7 @@ public:
     unsigned int sandpit2;
     unsigned int sandpit3;
     unsigned int sandpit4;
+
     unsigned int hustawker1;
     unsigned int hustawker3;
     unsigned int hustawker2;
@@ -171,10 +172,16 @@ public:
     unsigned int wazker3;
     unsigned int wazker2;
     unsigned int wazker4;
+
     unsigned int wallbang1;
     unsigned int wallbang2;
     unsigned int wallbang3;
     unsigned int wallbang4;
+
+    unsigned int liner1;
+    unsigned int liner2;
+    unsigned int liner3;
+    unsigned int liner4;
 
 
 
@@ -462,7 +469,7 @@ public:
 
         if (visibilityEscape) {
             {
-                 if(escapeNumber == 0) {
+                 if(escapeNumber == 0) { // wallbang
                     Storylist.at(0) = wallbang1;
                     Storylist.at(1) = wallbang2;
                     Storylist.at(2) = wallbang3;
@@ -495,6 +502,13 @@ public:
                      Storylist.at(1) = wazker2;
                      Storylist.at(2) = wazker3;
                      Storylist.at(3) = wazker4;
+                     Storylist.at(4) = midday5;
+                 }
+                 if (escapeNumber == 5) { //wazker
+                     Storylist.at(0) = liner1;
+                     Storylist.at(1) = liner2;
+                     Storylist.at(2) = liner3;
+                     Storylist.at(3) = liner4;
                      Storylist.at(4) = midday5;
                  }
             }

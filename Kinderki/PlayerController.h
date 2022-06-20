@@ -487,6 +487,7 @@ playerObject->velocity.y = speed;
                 //Hide Cola
                 Model nothing("res/models/movable/nothing.obj");
                 cola->modelTemp = nothing;
+                cola->m_transform.m_position.y = -10.0f;
                 cola->update_transform();
                 //change seat model    
                 Model seatWithCola("res/models/level/aerialrunnway_seat_with_cola.obj");
