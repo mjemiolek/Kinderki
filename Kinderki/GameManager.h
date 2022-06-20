@@ -1342,19 +1342,8 @@ class GameManager {
         if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim1)) {
                 cube3->tempAnim.PlayAnimation(&anim1);
-                if (!isSoundPlaying) {
-                    walkingsound.playLooped();
-                    isSoundPlaying = true;
-                }
-
+                walkingsound.playLooped();
             }
-            else {
-                if (fmod(st, 5.0) == 0) {
-                    walkingsound.stop();
-                    isSoundPlaying = false;
-                }
-            }
-          
             cube3->tempAnim.UpdateAnimation(dt);
             
         }
@@ -1363,6 +1352,7 @@ class GameManager {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim2)) {
                 cube3->tempAnim.PlayAnimation(&anim2);
                 jumpingsound.play();
+                walkingsound.stop();
             }
             cube3->tempAnim.UpdateAnimation(dt * 0.75);
         }
@@ -1370,6 +1360,7 @@ class GameManager {
         if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim3)) {
                 cube3->tempAnim.PlayAnimation(&anim3);
+                walkingsound.stop();
             }
             cube3->tempAnim.UpdateAnimation(dt * 0.75);
         }
@@ -1378,6 +1369,7 @@ class GameManager {
             if (!(cube3->tempAnim.getCurrentAnimation() == &anim4)) {
                 cube3->tempAnim.PlayAnimation(&anim4);
                 liftingsound.play();
+                walkingsound.stop();
             }
             cube3->tempAnim.UpdateAnimation(dt * 5);
             if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 5) {
