@@ -1358,7 +1358,7 @@ class GameManager {
                 cube3->tempAnim.PlayAnimation(&anim1);
                 walkingsound.playLooped();
             }
-            cube3->tempAnim.UpdateAnimation(dt);
+            cube3->tempAnim.UpdateAnimation(dt * 1.5);
             
         }
         //jumping
@@ -1368,8 +1368,8 @@ class GameManager {
                 jumpingsound.play();
                 walkingsound.stop();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 0.75);
-            if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 0.75) {
+            cube3->tempAnim.UpdateAnimation(dt * 1.35);
+            if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 1.35) {
                 player->setCanJumpAnimation(false);
             }
         }
