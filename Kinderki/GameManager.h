@@ -91,6 +91,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> bucketblackptr;
     std::shared_ptr<SceneGraphNode> bucketpinkptr;
     std::shared_ptr<SceneGraphNode> bucketredptr;
+    std::shared_ptr<SceneGraphNode> hammerptr;
 
     std::shared_ptr<TutorialState> tutorialState;
 
@@ -132,6 +133,16 @@ class GameManager {
     Model kidSandPit = Model("res/models/main_character_TEST_v15.fbx");
     Animation animationKidSandPit = Animation("res/animations/first_character_bucket_animation.fbx", &kidSandPit);
     Animator animatorKidSandPit = Animator(&animationKidSandPit);
+
+    Model animatedHammer = Model("res/models/hammer.fbx");
+    Animation animationHammer = Animation("res/animations/hammer_animation.fbx", &animatedHammer);
+    Animator animatorHammer = Animator(&animationHammer);
+
+
+    Model kidSeesaw = Model("res/models/second_character.fbx");
+    Animation animationKidSeesaw = Animation("res/animations/second_character_hammer.fbx", &kidSeesaw);
+    Animator animatorKidSeesaw = Animator(&animationKidSeesaw);
+
 
     //to checkWin()
     unsigned int ct;
@@ -195,7 +206,7 @@ class GameManager {
         glm::vec3 cubePositions[] = {
         glm::vec3(-0.5f, 2.0f,  3.5f),      //0
         glm::vec3(2.0f,  2.0f, -15.0f),     //1
-        glm::vec3(9.2f, 1.10f, -6.5f),      //2
+        glm::vec3(11.25f, 0.10f, -4.4f),      //2
         glm::vec3(12.0f, 0.0f, -16.0f),     //3  
         glm::vec3(13.0f, 0.0f, -13.0f), //Player position
         glm::vec3(0.0f,  2.0f, 0.0f),       //5
@@ -350,7 +361,7 @@ class GameManager {
         unsigned int kid5texture = loadTexture("res/textures/kids/character_1_texture_v4.png");
         unsigned int fatkidtexture = loadTexture("res/textures/kids/character_2_texture_v1.png");
 
-        
+        unsigned int hammertexture = loadTexture("res/textures/models/hammer.png");
         unsigned int texaerial = loadTexture("res/textures/models/texaerial.png");
         unsigned int texballkeep = loadTexture("res/textures/models/texballkeep.png");
         unsigned int texsandpit = loadTexture("res/textures/models/texsandpit.png");
@@ -424,6 +435,7 @@ class GameManager {
         bucketredptr = std::make_shared<SceneGraphNode>();
 
         temp = std::make_shared<SceneGraphNode>();
+        hammerptr = std::make_shared<SceneGraphNode>();
         player = std::make_shared<PlayerController>(cube3);
         tutorialState = std::make_shared<TutorialState>();
 
@@ -450,9 +462,16 @@ class GameManager {
         //cube do testu AI
         root_node->add_child(cube2);
         Collider cube2Collider(0.54f, false, cubePositions[2], false);
-        cube2->setProperties(shaderShad, fatkidtexture, cubePositions[2], MODEL, fatKid, 0.05f, false, cube2Collider);
+        cube2->setProperties(animShader, fatkidtexture, cubePositions[2], MODEL, kidSeesaw, 0.05f, false, cube2Collider);
         Collider cube2Trigger(0.9f, false, cubePositions[2], true);
         cube2->trigger = cube2Trigger;
+        cube2->isAnimated = true;
+        cube2->tempAnim = animatorKidSeesaw;
+
+        root_node->add_child(hammerptr);
+        hammerptr->setProperties(animShader, hammertexture, cubePositions[2], MODEL, animatedHammer, 0.05f, false);
+        hammerptr->isAnimated = true;
+        hammerptr->tempAnim = animatorHammer;
 
         root_node->add_child(cubeKid2);
         Collider cubeKid2Collider(0.54f, false, cubePositions[10], false);
@@ -1345,7 +1364,7 @@ class GameManager {
         return textureID;
     }
 
-    Sound walkingsound = Sound("res/sounds/walk-sound.wav");
+    Sound walkingsound = Sound("res/sounds/Walk-sound.wav");
     Sound jumpingsound = Sound("res/sounds/jump.wav");
     Sound liftingsound = Sound("res/sounds/pick-up.wav");
     
@@ -1396,6 +1415,8 @@ class GameManager {
 
         cubeKid2->tempAnim.UpdateAnimation(dt);
         bucketblackptr->tempAnim.UpdateAnimation(dt);
+        cube2->tempAnim.UpdateAnimation(dt);
+        hammerptr->tempAnim.UpdateAnimation(dt);
         //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
 
