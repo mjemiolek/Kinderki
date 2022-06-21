@@ -158,7 +158,7 @@ class GameManager {
         glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
         glm::vec3 sandPitPos(8.87f, 0.0f, -14.34f);
         glm::vec3 seesawPos(8.0f, 0.8f, -4.5f);
-        glm::vec3 ballPos(11.53f, 3.00f, 14.46f);
+        glm::vec3 ballPos(25.5f, 2.5f, -5.0f);
         glm::vec3 slidePos(21.00f, 0.10f, -14.0f);
         glm::vec3 trampolinePos(20.50f, 0.58f, -11.0f);
         glm::vec3 treePos(23.0f, 0.0f, -13.f);
@@ -189,14 +189,14 @@ class GameManager {
         glm::vec3 heartPos(12.0f, 0.2f, 2.0f);
         glm::vec3 heartPos2(7.0f, 0.0f, -11.0f);   //dziala jako lopatka
         glm::vec3 colaPos(37.0f, 0.0f, -9.0f);
-        glm::vec3 mentosPos(29.5f, 1.5f, -2.5f);
+        glm::vec3 mentosPos(29.5f, 2.0f, -2.69f);
 
         glm::vec3 candyCane1Pos(31.0f, 12.0f, -12.0f);  //tree
         glm::vec3 candyCane2Pos(20.0f, 1.0f, -5.5f);    //pool
         glm::vec3 candyCane3Pos(5.0f, 0.5f, 19.0f);     //behind goal
         glm::vec3 candyCane4Pos(34.5f, 0.5f, -12.0f);   //behind aerial
         glm::vec3 candyCane5Pos(3.5f, 1.0f, 0.0f);      //on bench
-        glm::vec3 candyCane6Pos(33.0f, 4.5f, 5.8f);     //on aerial
+        glm::vec3 candyCane6Pos(33.0f, 5.0f, 5.8f);     //on aerial
 
 
         glm::vec3 bucketBlackPos(25.0f, 0.1f, -8.0f); //not used
@@ -514,7 +514,7 @@ class GameManager {
         //pilka
         root_node->add_child(ball);
         Collider ballCollider(0.350005f, false, glm::vec3(12.0f, 2.5f, 15.0f), true); //dont change 0.350005f (important)
-        ball->setProperties(shaderShad, textureshrek, glm::vec3(25.5f, 2.5f, 0.0f),MODEL,sphere,0.03f,true,ballCollider);
+        ball->setProperties(shaderShad, textureshrek, ballPos,MODEL,sphere,0.03f,true,ballCollider);
         ball->modelOutline = sphere;
 
 
@@ -1010,8 +1010,8 @@ class GameManager {
         tempPos.y += 0.6;
         tempPos.z += 2.25;
 
-        root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
 
         Collider treeColider11(glm::vec3(0.37f, 0.45f, 0.46f), false, tempPos, false);
 

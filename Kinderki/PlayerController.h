@@ -385,7 +385,7 @@ public:
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger)) {
             
 
-            playerObject->velocity.y = 10.0f;
+            playerObject->velocity.y = 8.9f;
             playerObject->canJump = false;
         }
         if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
@@ -490,7 +490,7 @@ public:
                 //Hide Cola
                 Model nothing("res/models/movable/nothing.obj");
                 cola->modelTemp = nothing;
-                cola->m_transform.m_position.y = -10.0f;
+                cola->m_transform.m_position.x = 100.0f;
                 cola->update_transform();
                 //change seat model    
                 Model seatWithCola("res/models/level/aerialrunnway_seat_with_cola.obj");
@@ -508,8 +508,8 @@ public:
 
         if (alreadyescapedTyrolker) {
             //change seat model 
-            tyrolkerScale = 1.1f;
-            tyrolkerVelocity6 = 6.9f;
+            tyrolkerScale = 1.0f;
+            tyrolkerVelocity6 = 6.0f;
         }
 
         //if player is on seat and aerial is not at the end yet
