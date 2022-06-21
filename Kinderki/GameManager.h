@@ -60,6 +60,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> tablesptr;
     std::shared_ptr<SceneGraphNode> trampolineptr;
     std::shared_ptr<SceneGraphNode> treeptr;
+    std::shared_ptr<SceneGraphNode> tree2ptr;
     std::shared_ptr<SceneGraphNode> umbrellaptr;
     std::shared_ptr<SceneGraphNode> walkptr;
     std::shared_ptr<SceneGraphNode> wallsptr;
@@ -162,6 +163,7 @@ class GameManager {
         glm::vec3 slidePos(21.00f, 0.10f, -14.0f);
         glm::vec3 trampolinePos(20.50f, 0.58f, -11.0f);
         glm::vec3 treePos(23.0f, 0.0f, -13.f);
+        glm::vec3 tree2Pos(14.0f, 0.0f, -13.f);
         //glm::vec3 treePos(30.0f, 0.0f, -18.0f);
         glm::vec3 aerialRunnwayPos(33.0f, 0.0f, -2.5f);
         glm::vec3 aerialRunnwaySeatPos(0.05, 3.15f, -7.5f);
@@ -308,6 +310,7 @@ class GameManager {
         Model trampolineOut("res/models/outline/trampolineOutline.obj");
 
         Model tree("res/models/level/tree.obj");
+        Model tree2("res/models/level/tree2full.obj");
         Model umbrella("res/models/level/umbrella.obj");
         Model walk("res/models/level/walk.obj");
 
@@ -411,6 +414,7 @@ class GameManager {
         tablesptr = std::make_shared<SceneGraphNode>();
         trampolineptr = std::make_shared<SceneGraphNode>();
         treeptr = std::make_shared<SceneGraphNode>();
+        tree2ptr = std::make_shared<SceneGraphNode>();
         umbrellaptr = std::make_shared<SceneGraphNode>();
         walkptr = std::make_shared<SceneGraphNode>();
         wallsptr = std::make_shared<SceneGraphNode>();
@@ -442,7 +446,7 @@ class GameManager {
 
         collidingObjects.insert(collidingObjects.end(), {
         cube1,cube2,cube3, cubeKid2, cubeKid3, cubeKid4, cubeKid5, floorptr, ball,wallsptr,heartptr,heartptr2,colaptr, mentosptr, bucketblackptr, bucketpinkptr , bucketredptr,
-        trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr, sandpitptr,benchesptr, tablesptr, treeptr, aerialrunnwaywholeptr,
+        trampolineptr, goalLeftptr, goalRightptr, swingptr, swingseatptr, sandpitptr,benchesptr, tablesptr, treeptr, tree2ptr, aerialrunnwaywholeptr,
         seesawptr, poolptr, tabptr
 
             });
@@ -1163,6 +1167,11 @@ class GameManager {
         treeptr->additionalColliders.push_back(treeColider24);
         treeptr->additionalColliders.push_back(treeColider25);
         treeptr->additionalColliders.push_back(treeColider26);
+
+
+        root_node->add_child(tree2ptr);
+        tree2ptr->setProperties(shaderShad, textree, tree2Pos, MODEL, tree2, 0.90f, false);
+
 
         //parasol (I dont want to deal with colliders here xd)
         //root_node->add_child(umbrellaptr);
