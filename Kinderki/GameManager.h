@@ -94,6 +94,8 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> bucketredptr;
     std::shared_ptr<SceneGraphNode> hammerptr;
     std::shared_ptr<SceneGraphNode> lightballptr;
+    std::shared_ptr<SceneGraphNode> mentosToAnimationptr;
+    std::shared_ptr<SceneGraphNode> colaToAnimationptr;
 
     std::shared_ptr<TutorialState> tutorialState;
 
@@ -153,6 +155,16 @@ class GameManager {
     Animation animationHustawker = Animation("res/animations/first_character_kamehameha.fbx", &postac_test);
     Animator animatorHustawker = Animator(&animationHustawker);
 
+    Animation animationKidMentosCola = Animation("res/animations/first_character_mentos_cola.fbx", &postac_test);
+    Animator animatorKidMentosCola = Animator(&animationKidMentosCola);
+
+    Model animatedMentos = Model("res/models/mentos.fbx");
+    Animation animationMentos = Animation("res/animations/mentos_animation.fbx", &animatedMentos);
+    Animator animatorMentos = Animator(&animationMentos);
+
+    Model animatedCola = Model("res/models/cola.fbx");
+    Animation animationCola = Animation("res/animations/cola_animation.fbx", &animatedCola);
+    Animator animatorCola = Animator(&animationCola);
 
     //to checkWin()
     unsigned int ct;
@@ -228,7 +240,7 @@ class GameManager {
         glm::vec3(8.87f,  0.10f, -14.34f),  //10
         glm::vec3(20.5f, 0.0f, 12.5f),      //11
         glm::vec3(10.0f,  0.10f, 6.0f),     //12
-        glm::vec3(29.50f,  0.10f, -12.95f)  //13
+        glm::vec3(30.56f,  0.10f, -7.50f)  //13
         };
 
         //Initializing gravity
@@ -386,7 +398,7 @@ class GameManager {
         unsigned int textab = loadTexture("res/textures/models/textab.png");
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
-        unsigned int texmentos = loadTexture("res/textures/models/mentos_textura.png");
+        unsigned int texmentos = loadTexture("res/textures/models/mentos_texture.png");
         unsigned int texshowel = loadTexture("res/textures/models/lopata_tex.png");
         unsigned int texbucketblack = loadTexture("res/textures/models/bucket_black.png");
         unsigned int texbucketpink = loadTexture("res/textures/models/bucket_pink.png");
@@ -450,6 +462,8 @@ class GameManager {
 
         temp = std::make_shared<SceneGraphNode>();
         hammerptr = std::make_shared<SceneGraphNode>();
+        mentosToAnimationptr = std::make_shared<SceneGraphNode>();
+        colaToAnimationptr = std::make_shared<SceneGraphNode>();
         lightballptr = std::make_shared<SceneGraphNode>();
         player = std::make_shared<PlayerController>(cube3);
         tutorialState = std::make_shared<TutorialState>();
@@ -528,10 +542,25 @@ class GameManager {
 
         root_node->add_child(cubeKid5);
         Collider cubeKid5Collider(0.54f, false, cubePositions[13], false);
-        cubeKid5->setProperties(shaderShad, kid4texture, cubePositions[13], MODEL, postac_test, 0.05f, false, cubeKid5Collider);
+        cubeKid5->setProperties(animShader, kid4texture, cubePositions[13], MODEL, postac_test, 0.05f, false, cubeKid5Collider);
         Collider cubeKid5Trigger(0.9f, false, cubePositions[13], true);
         cubeKid5->trigger = cubeKid5Trigger;
+        cubeKid5->isAnimated = true;
+        cubeKid5->tempAnim = animatorKidMentosCola;
+        cubeKid5->shaderTemp3 = skeletalDepth;
         
+        root_node->add_child(mentosToAnimationptr);
+        mentosToAnimationptr->setProperties(animShader, texmentos, cubePositions[13], MODEL, animatedMentos, 0.05f, false);
+        mentosToAnimationptr->isAnimated = true;
+        mentosToAnimationptr->tempAnim = animatorMentos;
+        mentosToAnimationptr->shaderTemp3 = skeletalDepth;
+
+        root_node->add_child(colaToAnimationptr);
+        colaToAnimationptr->setProperties(animShader, texcola, cubePositions[13], MODEL, animatedCola, 0.05f, false);
+        colaToAnimationptr->isAnimated = true;
+        colaToAnimationptr->tempAnim = animatorCola;
+        colaToAnimationptr->shaderTemp3 = skeletalDepth;
+
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, playerPos, true);
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
@@ -1453,6 +1482,9 @@ class GameManager {
         hammerptr->tempAnim.UpdateAnimation(dt);
         cubeKid3->tempAnim.UpdateAnimation(dt);
         lightballptr->tempAnim.UpdateAnimation(dt);
+        cubeKid5->tempAnim.UpdateAnimation(dt);
+        mentosToAnimationptr->tempAnim.UpdateAnimation(dt);
+        colaToAnimationptr->tempAnim.UpdateAnimation(dt);
 
         //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
