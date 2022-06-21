@@ -207,16 +207,25 @@ struct SceneGraphNode {
             m_children[i]->render(false, clip);
         }
     }
-    void renderScene(bool is_root = false, Shader shader = Shader())
+    void renderScene(bool is_root = false, glm::mat4 lightSpaceMatrix = glm::mat4(1.0f))
     {
         if (!is_root)
         {
-            shader.setMat4("model", m_transform.m_world_matrix);
-            modelTemp.Draw(shader);
+            shaderTemp3.use();
+            shaderTemp3.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+            if (isAnimated) {
+                auto transforms = tempAnim.GetFinalBoneMatrices();
+                for (int i = 0; i < transforms.size(); ++i) {
+                    //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
+                    shaderTemp.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+                }
+            }
+            shaderTemp3.setMat4("model", m_transform.m_world_matrix);
+            modelTemp.Draw(shaderTemp3);
         }
         for (uint32_t i = 0; i < m_children.size(); ++i)
         {
-            m_children[i]->renderScene(false, shader);
+            m_children[i]->renderScene(false, lightSpaceMatrix);
         }
     }
     void render2(bool is_root, unsigned int depthMap, const Frustum& frustum, unsigned int& display, unsigned int& total)
@@ -362,6 +371,7 @@ struct SceneGraphNode {
 
     Shader shaderTemp = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Shader shaderTemp2 = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
+    Shader shaderTemp3 = Shader("res/shaders/shadow_mapping_depth.vert", "res/shaders/shadow_mapping_depth.frag");
     Model modelTemp = Model("res/models/box.obj");
     Model modelOutline = Model("res/models/box.obj");
     Animator tempAnim = Animator();

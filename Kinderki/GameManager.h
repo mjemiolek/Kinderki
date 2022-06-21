@@ -108,7 +108,7 @@ class GameManager {
     Shader waterShader = Shader("res/shaders/water.vert", "res/shaders/water.frag");
 
     Shader antialliasingshader = Shader("res/shaders/antialliasing.vert", "res/shaders/antialliasing.frag");
-
+    Shader skeletalDepth = Shader("res/shaders/skeletal_depth.vert", "res/shaders/skeletal_depth.frag");
 
     std::shared_ptr<PlayerController> player;
     glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
@@ -467,11 +467,13 @@ class GameManager {
         cube2->trigger = cube2Trigger;
         cube2->isAnimated = true;
         cube2->tempAnim = animatorKidSeesaw;
+        cube2->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(hammerptr);
         hammerptr->setProperties(animShader, hammertexture, cubePositions[2], MODEL, animatedHammer, 0.05f, false);
         hammerptr->isAnimated = true;
         hammerptr->tempAnim = animatorHammer;
+        hammerptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid2);
         Collider cubeKid2Collider(0.54f, false, cubePositions[10], false);
@@ -480,11 +482,13 @@ class GameManager {
         cubeKid2->trigger = cubeKid2Trigger;
         cubeKid2->isAnimated = true;
         cubeKid2->tempAnim = animatorKidSandPit;
+        cubeKid2->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(bucketblackptr);
         bucketblackptr->setProperties(animShader, texbucketred, cubePositions[10], MODEL, animatedBucket, 0.05f, false);
         bucketblackptr->isAnimated = true;
         bucketblackptr->tempAnim = animatorBucket;
+        bucketblackptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid3);
         Collider cubeKid3Collider(0.54f, false, cubePositions[11], false);
@@ -510,6 +514,7 @@ class GameManager {
         cube3->setProperties(animShader, texture_postac_test, playerPos, MODEL, postac_test, 0.05f, false, cube3Collider);
         cube3->isAnimated = true;
         cube3->tempAnim = animatorMainCharacter;
+        cube3->shaderTemp3 = skeletalDepth;
 
         //pilka
         root_node->add_child(ball);
@@ -1469,13 +1474,14 @@ class GameManager {
         glm::mat4 orthgonalProjection = glm::ortho(-area, area, -area, area, near_plane, far_plane);
         glm::mat4 lightView = glm::lookAt(lightPos, cube3->get_transform().m_position, glm::vec3(0.0, 1.0, 0.0));
         glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
-        simpleDepthShader.use();
-        simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
+
+        //simpleDepthShader.use();
+        //simpleDepthShader.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
         glViewport(0, 0, shadowMapWidth, shadowMapHeight);
         glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
         glClear(GL_DEPTH_BUFFER_BIT);
-        root_node->renderScene(true, simpleDepthShader);
+        root_node->renderScene(true, lightSpaceMatrix);
         //renderScene(simpleDepthShader);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
