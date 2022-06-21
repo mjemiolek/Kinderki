@@ -90,6 +90,9 @@ int main()
     glfwWindowHint(GLFW_SAMPLES, 4); // for MSAA rendering to default framebuffer
 
     // Create window with graphics context
+
+    //in fullscreen
+    //window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Playground Escape", glfwGetPrimaryMonitor(), NULL);
     window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Playground Escape", NULL, NULL);
     if (window == NULL)
         return 1;
@@ -182,6 +185,9 @@ int main()
     unsigned int moveIntTexture = gameManager.loadTexture("res/textures/tutorial/moveInt.png");
     unsigned int sandpitIntTexture = gameManager.loadTexture("res/textures/tutorial/SandpitInt.png");
 
+    unsigned int tutorialTexture1 = gameManager.loadTexture("res/textures/tutorial/TutorialTest1.png");
+    unsigned int tutorialTexture2 = gameManager.loadTexture("res/textures/tutorial/TutorialTest2.png");
+
     unsigned int buyHintWindowTexture = gameManager.loadTexture("res/textures/gui/interaction.png");
     unsigned int notEnoughCandyTexture = gameManager.loadTexture("res/textures/gui/notEnoughCandy.png");
     unsigned int pilkaPlotHintTexture = gameManager.loadTexture("res/textures/gui/pilkaPlotHint.png");
@@ -239,6 +245,8 @@ int main()
     gameManager.tutorialState->setTexture3(kidIntTexture);
     gameManager.tutorialState->setTexture4(itemIntTexture);
     gameManager.tutorialState->setTexture5(sandpitIntTexture);
+    gameManager.tutorialState->setTexture6(tutorialTexture1);
+    gameManager.tutorialState->setTexture7(tutorialTexture2);
 
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;

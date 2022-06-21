@@ -3,24 +3,26 @@
 #include "PlayerController.h"
 #include "text.h"
 
-float vertices[] = {
-	 0.7f, -0.9f,
-	-0.7f, -0.5f,
-	 0.7f, -0.5f,
-	-0.7f, -0.9f
-};
+int x = 0;
+float scale = 0.8f;
+float Iscale = 1 / scale;
+float vectorText = 0.6f;
 
 
+float verticesText[] = { 0.7375f * scale, -0.14074f * scale - vectorText,
+				-0.7375f * scale, 0.14074f * scale - vectorText,
+				 0.7375f * scale, 0.14074f * scale - vectorText,
+				-0.7375f * scale, -0.14074f * scale - vectorText };
 
+float tempVerticesText[] = { 0.7375f * scale, -0.14074f * scale - vectorText,
+				-0.7375f * scale, 0.14074f * scale - vectorText,
+				 0.7375f * scale, 0.14074f * scale - vectorText,
+				-0.7375f * scale, -0.14074f * scale - vectorText };
 
 uint32_t indicesText[] = { 3, 1, 2,
 					  2, 0, 3 };
 
 
-//float textureCordsText[] = { 0.0f, 1.0f,
-//					 1.0f, 0.0f,
-//					 0.0f, 0.0f,
-//					 1.0f, 1.0f };
 float textureCordsText[] = { 1.0f, 1.0f,
 					 0.0f, 0.0f,
 					 1.0f, 0.0f,
@@ -35,14 +37,15 @@ class TutorialState {
 	bool renderText;
 	bool putOffMovable;
 	bool carry;
+	bool bigScale;
 	std::shared_ptr<Text> text;
 	std::ostringstream tutorialStream;
 	std::string tutorialString;
 	unsigned int ct;
+	unsigned int waitTime;
 	unsigned int dt;
-	float x;
 	unsigned int textVAO;
-	unsigned int textVBO;
+	unsigned int textVBO1, textVBO2;
 	unsigned int textEBO;
 
 	unsigned int texture1;
@@ -50,8 +53,14 @@ class TutorialState {
 	unsigned int texture3;
 	unsigned int texture4;
 	unsigned int texture5;
-	unsigned int textureText;
+	unsigned int texture6;
+	unsigned int texture7;
+	unsigned int *textureText;
 
+	unsigned int initTime;
+	float ystep;
+	float xstep;
+	int numberOfSteps;
 public:
 	TutorialState() {
 		checkArrowsKeyMove = true;
@@ -61,25 +70,28 @@ public:
 		findSandpit = false;
 		renderText = true;
 		putOffMovable = false;
+		bigScale = false;
 		carry = true;
 		tutorialString = "";
 		tutorialStream.str(std::string());
 		text = std::make_shared<Text>();
 		ct = 0;
-		
-		////////////////////Tutorial text with texture
+		initTime = glfwGetTime();
+		numberOfSteps = 30;
+		ystep = 0.000125f;
+		xstep = 9.3118f * ystep;
 		glGenVertexArrays(1, &textVAO);
 		glBindVertexArray(textVAO);
 
-		glGenBuffers(1, &textVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glGenBuffers(1, &textVBO1);
+		glBindBuffer(GL_ARRAY_BUFFER, textVBO1);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(verticesText), &verticesText, GL_STATIC_DRAW);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
-		glGenBuffers(1, &textVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, textVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(textureCordsText), textureCordsText, GL_STATIC_DRAW);
+		glGenBuffers(1, &textVBO2);
+		glBindBuffer(GL_ARRAY_BUFFER, textVBO2);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(textureCordsText), &textureCordsText, GL_STATIC_DRAW);
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 
@@ -87,14 +99,20 @@ public:
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, textEBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesText), indicesText, GL_STATIC_DRAW);
 
+
+
+
+
 	}
 
 
 	void ManageTutorialThings(GLFWwindow* window, std::shared_ptr<PlayerController> player, std::shared_ptr<SceneGraphNode> interacterAI, std::shared_ptr<SceneGraphNode> sandPiter) {
 		if (checkArrowsKeyMove) {
+			if (textureText != &texture6) {
+				textureText = &texture6;
+				bigScale = true;
+			}
 		//	tutorialString = "Press arrows key to move the character";
-		//	x = 618.0f;
-			textureText = texture1;
 			if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
@@ -117,10 +135,14 @@ public:
 			}
 		}
 		if (findSandpit && ct - dt > 2) {
-		//	x = 852.0f;
-			textureText = texture2;
+			if (textureText != &texture7) {
+				waitTime = ct;
+				textureText = &texture7;
+				bigScale = true;
+			}
+			
 		//	tutorialString = "Find sandpit";
-			if (player->getPlayerObject()->collider.boxToBoxCollisioncheck(sandPiter->trigger)) {
+			if (player->getPlayerObject()->collider.boxToBoxCollisioncheck(sandPiter->trigger) && ct - waitTime > 0) {
 				dt = ct;
 				findSandpit = false;
 				checkInteractionWithKid = true;
@@ -129,10 +151,13 @@ public:
 
 
 		if (checkInteractionWithKid) {
-		//	x = 708.0f;
 		//	tutorialString = "Press E to interact with kid";
-			textureText = texture3;
-			if (interacterAI->trigger.sphereToSphereCollisionCheck(player->getPlayerObject()->collider)) {
+			if (textureText != &texture3) {
+				waitTime = ct;
+				textureText = &texture3;
+				bigScale = true;
+			}
+			if (interacterAI->trigger.sphereToSphereCollisionCheck(player->getPlayerObject()->collider) && ct - waitTime > 0) {
 				if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 					dt = ct;
 					checkInteractionWithKid = false;
@@ -141,10 +166,13 @@ public:
 			}
 		}
 		if (checkInteractionWithMovable) {
-		//	x = 681.0f;
 		//	tutorialString = "To pick up item just go into it";
-			textureText = texture4;
-			if (player->getPlayerObject()->m_children.size() == 1) {
+			if (textureText != &texture4) {
+				waitTime = ct;
+				textureText = &texture4;
+				bigScale = true;
+			}
+			if (player->getPlayerObject()->m_children.size() == 1 && ct - waitTime > 0) {
 				dt = ct;
 				checkInteractionWithMovable = false;
 				putOffMovable = true;
@@ -155,7 +183,11 @@ public:
 
 		if (putOffMovable) {
 			//need texture
-			textureText = texture1;
+			if (textureText != &texture1) {
+				waitTime = ct;
+				textureText = &texture1;
+				bigScale = true;
+			}
 			if (player->getPlayerObject()->m_children.size() > 0) {
 				carry = true;
 			}
@@ -163,21 +195,25 @@ public:
 				carry = false;
 			}
 			std::cout << "carry: " << carry << std::endl;
-			if(player->getPlayerObject()->m_children.size() == 0 && !carry){
+			if(player->getPlayerObject()->m_children.size() == 0 && !carry && ct - waitTime > 0){
+				dt = ct;
 				putOffMovable = false;
 				checkInteractionWithSandpit = true;
 			}		
 		}
 
 
-		if (checkInteractionWithSandpit) {
-			//x = 411.0f;
+		if (checkInteractionWithSandpit && ct - dt > 0) {
 		//	tutorialString = "Press E to interact with sandpit if you have the correct item";
-			textureText = texture5;
+			if (textureText != &texture5) {
+				waitTime = ct;
+				textureText = &texture5;
+				bigScale = true;
+			}
 			if (player->getPlayerObject()->m_children.size() == 0) {
 				return;
 			}
-			if (player->getPlayerObject()->collider.boxToBoxCollisioncheck(sandPiter->trigger) && player->getPlayerObject()->m_children.at(0)->getMovableType() == TOSANDPIT) {
+			if (player->getPlayerObject()->collider.boxToBoxCollisioncheck(sandPiter->trigger) && player->getPlayerObject()->m_children.at(0)->getMovableType() == TOSANDPIT && ct - waitTime > 1) {
 				if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 					dt = ct;
 					checkInteractionWithSandpit = false;
@@ -189,21 +225,91 @@ public:
 
 	}
 	void update(GLFWwindow* window, std::shared_ptr<PlayerController> player, std::shared_ptr<SceneGraphNode> interacterAI, std::shared_ptr<SceneGraphNode> sandPiter) {
-		ct = glfwGetTime();
-		ManageTutorialThings(window, player, interacterAI, sandPiter);
-		tutorialStream.str(std::string());
-		tutorialStream << tutorialString;
+		if (!turnOffTutorial) {
+			ct = glfwGetTime();
+			if (ct - initTime < 8) {
+				renderText = false;
+				if (glfwGetKey(window, GLFW_KEY_BACKSLASH) == GLFW_PRESS) {
+					turnOffTutorial = true;
+				}
+			}
+			if (ct - initTime >= 8) {
+				if (ct - initTime == 8) {
+					renderText = true;
+				}
+				ManageTutorialThings(window, player, interacterAI, sandPiter);
+			}
+			tutorialStream.str(std::string());
+			tutorialStream << tutorialString;
+		}
 	}
 	void render() {
 		if (renderText) {
-			//text->RenderText(tutorialStream.str(), x, 100.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-			Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
-			testShader.use();
-			glBindVertexArray(textVAO);
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, textureText);
-			glDrawElements(GL_TRIANGLES, GLsizei(std::size(indicesText)), GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
+			if (!turnOffTutorial) {
+				if (bigScale) {
+					ystep = 0.001f;
+					xstep = 9.3118f * ystep;
+					x = 0;
+					*verticesText = *tempVerticesText;
+					bigScale = false;
+
+				}
+				else {
+
+				}
+				if (x < numberOfSteps) {
+					if (x < numberOfSteps / 2) {
+						verticesText[0] += xstep;
+						verticesText[2] -= xstep;
+						verticesText[4] += xstep;
+						verticesText[6] -= xstep;
+
+						verticesText[1] -= ystep;
+						verticesText[3] += ystep;
+						verticesText[5] += ystep;
+						verticesText[7] -= ystep;
+					}
+					if (x >= numberOfSteps / 2) {
+						verticesText[0] += -xstep;
+						verticesText[2] -= -xstep;
+						verticesText[4] += -xstep;
+						verticesText[6] -= -xstep;
+
+						verticesText[1] -= -ystep;
+						verticesText[3] += -ystep;
+						verticesText[5] += -ystep;
+						verticesText[7] -= -ystep;
+					}
+
+					x++;
+
+				}
+				else {
+					if (ystep = 0.001f) {
+						ystep = 0.000125f;
+						xstep = 9.3118f * ystep;
+						*verticesText = *tempVerticesText;
+					}
+					x = 0;
+				}
+
+				cout << "x: " << verticesText[0] << endl;
+
+
+
+				//text->RenderText(tutorialStream.str(), x, 100.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+				Shader testShader("res/shaders/basic.vert", "res/shaders/basic.frag");
+				testShader.use();
+				glBindVertexArray(textVAO);
+				glBindBuffer(GL_ARRAY_BUFFER, textVBO1);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(verticesText), &verticesText, GL_STATIC_DRAW);
+				glBindBuffer(GL_ARRAY_BUFFER, textVBO2);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(textureCordsText), &textureCordsText, GL_STATIC_DRAW);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, *textureText);
+				glDrawElements(GL_TRIANGLES, GLsizei(std::size(indicesText)), GL_UNSIGNED_INT, 0);
+				glBindVertexArray(0);
+			}
 		}
 			
 	}
@@ -225,5 +331,12 @@ public:
 	void setTexture5(unsigned int dt) {
 		texture5 = dt;
 	}
+	void setTexture6(unsigned int dt) {
+		texture6 = dt;
+	}
+	void setTexture7(unsigned int dt) {
+		texture7 = dt;
+	}
+
 
 };

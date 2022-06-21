@@ -23,6 +23,8 @@
 
 #include "SceneGraph.h"
 
+bool turnOffTutorial = false;
+
 class PlayerController {
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
@@ -336,6 +338,7 @@ public:
                 if (playerObject->get_transform().m_position.y >= 0.01f) {
                     sandMove = false;
                     playerObject->canInToGround = false;
+                    turnOffTutorial = true;
                 }
             }
         }

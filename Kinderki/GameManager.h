@@ -93,6 +93,7 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> bucketpinkptr;
     std::shared_ptr<SceneGraphNode> bucketredptr;
     std::shared_ptr<SceneGraphNode> hammerptr;
+    std::shared_ptr<SceneGraphNode> lightballptr;
 
     std::shared_ptr<TutorialState> tutorialState;
 
@@ -143,6 +144,14 @@ class GameManager {
     Model kidSeesaw = Model("res/models/second_character.fbx");
     Animation animationKidSeesaw = Animation("res/animations/second_character_hammer.fbx", &kidSeesaw);
     Animator animatorKidSeesaw = Animator(&animationKidSeesaw);
+
+
+    Model animatedLightBall = Model("res/models/light.fbx");
+    Animation animationLightBall = Animation("res/animations/light_animation.fbx", &animatedLightBall);
+    Animator animatorLightBall = Animator(&animationLightBall);
+
+    Animation animationHustawker = Animation("res/animations/first_character_kamehameha.fbx", &postac_test);
+    Animator animatorHustawker = Animator(&animationHustawker);
 
 
     //to checkWin()
@@ -363,6 +372,7 @@ class GameManager {
         unsigned int kid4texture = loadTexture("res/textures/kids/character_1_texture_v3.png");
         unsigned int kid5texture = loadTexture("res/textures/kids/character_1_texture_v4.png");
         unsigned int fatkidtexture = loadTexture("res/textures/kids/character_2_texture_v1.png");
+        unsigned int lighttexture = loadTexture("res/textures/models/light_texture.png");
 
         unsigned int hammertexture = loadTexture("res/textures/models/hammer.png");
         unsigned int texaerial = loadTexture("res/textures/models/texaerial.png");
@@ -440,6 +450,7 @@ class GameManager {
 
         temp = std::make_shared<SceneGraphNode>();
         hammerptr = std::make_shared<SceneGraphNode>();
+        lightballptr = std::make_shared<SceneGraphNode>();
         player = std::make_shared<PlayerController>(cube3);
         tutorialState = std::make_shared<TutorialState>();
 
@@ -495,15 +506,24 @@ class GameManager {
         bucketblackptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid3);
-        Collider cubeKid3Collider(0.54f, false, cubePositions[11], false);
-        cubeKid3->setProperties(shaderShad, kid5texture, cubePositions[11], MODEL, postac_test, 0.05f, false, cubeKid3Collider);
-        Collider cubeKid3Trigger(0.9f, false, cubePositions[11], true);
+        Collider cubeKid3Collider(0.54f, false, cubePositions[12], false);
+        cubeKid3->setProperties(animShader, kid5texture, cubePositions[12], MODEL, postac_test, 0.05f, false, cubeKid3Collider);
+        Collider cubeKid3Trigger(0.9f, false, cubePositions[12], true);
         cubeKid3->trigger = cubeKid3Trigger;
+        cubeKid3->isAnimated = true;
+        cubeKid3->tempAnim = animatorHustawker;
+        cubeKid3->shaderTemp3 = skeletalDepth;
+
+        root_node->add_child(lightballptr);
+        lightballptr->setProperties(animShader, texshowel, cubePositions[12], MODEL, animatedLightBall, 0.05f, false);
+        lightballptr->isAnimated = true;
+        lightballptr->tempAnim = animatorLightBall;
+        lightballptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid4);
-        Collider cubeKid4Collider(0.54f, false, cubePositions[12], false);
-        cubeKid4->setProperties(shaderShad, kid3texture, cubePositions[12], MODEL, postac_test, 0.05f, false, cubeKid4Collider);
-        Collider cubeKid4Trigger(0.9f, false, cubePositions[12], true);
+        Collider cubeKid4Collider(0.54f, false, cubePositions[11], false);
+        cubeKid4->setProperties(shaderShad, kid3texture, cubePositions[11], MODEL, postac_test, 0.05f, false, cubeKid4Collider);
+        Collider cubeKid4Trigger(0.9f, false, cubePositions[11], true);
         cubeKid4->trigger = cubeKid4Trigger;
 
         root_node->add_child(cubeKid5);
@@ -1431,6 +1451,9 @@ class GameManager {
         bucketblackptr->tempAnim.UpdateAnimation(dt);
         cube2->tempAnim.UpdateAnimation(dt);
         hammerptr->tempAnim.UpdateAnimation(dt);
+        cubeKid3->tempAnim.UpdateAnimation(dt);
+        lightballptr->tempAnim.UpdateAnimation(dt);
+
         //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
 
@@ -1524,14 +1547,8 @@ class GameManager {
         // do animacji
         // 
         animShader.use();
-        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        view = camera.GetViewMatrix();
         animShader.setMat4("projection", projection);
         animShader.setMat4("view", view);
-        // set light uniforms
-        animShader.setVec3("viewPos", camera.Position);
-        animShader.setVec3("lightPos", lightPos);
-        // animShad.setMat4("lightSpaceMatrix", lightSpaceMatrix);
 
         // Make it so the stencil test always passes
         glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -1560,8 +1577,6 @@ class GameManager {
       //  glDisable(GL_DEPTH_TEST);
 
         outlineShader.use();
-        projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        view = camera.GetViewMatrix();
         outlineShader.setMat4("projection", projection);
         outlineShader.setMat4("view", view);
         //scale

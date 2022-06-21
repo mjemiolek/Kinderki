@@ -187,5 +187,11 @@
     <None Include="res\shaders\skeletal_depth.frag">
       <Filter>Pliki zasobów\res\shaders</Filter>
     </None>
+    <None Include="res\shaders\antialliasing.frag">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
+    <None Include="res\shaders\antialliasing.vert">
+      <Filter>Pliki zasobów\res\shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

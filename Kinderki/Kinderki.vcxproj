@@ -185,6 +185,8 @@
   <ItemGroup>
     <None Include="antialliasing.frag" />
     <None Include="antialliasing.vert" />
+    <None Include="res\shaders\antialliasing.frag" />
+    <None Include="res\shaders\antialliasing.vert" />
     <None Include="res\shaders\debug_quad.frag" />
     <None Include="res\shaders\debug_quad.vert" />
     <None Include="res\shaders\lightcaster.frag" />
