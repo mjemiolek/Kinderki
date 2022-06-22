@@ -357,6 +357,8 @@ class GameManager {
         Model mentosOut("res/models/outline/mentosOutline.obj");
 
         Model shovel("res/models/movable/lopata.obj");
+        Model shovelOut("res/models/outline/showelOutline");
+
         Model bucket("res/models/movable/wiadro.obj");
         Model bucketOut("res/models/outline/wiadroOutline.obj");
 
@@ -1532,9 +1534,11 @@ class GameManager {
 
         Collider showelGravitationer(0.01f, false, colaPos, true);
         root_node->add_child(heartptr2);
-        heartptr2->setProperties(shaderShad, texshowel, heartPos2, MODEL, shovel, 0.01f, false, showelGravitationer);
+        heartptr2->setProperties(shaderShad, texshowel, heartPos2, MODEL, shovel, 0.01f, true, showelGravitationer);
         heartptr2->trigger = heartTrigger2;
         heartptr2->movableType = TOSANDPIT;
+        heartptr2->modelOutline = shovelOut;
+
 
         Collider colaGravitationer(0.01f, false, colaPos, true);
         root_node->add_child(colaptr);
