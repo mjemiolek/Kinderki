@@ -357,7 +357,7 @@ class GameManager {
         Model mentosOut("res/models/outline/mentosOutline.obj");
 
         Model shovel("res/models/movable/lopata.obj");
-        Model shovelOut("res/models/outline/showelOutline");
+        Model shovelOut("res/models/outline/showelOutline.obj");
 
         Model bucket("res/models/movable/wiadro.obj");
         Model bucketOut("res/models/outline/wiadroOutline.obj");
@@ -409,7 +409,7 @@ class GameManager {
         unsigned int texaerialseat = loadTexture("res/textures/models/aerialrunnway_seat.png");
         unsigned int texswingseat = loadTexture("res/textures/models/swingseat.png");
 
-        unsigned int texfencefixed = loadTexture("res/textures/models/ogrodzenie_fixed.png");
+       // unsigned int texfencefixed = loadTexture("res/textures/models/ogrodzenie_fixed.png");
 
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
@@ -611,7 +611,7 @@ class GameManager {
         //heartptr->setProperties(shaderShad, texturewin10, aerialRunnwayLinerTrigerPos, MODEL, postac_test, 0.05f, false);
 
         root_node->add_child(aerialrunnwayseatptr);
-        aerialrunnwayseatptr->setProperties(shaderShad, texaerialseat, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, true);
+        aerialrunnwayseatptr->setProperties(shaderShad, texaerialseat, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, false);
         //std::cout << aerialRunnwayPos.x + aerialRunnwaySeatPos.x <<"x"<< aerialRunnwayPos.y + aerialRunnwaySeatPos.y << "x" << aerialRunnwayPos.z + aerialRunnwaySeatPos.z << std::endl;
         aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
         aerialrunnwayseatptr->modelOutline = aerialrunnwayseatOut;
@@ -1552,7 +1552,7 @@ class GameManager {
         mentosptr->trigger = mentosTrigger;
         //mentosptr->get_transform().y_rotation_angle += 30.0f;
         //mentosptr->get_transform().x_rotation_angle += 30.0f;
-        //mentosptr->modelOutline = mentosOut;
+        mentosptr->modelOutline = mentosOut;
 
         Collider bucketGravitationer(0.01f, false, mentosPos, true);
         root_node->add_child(bucketredptr);
