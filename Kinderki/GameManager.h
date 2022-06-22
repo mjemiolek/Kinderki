@@ -971,24 +971,6 @@ class GameManager {
         Collider trampolineCollider4(glm::vec3(0.1f, 1.1f, 0.9f), false, trampolineColliderPos, false);
         trampolineptr->additionalColliders.push_back(trampolineCollider4);
 
-        //drzewo
-        /*
-        root_node->add_child(treeptr);
-        treeptr->setProperties(shaderShad, textree, treePos, MODEL, tree, 0.7f, false);
-        treeptr->setRotation(0.0f, 200.0f, 0.0f);
-        //tree colliders
-        Collider treeCollider1(glm::vec3(0.45f, 10.0f, 0.35f), false, glm::vec3(35.0f, 0.0f, -17.2f), false); //root
-        Collider treeCollider2(0.7f, false, glm::vec3(30.0f, 4.0f, -17.5f), false); //branch leafs
-        Collider treeCollider3(glm::vec3(0.7f, 0.7f, 0.01f), false, glm::vec3(31.3f, 3.7f, -17.8f), false); //branch first part
-        Collider treeCollider3b(glm::vec3(0.7f, 0.7f, 0.01f), false, glm::vec3(33.0f, 3.7f, -18.3f), false); //branch second part
-        Collider treeCollider4(glm::vec3(0.3f, 4.0f, 0.3f), false, glm::vec3(33.5f, 7.8f, -18.3f), false); //branch end
-
-        treeptr->additionalColliders.push_back(treeCollider1);
-        treeptr->additionalColliders.push_back(treeCollider2);
-        treeptr->additionalColliders.push_back(treeCollider3);
-        treeptr->additionalColliders.push_back(treeCollider3b);
-        treeptr->additionalColliders.push_back(treeCollider4);
-        */
 
         root_node->add_child(treeptr);
         treeptr->setProperties(shaderShad, textree, treePos, MODEL, tree, 0.90f, false);
@@ -1344,20 +1326,12 @@ class GameManager {
 
         Collider tree2Colider15(glm::vec3(0.23f, .4f, 0.01f), false, tempPos, false);
 
-        //root_node->add_child(heartptr);
-        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
-
         tempPos.x += .33;
         tempPos.y += 1.0;
         tempPos.z += 1.62;
 
         Collider tree2Colider16(glm::vec3(0.01f, .3f, 0.06f), false, tempPos, false);
 
-        //root_node->add_child(heartptr);
-        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
-
-        //tempPos.x += .15;
-        //tempPos.y += .69;
         tempPos.z += -1.1;
 
         Collider tree2Colider17(glm::vec3(0.02f, .5f, 0.05f), false, tempPos, false);
@@ -1414,9 +1388,6 @@ class GameManager {
 
         Collider tree2Colider241(glm::vec3(0.005f, .25f, 0.005f), false, tempPos, false);
 
-        //root_node->add_child(heartptr);
-        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
-
         tempPos.x += -.4;
         tempPos.y += -0.1;
         tempPos.z += -.6;
@@ -1428,11 +1399,6 @@ class GameManager {
         tempPos.z += -.9;
 
         Collider tree2Colider26(glm::vec3(0.1f, .2f, 0.18f), false, tempPos, false);
-
-        //root_node->add_child(heartptr);
-        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
-
-
 
         tree2ptr->additionalColliders.push_back(tree2Colider0);
         tree2ptr->additionalColliders.push_back(tree2Colider01);
@@ -1630,11 +1596,14 @@ class GameManager {
         glm::vec3 Trigger6liner(39.0f, 3.0f, 5.75f);
         Collider escapeTriggerLiner(glm::vec3(0.69f, 2.0f, 5.0f), false, Trigger6liner, false);
 
+        glm::vec3 Trigger7tree(15.0f, 0.0f, -22.75f);
+        Collider escapeTriggerTree(glm::vec3(4.f, 4.0f, 2.1f), false, Trigger7tree, false);
+
         
         //root_node->add_child(heartptr);
         //heartptr->setProperties(shaderShad, texturewin10, Trigger6liner, MODEL, postac_test, 0.05f, false);
 
-        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker, escapeTriggerPiaskownicer,  escapeTriggerHustawker, escapeTriggerWazker, escapeTriggerLiner });
+        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerWallBang, escapeTriggerTyrolker, escapeTriggerPiaskownicer,  escapeTriggerHustawker, escapeTriggerWazker, escapeTriggerLiner, escapeTriggerTree });
 
         
     }
@@ -1795,7 +1764,7 @@ class GameManager {
         }
 
 
-        std::cout << "FIRST KID: current time: " << cubeKid3->tempAnim->getCurrentTime() << " getDuration: " << cubeKid3->tempAnim->getCurrentAnimation()->GetDuration() << std::endl;
+        //std::cout << "FIRST KID: current time: " << cubeKid3->tempAnim->getCurrentTime() << " getDuration: " << cubeKid3->tempAnim->getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         colaptr->update_transform();
         mentosptr->update_transform();
@@ -2011,6 +1980,9 @@ class GameManager {
                     //tabptr->additionalColliders.push_back(TabColider);
                     tabptr->collider = TabColider;
                     aerialrunnwaywholeptr->additionalTriggers.at(0).setPosition(glm::vec3(36.5f, -10.0f, 5.5f));
+                }
+                if (ESC == 6) { //tree
+                    //player->setWazkerBoyPaid(false);
                 }
             }
             escape++;

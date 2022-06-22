@@ -236,8 +236,6 @@ int main()
     unsigned int wallbang3 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang3.png");
     unsigned int wallbang4 = gameManager.loadTexture("res/textures/stories/wallbang/wallbang3.png");
 
-    //TODO: podmiana tekstur na prawid³owe
-
     unsigned int hustawker1 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker1.png");
     unsigned int hustawker2 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker2.png");
     unsigned int hustawker3 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker3.png");
@@ -252,6 +250,11 @@ int main()
     unsigned int liner2 = gameManager.loadTexture("res/textures/stories/liner/liner2.png");
     unsigned int liner3 = gameManager.loadTexture("res/textures/stories/liner/liner3.png");
     unsigned int liner4 = gameManager.loadTexture("res/textures/stories/liner/liner3.png");
+
+    unsigned int tree1 = gameManager.loadTexture("res/textures/stories/tree/tree1.png");
+    unsigned int tree2 = gameManager.loadTexture("res/textures/stories/tree/tree2.png");
+    unsigned int tree3 = gameManager.loadTexture("res/textures/stories/tree/tree3.png");
+    unsigned int tree4 = gameManager.loadTexture("res/textures/stories/tree/tree3.png");
 
     gameManager.tutorialState->setTexture1(kidIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
@@ -311,6 +314,11 @@ int main()
     gui.liner2 = liner2;
     gui.liner3 = liner3;
     gui.liner4 = liner4;
+
+    gui.tree1 = tree1;
+    gui.tree2 = tree2;
+    gui.tree3 = tree3;
+    gui.tree4 = tree4;
     
     Sound bgSound("res/sounds/background-music.wav");
     bgSound.playLooped();
@@ -364,7 +372,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-            //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);

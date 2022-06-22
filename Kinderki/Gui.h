@@ -187,6 +187,11 @@ public:
     unsigned int liner3;
     unsigned int liner4;
 
+    unsigned int tree1;
+    unsigned int tree2;
+    unsigned int tree3;
+    unsigned int tree4;
+
 
     unsigned int licznik0;
     unsigned int licznik1;
@@ -544,6 +549,13 @@ public:
                      Storylist.at(3) = liner4;
                      Storylist.at(4) = midday5;
                  }
+                 if (escapeNumber == 6) { //wazker
+                     Storylist.at(0) = tree1;
+                     Storylist.at(1) = tree2;
+                     Storylist.at(2) = tree3;
+                     Storylist.at(3) = tree4;
+                     Storylist.at(4) = midday5;
+                 }
             }
         }
         if (visibilityEnding) {
@@ -622,7 +634,7 @@ public:
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indicesText)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-       
+       /*
         textCzas.RenderText(strsCzas.str(), 1725.0f, 770.0f, 0.69f, czascolor);
        
         testShader.use();
@@ -632,18 +644,11 @@ public:
         glBindTexture(GL_TEXTURE_2D, textureTime);
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-        
+        */
 
         //rendering text
-        text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
+        //text.RenderText(strs.str(), 50.0f, 50.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
         //text2.RenderText(strs2.str(), 50.0f, 100.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
-
-
-
-
-
-     
-
 
 
         //textUcieczki.RenderText(strsUcieczki.str(), 75.0f, 950.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
