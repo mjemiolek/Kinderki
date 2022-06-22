@@ -307,6 +307,9 @@ int main()
     {
         current_time = glfwGetTime();
         passed_time = current_time - last_time;
+        if (passed_time > 0.25) {
+            passed_time = 0.25;
+        }
         last_time = current_time;
         unprocessed_time += passed_time;
 
@@ -343,6 +346,7 @@ int main()
         while (unprocessed_time >= frame_time) {
             should_render = true;
             unprocessed_time -= frame_time;
+           
         }
 
 

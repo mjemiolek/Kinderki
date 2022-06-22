@@ -491,88 +491,88 @@ class GameManager {
         //cube do testu AI
         root_node->add_child(cube2);
         Collider cube2Collider(0.54f, false, cubePositions[2], false);
-        cube2->setProperties(animShader, fatkidtexture, cubePositions[2], MODEL, kidSeesaw, 0.05f, false, cube2Collider);
+        cube2->setProperties(&animShader, fatkidtexture, cubePositions[2], MODEL, kidSeesaw, 0.05f, false, cube2Collider);
         Collider cube2Trigger(0.9f, false, cubePositions[2], true);
         cube2->trigger = cube2Trigger;
         cube2->isAnimated = true;
-        cube2->tempAnim = animatorKidSeesaw;
+        cube2->tempAnim = &animatorKidSeesaw;
         cube2->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(hammerptr);
-        hammerptr->setProperties(animShader, hammertexture, cubePositions[2], MODEL, animatedHammer, 0.05f, false);
+        hammerptr->setProperties(&animShader, hammertexture, cubePositions[2], MODEL, animatedHammer, 0.05f, false);
         hammerptr->isAnimated = true;
-        hammerptr->tempAnim = animatorHammer;
+        hammerptr->tempAnim = &animatorHammer;
         hammerptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid2);
         Collider cubeKid2Collider(0.54f, false, cubePositions[10], false);
-        cubeKid2->setProperties(animShader, kidSandPitTexture, cubePositions[10], MODEL, kidSandPit, 0.05f, false, cubeKid2Collider);
+        cubeKid2->setProperties(&animShader, kidSandPitTexture, cubePositions[10], MODEL, kidSandPit, 0.05f, false, cubeKid2Collider);
         Collider cubeKid2Trigger(0.9f, false, cubePositions[10], true);
         cubeKid2->trigger = cubeKid2Trigger;
         cubeKid2->isAnimated = true;
-        cubeKid2->tempAnim = animatorKidSandPit;
+        cubeKid2->tempAnim = &animatorKidSandPit;
         cubeKid2->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(bucketblackptr);
-        bucketblackptr->setProperties(animShader, texbucketred, cubePositions[10], MODEL, animatedBucket, 0.05f, false);
+        bucketblackptr->setProperties(&animShader, texbucketred, cubePositions[10], MODEL, animatedBucket, 0.05f, false);
         bucketblackptr->isAnimated = true;
-        bucketblackptr->tempAnim = animatorBucket;
+        bucketblackptr->tempAnim = &animatorBucket;
         bucketblackptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid3);
         Collider cubeKid3Collider(0.54f, false, cubePositions[12], false);
-        cubeKid3->setProperties(animShader, kid5texture, cubePositions[12], MODEL, postac_test, 0.05f, false, cubeKid3Collider);
+        cubeKid3->setProperties(&animShader, kid5texture, cubePositions[12], MODEL, postac_test, 0.05f, false, cubeKid3Collider);
         Collider cubeKid3Trigger(0.9f, false, cubePositions[12], true);
         cubeKid3->trigger = cubeKid3Trigger;
         cubeKid3->isAnimated = true;
-        cubeKid3->tempAnim = animatorHustawker;
+        cubeKid3->tempAnim = &animatorHustawker;
         cubeKid3->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(lightballptr);
-        lightballptr->setProperties(animShader, texshowel, cubePositions[12], MODEL, animatedLightBall, 0.05f, false);
+        lightballptr->setProperties(&animShader, texshowel, cubePositions[12], MODEL, animatedLightBall, 0.05f, false);
         lightballptr->isAnimated = true;
-        lightballptr->tempAnim = animatorLightBall;
+        lightballptr->tempAnim = &animatorLightBall;
         lightballptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid4);
         Collider cubeKid4Collider(0.54f, false, cubePositions[11], false);
-        cubeKid4->setProperties(shaderShad, kid3texture, cubePositions[11], MODEL, postac_test, 0.05f, false, cubeKid4Collider);
+        cubeKid4->setProperties(&shaderShad, kid3texture, cubePositions[11], MODEL, postac_test, 0.05f, false, cubeKid4Collider);
         Collider cubeKid4Trigger(0.9f, false, cubePositions[11], true);
         cubeKid4->trigger = cubeKid4Trigger;
 
         root_node->add_child(cubeKid5);
         Collider cubeKid5Collider(0.54f, false, cubePositions[13], false);
-        cubeKid5->setProperties(animShader, kid4texture, cubePositions[13], MODEL, postac_test, 0.05f, false, cubeKid5Collider);
+        cubeKid5->setProperties(&animShader, kid4texture, cubePositions[13], MODEL, postac_test, 0.05f, false, cubeKid5Collider);
         Collider cubeKid5Trigger(0.9f, false, cubePositions[13], true);
         cubeKid5->trigger = cubeKid5Trigger;
         cubeKid5->isAnimated = true;
-        cubeKid5->tempAnim = animatorKidMentosCola;
+        cubeKid5->tempAnim = &animatorKidMentosCola;
         cubeKid5->shaderTemp3 = skeletalDepth;
         
         root_node->add_child(mentosToAnimationptr);
-        mentosToAnimationptr->setProperties(animShader, texmentos, cubePositions[13], MODEL, animatedMentos, 0.05f, false);
+        mentosToAnimationptr->setProperties(&animShader, texmentos, cubePositions[13], MODEL, animatedMentos, 0.05f, false);
         mentosToAnimationptr->isAnimated = true;
-        mentosToAnimationptr->tempAnim = animatorMentos;
+        mentosToAnimationptr->tempAnim = &animatorMentos;
         mentosToAnimationptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(colaToAnimationptr);
-        colaToAnimationptr->setProperties(animShader, texcola, cubePositions[13], MODEL, animatedCola, 0.05f, false);
+        colaToAnimationptr->setProperties(&animShader, texcola, cubePositions[13], MODEL, animatedCola, 0.05f, false);
         colaToAnimationptr->isAnimated = true;
-        colaToAnimationptr->tempAnim = animatorCola;
+        colaToAnimationptr->tempAnim = &animatorCola;
         colaToAnimationptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cube3);
         Collider cube3Collider(0.34f, false, playerPos, true);
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
-        cube3->setProperties(animShader, texture_postac_test, playerPos, MODEL, postac_test, 0.05f, false, cube3Collider);
+        cube3->setProperties(&animShader, texture_postac_test, playerPos, MODEL, postac_test, 0.05f, false, cube3Collider);
         cube3->isAnimated = true;
-        cube3->tempAnim = animatorMainCharacter;
+        cube3->tempAnim = &animatorMainCharacter;
         cube3->shaderTemp3 = skeletalDepth;
 
         //pilka
         root_node->add_child(ball);
         Collider ballCollider(0.350005f, false, glm::vec3(12.0f, 2.5f, 15.0f), true); //dont change 0.350005f (important)
-        ball->setProperties(shaderShad, textureshrek, ballPos,MODEL,sphere,0.03f,true,ballCollider);
+        ball->setProperties(&shaderShad, textureshrek, ballPos,MODEL,sphere,0.03f,true,ballCollider);
         ball->modelOutline = sphere;
 
 
@@ -587,7 +587,7 @@ class GameManager {
         Collider aerialrunnwayLinerTriggerOut(glm::vec3(3.5f, 3.f, 11.00f), false,glm::vec3(33.0f,0.13f,-2.6f), true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
-        aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f, true);
+        aerialrunnwaywholeptr->setProperties(&shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f, true);
         aerialrunnwaywholeptr->modelOutline = aerialrunnwaywholeOut;
         aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTrigger);
         aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTriggerOut);
@@ -596,7 +596,7 @@ class GameManager {
         //heartptr->setProperties(shaderShad, texturewin10, aerialRunnwayLinerTrigerPos, MODEL, postac_test, 0.05f, false);
 
         root_node->add_child(aerialrunnwayseatptr);
-        aerialrunnwayseatptr->setProperties(shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, true);
+        aerialrunnwayseatptr->setProperties(&shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, true);
         //std::cout << aerialRunnwayPos.x + aerialRunnwaySeatPos.x <<"x"<< aerialRunnwayPos.y + aerialRunnwaySeatPos.y << "x" << aerialRunnwayPos.z + aerialRunnwaySeatPos.z << std::endl;
         aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
         aerialrunnwayseatptr->modelOutline = aerialrunnwayseatOut;
@@ -675,7 +675,7 @@ class GameManager {
 
         //³awki
         root_node->add_child(benchesptr);
-        benchesptr->setProperties(shaderShad, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
+        benchesptr->setProperties(&shaderShad, textureplanks, zeroPos, MODEL, benches, 0.01f, false);
         //benches colliders
         Collider bench1Collider(glm::vec3(0.15f, 0.45f,1.4f), false, glm::vec3(3.5f, 0.0f, -0.8f), false);
         benchesptr->additionalColliders.push_back(bench1Collider);
@@ -707,7 +707,7 @@ class GameManager {
         //podloga
         root_node->add_child(floorptr);
         Collider floorCol(floorColRange, false, glm::vec3(0.0f, -101.25f, 0.0f), false);
-        floorptr->setProperties(shaderShad, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
+        floorptr->setProperties(&shaderShad, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
 
 
         //Bramki
@@ -717,7 +717,7 @@ class GameManager {
         gLCP.x -= 1.6f;
         Collider goalLeftCollider(glm::vec3(0.015f, 3.0f, 2.95f), false, gLCP, false);
         gLCP.x += 1.4f;
-        goalLeftptr->setProperties(shaderShad, texballkeep, goalLeftPos, MODEL, goalLeft, 0.14f, false, goalLeftCollider);
+        goalLeftptr->setProperties(&shaderShad, texballkeep, goalLeftPos, MODEL, goalLeft, 0.14f, false, goalLeftCollider);
         goalLeftptr->setRotation(0.0f, 90.0f, 0.0f);
         //gora
         gLCP.z -= 3.0f;
@@ -741,7 +741,7 @@ class GameManager {
         gRCP.x += 1.6f;
         Collider goalRightCollider(glm::vec3(0.015f, 3.0f, 2.95f), false, gRCP, false);
         gRCP.x -= 1.4f;
-        goalRightptr->setProperties(shaderShad, texballkeep, goalRightPos, MODEL, goalRight, 0.14f, false, goalRightCollider);
+        goalRightptr->setProperties(&shaderShad, texballkeep, goalRightPos, MODEL, goalRight, 0.14f, false, goalRightCollider);
         goalRightptr->setRotation(0.0f, -90.0f, 0.0f);
         //gora
         gRCP.z -= 3.0f;
@@ -763,7 +763,7 @@ class GameManager {
         //piaskownica
         root_node->add_child(sandpitptr);
         Collider sandPitTrigger(glm::vec3(2.43f, 5.1f, 2.43f), false, sandPitPos, true);
-        sandpitptr->setProperties(shaderShad, texsandpit, sandPitPos, MODEL, sandpit, 0.3f, false);
+        sandpitptr->setProperties(&shaderShad, texsandpit, sandPitPos, MODEL, sandpit, 0.3f, false);
         sandpitptr->trigger = sandPitTrigger;
         sandpitptr->modelOutline = sandpitOut;
 
@@ -789,12 +789,12 @@ class GameManager {
 
         //seesawbase
         root_node->add_child(seesawbaseptr);
-        seesawbaseptr->setProperties(shaderShad, texseesaw, seesawPos, MODEL, seesawBase, 0.2f, false);
+        seesawbaseptr->setProperties(&shaderShad, texseesaw, seesawPos, MODEL, seesawBase, 0.2f, false);
 
         //hustawka wazka
         Collider seesawTrigger(0.5f, false, seesawPos, true);
         root_node->add_child(seesawptr);
-        seesawptr->setProperties(shaderShad, texseesaw, seesawPos, MODEL, seesaw, 0.2f, false);
+        seesawptr->setProperties(&shaderShad, texseesaw, seesawPos, MODEL, seesaw, 0.2f, false);
         seesawptr->trigger = seesawTrigger;
         Collider seesawTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, seesawPos, false);
         seesawptr->additionalTriggers.push_back(seesawTriggerOutline);
@@ -854,7 +854,7 @@ class GameManager {
         swingColPos.y -= 2.0f;
         //siedzenie
         Collider swingCollider(glm::vec3(0.20f, 0.38f, 0.38f), false, swingColPos, false);
-        swingptr->setProperties(shaderShad, texswing, swingPos, MODEL, swing, 0.02f, true);
+        swingptr->setProperties(&shaderShad, texswing, swingPos, MODEL, swing, 0.02f, true);
         swingptr->trigger = swingTrigger;
         swingptr->setRotation(0.0f, 180.0f, 0.0f);
         Collider swingTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, swingTrigPos, false);
@@ -897,7 +897,7 @@ class GameManager {
         root_node->add_child(swingseatptr);
         glm::vec3 swingSeatPos = swingPos;
         swingSeatPos.y += 1.40f;
-        swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, false, swingCollider);
+        swingseatptr->setProperties(&shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, false, swingCollider);
         swingseatptr->trigger = swingTrigger;
         swingseatptr->setRotation(0.0f, 180.0f, 0.0f);
         swingseatptr->modelOutline = swingseatOut;
@@ -905,7 +905,7 @@ class GameManager {
 
         //stoly
         root_node->add_child(tablesptr);
-        tablesptr->setProperties(shaderShad, textureplanks, zeroPos, MODEL, tables, 0.01f, false);
+        tablesptr->setProperties(&shaderShad, textureplanks, zeroPos, MODEL, tables, 0.01f, false);
         //tables colliders
         Collider table1Collider1(glm::vec3(1.2f, 1.0f, 0.4f), false, glm::vec3(20.2f, 0.0f, 4.0f), false);
         tablesptr->additionalColliders.push_back(table1Collider1);
@@ -937,7 +937,7 @@ class GameManager {
         Collider trampolineCollider1(glm::vec3(0.9f, 1.1f, 0.1f), false, trampolineColliderPos, false);
         trampolineColliderPos.z += q;
         root_node->add_child(trampolineptr);
-        trampolineptr->setProperties(shaderShad, textrampoline, trampolinePos, MODEL, trampoline, 0.006f, true, trampolineCollider1, trampolineTrigger);
+        trampolineptr->setProperties(&shaderShad, textrampoline, trampolinePos, MODEL, trampoline, 0.006f, true, trampolineCollider1, trampolineTrigger);
         Collider trampolineTriggerOutline(glm::vec3(3.0f, 0.6f, 3.0f), false, trampolinePos, true);
         trampolineptr->additionalTriggers.push_back(trampolineTriggerOutline);
         trampolineptr->modelOutline = trampolineOut;
@@ -977,7 +977,7 @@ class GameManager {
         */
 
         root_node->add_child(treeptr);
-        treeptr->setProperties(shaderShad, textree, treePos, MODEL, tree, 0.90f, false);
+        treeptr->setProperties(&shaderShad, textree, treePos, MODEL, tree, 0.90f, false);
         
 
         tempPos = treePos; //(22.0f, 0.0f, -13.0f);
@@ -1219,7 +1219,7 @@ class GameManager {
 
 
         root_node->add_child(tree2ptr);
-        tree2ptr->setProperties(shaderShad, textree, tree2Pos, MODEL, tree2, 0.90f, false);
+        tree2ptr->setProperties(&shaderShad, textree, tree2Pos, MODEL, tree2, 0.90f, false);
 
 
         //parasol (I dont want to deal with colliders here xd)
@@ -1228,9 +1228,9 @@ class GameManager {
 
         //basen
         root_node->add_child(poolptr);
-        poolptr->setProperties(shaderShad, texturewin10, poolPos, MODEL, pool, 0.07f, false);
+        poolptr->setProperties(&shaderShad, texturewin10, poolPos, MODEL, pool, 0.07f, false);
         root_water->add_child(poolwaterptr);
-        poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.07f, false);
+        poolwaterptr->setProperties(&waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.07f, false);
         Collider poolColliderUp(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(poolPos.x, 0.0f, poolPos.z - 1.5f), false);
         Collider poolColliderDown(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(poolPos.x, 0.0f, poolPos.z + 1.5f), false);
         Collider poolColliderLeft(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(poolPos.x - 2.2f, 0.0f, poolPos.z), false);
@@ -1244,12 +1244,12 @@ class GameManager {
 
         //damaged wall
         root_node->add_child(damagedwallptr);
-        damagedwallptr->setProperties(shaderShad, texturedamagedwall, glm::vec3(0.0f, -1.6f, 0.0f), MODEL, damagedwall, 0.01f, false);
+        damagedwallptr->setProperties(&shaderShad, texturedamagedwall, glm::vec3(0.0f, -1.6f, 0.0f), MODEL, damagedwall, 0.01f, false);
         Collider damagedwallTrigger(glm::vec3(0.2f, 0.2f, 0.4f), false, damagedwallPos, false);
         damagedwallptr->trigger = damagedwallTrigger;
         
         root_node->add_child(tabptr);
-        tabptr->setProperties(shaderShad, textab, tabPos, MODEL, model0, .03f, false);
+        tabptr->setProperties(&shaderShad, textab, tabPos, MODEL, model0, .03f, false);
         tabptr->m_transform.y_rotation_angle = 169;
 
         //walls
@@ -1261,7 +1261,7 @@ class GameManager {
         Collider wallColl5(glm::vec3(8.5f, wallHeight, 0.005f), false, wallPosColl5, true); //inside up
         Collider wallColl6(glm::vec3(0.05f, wallHeight+0.69f, 15.75f), false, wallPosColl6, true);  //right
         root_node->add_child(wallsptr);
-        wallsptr->setProperties(shaderShad, texturewall, glm::vec3(0.0f,-1.6f,0.0f), MODEL, walls, 0.01f, false);
+        wallsptr->setProperties(&shaderShad, texturewall, glm::vec3(0.0f,-1.6f,0.0f), MODEL, walls, 0.01f, false);
         wallsptr->additionalColliders.push_back(wallColl1);
         wallsptr->additionalColliders.push_back(wallColl2);
         wallsptr->additionalColliders.push_back(wallColl3);
@@ -1284,19 +1284,19 @@ class GameManager {
 
         Collider showelGravitationer(0.01f, false, colaPos, true);
         root_node->add_child(heartptr2);
-        heartptr2->setProperties(shaderShad, texshowel, heartPos2, MODEL, shovel, 0.01f, false, showelGravitationer);
+        heartptr2->setProperties(&shaderShad, texshowel, heartPos2, MODEL, shovel, 0.01f, false, showelGravitationer);
         heartptr2->trigger = heartTrigger2;
         heartptr2->movableType = TOSANDPIT;
 
         Collider colaGravitationer(0.01f, false, colaPos, true);
         root_node->add_child(colaptr);
-        colaptr->setProperties(shaderShad, texcola, colaPos, MODEL, cola, 1.0f, true, colaGravitationer);
+        colaptr->setProperties(&shaderShad, texcola, colaPos, MODEL, cola, 1.0f, true, colaGravitationer);
         colaptr->trigger = colaTrigger;
         colaptr->modelOutline = colaOut;
 
         Collider mentosGravitationer(0.01f, false, mentosPos, true);
         root_node->add_child(mentosptr);
-        mentosptr->setProperties(shaderShad, texmentos, mentosPos, MODEL, mentos, 0.7f, false, mentosGravitationer);
+        mentosptr->setProperties(&shaderShad, texmentos, mentosPos, MODEL, mentos, 0.7f, false, mentosGravitationer);
         mentosptr->trigger = mentosTrigger;
         //mentosptr->get_transform().y_rotation_angle += 30.0f;
         //mentosptr->get_transform().x_rotation_angle += 30.0f;
@@ -1304,7 +1304,7 @@ class GameManager {
 
         Collider bucketGravitationer(0.01f, false, mentosPos, true);
         root_node->add_child(bucketredptr);
-        bucketredptr->setProperties(shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true, bucketGravitationer);
+        bucketredptr->setProperties(&shaderShad, texbucketred, bucketRedPos, MODEL, bucket, 0.1f, true, bucketGravitationer);
         bucketredptr->trigger = bucketredTrigger;
         bucketredptr->modelOutline = bucketOut;
 
@@ -1316,27 +1316,27 @@ class GameManager {
         Collider candyCane6Trigger(glm::vec3(0.25f, 2.0f, 0.25f), true, candyCane6Pos, true);
 
         root_node->add_child(candyCane1ptr);
-        candyCane1ptr->setProperties(shaderShad, texCandyCane, candyCane1Pos , MODEL, candyCane, 0.5f, false);
+        candyCane1ptr->setProperties(&shaderShad, texCandyCane, candyCane1Pos , MODEL, candyCane, 0.5f, false);
         candyCane1ptr->trigger = candyCane1Trigger;
 
         root_node->add_child(candyCane2ptr);
-        candyCane2ptr->setProperties(shaderShad, texCandyCane, candyCane2Pos, MODEL, candyCane, 0.5f, false);
+        candyCane2ptr->setProperties(&shaderShad, texCandyCane, candyCane2Pos, MODEL, candyCane, 0.5f, false);
         candyCane2ptr->trigger = candyCane2Trigger;
 
         root_node->add_child(candyCane3ptr);
-        candyCane3ptr->setProperties(shaderShad, texCandyCane, candyCane3Pos, MODEL, candyCane, 0.5f, false);
+        candyCane3ptr->setProperties(&shaderShad, texCandyCane, candyCane3Pos, MODEL, candyCane, 0.5f, false);
         candyCane3ptr->trigger = candyCane3Trigger;
 
         root_node->add_child(candyCane4ptr);
-        candyCane4ptr->setProperties(shaderShad, texCandyCane, candyCane4Pos, MODEL, candyCane, 0.5f, false);
+        candyCane4ptr->setProperties(&shaderShad, texCandyCane, candyCane4Pos, MODEL, candyCane, 0.5f, false);
         candyCane4ptr->trigger = candyCane4Trigger;
 
         root_node->add_child(candyCane5ptr);
-        candyCane5ptr->setProperties(shaderShad, texCandyCane, candyCane5Pos, MODEL, candyCane, 0.5f, false);
+        candyCane5ptr->setProperties(&shaderShad, texCandyCane, candyCane5Pos, MODEL, candyCane, 0.5f, false);
         candyCane5ptr->trigger = candyCane5Trigger;
 
         root_node->add_child(candyCane6ptr);
-        candyCane6ptr->setProperties(shaderShad, texCandyCane, candyCane6Pos, MODEL, candyCane, 0.5f, false);
+        candyCane6ptr->setProperties(&shaderShad, texCandyCane, candyCane6Pos, MODEL, candyCane, 0.5f, false);
         candyCane6ptr->trigger = candyCane6Trigger;
 
 
@@ -1436,55 +1436,80 @@ class GameManager {
         st = glfwGetTime();
         //walking
         if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry()) {
-            if (!(cube3->tempAnim.getCurrentAnimation() == &anim1)) {
-                cube3->tempAnim.PlayAnimation(&anim1);
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim1)) {
+                cube3->tempAnim->PlayAnimation(&anim1);
                 walkingsound.playLooped();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 1.5);
+            cube3->tempAnim->UpdateAnimation(dt * 1.5);
             
         }
         //jumping
         if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry() && player->getCanJumpAnimation()) {
-            if (!(cube3->tempAnim.getCurrentAnimation() == &anim2)) {
-                cube3->tempAnim.PlayAnimation(&anim2);
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim2)) {
+                cube3->tempAnim->PlayAnimation(&anim2);
                 jumpingsound.play();
                 walkingsound.stop();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 1.35);
-            if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 1.35) {
+            cube3->tempAnim->UpdateAnimation(dt * 1.35);
+            if (cube3->tempAnim->getCurrentTime() > cube3->tempAnim->getCurrentAnimation()->GetDuration() - 1.35) {
                 player->setCanJumpAnimation(false);
             }
         }
         //idle
         if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
-            if (!(cube3->tempAnim.getCurrentAnimation() == &anim3)) {
-                cube3->tempAnim.PlayAnimation(&anim3);
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim3)) {
+                cube3->tempAnim->PlayAnimation(&anim3);
                 walkingsound.stop();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 0.75);
+            cube3->tempAnim->UpdateAnimation(dt * 0.75);
         }
         //picking up
         if (player->checkCarry() && player->getTempCheckCarry()) {
-            if (!(cube3->tempAnim.getCurrentAnimation() == &anim4)) {
-                cube3->tempAnim.PlayAnimation(&anim4);
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim4)) {
+                cube3->tempAnim->PlayAnimation(&anim4);
                 liftingsound.play();
                 walkingsound.stop();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 5);
-            if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 5) {
+            cube3->tempAnim->UpdateAnimation(dt * 5);
+            if (cube3->tempAnim->getCurrentTime() > cube3->tempAnim->getCurrentAnimation()->GetDuration() - 5) {
                 player->setTempCheckCarry(false);
             }
         }
+        if (cubeKid2->frustumCull) {
+            cubeKid2->tempAnim->UpdateAnimation(dt);
+        }
+        if (bucketblackptr->frustumCull) {
+            bucketblackptr->tempAnim->UpdateAnimation(dt);
+        }
+        if (cube2->frustumCull) {
+            cube2->tempAnim->UpdateAnimation(dt);
+        }
+        if (hammerptr->frustumCull) {
+            hammerptr->tempAnim->UpdateAnimation(dt);
+        }
+        if (cubeKid3->frustumCull) {
+            cubeKid3->tempAnim->UpdateAnimation(dt);
+        }
+        if (lightballptr->frustumCull) {
+            lightballptr->tempAnim->UpdateAnimation(dt);
+        }
 
-        cubeKid2->tempAnim.UpdateAnimation(dt);
-        bucketblackptr->tempAnim.UpdateAnimation(dt);
-        cube2->tempAnim.UpdateAnimation(dt);
-        hammerptr->tempAnim.UpdateAnimation(dt);
-        cubeKid3->tempAnim.UpdateAnimation(dt);
-        lightballptr->tempAnim.UpdateAnimation(dt);
-        cubeKid5->tempAnim.UpdateAnimation(dt);
-        mentosToAnimationptr->tempAnim.UpdateAnimation(dt);
-        colaToAnimationptr->tempAnim.UpdateAnimation(dt);
+        if (cubeKid5->frustumCull) {
+            cubeKid5->tempAnim->UpdateAnimation(dt);
+        }
+        if (mentosToAnimationptr->frustumCull) {
+            mentosToAnimationptr->tempAnim->UpdateAnimation(dt);
+        }
+        if (colaToAnimationptr->frustumCull) {
+            colaToAnimationptr->tempAnim->UpdateAnimation(dt);
+        }
+
+        
+        
+        
+       
+        
+        
 
         //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
