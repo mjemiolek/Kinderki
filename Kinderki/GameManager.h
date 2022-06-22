@@ -364,7 +364,7 @@ class GameManager {
 
         //Model postac_test("res/models/main_character.obj");
         //Model postac_test("res/models/postac_test_kolejny.obj");
-       // Model postac_test("res/models/postac_test_v4.obj");
+        //Model postac_test("res/models/postac_test_v4.obj");
 
         Model fatKid("res/models/second_character.fbx");
 
@@ -410,7 +410,6 @@ class GameManager {
         unsigned int texswingseat = loadTexture("res/textures/models/swingseat.png");
 
        // unsigned int texfencefixed = loadTexture("res/textures/models/ogrodzenie_fixed.png");
-
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
         unsigned int texmentos = loadTexture("res/textures/models/mentos_texture.png");

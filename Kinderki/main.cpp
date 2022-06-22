@@ -243,10 +243,10 @@ int main()
     unsigned int hustawker3 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker3.png");
     unsigned int hustawker4 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker3.png");
 
-    unsigned int wazker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
-    unsigned int wazker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
-    unsigned int wazker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
-    unsigned int wazker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int wazker1 = gameManager.loadTexture("res/textures/stories/grubas/grubas1.png");
+    unsigned int wazker2 = gameManager.loadTexture("res/textures/stories/grubas/grubas2.png");
+    unsigned int wazker3 = gameManager.loadTexture("res/textures/stories/grubas/grubas3.png");
+    unsigned int wazker4 = gameManager.loadTexture("res/textures/stories/grubas/grubas3.png");
 
     unsigned int liner1 = gameManager.loadTexture("res/textures/stories/liner/liner1.png");
     unsigned int liner2 = gameManager.loadTexture("res/textures/stories/liner/liner2.png");
