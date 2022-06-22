@@ -92,8 +92,8 @@ int main()
     // Create window with graphics context
 
     //in fullscreen
-    //window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Playground Escape", glfwGetPrimaryMonitor(), NULL);
-    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Playground Escape", NULL, NULL);
+    window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Playground Escape", glfwGetPrimaryMonitor(), NULL);
+    //window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Playground Escape", NULL, NULL);
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);
@@ -193,6 +193,20 @@ int main()
     unsigned int tyrolkerHintTexture = gameManager.loadTexture("res/textures/gui/tyrolkerHint.png");
     unsigned int sandPitHintTexture = gameManager.loadTexture("res/textures/gui/sandPitHint.png");
     unsigned int boyHelpingHintTexture = gameManager.loadTexture("res/textures/gui/boyHelpingHint.png");
+
+    unsigned int licznik0 = gameManager.loadTexture("res/textures/gui/licznik_0_5.png");
+    unsigned int licznik1 = gameManager.loadTexture("res/textures/gui/licznik_1_5.png");
+    unsigned int licznik2 = gameManager.loadTexture("res/textures/gui/licznik_2_5.png");
+    unsigned int licznik3 = gameManager.loadTexture("res/textures/gui/licznik_3_5.png");
+    unsigned int licznik4 = gameManager.loadTexture("res/textures/gui/licznik_4_5.png");
+    unsigned int licznik5 = gameManager.loadTexture("res/textures/gui/licznik_5_5.png");
+
+    gui.licznik0 = licznik0;
+    gui.licznik1 = licznik1;
+    gui.licznik2 = licznik2;
+    gui.licznik3 = licznik3;
+    gui.licznik4 = licznik4;
+    gui.licznik5 = licznik5;
 
     gui.textureInt1 = buyHintWindowTexture;
     gui.textureInt2 = notEnoughCandyTexture;

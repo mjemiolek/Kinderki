@@ -80,6 +80,10 @@ float InteractionVertices[] = {
     -0.7f, -0.9f
 };
 
+float verticesLiczik[] = { -0.73125f, 0.58335f ,
+                -0.95625f, 0.9f ,
+                -0.73125f , 0.9f ,
+                -0.95625f , 0.58335f };
 
 
 uint32_t indices[] = { 3, 1, 2,
@@ -101,9 +105,9 @@ class Gui {
 public:
     bool canInteractionBeRendered = false;
     int condition = 0;
-    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO, TimeVAO, EscapeVAO, InteractionVAO;
-    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO, TimeVBO, EscapeVBO, InteractionVBO;
-    unsigned int quadEBO, InteractionEBO;
+    unsigned int quadVAO, leftVAO, rightVAO, candyVAO, candyCountVAO, StoryVAO, InsVAO, TimeVAO, EscapeVAO, InteractionVAO, LicznikVAO;
+    unsigned int quadVBO, leftVBO, rightVBO, candyVBO, candyCountVBO, StoryVBO, InsVBO, TimeVBO, EscapeVBO, InteractionVBO, LicznikVBO;
+    unsigned int quadEBO, InteractionEBO, LicznikEBO;
     
     unsigned int texture;
     unsigned int textureLeft;
@@ -184,7 +188,13 @@ public:
     unsigned int liner4;
 
 
-
+    unsigned int licznik0;
+    unsigned int licznik1;
+    unsigned int licznik2;
+    unsigned int licznik3;
+    unsigned int licznik4;
+    unsigned int licznik5;
+    unsigned int* textureLicznik;
 
 
     bool visibility = false;
@@ -433,6 +443,29 @@ public:
         glGenBuffers(1, &TimeVBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, quadEBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+        glGenVertexArrays(1, &LicznikVAO);
+        glBindVertexArray(LicznikVAO);
+
+        glGenBuffers(1, &LicznikVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, LicznikVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(verticesLiczik), &verticesLiczik, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+
+        glGenBuffers(1, &LicznikVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, LicznikVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(textureCordsText), &textureCordsText, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+        glGenBuffers(1, &LicznikEBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, LicznikEBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicesText), indicesText, GL_STATIC_DRAW);
+
+
+
     }
 	void render()
 	{
@@ -582,6 +615,13 @@ public:
         glDrawElements(GL_TRIANGLES, GLsizei(std::size(indices)), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);*/
 
+
+        glBindVertexArray(LicznikVAO);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, *textureLicznik);
+        glDrawElements(GL_TRIANGLES, GLsizei(std::size(indicesText)), GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+
        
         textCzas.RenderText(strsCzas.str(), 1725.0f, 770.0f, 0.69f, czascolor);
        
@@ -599,8 +639,15 @@ public:
         //text2.RenderText(strs2.str(), 50.0f, 100.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 
 
-        textUcieczki.RenderText(strsUcieczki.str(), 75.0f, 950.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
-        text2.RenderText("/5", 100.0f, 950.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+
+
+
+     
+
+
+
+        //textUcieczki.RenderText(strsUcieczki.str(), 75.0f, 950.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
+        //text2.RenderText("/5", 100.0f, 950.0f, 1.0f, glm::vec3(0.9, 0.2f, 0.2f));
 
  
 	}
@@ -647,6 +694,25 @@ public:
 
         strsUcieczki.str(std::string());
         strsUcieczki << ucieczki;
+
+        if (ucieczki == 0) {
+            textureLicznik = &licznik0;
+        }
+        if (ucieczki == 1) {
+            textureLicznik = &licznik1;
+        }
+        if (ucieczki == 2) {
+            textureLicznik = &licznik2;
+        }
+        if (ucieczki == 3) {
+            textureLicznik = &licznik3;
+        }
+        if (ucieczki == 4) {
+            textureLicznik = &licznik4;
+        }
+        if (ucieczki == 5) {
+            textureLicznik = &licznik5;
+        }
 
         if (ucieczki != ucieczkiold && !escapeflag) {
             escapeflag = true;

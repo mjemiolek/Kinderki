@@ -602,7 +602,7 @@ class GameManager {
         Collider aerialrunnwayLinerTriggerOut(glm::vec3(3.5f, 3.f, 11.00f), false,glm::vec3(33.0f,0.13f,-2.6f), true);
         root_node->add_child(aerialrunnwaywholeptr);
         aerialrunnwaywholeptr->m_transform.y_rotation_angle = 180;
-        aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f, true);
+        aerialrunnwaywholeptr->setProperties(shaderShad, texaerial, aerialRunnwayPos, MODEL, aerialrunnwaywhole, 1.00f, false);
         aerialrunnwaywholeptr->modelOutline = aerialrunnwaywholeOut;
         aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTrigger);
         aerialrunnwaywholeptr->additionalTriggers.push_back(aerialrunnwayLinerTriggerOut);
@@ -869,7 +869,7 @@ class GameManager {
         swingColPos.y -= 2.0f;
         //siedzenie
         Collider swingCollider(glm::vec3(0.20f, 0.38f, 0.38f), false, swingColPos, false);
-        swingptr->setProperties(shaderShad, texswing, swingPos, MODEL, swing, 0.02f, true);
+        swingptr->setProperties(shaderShad, texswing, swingPos, MODEL, swing, 0.02f, false);
         swingptr->trigger = swingTrigger;
         swingptr->setRotation(0.0f, 180.0f, 0.0f);
         Collider swingTriggerOutline(glm::vec3(3.30f, 3.30f, 3.30f), false, swingTrigPos, false);
@@ -952,7 +952,7 @@ class GameManager {
         Collider trampolineCollider1(glm::vec3(0.9f, 1.1f, 0.1f), false, trampolineColliderPos, false);
         trampolineColliderPos.z += q;
         root_node->add_child(trampolineptr);
-        trampolineptr->setProperties(shaderShad, textrampoline, trampolinePos, MODEL, trampoline, 0.006f, true, trampolineCollider1, trampolineTrigger);
+        trampolineptr->setProperties(shaderShad, textrampoline, trampolinePos, MODEL, trampoline, 0.006f, false, trampolineCollider1, trampolineTrigger);
         Collider trampolineTriggerOutline(glm::vec3(3.0f, 0.6f, 3.0f), false, trampolinePos, true);
         trampolineptr->additionalTriggers.push_back(trampolineTriggerOutline);
         trampolineptr->modelOutline = trampolineOut;
@@ -1548,7 +1548,7 @@ class GameManager {
 
         Collider mentosGravitationer(0.01f, false, mentosPos, true);
         root_node->add_child(mentosptr);
-        mentosptr->setProperties(shaderShad, texmentos, mentosPos, MODEL, mentos, 0.7f, false, mentosGravitationer);
+        mentosptr->setProperties(shaderShad, texmentos, mentosPos, MODEL, mentos, 0.7f, true, mentosGravitationer);
         mentosptr->trigger = mentosTrigger;
         //mentosptr->get_transform().y_rotation_angle += 30.0f;
         //mentosptr->get_transform().x_rotation_angle += 30.0f;

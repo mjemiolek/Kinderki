@@ -364,24 +364,24 @@ public:
             return;
         }
         
-        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
-            setTrueStencil(interacter);
-            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
-                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f)); //zielony
-            }
-            if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-                playerObject->canInToGround = true;
-                goInGround = true;
-                moveShovel = true;
-            }
-        }
-        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && !playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
-            setTrueStencil(interacter);
-            if (getOutlineColor() != glm::vec3(1.0f, 0.0f, 0.0f)) {
-                setOutlineColor(glm::vec3(1.0f, 0.0f, 0.0f)); //czerwony
-            }
+        //if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
+        //    setTrueStencil(interacter);
+        //    if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+        //        setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f)); //zielony
+        //    }
+        //    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        //        playerObject->canInToGround = true;
+        //        goInGround = true;
+        //        moveShovel = true;
+        //    }
+        //}
+        //if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && !playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
+        //    setTrueStencil(interacter);
+        //    if (getOutlineColor() != glm::vec3(1.0f, 0.0f, 0.0f)) {
+        //        setOutlineColor(glm::vec3(1.0f, 0.0f, 0.0f)); //czerwony
+        //    }
 
-        } 
+        //} 
 
 
     }
@@ -394,15 +394,15 @@ public:
             playerObject->velocity.y = 8.9f;
             playerObject->canJump = false;
         }
-        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
-            setTrueStencil(interacter);
-            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
-                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
-            }
-        }
-        else {
-            setFalseStencil(interacter);
-        }
+        //if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
+        //    setTrueStencil(interacter);
+        //    if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+        //        setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+        //    }
+        //}
+        //else {
+        //    setFalseStencil(interacter);
+        //}
     }
 
     void liner(Collider interacter)
@@ -463,32 +463,32 @@ public:
 
             seat->update_transform();
         }
-        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
-            setTrueStencil(interacter);
-            setTrueStencil(seat);
-            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
-                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
-            }
-        }
-        else {
-            setFalseStencil(interacter);
-            setFalseStencil(seat);
-        }
+        //if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
+        //    setTrueStencil(interacter);
+        //    setTrueStencil(seat);
+        //    if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+        //        setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+        //    }
+        //}
+        //else {
+        //    setFalseStencil(interacter);
+        //    setFalseStencil(seat);
+        //}
     }
 
     void tyrolker(std::shared_ptr<SceneGraphNode> seat, float dt, std::shared_ptr<SceneGraphNode> cola, std::shared_ptr<SceneGraphNode> mentos, std::shared_ptr<SceneGraphNode> tyrol)
     {
-        if (playerObject->collider.boxToBoxCollisioncheck(tyrol->additionalTriggers.at(1))) {
-            setTrueStencil(tyrol);
-            setTrueStencil(seat);
-            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
-                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
-            }
-        }
-        else {
-            setFalseStencil(tyrol);
-            setFalseStencil(seat);
-        }
+        //if (playerObject->collider.boxToBoxCollisioncheck(tyrol->additionalTriggers.at(1))) {
+        //    setTrueStencil(tyrol);
+        //    setTrueStencil(seat);
+        //    if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+        //        setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+        //    }
+        //}
+        //else {
+        //    setFalseStencil(tyrol);
+        //    setFalseStencil(seat);
+        //}
         //check for puffed_cola with mentos
         if (seat->trigger.boxToBoxCollisioncheck(cola->trigger) &&  !tyrolkerCola) {
             if (cola->m_transform.m_scale > 1.19f) //this means its puffed_cola
@@ -651,15 +651,15 @@ public:
         }
 
         //change outline
-        if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
-            setTrueStencil(interacter);
-            if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
-                setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
-            }
-        }
-        else {
-            setFalseStencil(interacter);
-        }
+        //if (playerObject->collider.boxToBoxCollisioncheck(interacter->additionalTriggers.at(0))) {
+        //    setTrueStencil(interacter);
+        //    if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+        //        setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f));
+        //    }
+        //}
+        //else {
+        //    setFalseStencil(interacter);
+        //}
     }
 
     void defaultWazkerBehaviour(std::shared_ptr<SceneGraphNode> interacter, float dt)
