@@ -364,17 +364,17 @@ public:
             return;
         }
         
-        //if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
-        //    setTrueStencil(interacter);
-        //    if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
-        //        setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f)); //zielony
-        //    }
-        //    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        //        playerObject->canInToGround = true;
-        //        goInGround = true;
-        //        moveShovel = true;
-        //    }
-        //}
+        if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
+            //setTrueStencil(interacter);
+            //if (getOutlineColor() != glm::vec3(0.0f, 1.0f, 0.0f)) {
+            //    setOutlineColor(glm::vec3(0.0f, 1.0f, 0.0f)); //zielony
+            //}
+            if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+                playerObject->canInToGround = true;
+                goInGround = true;
+                moveShovel = true;
+            }
+        }
         //if (playerObject->collider.boxToBoxCollisioncheck(interacter->trigger) && !playerObject->m_children.at(0)->getMovableType() == TOSANDPIT) {
         //    setTrueStencil(interacter);
         //    if (getOutlineColor() != glm::vec3(1.0f, 0.0f, 0.0f)) {

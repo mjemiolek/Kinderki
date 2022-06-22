@@ -177,7 +177,7 @@ class GameManager {
     unsigned int st;
     bool ifWin = false;
     int ESC = false;
-
+    bool piaskownicaMinusUcieczka = false;
 
     GameManager() {
         //settings
@@ -1996,7 +1996,7 @@ class GameManager {
                     already = true;
                 }
                 if (ESC == 2) { //piaskownica
-
+                    piaskownicaMinusUcieczka = true;
                 }
                 if (ESC == 3) { //hustawka
                     player->setHustawkerBoyPaid(false);
@@ -2014,6 +2014,10 @@ class GameManager {
                 }
             }
             escape++;
+        }
+        if (piaskownicaMinusUcieczka && st - ct >= 5) {
+            playerWins--;
+            piaskownicaMinusUcieczka = false;
         }
 
 
