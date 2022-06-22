@@ -497,6 +497,8 @@ public:
                 cola->update_transform();
                 //change seat model    
                 Model seatWithCola("res/models/level/aerialrunnway_seat_with_cola.obj");
+                unsigned int texaerialseatcola = loadTexture("res/textures/models/aerialrunnway_seat_with_cola.png");
+                seat->texture = texaerialseatcola;
                 seat->modelTemp = seatWithCola;
                 seat->m_transform.m_scale = 10.0f;
                 seat->modelOutline = nothing;
@@ -831,6 +833,43 @@ public:
     }
     void setCanJumpAnimation(bool dt) {
         canJumpAnimation = dt;
+    }
+
+    unsigned int loadTexture(char const* path)
+    {
+        unsigned int textureID;
+        glGenTextures(1, &textureID);
+
+        int width, height, nrComponents;
+        unsigned char* data = stbi_load(path, &width, &height, &nrComponents, 0);
+        if (data)
+        {
+            GLenum format;
+            if (nrComponents == 1)
+                format = GL_RED;
+            else if (nrComponents == 3)
+                format = GL_RGB;
+            else if (nrComponents == 4)
+                format = GL_RGBA;
+
+            glBindTexture(GL_TEXTURE_2D, textureID);
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+            stbi_image_free(data);
+        }
+        else
+        {
+            std::cout << "Texture failed to load at path: " << path << std::endl;
+            stbi_image_free(data);
+        }
+
+        return textureID;
     }
     //bool CanRenderInteraction() {
     //    if ((getFinishedTutorial() == false)/* || (getCanInteract() == false) */ ) return false;

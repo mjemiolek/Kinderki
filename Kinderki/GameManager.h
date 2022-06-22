@@ -399,6 +399,12 @@ class GameManager {
         unsigned int textree2 = loadTexture("res/textures/models/textree2.png");
         unsigned int textab = loadTexture("res/textures/models/textab.png");
 
+        unsigned int texaerialseat = loadTexture("res/textures/models/aerialrunnway_seat.png");
+        unsigned int texswingseat = loadTexture("res/textures/models/swingseat.png");
+
+        unsigned int texfencefixed = loadTexture("res/textures/models/ogrodzenie_fixed.png");
+
+
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
         unsigned int texmentos = loadTexture("res/textures/models/mentos_texture.png");
         unsigned int texshowel = loadTexture("res/textures/models/lopata_tex.png");
@@ -598,7 +604,7 @@ class GameManager {
         //heartptr->setProperties(shaderShad, texturewin10, aerialRunnwayLinerTrigerPos, MODEL, postac_test, 0.05f, false);
 
         root_node->add_child(aerialrunnwayseatptr);
-        aerialrunnwayseatptr->setProperties(shaderShad, texturemetal, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, true);
+        aerialrunnwayseatptr->setProperties(shaderShad, texaerialseat, aerialRunnwayPos+aerialRunnwaySeatPos, MODEL, aerialrunnwayseat, 1.00f, true);
         //std::cout << aerialRunnwayPos.x + aerialRunnwaySeatPos.x <<"x"<< aerialRunnwayPos.y + aerialRunnwaySeatPos.y << "x" << aerialRunnwayPos.z + aerialRunnwaySeatPos.z << std::endl;
         aerialrunnwayseatptr->trigger = aerialrunnwayTrigger;
         aerialrunnwayseatptr->modelOutline = aerialrunnwayseatOut;
@@ -899,7 +905,7 @@ class GameManager {
         root_node->add_child(swingseatptr);
         glm::vec3 swingSeatPos = swingPos;
         swingSeatPos.y += 1.40f;
-        swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, false, swingCollider);
+        swingseatptr->setProperties(shaderShad, texswingseat, swingSeatPos, MODEL, swingseat, 0.02f, false, swingCollider);
         swingseatptr->trigger = swingTrigger;
         swingseatptr->setRotation(0.0f, 180.0f, 0.0f);
         swingseatptr->modelOutline = swingseatOut;
@@ -1455,7 +1461,6 @@ class GameManager {
 
         glm::vec3 Trigger2Tyrolker(33.15, 15.5f, 11.5f);
         Collider escapeTriggerTyrolker(glm::vec3(4.0f, 40.2f, 0.5f), false, Trigger2Tyrolker, false);
-
 
         //TODO: Check if adjusments are needed. If displacement is good. Leave it as it is.
         glm::vec3 Trigger3Piaskownicer(-1.0f, 0.0f, -14.0f);
