@@ -44,9 +44,9 @@ void daySimulation(float dt,bool changeday, std::shared_ptr<SceneGraphNode> play
 
 GLFWwindow* window = nullptr;
 //light
-glm::vec3 lightPosition(30.0f, 35.0f, 10.f);
+glm::vec3 lightPosition(30.0f, 35.0f, 10.0f);
 // camera
-glm::vec3 cameraPos(0.0f, 16.0f, 5.0f);
+glm::vec3 cameraPos(0.0f, 10.0f, 5.0f);
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -311,7 +311,7 @@ int main()
         unprocessed_time += passed_time;
 
         input(window, gameManager.cube3);
-        daySimulation(passed_time, gui.changeday, gameManager.cube3);
+        //daySimulation(passed_time, gui.changeday, gameManager.cube3);
         ballManager->manageBall(window, passed_time);
         gameManager.getTutorialState()->update(window, gameManager.player, gameManager.cubeKid2, gameManager.sandpitptr);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time, gameManager.heartptr2);
@@ -333,7 +333,6 @@ int main()
         moveFactor += 0.03f * passed_time;
         moveFactor = fmod(moveFactor,1.0f);
         gameManager.update(passed_time);
-
         gameManager.checkWin(); //check for win
         gameManager.player->alreadyescapedTyrolker = gameManager.already;
         playerWins = gameManager.playerWins;
@@ -343,12 +342,13 @@ int main()
         while (unprocessed_time >= frame_time) {
             should_render = true;
             unprocessed_time -= frame_time;
+
         }
 
 
         if (should_render) {
             should_render = false;
-            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+            //std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);
@@ -452,7 +452,7 @@ void daySimulation(float dt, bool changeday, std::shared_ptr<SceneGraphNode> pla
 {
     //float step = -0.3f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
-    lightPosition.x += -0.300f * dt;
+    lightPosition.x += -0.20f * dt;
     if (changeday) {
         lightPosition.x = 35.0f; //end of day
         playerObject->get_transform().m_position = glm::vec3(27.0f, 0.2f, 9.17f); // dzieciak na start
