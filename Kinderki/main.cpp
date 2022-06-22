@@ -234,10 +234,10 @@ int main()
     unsigned int wazker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
     unsigned int wazker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
 
-    unsigned int liner1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
-    unsigned int liner2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
-    unsigned int liner3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
-    unsigned int liner4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int liner1 = gameManager.loadTexture("res/textures/stories/liner/liner1.png");
+    unsigned int liner2 = gameManager.loadTexture("res/textures/stories/liner/liner2.png");
+    unsigned int liner3 = gameManager.loadTexture("res/textures/stories/liner/liner3.png");
+    unsigned int liner4 = gameManager.loadTexture("res/textures/stories/liner/liner3.png");
 
     gameManager.tutorialState->setTexture1(kidIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);

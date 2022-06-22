@@ -183,7 +183,7 @@ class GameManager {
         glm::vec3 seesawPos(8.0f, 0.8f, -4.5f);
         glm::vec3 ballPos(25.5f, 2.5f, -5.0f);
         glm::vec3 slidePos(21.00f, 0.10f, -14.0f);
-        glm::vec3 trampolinePos(20.50f, 0.58f, -11.0f);
+        glm::vec3 trampolinePos(20.50f, 0.58f, -7.5f);
         glm::vec3 treePos(23.0f, 0.0f, -13.f);
         glm::vec3 tree2Pos(14.0f, 0.0f, -13.f);
         //glm::vec3 treePos(30.0f, 0.0f, -18.0f);
@@ -192,7 +192,7 @@ class GameManager {
         glm::vec3 aerialRunnwayTrigerPos(33.0f, -1.5f, -10.0f);
         glm::vec3 aerialRunnwayLinerTrigerPos(36.5f, 4.0f, 5.5f);
         glm::vec3 swingPos(8.0f, 2.38f, 6.0f);
-        glm::vec3 poolPos(20.00f, 0.0f, -6.0f);
+        glm::vec3 poolPos(15.0f, 0.0f, -23.f);
         glm::vec3 poolWaterPos(poolPos.x +0.05f, waterHeight, poolPos.z);
         glm::vec3 goalLeftPos(5.5f, 0.0f, 15.5f);
         glm::vec3 goalRightPos(18.5f, 0.0f, 15.5f);
@@ -216,11 +216,11 @@ class GameManager {
         glm::vec3 mentosPos(29.5f, 2.0f, -2.69f);
 
         glm::vec3 candyCane1Pos(31.0f, 12.0f, -12.0f);  //tree
-        glm::vec3 candyCane2Pos(20.0f, 1.0f, -5.5f);    //pool
+        glm::vec3 candyCane2Pos(21.69f, 5.f, -10.25f);    //treelow
         glm::vec3 candyCane3Pos(5.0f, 0.5f, 19.0f);     //behind goal
         glm::vec3 candyCane4Pos(34.5f, 0.5f, -12.0f);   //behind aerial
         glm::vec3 candyCane5Pos(3.5f, 1.0f, 0.0f);      //on bench
-        glm::vec3 candyCane6Pos(33.0f, 5.0f, 5.8f);     //on aerial
+        glm::vec3 candyCane6Pos(33.0f, 5.0f, 2.69f);     //on aerial
 
 
         glm::vec3 bucketBlackPos(25.0f, 0.1f, -8.0f); //not used
@@ -943,7 +943,6 @@ class GameManager {
         Collider trampolineTriggerOutline(glm::vec3(3.0f, 0.6f, 3.0f), false, trampolinePos, true);
         trampolineptr->additionalTriggers.push_back(trampolineTriggerOutline);
         trampolineptr->modelOutline = trampolineOut;
-        //trampolineptr->trigger = trampolineTrigger;
         //dol
         trampolineColliderPos.z += q;
         Collider trampolineCollider2(glm::vec3(0.9f, 1.1f, 0.1f), false, trampolineColliderPos, false);
@@ -1321,15 +1320,15 @@ class GameManager {
         poolptr->setProperties(shaderShad, texturewin10, poolPos, MODEL, pool, 0.07f, false);
         root_water->add_child(poolwaterptr);
         poolwaterptr->setProperties(waterShader, texturewater, poolWaterPos, MODEL, poolwater, 0.07f, false);
-        Collider poolColliderUp(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(poolPos.x, 0.0f, poolPos.z - 1.5f), false);
-        Collider poolColliderDown(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(poolPos.x, 0.0f, poolPos.z + 1.5f), false);
-        Collider poolColliderLeft(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(poolPos.x - 2.2f, 0.0f, poolPos.z), false);
-        Collider poolColliderRight(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(poolPos.x + 2.2f, 0.0f, poolPos.z), false);
+        //Collider poolColliderUp(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(poolPos.x, 0.0f, poolPos.z - 1.5f), false);
+        //Collider poolColliderDown(glm::vec3(2.0f, 0.6f, 0.1f), false, glm::vec3(poolPos.x, 0.0f, poolPos.z + 1.5f), false);
+        //Collider poolColliderLeft(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(poolPos.x - 2.2f, 0.0f, poolPos.z), false);
+        //Collider poolColliderRight(glm::vec3(0.1f, 0.6f, 0.9f), false, glm::vec3(poolPos.x + 2.2f, 0.0f, poolPos.z), false);
 
-        poolptr->additionalColliders.push_back(poolColliderUp);
-        poolptr->additionalColliders.push_back(poolColliderDown);
-        poolptr->additionalColliders.push_back(poolColliderLeft);
-        poolptr->additionalColliders.push_back(poolColliderRight);
+        //poolptr->additionalColliders.push_back(poolColliderUp);
+        //poolptr->additionalColliders.push_back(poolColliderDown);
+        //poolptr->additionalColliders.push_back(poolColliderLeft);
+        //poolptr->additionalColliders.push_back(poolColliderRight);
 
 
         //damaged wall
@@ -1812,7 +1811,7 @@ class GameManager {
                 if (ESC == 4) { //wazka
 
                 }
-                if (ESC == 5) { //wazka
+                if (ESC == 5) { //liner
                     Model tab("res/models/level/tab.obj");
                     Collider TabColider(glm::vec3(0.2f, 3.0f, 2.0f), false, glm::vec3(38.25f, 3.5f, 5.75f), false);
                     tabptr->modelTemp = tab;
