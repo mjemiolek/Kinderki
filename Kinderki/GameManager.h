@@ -143,17 +143,22 @@ class GameManager {
     Animation animationHammer = Animation("res/animations/hammer_animation.fbx", &animatedHammer);
     Animator animatorHammer = Animator(&animationHammer);
 
+    Animation animationHammerIdle = Animation("res/animations/hammer_animation_idle.fbx", &animatedHammer);
 
     Model kidSeesaw = Model("res/models/second_character.fbx");
     Animation animationKidSeesaw = Animation("res/animations/second_character_hammer.fbx", &kidSeesaw);
     Animator animatorKidSeesaw = Animator(&animationKidSeesaw);
 
+    Animation animationKidSeesawIdle = Animation("res/animations/second_character_hammer_idle.fbx", &kidSeesaw);
+
 
     Model animatedLightBall = Model("res/models/light.fbx");
-    Animation animationLightBall = Animation("res/animations/light_animation_idle.fbx", &animatedLightBall);
+    Animation animationLightBallIdle = Animation("res/animations/light_animation_idle.fbx", &animatedLightBall);
+    Animation animationLightBall = Animation("res/animations/light_animation.fbx", &animatedLightBall);
     Animator animatorLightBall = Animator(&animationLightBall);
 
-    Animation animationHustawker = Animation("res/animations/first_character_kamehameha_idle.fbx", &postac_test);
+    Animation animationHustawkerIdle = Animation("res/animations/first_character_kamehameha_idle.fbx", &postac_test);
+    Animation animationHustawker = Animation("res/animations/first_character_kamehameha.fbx", &postac_test);
     Animator animatorHustawker = Animator(&animationHustawker);
 
     Animation animationKidMentosCola = Animation("res/animations/first_character_mentos_cola.fbx", &postac_test);
@@ -902,7 +907,7 @@ class GameManager {
         swingseatptr->setProperties(shaderShad, texturemetal, swingSeatPos, MODEL, swingseat, 0.02f, false, swingCollider);
         swingseatptr->trigger = swingTrigger;
         swingseatptr->setRotation(0.0f, 180.0f, 0.0f);
-        swingseatptr->modelOutline = swingseatOut;
+     //   swingseatptr->modelOutline = swingseatOut;
 
 
         //stoly
@@ -1726,12 +1731,53 @@ class GameManager {
             bucketblackptr->tempAnim->UpdateAnimation(dt);
         }
         if (cube2->frustumCull) {
-            cube2->tempAnim->UpdateAnimation(dt);
-            hammerptr->tempAnim->UpdateAnimation(dt);
+            
+            if (!player->getWazkerWait()) {
+                if (!(cube2->tempAnim->getCurrentAnimation() == &animationKidSeesawIdle)) {
+                    cube2->tempAnim->PlayAnimation(&animationKidSeesawIdle);
+                    hammerptr->tempAnim->PlayAnimation(&animationHammerIdle);
+                    player->setHammerAnimation(false);
+                }
+                cube2->tempAnim->UpdateAnimation(dt);
+                hammerptr->tempAnim->UpdateAnimation(dt);
+            }
+            if (player->getWazkerWait()) {
+                if (!(cube2->tempAnim->getCurrentAnimation() == &animationKidSeesaw)) {
+                    cube2->tempAnim->PlayAnimation(&animationKidSeesaw);
+                    hammerptr->tempAnim->PlayAnimation(&animationHammer);
+                    player->setHammerAnimation(false);
+                }
+                cube2->tempAnim->UpdateAnimation(dt);
+                hammerptr->tempAnim->UpdateAnimation(dt);
+                if (cube2->tempAnim->getCurrentTime() > cube2->tempAnim->getCurrentAnimation()->GetDuration() - 30) {
+                    player->setHammerAnimation(true);
+                }
+            }
         }
+
         if (cubeKid3->frustumCull) {
-            cubeKid3->tempAnim->UpdateAnimation(dt);
-            lightballptr->tempAnim->UpdateAnimation(dt);
+            if (!player->getHustawkerWait()) {
+                if (!(cubeKid3->tempAnim->getCurrentAnimation() == &animationHustawkerIdle)) {
+                    cubeKid3->tempAnim->PlayAnimation(&animationHustawkerIdle);
+                    lightballptr->tempAnim->PlayAnimation(&animationLightBallIdle);
+                    player->setGokuAnimation(false);
+                }
+                cubeKid3->tempAnim->UpdateAnimation(dt);
+                lightballptr->tempAnim->UpdateAnimation(dt);
+            }
+            if (player->getHustawkerWait()) {
+                if (!(cubeKid3->tempAnim->getCurrentAnimation() == &animationHustawker)) {
+                    cubeKid3->tempAnim->PlayAnimation(&animationHustawker);
+                    lightballptr->tempAnim->PlayAnimation(&animationLightBall);
+                    player->setGokuAnimation(false);
+                }
+                cubeKid3->tempAnim->UpdateAnimation(dt);
+                lightballptr->tempAnim->UpdateAnimation(dt);
+                if (cubeKid3->tempAnim->getCurrentTime() > cubeKid3->tempAnim->getCurrentAnimation()->GetDuration() - 10) {
+                    player->setGokuAnimation(true);
+                }
+            }
+            
         }
         if (cubeKid5->frustumCull) {
             cubeKid5->tempAnim->UpdateAnimation(dt);
@@ -1740,7 +1786,8 @@ class GameManager {
 
         }
 
-        //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
+
+        std::cout << "FIRST KID: current time: " << cubeKid3->tempAnim->getCurrentTime() << " getDuration: " << cubeKid3->tempAnim->getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         colaptr->update_transform();
         mentosptr->update_transform();
@@ -1944,10 +1991,10 @@ class GameManager {
 
                 }
                 if (ESC == 3) { //hustawka
-
+                    player->setHustawkerBoyPaid(false);
                 }
                 if (ESC == 4) { //wazka
-
+                    player->setWazkerBoyPaid(false);
                 }
                 if (ESC == 5) { //liner
                     Model tab("res/models/level/tab.obj");

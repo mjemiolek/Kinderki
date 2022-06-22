@@ -38,6 +38,7 @@ class TutorialState {
 	bool putOffMovable;
 	bool carry;
 	bool bigScale;
+	bool findCandy;
 	std::shared_ptr<Text> text;
 	std::ostringstream tutorialStream;
 	std::string tutorialString;
@@ -68,6 +69,7 @@ public:
 		checkInteractionWithMovable = false;
 		checkInteractionWithSandpit = false;
 		findSandpit = false;
+		findCandy = false;
 		renderText = true;
 		putOffMovable = false;
 		bigScale = false;
@@ -116,25 +118,37 @@ public:
 			if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
-				findSandpit = true;
+				findCandy = true;
 			}
 			if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
-				findSandpit = true;
+				findCandy = true;
 			}
 			if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
-				findSandpit = true;
+				findCandy = true;
 			}
 			if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
+				findCandy = true;
+			}
+		}
+		if (findCandy && ct - dt > 2) {
+			if (textureText != &texture2) {
+				waitTime = ct;
+				textureText = &texture2;
+				bigScale = true;
+			}
+			if (player->getCandyCount() > 0 && ct - waitTime > 0) {
+				findCandy = false;
 				findSandpit = true;
 			}
 		}
-		if (findSandpit && ct - dt > 2) {
+
+		if (findSandpit) {
 			if (textureText != &texture3) {
 				waitTime = ct;
 				textureText = &texture3;
@@ -215,6 +229,7 @@ public:
 			}
 			if (player->getPlayerObject()->collider.boxToBoxCollisioncheck(sandPiter->trigger) && player->getPlayerObject()->m_children.at(0)->getMovableType() == TOSANDPIT && ct - waitTime > 1) {
 				if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+					player->setFinishedTutorial(true);
 					dt = ct;
 					checkInteractionWithSandpit = false;
 					renderText = false;
@@ -230,6 +245,7 @@ public:
 			if (ct - initTime < 8) {
 				renderText = false;
 				if (glfwGetKey(window, GLFW_KEY_BACKSLASH) == GLFW_PRESS) {
+					player->setFinishedTutorial(true);
 					turnOffTutorial = true;
 				}
 			}

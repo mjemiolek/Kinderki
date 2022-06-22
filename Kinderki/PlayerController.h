@@ -80,6 +80,8 @@ public:
     bool alreadyescapedTyrolker = false;
     bool moveShovel = false;
     bool canJumpAnimation = true;
+    bool hammerAnimation = false;
+    bool gokuAnimation = false;
 
     PlayerController(std::shared_ptr<SceneGraphNode> player) {
         this->playerObject = player;
@@ -281,8 +283,9 @@ public:
                     textureLayer = 2;
                 }
                 else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
+                    hustawkerBoyPaid = true;
                     candyCount -= 1;
-                    textureLayer = 5;
+                    textureLayer = 6;
                     paidBoy2 = true;
                 }
                 break;
@@ -292,9 +295,8 @@ public:
                     textureLayer = 2;
                 }
                 else if ((glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) && (candyCount >= 0) && (ct - dt > 2)) {
-                    hustawkerBoyPaid = true;
                     candyCount -= 1;
-                    textureLayer = 6;
+                    textureLayer = 5;
                     paidBoy3 = true;
                 }
                 break;
@@ -339,6 +341,7 @@ public:
                     sandMove = false;
                     playerObject->canInToGround = false;
                     turnOffTutorial = true;
+                    setFinishedTutorial(true);
                 }
             }
         }
@@ -426,7 +429,7 @@ public:
             }
 
             //std::cout << nowTime << "   " << timeVariable << std::endl;
-            if (nowTime - timeVariable >= hustawkerTimeToWait)  //time to wait
+            if (getGokuAnimation())  //time to wait
             {
                 hustawkerWait = false;
                 hustawkerMove = true;
@@ -620,7 +623,7 @@ public:
                 wazkerWait = false;
             }
             defaultWazkerBehaviour(interacter, dt);
-            if (nowTime - timeVariable >= wazkerTimeToWait)  //time to wait
+            if (getHammerAnimation())  //time to wait
             {
                 wazkerWait = false;
                 //go to wazker move
@@ -831,6 +834,30 @@ public:
     }
     void setCanJumpAnimation(bool dt) {
         canJumpAnimation = dt;
+    }
+    bool getWazkerWait() {
+        return wazkerWait;
+    }
+    bool getHammerAnimation() {
+        return hammerAnimation;
+    }
+    void setHammerAnimation(bool dt) {
+        hammerAnimation = dt;
+    }
+    void setWazkerBoyPaid(bool dt) {
+        wazkerBoyPaid = dt;
+    }
+    void setGokuAnimation(bool dt) {
+        gokuAnimation = dt;
+    }
+    bool getGokuAnimation() {
+        return gokuAnimation;
+    }
+    bool getHustawkerWait() {
+        return hustawkerWait;
+    }
+    void setHustawkerBoyPaid(bool dt) {
+        hustawkerBoyPaid = dt;
     }
     //bool CanRenderInteraction() {
     //    if ((getFinishedTutorial() == false)/* || (getCanInteract() == false) */ ) return false;
