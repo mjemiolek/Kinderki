@@ -700,7 +700,7 @@ class GameManager {
 
         //piaski
         root_node->add_child(sandsptr);
-        sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
+        sandsptr->setProperties(shaderShad, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
         ////krawezniki?
         /*root_node->add_child(walkptr);
