@@ -1264,7 +1264,7 @@ class GameManager {
         //tempPos.y = 0.69;
         tempPos.z -= 1.35;
 
-        Collider tree2Colider5(glm::vec3(0.10f, 0.5f, 0.10f), false, tempPos, false);
+        Collider tree2Colider5(glm::vec3(0.10f, 0.65f, 0.10f), false, tempPos, false);
 
 
         //tylne
@@ -1293,8 +1293,133 @@ class GameManager {
         Collider tree2Colider9(glm::vec3(0.33f, 0.15f, 0.33f), false, tempPos, false);
 
 
-        root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        tempPos = tree2Pos;
+        tempPos.x += .16;
+        tempPos.y += 5.5;
+        //tempPos.z += 0.069;
+
+        Collider tree2Colider10(glm::vec3(0.17f, 1.5f, 0.2f), false, tempPos, false);
+
+        //tempPos.x += .16;
+        tempPos.y += 2.22;
+        //tempPos.z += 0.069;
+
+        Collider tree2Colider11(glm::vec3(0.10f, 1.6f, 0.22f), false, tempPos, false);
+
+
+        tempPos.x += -.5;
+        //tempPos.y += .22;
+        tempPos.z += 0.1;
+
+        Collider tree2Colider12(glm::vec3(0.25f, .1f, 0.001f), false, tempPos, false);
+
+        tempPos.x += -1.23;
+        tempPos.y += 0.15;
+        tempPos.z -= 0.15;
+
+        Collider tree2Colider13(glm::vec3(0.5f, .4f, 0.001f), false, tempPos, false);
+
+        tempPos.x += -.65;
+        tempPos.y += .5;
+        tempPos.z -= 0.25;
+
+        Collider tree2Colider14(glm::vec3(0.33f, .45f, 0.38f), false, tempPos, false);
+
+        tempPos.x += 2.2;
+        tempPos.y += .25;
+        tempPos.z -= .4;
+
+        Collider tree2Colider15(glm::vec3(0.23f, .4f, 0.01f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        tempPos.x += .33;
+        tempPos.y += 1.0;
+        tempPos.z += 1.62;
+
+        Collider tree2Colider16(glm::vec3(0.01f, .3f, 0.06f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        //tempPos.x += .15;
+        //tempPos.y += .69;
+        tempPos.z += -1.1;
+
+        Collider tree2Colider17(glm::vec3(0.02f, .5f, 0.05f), false, tempPos, false);
+
+        tempPos.x += 1.1;
+        tempPos.y += .5;
+        tempPos.z += .15;
+
+        Collider tree2Colider18(glm::vec3(0.1f, .3f, 0.02f), false, tempPos, false);
+
+        tempPos.x += -.69;
+        tempPos.y += .5;
+        tempPos.z += -.2;
+
+        Collider tree2Colider19(glm::vec3(0.06f, .2f, 0.2f), false, tempPos, false);
+
+        tempPos.x += .25;
+        tempPos.y += .5;
+        tempPos.z += -.5;
+
+        Collider tree2Colider20(glm::vec3(0.05f, .25f, 0.07f), false, tempPos, false);
+
+        tempPos.x -= .33;
+        tempPos.y += .69;
+        tempPos.z += -.17;
+
+        Collider tree2Colider21(glm::vec3(0.03f, .25f, 0.033f), false, tempPos, false);
+
+
+
+
+        tempPos = tree2Pos;
+        tempPos.x += .33;
+        tempPos.y += 8.5;
+        tempPos.z += -1.6;
+
+        Collider tree2Colider22(glm::vec3(0.03f, .25f, 0.33f), false, tempPos, false);
+
+        tempPos.x += -.8;
+        tempPos.y += -1.10;
+        tempPos.z += -.6;
+
+        Collider tree2Colider23(glm::vec3(0.3f, .25f, 0.005f), false, tempPos, false);
+
+        tempPos.x += 1.8;
+        tempPos.y += 1.1;
+        //tempPos.z += -.6;
+
+        Collider tree2Colider24(glm::vec3(0.5f, .25f, 0.005f), false, tempPos, false);
+
+        tempPos.x += 0.5;
+        tempPos.y += 0.33;
+        //tempPos.z += -.6;
+
+        Collider tree2Colider241(glm::vec3(0.005f, .25f, 0.005f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        tempPos.x += -.4;
+        tempPos.y += -0.1;
+        tempPos.z += -.6;
+
+        Collider tree2Colider25(glm::vec3(0.0001f, .4f, 0.2f), false, tempPos, false);
+
+        //tempPos.x += 1.8;
+        tempPos.y += 0.42;
+        tempPos.z += -.9;
+
+        Collider tree2Colider26(glm::vec3(0.1f, .2f, 0.18f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
 
 
         tree2ptr->additionalColliders.push_back(tree2Colider0);
@@ -1305,11 +1430,33 @@ class GameManager {
         tree2ptr->additionalColliders.push_back(tree2Colider4);
         tree2ptr->additionalColliders.push_back(tree2Colider5);
 
+        //ty³
         tree2ptr->additionalColliders.push_back(tree2Colider6);
         tree2ptr->additionalColliders.push_back(tree2Colider7);
         tree2ptr->additionalColliders.push_back(tree2Colider8);
         tree2ptr->additionalColliders.push_back(tree2Colider9);
 
+        //wy¿sze piêtra
+        tree2ptr->additionalColliders.push_back(tree2Colider10);
+        tree2ptr->additionalColliders.push_back(tree2Colider11);
+        tree2ptr->additionalColliders.push_back(tree2Colider12);
+        tree2ptr->additionalColliders.push_back(tree2Colider13);
+        tree2ptr->additionalColliders.push_back(tree2Colider14);
+        tree2ptr->additionalColliders.push_back(tree2Colider15);
+        tree2ptr->additionalColliders.push_back(tree2Colider16);
+        tree2ptr->additionalColliders.push_back(tree2Colider17);
+        tree2ptr->additionalColliders.push_back(tree2Colider18);
+        tree2ptr->additionalColliders.push_back(tree2Colider19);
+        tree2ptr->additionalColliders.push_back(tree2Colider20);
+        tree2ptr->additionalColliders.push_back(tree2Colider21);
+
+        //wyjebable
+        tree2ptr->additionalColliders.push_back(tree2Colider22);
+        tree2ptr->additionalColliders.push_back(tree2Colider23);
+        tree2ptr->additionalColliders.push_back(tree2Colider24);
+        tree2ptr->additionalColliders.push_back(tree2Colider241);
+        tree2ptr->additionalColliders.push_back(tree2Colider25);
+        tree2ptr->additionalColliders.push_back(tree2Colider26);
 
 
         //parasol (I dont want to deal with colliders here xd)
