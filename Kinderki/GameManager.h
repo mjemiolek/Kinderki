@@ -143,17 +143,22 @@ class GameManager {
     Animation animationHammer = Animation("res/animations/hammer_animation.fbx", &animatedHammer);
     Animator animatorHammer = Animator(&animationHammer);
 
+    Animation animationHammerIdle = Animation("res/animations/hammer_animation_idle.fbx", &animatedHammer);
 
     Model kidSeesaw = Model("res/models/second_character.fbx");
     Animation animationKidSeesaw = Animation("res/animations/second_character_hammer.fbx", &kidSeesaw);
     Animator animatorKidSeesaw = Animator(&animationKidSeesaw);
 
+    Animation animationKidSeesawIdle = Animation("res/animations/second_character_hammer_idle.fbx", &kidSeesaw);
+
 
     Model animatedLightBall = Model("res/models/light.fbx");
-    Animation animationLightBall = Animation("res/animations/light_animation_idle.fbx", &animatedLightBall);
+    Animation animationLightBallIdle = Animation("res/animations/light_animation_idle.fbx", &animatedLightBall);
+    Animation animationLightBall = Animation("res/animations/light_animation.fbx", &animatedLightBall);
     Animator animatorLightBall = Animator(&animationLightBall);
 
-    Animation animationHustawker = Animation("res/animations/first_character_kamehameha_idle.fbx", &postac_test);
+    Animation animationHustawkerIdle = Animation("res/animations/first_character_kamehameha_idle.fbx", &postac_test);
+    Animation animationHustawker = Animation("res/animations/first_character_kamehameha.fbx", &postac_test);
     Animator animatorHustawker = Animator(&animationHustawker);
 
     Animation animationKidMentosCola = Animation("res/animations/first_character_mentos_cola.fbx", &postac_test);
@@ -908,7 +913,7 @@ class GameManager {
         swingseatptr->setProperties(shaderShad, texswingseat, swingSeatPos, MODEL, swingseat, 0.02f, false, swingCollider);
         swingseatptr->trigger = swingTrigger;
         swingseatptr->setRotation(0.0f, 180.0f, 0.0f);
-        swingseatptr->modelOutline = swingseatOut;
+     //   swingseatptr->modelOutline = swingseatOut;
 
 
         //stoly
@@ -1270,7 +1275,7 @@ class GameManager {
         //tempPos.y = 0.69;
         tempPos.z -= 1.35;
 
-        Collider tree2Colider5(glm::vec3(0.10f, 0.5f, 0.10f), false, tempPos, false);
+        Collider tree2Colider5(glm::vec3(0.10f, 0.65f, 0.10f), false, tempPos, false);
 
 
         //tylne
@@ -1299,8 +1304,133 @@ class GameManager {
         Collider tree2Colider9(glm::vec3(0.33f, 0.15f, 0.33f), false, tempPos, false);
 
 
-        root_node->add_child(heartptr);
-        heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        tempPos = tree2Pos;
+        tempPos.x += .16;
+        tempPos.y += 5.5;
+        //tempPos.z += 0.069;
+
+        Collider tree2Colider10(glm::vec3(0.17f, 1.5f, 0.2f), false, tempPos, false);
+
+        //tempPos.x += .16;
+        tempPos.y += 2.22;
+        //tempPos.z += 0.069;
+
+        Collider tree2Colider11(glm::vec3(0.10f, 1.6f, 0.22f), false, tempPos, false);
+
+
+        tempPos.x += -.5;
+        //tempPos.y += .22;
+        tempPos.z += 0.1;
+
+        Collider tree2Colider12(glm::vec3(0.25f, .1f, 0.001f), false, tempPos, false);
+
+        tempPos.x += -1.23;
+        tempPos.y += 0.15;
+        tempPos.z -= 0.15;
+
+        Collider tree2Colider13(glm::vec3(0.5f, .4f, 0.001f), false, tempPos, false);
+
+        tempPos.x += -.65;
+        tempPos.y += .5;
+        tempPos.z -= 0.25;
+
+        Collider tree2Colider14(glm::vec3(0.33f, .45f, 0.38f), false, tempPos, false);
+
+        tempPos.x += 2.2;
+        tempPos.y += .25;
+        tempPos.z -= .4;
+
+        Collider tree2Colider15(glm::vec3(0.23f, .4f, 0.01f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        tempPos.x += .33;
+        tempPos.y += 1.0;
+        tempPos.z += 1.62;
+
+        Collider tree2Colider16(glm::vec3(0.01f, .3f, 0.06f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        //tempPos.x += .15;
+        //tempPos.y += .69;
+        tempPos.z += -1.1;
+
+        Collider tree2Colider17(glm::vec3(0.02f, .5f, 0.05f), false, tempPos, false);
+
+        tempPos.x += 1.1;
+        tempPos.y += .5;
+        tempPos.z += .15;
+
+        Collider tree2Colider18(glm::vec3(0.1f, .3f, 0.02f), false, tempPos, false);
+
+        tempPos.x += -.69;
+        tempPos.y += .5;
+        tempPos.z += -.2;
+
+        Collider tree2Colider19(glm::vec3(0.06f, .2f, 0.2f), false, tempPos, false);
+
+        tempPos.x += .25;
+        tempPos.y += .5;
+        tempPos.z += -.5;
+
+        Collider tree2Colider20(glm::vec3(0.05f, .25f, 0.07f), false, tempPos, false);
+
+        tempPos.x -= .33;
+        tempPos.y += .69;
+        tempPos.z += -.17;
+
+        Collider tree2Colider21(glm::vec3(0.03f, .25f, 0.033f), false, tempPos, false);
+
+
+
+
+        tempPos = tree2Pos;
+        tempPos.x += .33;
+        tempPos.y += 8.5;
+        tempPos.z += -1.6;
+
+        Collider tree2Colider22(glm::vec3(0.03f, .25f, 0.33f), false, tempPos, false);
+
+        tempPos.x += -.8;
+        tempPos.y += -1.10;
+        tempPos.z += -.6;
+
+        Collider tree2Colider23(glm::vec3(0.3f, .25f, 0.005f), false, tempPos, false);
+
+        tempPos.x += 1.8;
+        tempPos.y += 1.1;
+        //tempPos.z += -.6;
+
+        Collider tree2Colider24(glm::vec3(0.5f, .25f, 0.005f), false, tempPos, false);
+
+        tempPos.x += 0.5;
+        tempPos.y += 0.33;
+        //tempPos.z += -.6;
+
+        Collider tree2Colider241(glm::vec3(0.005f, .25f, 0.005f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+        tempPos.x += -.4;
+        tempPos.y += -0.1;
+        tempPos.z += -.6;
+
+        Collider tree2Colider25(glm::vec3(0.0001f, .4f, 0.2f), false, tempPos, false);
+
+        //tempPos.x += 1.8;
+        tempPos.y += 0.42;
+        tempPos.z += -.9;
+
+        Collider tree2Colider26(glm::vec3(0.1f, .2f, 0.18f), false, tempPos, false);
+
+        //root_node->add_child(heartptr);
+        //heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
 
 
         tree2ptr->additionalColliders.push_back(tree2Colider0);
@@ -1311,11 +1441,33 @@ class GameManager {
         tree2ptr->additionalColliders.push_back(tree2Colider4);
         tree2ptr->additionalColliders.push_back(tree2Colider5);
 
+        //ty³
         tree2ptr->additionalColliders.push_back(tree2Colider6);
         tree2ptr->additionalColliders.push_back(tree2Colider7);
         tree2ptr->additionalColliders.push_back(tree2Colider8);
         tree2ptr->additionalColliders.push_back(tree2Colider9);
 
+        //wy¿sze piêtra
+        tree2ptr->additionalColliders.push_back(tree2Colider10);
+        tree2ptr->additionalColliders.push_back(tree2Colider11);
+        tree2ptr->additionalColliders.push_back(tree2Colider12);
+        tree2ptr->additionalColliders.push_back(tree2Colider13);
+        tree2ptr->additionalColliders.push_back(tree2Colider14);
+        tree2ptr->additionalColliders.push_back(tree2Colider15);
+        tree2ptr->additionalColliders.push_back(tree2Colider16);
+        tree2ptr->additionalColliders.push_back(tree2Colider17);
+        tree2ptr->additionalColliders.push_back(tree2Colider18);
+        tree2ptr->additionalColliders.push_back(tree2Colider19);
+        tree2ptr->additionalColliders.push_back(tree2Colider20);
+        tree2ptr->additionalColliders.push_back(tree2Colider21);
+
+        //wyjebable
+        tree2ptr->additionalColliders.push_back(tree2Colider22);
+        tree2ptr->additionalColliders.push_back(tree2Colider23);
+        tree2ptr->additionalColliders.push_back(tree2Colider24);
+        tree2ptr->additionalColliders.push_back(tree2Colider241);
+        tree2ptr->additionalColliders.push_back(tree2Colider25);
+        tree2ptr->additionalColliders.push_back(tree2Colider26);
 
 
         //parasol (I dont want to deal with colliders here xd)
@@ -1584,12 +1736,53 @@ class GameManager {
             bucketblackptr->tempAnim->UpdateAnimation(dt);
         }
         if (cube2->frustumCull) {
-            cube2->tempAnim->UpdateAnimation(dt);
-            hammerptr->tempAnim->UpdateAnimation(dt);
+            
+            if (!player->getWazkerWait()) {
+                if (!(cube2->tempAnim->getCurrentAnimation() == &animationKidSeesawIdle)) {
+                    cube2->tempAnim->PlayAnimation(&animationKidSeesawIdle);
+                    hammerptr->tempAnim->PlayAnimation(&animationHammerIdle);
+                    player->setHammerAnimation(false);
+                }
+                cube2->tempAnim->UpdateAnimation(dt);
+                hammerptr->tempAnim->UpdateAnimation(dt);
+            }
+            if (player->getWazkerWait()) {
+                if (!(cube2->tempAnim->getCurrentAnimation() == &animationKidSeesaw)) {
+                    cube2->tempAnim->PlayAnimation(&animationKidSeesaw);
+                    hammerptr->tempAnim->PlayAnimation(&animationHammer);
+                    player->setHammerAnimation(false);
+                }
+                cube2->tempAnim->UpdateAnimation(dt);
+                hammerptr->tempAnim->UpdateAnimation(dt);
+                if (cube2->tempAnim->getCurrentTime() > cube2->tempAnim->getCurrentAnimation()->GetDuration() - 30) {
+                    player->setHammerAnimation(true);
+                }
+            }
         }
+
         if (cubeKid3->frustumCull) {
-            cubeKid3->tempAnim->UpdateAnimation(dt);
-            lightballptr->tempAnim->UpdateAnimation(dt);
+            if (!player->getHustawkerWait()) {
+                if (!(cubeKid3->tempAnim->getCurrentAnimation() == &animationHustawkerIdle)) {
+                    cubeKid3->tempAnim->PlayAnimation(&animationHustawkerIdle);
+                    lightballptr->tempAnim->PlayAnimation(&animationLightBallIdle);
+                    player->setGokuAnimation(false);
+                }
+                cubeKid3->tempAnim->UpdateAnimation(dt);
+                lightballptr->tempAnim->UpdateAnimation(dt);
+            }
+            if (player->getHustawkerWait()) {
+                if (!(cubeKid3->tempAnim->getCurrentAnimation() == &animationHustawker)) {
+                    cubeKid3->tempAnim->PlayAnimation(&animationHustawker);
+                    lightballptr->tempAnim->PlayAnimation(&animationLightBall);
+                    player->setGokuAnimation(false);
+                }
+                cubeKid3->tempAnim->UpdateAnimation(dt);
+                lightballptr->tempAnim->UpdateAnimation(dt);
+                if (cubeKid3->tempAnim->getCurrentTime() > cubeKid3->tempAnim->getCurrentAnimation()->GetDuration() - 10) {
+                    player->setGokuAnimation(true);
+                }
+            }
+            
         }
         if (cubeKid5->frustumCull) {
             cubeKid5->tempAnim->UpdateAnimation(dt);
@@ -1598,7 +1791,8 @@ class GameManager {
 
         }
 
-        //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
+
+        std::cout << "FIRST KID: current time: " << cubeKid3->tempAnim->getCurrentTime() << " getDuration: " << cubeKid3->tempAnim->getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         colaptr->update_transform();
         mentosptr->update_transform();
@@ -1802,10 +1996,10 @@ class GameManager {
 
                 }
                 if (ESC == 3) { //hustawka
-
+                    player->setHustawkerBoyPaid(false);
                 }
                 if (ESC == 4) { //wazka
-
+                    player->setWazkerBoyPaid(false);
                 }
                 if (ESC == 5) { //liner
                     Model tab("res/models/level/tab.obj");
