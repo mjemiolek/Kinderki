@@ -698,9 +698,9 @@ class GameManager {
         benchesptr->additionalColliders.push_back(bench8Collider);
 
 
-        ////piaski
-        //root_node->add_child(sandsptr);
-        //sandsptr->setProperties(lightingShader, texturesand, zeroPos, MODEL, sands, 0.01f, false);
+        //piaski
+        root_node->add_child(sandsptr);
+        sandsptr->setProperties(shaderShad, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
         ////krawezniki?
         /*root_node->add_child(walkptr);
@@ -1602,13 +1602,6 @@ class GameManager {
         if (colaToAnimationptr->frustumCull) {
             colaToAnimationptr->tempAnim->UpdateAnimation(dt);
         }
-
-        
-        
-        
-       
-        
-        
 
         //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
