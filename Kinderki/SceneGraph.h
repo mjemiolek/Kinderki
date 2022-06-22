@@ -214,10 +214,10 @@ struct SceneGraphNode {
             shaderTemp3.use();
             shaderTemp3.setMat4("lightSpaceMatrix", lightSpaceMatrix);
             if (isAnimated) {
-                auto transforms = tempAnim.GetFinalBoneMatrices();
+                auto transforms = tempAnim->GetFinalBoneMatrices();
                 for (int i = 0; i < transforms.size(); ++i) {
                     //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
-                    shaderTemp.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+                    shaderTemp3.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
                 }
             }
             shaderTemp3.setMat4("model", m_transform.m_world_matrix);
@@ -234,6 +234,7 @@ struct SceneGraphNode {
         {
             if (boundingVolume->isOnFrustum(frustum, m_transform))
             {
+                frustumCull = true;
                 if (stencil) {
                     glStencilMask(0xFF);
                 }
@@ -242,7 +243,7 @@ struct SceneGraphNode {
                 }
                 shaderTemp.use();
                 if (isAnimated) {
-                    auto transforms = tempAnim.GetFinalBoneMatrices();
+                    auto transforms = tempAnim->GetFinalBoneMatrices();
                     for (int i = 0; i < transforms.size(); ++i) {
                         //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
                         shaderTemp.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
@@ -255,6 +256,9 @@ struct SceneGraphNode {
                 shaderTemp.setMat4("model", m_transform.m_world_matrix);
                 modelTemp.Draw(shaderTemp);
                 display++;
+            }
+            else {
+                frustumCull = false;
             }
             total++;
         }
@@ -374,7 +378,7 @@ struct SceneGraphNode {
     Shader shaderTemp3 = Shader("res/shaders/shadow_mapping_depth.vert", "res/shaders/shadow_mapping_depth.frag");
     Model modelTemp = Model("res/models/box.obj");
     Model modelOutline = Model("res/models/box.obj");
-    Animator tempAnim = Animator();
+    Animator* tempAnim;
     bool isAnimated = false;
     GLuint texture;
     renderEnum tempRender;
@@ -385,6 +389,7 @@ struct SceneGraphNode {
     Collider trigger;
     bool stencil;
     movableType movableType;
+    bool frustumCull = false;
 
     std::unique_ptr<Sphere> boundingVolume; //Frustrum
 

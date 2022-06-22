@@ -179,14 +179,13 @@ int main()
     unsigned int textureIns = gameManager.loadTexture("res/textures/ins.png");
     unsigned int textureTime = gameManager.loadTexture("res/textures/gui/tim.png");
 
-    unsigned int kidIntTexture = gameManager.loadTexture("res/textures/tutorial/kidInt.png");
-    unsigned int findIntTexture = gameManager.loadTexture("res/textures/tutorial/findInt.png");
-    unsigned int itemIntTexture = gameManager.loadTexture("res/textures/tutorial/itemInt.png");
-    unsigned int moveIntTexture = gameManager.loadTexture("res/textures/tutorial/moveInt.png");
-    unsigned int sandpitIntTexture = gameManager.loadTexture("res/textures/tutorial/SandpitInt.png");
-
-    unsigned int tutorialTexture1 = gameManager.loadTexture("res/textures/tutorial/TutorialTest1.png");
-    unsigned int tutorialTexture2 = gameManager.loadTexture("res/textures/tutorial/TutorialTest2.png");
+    unsigned int kidIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_up.png");
+    unsigned int findIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_4.png");
+    unsigned int itemIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_3.png");
+    unsigned int moveIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_2.png");
+    unsigned int sandpitIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_1.png");
+    unsigned int nextTexture1 = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_5.png");
+    unsigned int nextTexture2 = gameManager.loadTexture("res/textures/tutorial/tutorial_down.png");
 
     unsigned int buyHintWindowTexture = gameManager.loadTexture("res/textures/gui/interaction.png");
     unsigned int notEnoughCandyTexture = gameManager.loadTexture("res/textures/gui/notEnoughCandy.png");
@@ -225,10 +224,10 @@ int main()
 
     //TODO: podmiana tekstur na prawid³owe
 
-    unsigned int hustawker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
-    unsigned int hustawker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
-    unsigned int hustawker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
-    unsigned int hustawker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int hustawker1 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker1.png");
+    unsigned int hustawker2 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker2.png");
+    unsigned int hustawker3 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker3.png");
+    unsigned int hustawker4 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker3.png");
 
     unsigned int wazker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
     unsigned int wazker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
@@ -240,13 +239,13 @@ int main()
     unsigned int liner3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
     unsigned int liner4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
 
-    gameManager.tutorialState->setTexture1(moveIntTexture);
+    gameManager.tutorialState->setTexture1(kidIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
-    gameManager.tutorialState->setTexture3(kidIntTexture);
-    gameManager.tutorialState->setTexture4(itemIntTexture);
+    gameManager.tutorialState->setTexture3(itemIntTexture);
+    gameManager.tutorialState->setTexture4(moveIntTexture);
     gameManager.tutorialState->setTexture5(sandpitIntTexture);
-    gameManager.tutorialState->setTexture6(tutorialTexture1);
-    gameManager.tutorialState->setTexture7(tutorialTexture2);
+    gameManager.tutorialState->setTexture6(nextTexture1);
+    gameManager.tutorialState->setTexture7(nextTexture2);
 
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
@@ -307,6 +306,9 @@ int main()
     {
         current_time = glfwGetTime();
         passed_time = current_time - last_time;
+        //if (passed_time > 0.25) {
+        //    passed_time = 0.25;
+        //}
         last_time = current_time;
         unprocessed_time += passed_time;
 
@@ -452,7 +454,7 @@ void daySimulation(float dt, bool changeday, std::shared_ptr<SceneGraphNode> pla
 {
     //float step = -0.3f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
-    lightPosition.x += -0.20f * dt;
+    lightPosition.x += -0.225f * dt;
     if (changeday) {
         lightPosition.x = 35.0f; //end of day
         playerObject->get_transform().m_position = glm::vec3(27.0f, 0.2f, 9.17f); // dzieciak na start

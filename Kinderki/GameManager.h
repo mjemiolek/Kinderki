@@ -115,8 +115,8 @@ class GameManager {
     Shader skeletalDepth = Shader("res/shaders/skeletal_depth.vert", "res/shaders/skeletal_depth.frag");
 
     std::shared_ptr<PlayerController> player;
-    glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
-    //glm::vec3 playerPos = glm::vec3(25.0f, 0.2f, -10.0); //Player position
+    //glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
+    glm::vec3 playerPos = glm::vec3(15.0f, 0.0f, -11.f); //Player position
     int playerWins = 0;
     bool already = false;
     bool isSoundPlaying = false;
@@ -128,6 +128,7 @@ class GameManager {
     Animation anim2 = Animation("res/animations/main_character_jumping.fbx", &postac_test);
     Animation anim3 = Animation("res/animations/main_character_idle.fbx", &postac_test);
     Animation anim4 = Animation("res/animations/main_character_lifting.fbx", &postac_test);
+    Animation anim5 = Animation("res/animations/main_character_zombie_walking.fbx", &postac_test);
     Animator animatorMainCharacter = Animator(&anim1);
 
     Model animatedBucket = Model("res/models/bucket.fbx");
@@ -149,10 +150,10 @@ class GameManager {
 
 
     Model animatedLightBall = Model("res/models/light.fbx");
-    Animation animationLightBall = Animation("res/animations/light_animation.fbx", &animatedLightBall);
+    Animation animationLightBall = Animation("res/animations/light_animation_idle.fbx", &animatedLightBall);
     Animator animatorLightBall = Animator(&animationLightBall);
 
-    Animation animationHustawker = Animation("res/animations/first_character_kamehameha.fbx", &postac_test);
+    Animation animationHustawker = Animation("res/animations/first_character_kamehameha_idle.fbx", &postac_test);
     Animator animatorHustawker = Animator(&animationHustawker);
 
     Animation animationKidMentosCola = Animation("res/animations/first_character_mentos_cola.fbx", &postac_test);
@@ -395,6 +396,7 @@ class GameManager {
         unsigned int texswing = loadTexture("res/textures/models/texswing.png");
         unsigned int textrampoline = loadTexture("res/textures/models/textrampoline.png");
         unsigned int textree = loadTexture("res/textures/models/textree.png");
+        unsigned int textree2 = loadTexture("res/textures/models/textree2.png");
         unsigned int textab = loadTexture("res/textures/models/textab.png");
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
@@ -495,13 +497,13 @@ class GameManager {
         Collider cube2Trigger(0.9f, false, cubePositions[2], true);
         cube2->trigger = cube2Trigger;
         cube2->isAnimated = true;
-        cube2->tempAnim = animatorKidSeesaw;
+        cube2->tempAnim = &animatorKidSeesaw;
         cube2->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(hammerptr);
         hammerptr->setProperties(animShader, hammertexture, cubePositions[2], MODEL, animatedHammer, 0.05f, false);
         hammerptr->isAnimated = true;
-        hammerptr->tempAnim = animatorHammer;
+        hammerptr->tempAnim = &animatorHammer;
         hammerptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid2);
@@ -510,13 +512,13 @@ class GameManager {
         Collider cubeKid2Trigger(0.9f, false, cubePositions[10], true);
         cubeKid2->trigger = cubeKid2Trigger;
         cubeKid2->isAnimated = true;
-        cubeKid2->tempAnim = animatorKidSandPit;
+        cubeKid2->tempAnim = &animatorKidSandPit;
         cubeKid2->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(bucketblackptr);
         bucketblackptr->setProperties(animShader, texbucketred, cubePositions[10], MODEL, animatedBucket, 0.05f, false);
         bucketblackptr->isAnimated = true;
-        bucketblackptr->tempAnim = animatorBucket;
+        bucketblackptr->tempAnim = &animatorBucket;
         bucketblackptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid3);
@@ -525,13 +527,13 @@ class GameManager {
         Collider cubeKid3Trigger(0.9f, false, cubePositions[12], true);
         cubeKid3->trigger = cubeKid3Trigger;
         cubeKid3->isAnimated = true;
-        cubeKid3->tempAnim = animatorHustawker;
+        cubeKid3->tempAnim = &animatorHustawker;
         cubeKid3->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(lightballptr);
         lightballptr->setProperties(animShader, texshowel, cubePositions[12], MODEL, animatedLightBall, 0.05f, false);
         lightballptr->isAnimated = true;
-        lightballptr->tempAnim = animatorLightBall;
+        lightballptr->tempAnim = &animatorLightBall;
         lightballptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cubeKid4);
@@ -546,19 +548,19 @@ class GameManager {
         Collider cubeKid5Trigger(0.9f, false, cubePositions[13], true);
         cubeKid5->trigger = cubeKid5Trigger;
         cubeKid5->isAnimated = true;
-        cubeKid5->tempAnim = animatorKidMentosCola;
+        cubeKid5->tempAnim = &animatorKidMentosCola;
         cubeKid5->shaderTemp3 = skeletalDepth;
         
         root_node->add_child(mentosToAnimationptr);
         mentosToAnimationptr->setProperties(animShader, texmentos, cubePositions[13], MODEL, animatedMentos, 0.05f, false);
         mentosToAnimationptr->isAnimated = true;
-        mentosToAnimationptr->tempAnim = animatorMentos;
+        mentosToAnimationptr->tempAnim = &animatorMentos;
         mentosToAnimationptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(colaToAnimationptr);
         colaToAnimationptr->setProperties(animShader, texcola, cubePositions[13], MODEL, animatedCola, 0.05f, false);
         colaToAnimationptr->isAnimated = true;
-        colaToAnimationptr->tempAnim = animatorCola;
+        colaToAnimationptr->tempAnim = &animatorCola;
         colaToAnimationptr->shaderTemp3 = skeletalDepth;
 
         root_node->add_child(cube3);
@@ -566,7 +568,7 @@ class GameManager {
         //cube3->setProperties(lightingShader, texturewin10, cubePositions[4], MODEL, box, 0.15f, true, cube3Collider);
         cube3->setProperties(animShader, texture_postac_test, playerPos, MODEL, postac_test, 0.05f, false, cube3Collider);
         cube3->isAnimated = true;
-        cube3->tempAnim = animatorMainCharacter;
+        cube3->tempAnim = &animatorMainCharacter;
         cube3->shaderTemp3 = skeletalDepth;
 
         //pilka
@@ -1219,7 +1221,95 @@ class GameManager {
 
 
         root_node->add_child(tree2ptr);
-        tree2ptr->setProperties(shaderShad, textree, tree2Pos, MODEL, tree2, 0.90f, false);
+        tree2ptr->setProperties(shaderShad, textree2, tree2Pos, MODEL, tree2, 0.90f, false);
+
+        tempPos = tree2Pos;
+        //tempPos.x += 5.0;
+        tempPos.y += 1.5;
+        tempPos.z += 0.069;
+
+        Collider tree2Colider0(glm::vec3(0.4f, 2.f, 0.3f), false, tempPos, false);
+
+        tempPos.x -= 0.15;
+        tempPos.y += 1.50;
+
+        Collider tree2Colider01(0.30, false, tempPos, false);
+
+
+        tempPos.x += 0.6;
+        tempPos.y += 2.2;
+        tempPos.z += 0.2;
+
+        Collider tree2Colider1(glm::vec3(0.20f, 0.5f, 0.3f), false, tempPos, false);
+
+        tempPos.x += .9;
+        tempPos.y -= .15;
+        tempPos.z += 0.15;
+
+        Collider tree2Colider2(glm::vec3(0.25f, 0.5f, 0.33f), false, tempPos, false);
+
+        tempPos.x -= 1.25;
+        tempPos.y += 0.69;
+        tempPos.z += 1.30;
+
+        Collider tree2Colider3(glm::vec3(0.01f, 0.5f, 0.55f), false, tempPos, false);
+
+        tempPos.x += 0.25;
+        tempPos.y += 0.69;
+        tempPos.z += 1.35;
+
+        Collider tree2Colider4(glm::vec3(0.2f, 0.3f, 0.25f), false, tempPos, false);
+
+        tempPos.x -= 0.9;
+        //tempPos.y = 0.69;
+        tempPos.z -= 1.35;
+
+        Collider tree2Colider5(glm::vec3(0.10f, 0.5f, 0.10f), false, tempPos, false);
+
+
+        //tylne
+        tempPos.x -= 1.25;
+        tempPos.y -= 2.35;
+        tempPos.z -= 2.15;
+
+        Collider tree2Colider6(glm::vec3(0.20f, 0.15f, 0.33f), false, tempPos, false);
+
+        tempPos.x += 1.0;
+        //tempPos.y -= 0.69;
+        tempPos.z -= 0.2;
+
+        Collider tree2Colider7(glm::vec3(0.69f, 0.15f, 0.001f), false, tempPos, false);
+
+        tempPos.x += 1.;
+        //tempPos.y -= 0.69;
+        tempPos.z -= 0.65;
+
+        Collider tree2Colider8(glm::vec3(0.01f, 0.15f, 0.3f), false, tempPos, false);
+
+        tempPos.x += 1.;
+        tempPos.y += 0.69;
+        tempPos.z -= 0.15;
+
+        Collider tree2Colider9(glm::vec3(0.33f, 0.15f, 0.33f), false, tempPos, false);
+
+
+        root_node->add_child(heartptr);
+        heartptr->setProperties(shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+
+        tree2ptr->additionalColliders.push_back(tree2Colider0);
+        tree2ptr->additionalColliders.push_back(tree2Colider01);
+        tree2ptr->additionalColliders.push_back(tree2Colider1);
+        tree2ptr->additionalColliders.push_back(tree2Colider2);
+        tree2ptr->additionalColliders.push_back(tree2Colider3);
+        tree2ptr->additionalColliders.push_back(tree2Colider4);
+        tree2ptr->additionalColliders.push_back(tree2Colider5);
+
+        tree2ptr->additionalColliders.push_back(tree2Colider6);
+        tree2ptr->additionalColliders.push_back(tree2Colider7);
+        tree2ptr->additionalColliders.push_back(tree2Colider8);
+        tree2ptr->additionalColliders.push_back(tree2Colider9);
+
 
 
         //parasol (I dont want to deal with colliders here xd)
@@ -1272,8 +1362,8 @@ class GameManager {
         Collider heartCollider(glm::vec3(0.005f, 1.0f, 0.005f), false, heartPos, true);
         Collider heartTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos, true);
         Collider heartTrigger2(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos2, true);
-        Collider colaTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, colaPos, true);
-        Collider mentosTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, mentosPos, true);
+        Collider colaTrigger(glm::vec3(0.30f, 2.0f, 0.30f), true, colaPos, true);
+        Collider mentosTrigger(glm::vec3(0.30f, 2.0f, 0.30f), true, mentosPos, true);
         Collider bucketblackTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketBlackPos, true);
         Collider bucketpinkTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketPinkPos, true);
         Collider bucketredTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketRedPos, true);
@@ -1435,60 +1525,97 @@ class GameManager {
         //gravity->updateGravityInNegativeY(cube2, dt);
         st = glfwGetTime();
         //walking
-        if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry()) {
-            if (!(cube3->tempAnim.getCurrentAnimation() == &anim1)) {
-                cube3->tempAnim.PlayAnimation(&anim1);
+        if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry() && !player->checkCarry()) {
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim1)) {
+                cube3->tempAnim->PlayAnimation(&anim1);
                 walkingsound.playLooped();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 1.5);
+            cube3->tempAnim->UpdateAnimation(dt * 1.5);
             
+        }
+        //walking like zombie
+        if (player->getPlayerObject()->canJump && player->getMoveAnimation() && !player->getTempCheckCarry() && player->checkCarry()) {
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim5)) {
+                cube3->tempAnim->PlayAnimation(&anim5);
+                walkingsound.playLooped();
+            }
+            cube3->tempAnim->UpdateAnimation(dt * 1.5);
+
         }
         //jumping
         if (!player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry() && player->getCanJumpAnimation()) {
-            if (!(cube3->tempAnim.getCurrentAnimation() == &anim2)) {
-                cube3->tempAnim.PlayAnimation(&anim2);
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim2)) {
+                cube3->tempAnim->PlayAnimation(&anim2);
                 jumpingsound.play();
                 walkingsound.stop();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 1.35);
-            if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 1.35) {
+            cube3->tempAnim->UpdateAnimation(dt * 1.35);
+            if (cube3->tempAnim->getCurrentTime() > cube3->tempAnim->getCurrentAnimation()->GetDuration() - 1.35) {
                 player->setCanJumpAnimation(false);
             }
         }
         //idle
         if (player->getPlayerObject()->canJump && !player->getMoveAnimation() && !player->getTempCheckCarry()) {
-            if (!(cube3->tempAnim.getCurrentAnimation() == &anim3)) {
-                cube3->tempAnim.PlayAnimation(&anim3);
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim3)) {
+                cube3->tempAnim->PlayAnimation(&anim3);
                 walkingsound.stop();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 0.75);
+            cube3->tempAnim->UpdateAnimation(dt * 0.75);
         }
         //picking up
         if (player->checkCarry() && player->getTempCheckCarry()) {
-            if (!(cube3->tempAnim.getCurrentAnimation() == &anim4)) {
-                cube3->tempAnim.PlayAnimation(&anim4);
+            if (!(cube3->tempAnim->getCurrentAnimation() == &anim4)) {
+                cube3->tempAnim->PlayAnimation(&anim4);
                 liftingsound.play();
                 walkingsound.stop();
             }
-            cube3->tempAnim.UpdateAnimation(dt * 5);
-            if (cube3->tempAnim.getCurrentTime() > cube3->tempAnim.getCurrentAnimation()->GetDuration() - 5) {
+            cube3->tempAnim->UpdateAnimation(dt * 5);
+            if (cube3->tempAnim->getCurrentTime() > cube3->tempAnim->getCurrentAnimation()->GetDuration() - 5) {
                 player->setTempCheckCarry(false);
             }
         }
+        if (cubeKid2->frustumCull) {
+            cubeKid2->tempAnim->UpdateAnimation(dt);
+        }
+        if (bucketblackptr->frustumCull) {
+            bucketblackptr->tempAnim->UpdateAnimation(dt);
+        }
+        if (cube2->frustumCull) {
+            cube2->tempAnim->UpdateAnimation(dt);
+        }
+        if (hammerptr->frustumCull) {
+            hammerptr->tempAnim->UpdateAnimation(dt);
+        }
+        if (cubeKid3->frustumCull) {
+            cubeKid3->tempAnim->UpdateAnimation(dt);
+        }
+        if (lightballptr->frustumCull) {
+            lightballptr->tempAnim->UpdateAnimation(dt);
+        }
 
-        cubeKid2->tempAnim.UpdateAnimation(dt);
-        bucketblackptr->tempAnim.UpdateAnimation(dt);
-        cube2->tempAnim.UpdateAnimation(dt);
-        hammerptr->tempAnim.UpdateAnimation(dt);
-        cubeKid3->tempAnim.UpdateAnimation(dt);
-        lightballptr->tempAnim.UpdateAnimation(dt);
-        cubeKid5->tempAnim.UpdateAnimation(dt);
-        mentosToAnimationptr->tempAnim.UpdateAnimation(dt);
-        colaToAnimationptr->tempAnim.UpdateAnimation(dt);
+        if (cubeKid5->frustumCull) {
+            cubeKid5->tempAnim->UpdateAnimation(dt);
+        }
+        if (mentosToAnimationptr->frustumCull) {
+            mentosToAnimationptr->tempAnim->UpdateAnimation(dt);
+        }
+        if (colaToAnimationptr->frustumCull) {
+            colaToAnimationptr->tempAnim->UpdateAnimation(dt);
+        }
+
+        
+        
+        
+       
+        
+        
 
         //std::cout << "FIRST KID: current time: " << cubeKid2->tempAnim.getCurrentTime() << " getDuration: " << cubeKid2->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
         //std::cout << "bucketblackptr: current time: " << bucketblackptr->tempAnim.getCurrentTime() << " getDuration: " << bucketblackptr->tempAnim.getCurrentAnimation()->GetDuration() << std::endl;
-
+        colaptr->update_transform();
+        mentosptr->update_transform();
+        cube2->update_transform();
+        cube3->update_transform();
         root_node->update(Transform(), false);
         root_water->update(Transform(), false);
     }
