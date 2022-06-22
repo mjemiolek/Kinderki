@@ -225,10 +225,10 @@ int main()
 
     //TODO: podmiana tekstur na prawid³owe
 
-    unsigned int hustawker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
-    unsigned int hustawker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
-    unsigned int hustawker3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
-    unsigned int hustawker4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
+    unsigned int hustawker1 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker1.png");
+    unsigned int hustawker2 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker2.png");
+    unsigned int hustawker3 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker3.png");
+    unsigned int hustawker4 = gameManager.loadTexture("res/textures/stories/hustawker/hustawker3.png");
 
     unsigned int wazker1 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker1.png");
     unsigned int wazker2 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
@@ -456,7 +456,7 @@ void daySimulation(float dt, bool changeday, std::shared_ptr<SceneGraphNode> pla
 {
     //float step = -0.3f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
-    lightPosition.x += -0.300f * dt;
+    lightPosition.x += -0.225f * dt;
     if (changeday) {
         lightPosition.x = 35.0f; //end of day
         playerObject->get_transform().m_position = glm::vec3(27.0f, 0.2f, 9.17f); // dzieciak na start

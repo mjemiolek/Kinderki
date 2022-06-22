@@ -115,8 +115,8 @@ class GameManager {
     Shader skeletalDepth = Shader("res/shaders/skeletal_depth.vert", "res/shaders/skeletal_depth.frag");
 
     std::shared_ptr<PlayerController> player;
-    glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
-    //glm::vec3 playerPos = glm::vec3(25.0f, 0.2f, -10.0); //Player position
+    //glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
+    glm::vec3 playerPos = glm::vec3(15.0f, 0.0f, -11.f); //Player position
     int playerWins = 0;
     bool already = false;
     bool isSoundPlaying = false;
@@ -395,6 +395,7 @@ class GameManager {
         unsigned int texswing = loadTexture("res/textures/models/texswing.png");
         unsigned int textrampoline = loadTexture("res/textures/models/textrampoline.png");
         unsigned int textree = loadTexture("res/textures/models/textree.png");
+        unsigned int textree2 = loadTexture("res/textures/models/textree2.png");
         unsigned int textab = loadTexture("res/textures/models/textab.png");
 
         unsigned int texcola = loadTexture("res/textures/models/texcola.png");
@@ -1219,7 +1220,95 @@ class GameManager {
 
 
         root_node->add_child(tree2ptr);
-        tree2ptr->setProperties(&shaderShad, textree, tree2Pos, MODEL, tree2, 0.90f, false);
+        tree2ptr->setProperties(&shaderShad, textree2, tree2Pos, MODEL, tree2, 0.90f, false);
+
+        tempPos = tree2Pos;
+        //tempPos.x += 5.0;
+        tempPos.y += 1.5;
+        tempPos.z += 0.069;
+
+        Collider tree2Colider0(glm::vec3(0.4f, 2.f, 0.3f), false, tempPos, false);
+
+        tempPos.x -= 0.15;
+        tempPos.y += 1.50;
+
+        Collider tree2Colider01(0.30, false, tempPos, false);
+
+
+        tempPos.x += 0.6;
+        tempPos.y += 2.2;
+        tempPos.z += 0.2;
+
+        Collider tree2Colider1(glm::vec3(0.20f, 0.5f, 0.3f), false, tempPos, false);
+
+        tempPos.x += .9;
+        tempPos.y -= .15;
+        tempPos.z += 0.15;
+
+        Collider tree2Colider2(glm::vec3(0.25f, 0.5f, 0.33f), false, tempPos, false);
+
+        tempPos.x -= 1.25;
+        tempPos.y += 0.69;
+        tempPos.z += 1.30;
+
+        Collider tree2Colider3(glm::vec3(0.01f, 0.5f, 0.55f), false, tempPos, false);
+
+        tempPos.x += 0.25;
+        tempPos.y += 0.69;
+        tempPos.z += 1.35;
+
+        Collider tree2Colider4(glm::vec3(0.2f, 0.3f, 0.25f), false, tempPos, false);
+
+        tempPos.x -= 0.9;
+        //tempPos.y = 0.69;
+        tempPos.z -= 1.35;
+
+        Collider tree2Colider5(glm::vec3(0.10f, 0.5f, 0.10f), false, tempPos, false);
+
+
+        //tylne
+        tempPos.x -= 1.25;
+        tempPos.y -= 2.35;
+        tempPos.z -= 2.15;
+
+        Collider tree2Colider6(glm::vec3(0.20f, 0.15f, 0.33f), false, tempPos, false);
+
+        tempPos.x += 1.0;
+        //tempPos.y -= 0.69;
+        tempPos.z -= 0.2;
+
+        Collider tree2Colider7(glm::vec3(0.69f, 0.15f, 0.001f), false, tempPos, false);
+
+        tempPos.x += 1.;
+        //tempPos.y -= 0.69;
+        tempPos.z -= 0.65;
+
+        Collider tree2Colider8(glm::vec3(0.01f, 0.15f, 0.3f), false, tempPos, false);
+
+        tempPos.x += 1.;
+        tempPos.y += 0.69;
+        tempPos.z -= 0.15;
+
+        Collider tree2Colider9(glm::vec3(0.33f, 0.15f, 0.33f), false, tempPos, false);
+
+
+        root_node->add_child(heartptr);
+        heartptr->setProperties(&shaderShad, texturewin10, tempPos, MODEL, postac_test, 0.05f, false);
+
+
+        tree2ptr->additionalColliders.push_back(tree2Colider0);
+        tree2ptr->additionalColliders.push_back(tree2Colider01);
+        tree2ptr->additionalColliders.push_back(tree2Colider1);
+        tree2ptr->additionalColliders.push_back(tree2Colider2);
+        tree2ptr->additionalColliders.push_back(tree2Colider3);
+        tree2ptr->additionalColliders.push_back(tree2Colider4);
+        tree2ptr->additionalColliders.push_back(tree2Colider5);
+
+        tree2ptr->additionalColliders.push_back(tree2Colider6);
+        tree2ptr->additionalColliders.push_back(tree2Colider7);
+        tree2ptr->additionalColliders.push_back(tree2Colider8);
+        tree2ptr->additionalColliders.push_back(tree2Colider9);
+
 
 
         //parasol (I dont want to deal with colliders here xd)
