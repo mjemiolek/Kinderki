@@ -179,14 +179,13 @@ int main()
     unsigned int textureIns = gameManager.loadTexture("res/textures/ins.png");
     unsigned int textureTime = gameManager.loadTexture("res/textures/gui/tim.png");
 
-    unsigned int kidIntTexture = gameManager.loadTexture("res/textures/tutorial/kidInt.png");
-    unsigned int findIntTexture = gameManager.loadTexture("res/textures/tutorial/findInt.png");
-    unsigned int itemIntTexture = gameManager.loadTexture("res/textures/tutorial/itemInt.png");
-    unsigned int moveIntTexture = gameManager.loadTexture("res/textures/tutorial/moveInt.png");
-    unsigned int sandpitIntTexture = gameManager.loadTexture("res/textures/tutorial/SandpitInt.png");
-
-    unsigned int tutorialTexture1 = gameManager.loadTexture("res/textures/tutorial/TutorialTest1.png");
-    unsigned int tutorialTexture2 = gameManager.loadTexture("res/textures/tutorial/TutorialTest2.png");
+    unsigned int kidIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_up.png");
+    unsigned int findIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_4.png");
+    unsigned int itemIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_3.png");
+    unsigned int moveIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_2.png");
+    unsigned int sandpitIntTexture = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_1.png");
+    unsigned int nextTexture1 = gameManager.loadTexture("res/textures/tutorial/tutorial_middle_5.png");
+    unsigned int nextTexture2 = gameManager.loadTexture("res/textures/tutorial/tutorial_down.png");
 
     unsigned int buyHintWindowTexture = gameManager.loadTexture("res/textures/gui/interaction.png");
     unsigned int notEnoughCandyTexture = gameManager.loadTexture("res/textures/gui/notEnoughCandy.png");
@@ -240,13 +239,13 @@ int main()
     unsigned int liner3 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker2.png");
     unsigned int liner4 = gameManager.loadTexture("res/textures/stories/tyrolker/tyrolker3.png");
 
-    gameManager.tutorialState->setTexture1(moveIntTexture);
+    gameManager.tutorialState->setTexture1(kidIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
-    gameManager.tutorialState->setTexture3(kidIntTexture);
-    gameManager.tutorialState->setTexture4(itemIntTexture);
+    gameManager.tutorialState->setTexture3(itemIntTexture);
+    gameManager.tutorialState->setTexture4(moveIntTexture);
     gameManager.tutorialState->setTexture5(sandpitIntTexture);
-    gameManager.tutorialState->setTexture6(tutorialTexture1);
-    gameManager.tutorialState->setTexture7(tutorialTexture2);
+    gameManager.tutorialState->setTexture6(nextTexture1);
+    gameManager.tutorialState->setTexture7(nextTexture2);
 
     gui.texture = texture;
     gui.textureSeeSaw = textureSeeSaw;
@@ -307,9 +306,9 @@ int main()
     {
         current_time = glfwGetTime();
         passed_time = current_time - last_time;
-        if (passed_time > 0.25) {
-            passed_time = 0.25;
-        }
+        //if (passed_time > 0.25) {
+        //    passed_time = 0.25;
+        //}
         last_time = current_time;
         unprocessed_time += passed_time;
 
@@ -352,7 +351,7 @@ int main()
 
         if (should_render) {
             should_render = false;
-            std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
+           // std::cout<< gameManager.cube3->m_transform.m_position.x << " , " << gameManager.cube3->m_transform.m_position.y << " , " << gameManager.cube3->m_transform.m_position.z << std::endl;
             //water
             //refraction
             glm::vec4 clipPlane = glm::vec4(0.0f, -1.0f, 0.0f, gameManager.waterHeight);

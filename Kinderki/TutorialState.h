@@ -108,8 +108,8 @@ public:
 
 	void ManageTutorialThings(GLFWwindow* window, std::shared_ptr<PlayerController> player, std::shared_ptr<SceneGraphNode> interacterAI, std::shared_ptr<SceneGraphNode> sandPiter) {
 		if (checkArrowsKeyMove) {
-			if (textureText != &texture6) {
-				textureText = &texture6;
+			if (textureText != &texture1) {
+				textureText = &texture1;
 				bigScale = true;
 			}
 		//	tutorialString = "Press arrows key to move the character";
@@ -135,9 +135,9 @@ public:
 			}
 		}
 		if (findSandpit && ct - dt > 2) {
-			if (textureText != &texture7) {
+			if (textureText != &texture3) {
 				waitTime = ct;
-				textureText = &texture7;
+				textureText = &texture3;
 				bigScale = true;
 			}
 			
@@ -152,9 +152,9 @@ public:
 
 		if (checkInteractionWithKid) {
 		//	tutorialString = "Press E to interact with kid";
-			if (textureText != &texture3) {
+			if (textureText != &texture4) {
 				waitTime = ct;
-				textureText = &texture3;
+				textureText = &texture4;
 				bigScale = true;
 			}
 			if (interacterAI->trigger.sphereToSphereCollisionCheck(player->getPlayerObject()->collider) && ct - waitTime > 0) {
@@ -167,9 +167,9 @@ public:
 		}
 		if (checkInteractionWithMovable) {
 		//	tutorialString = "To pick up item just go into it";
-			if (textureText != &texture4) {
+			if (textureText != &texture5) {
 				waitTime = ct;
-				textureText = &texture4;
+				textureText = &texture5;
 				bigScale = true;
 			}
 			if (player->getPlayerObject()->m_children.size() == 1 && ct - waitTime > 0) {
@@ -183,9 +183,9 @@ public:
 
 		if (putOffMovable) {
 			//need texture
-			if (textureText != &texture1) {
+			if (textureText != &texture6) {
 				waitTime = ct;
-				textureText = &texture1;
+				textureText = &texture6;
 				bigScale = true;
 			}
 			if (player->getPlayerObject()->m_children.size() > 0) {
@@ -205,9 +205,9 @@ public:
 
 		if (checkInteractionWithSandpit && ct - dt > 0) {
 		//	tutorialString = "Press E to interact with sandpit if you have the correct item";
-			if (textureText != &texture5) {
+			if (textureText != &texture7) {
 				waitTime = ct;
-				textureText = &texture5;
+				textureText = &texture7;
 				bigScale = true;
 			}
 			if (player->getPlayerObject()->m_children.size() == 0) {
@@ -293,7 +293,7 @@ public:
 					x = 0;
 				}
 
-				cout << "x: " << verticesText[0] << endl;
+				//cout << "x: " << verticesText[0] << endl;
 
 
 

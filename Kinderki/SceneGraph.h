@@ -241,20 +241,20 @@ struct SceneGraphNode {
                 else {
                     glStencilMask(0x00);
                 }
-                shaderTemp->use();
+                shaderTemp.use();
                 if (isAnimated) {
                     auto transforms = tempAnim->GetFinalBoneMatrices();
                     for (int i = 0; i < transforms.size(); ++i) {
                         //      animator.GetFinalBoneMatrices().at(i) = glm::scale(animator.GetFinalBoneMatrices().at(i), glm::vec3(0.05f, 0.05f, 0.05f));
-                        shaderTemp->setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+                        shaderTemp.setMat4("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
                     }
                 }
                 glActiveTexture(GL_TEXTURE0);
                 glBindTexture(GL_TEXTURE_2D, texture);
                 glActiveTexture(GL_TEXTURE1);
                 glBindTexture(GL_TEXTURE_2D, depthMap);
-                shaderTemp->setMat4("model", m_transform.m_world_matrix);
-                modelTemp.Draw(*shaderTemp);
+                shaderTemp.setMat4("model", m_transform.m_world_matrix);
+                modelTemp.Draw(shaderTemp);
                 display++;
             }
             else {
@@ -285,17 +285,17 @@ struct SceneGraphNode {
     void renderWater(bool is_root, unsigned int refractionTexture, unsigned int reflectionTexture, unsigned int dudvMap, unsigned int normalMap, float moveFactor)
     {
         if (!is_root) {
-            shaderTemp->use();
+            shaderTemp.use();
             glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-            shaderTemp->setMat4("projection", projection);
+            shaderTemp.setMat4("projection", projection);
 
             glm::mat4 view = camera.GetViewMatrix();
-            shaderTemp->setMat4("view", view);
-            shaderTemp->setMat4("u_world", m_transform.m_world_matrix);
-            shaderTemp->setFloat("moveFactor", moveFactor); //distortion
-            shaderTemp->setVec3("cameraPosition", camera.Position);
-            shaderTemp->setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-            shaderTemp->setVec3("lightPosition", lightPos);
+            shaderTemp.setMat4("view", view);
+            shaderTemp.setMat4("u_world", m_transform.m_world_matrix);
+            shaderTemp.setFloat("moveFactor", moveFactor); //distortion
+            shaderTemp.setVec3("cameraPosition", camera.Position);
+            shaderTemp.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+            shaderTemp.setVec3("lightPosition", lightPos);
             glActiveTexture(GL_TEXTURE0);
             glBindTexture(GL_TEXTURE_2D, refractionTexture);
             glActiveTexture(GL_TEXTURE1);
@@ -304,14 +304,14 @@ struct SceneGraphNode {
             glBindTexture(GL_TEXTURE_2D, dudvMap);
             glActiveTexture(GL_TEXTURE3);
             glBindTexture(GL_TEXTURE_2D, normalMap);
-            modelTemp.Draw(*shaderTemp);
+            modelTemp.Draw(shaderTemp);
 
         }
         for (uint32_t i = 0; i < m_children.size(); ++i) {
             m_children[i]->renderWater(false, refractionTexture, reflectionTexture, dudvMap, normalMap, moveFactor);
         }
     }
-    void setProperties(Shader *shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, bool stencilTest, Collider col = Collider(), Collider trig = Collider()) {
+    void setProperties(Shader shader, unsigned int ttexture, glm::vec3 position, renderEnum predefined, Model model, float scale, bool stencilTest, Collider col = Collider(), Collider trig = Collider()) {
         shaderTemp = shader;
         texture = ttexture;
         m_transform.m_position = position;
@@ -373,7 +373,7 @@ struct SceneGraphNode {
     }
 
 
-    Shader *shaderTemp;
+    Shader shaderTemp = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Shader shaderTemp2 = Shader("res/shaders/lightcaster.vert", "res/shaders/lightcaster.frag");
     Shader shaderTemp3 = Shader("res/shaders/shadow_mapping_depth.vert", "res/shaders/shadow_mapping_depth.frag");
     Model modelTemp = Model("res/models/box.obj");
