@@ -69,6 +69,7 @@ bool showMidDayStories = false;
 
 
 int playerWins = 0;
+int playerWinsOld = 0;
 int escapeN = NULL;
 
 bool already = false;
@@ -335,7 +336,7 @@ int main()
         unprocessed_time += passed_time;
 
         input(window, gameManager.cube3);
-        //daySimulation(passed_time, gui.changeday, gameManager.cube3);
+        daySimulation(passed_time, gui.changeday, gameManager.cube3);
         ballManager->manageBall(window, passed_time);
         gameManager.getTutorialState()->update(window, gameManager.player, gameManager.cubeKid2, gameManager.sandpitptr);
         gameManager.player->sandPiter(window, gameManager.sandpitptr, passed_time, gameManager.heartptr2);
@@ -367,6 +368,10 @@ int main()
             should_render = true;
             unprocessed_time -= frame_time;
 
+        }
+        if (playerWins != playerWinsOld) {
+            playerWinsOld = playerWins;
+            lightPosition.x = 35.0f;
         }
 
 
@@ -476,7 +481,7 @@ void daySimulation(float dt, bool changeday, std::shared_ptr<SceneGraphNode> pla
 {
     //float step = -0.3f;
     lightPosition.y = -0.01 * lightPosition.x * lightPosition.x + 35;
-    lightPosition.x += -0.225f * dt;
+    lightPosition.x += -0.2f * dt;
     if (changeday) {
         lightPosition.x = 35.0f; //end of day
         playerObject->get_transform().m_position = glm::vec3(27.0f, 0.2f, 9.17f); // dzieciak na start
