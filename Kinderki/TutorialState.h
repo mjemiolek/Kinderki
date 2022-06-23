@@ -208,7 +208,7 @@ public:
 			if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
 				carry = false;
 			}
-			std::cout << "carry: " << carry << std::endl;
+			//std::cout << "carry: " << carry << std::endl;
 			if(player->getPlayerObject()->m_children.size() == 0 && !carry && ct - waitTime > 0){
 				dt = ct;
 				putOffMovable = false;

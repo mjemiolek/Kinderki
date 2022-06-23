@@ -789,7 +789,7 @@ public:
             if (czassec < 31) {
                 czasmin += 1;
             }
-            if (ucieczkiold == 5) {
+            if (ucieczkiold == 7) {
                 visibilityEnding = true;
                 czastempEnd = glfwGetTime();
             }

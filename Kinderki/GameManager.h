@@ -115,9 +115,10 @@ class GameManager {
     Shader skeletalDepth = Shader("res/shaders/skeletal_depth.vert", "res/shaders/skeletal_depth.frag");
 
     std::shared_ptr<PlayerController> player;
-    //glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
-    glm::vec3 playerPos = glm::vec3(15.0f, 0.0f, -11.f); //Player position
+    glm::vec3 playerPos = glm::vec3(27.0f, 0.2f, 9.17); //Player position
+    //glm::vec3 playerPos = glm::vec3(15.0f, 0.0f, -11.f); //Player position
     int playerWins = 0;
+    int timer = 0;
     bool already = false;
     bool isSoundPlaying = false;
 
@@ -216,7 +217,7 @@ class GameManager {
         glm::vec3 tempPos(0.0f, 0.0f, 0.0f);
 
         glm::vec3 heartPos(12.0f, 0.2f, 2.0f);
-        glm::vec3 heartPos2(7.0f, 0.0f, -11.0f);   //dziala jako lopatka
+        glm::vec3 heartPos2(7.0f, 0.0f, -9.6f);   //dziala jako lopatka
         glm::vec3 colaPos(37.0f, 0.0f, -9.0f);
         glm::vec3 mentosPos(29.5f, 2.0f, -2.69f);
 
@@ -715,8 +716,8 @@ class GameManager {
         sandsptr->setProperties(shaderShad, texturesand, zeroPos, MODEL, sands, 0.01f, false);
 
         ////krawezniki?
-        /*root_node->add_child(walkptr);
-        walkptr->setProperties(shaderShad, textureplanks, walkPos, MODEL, walk, 0.01f, false);*/
+        root_node->add_child(walkptr);
+        walkptr->setProperties(shaderShad, texturesand, walkPos, MODEL, walk, 0.01f, false);
 
         //podloga
         root_node->add_child(floorptr);
@@ -1562,20 +1563,6 @@ class GameManager {
         //bucketpinkptr->trigger = bucketpinkTrigger;
         //bucketpinkptr->modelOutline = bucketOut;
 
-        //Escape triggers
-        /*
-        glm::vec3 Trigger1LeftPos(2.42f - 50.5f, 0.0f, 0.0f);
-        glm::vec3 Trigger2UpPos(20.675f, 0.0f, -21.0f - 50.5f);
-        glm::vec3 Triger3RightPos(38.5f + 50.5f, 0.0f, -4.68f);
-        glm::vec3 Trigger4DownPos(12.1845f, 0.0f, 21.0f + 50.5f);
-        glm::vec3 Trigger5TheSquarePos(52.0f, 0.0f, 41.5f);
-        Collider escapeTriggerLeft(glm::vec3(50.0f, 0.6f, 50.0f), false, Trigger1LeftPos, false);
-        Collider escapeTriggerUp(glm::vec3(50.0f, 0.6f, 50.0f), false, Trigger2UpPos, false);
-        Collider escapeTriggerRight(glm::vec3(50.0f, 0.6f, 50.0f), false, Triger3RightPos, false);
-        Collider escapeTriggerDown(glm::vec3(50.0f, 0.6f, 50.0f), false, Trigger4DownPos, false);
-        Collider escapeTriggerSquare(glm::vec3(30.0f, 0.6f, 30.0f), false, Trigger5TheSquarePos, false);
-        escapeTriggers.insert(escapeTriggers.end(), { escapeTriggerLeft, escapeTriggerUp, escapeTriggerRight, escapeTriggerDown, escapeTriggerSquare });
-        */
 
         glm::vec3 Trigger1WallBang(22.25, 0.0f, 21.5f);
         Collider escapeTriggerWallBang(glm::vec3(1.0f, 1.5f, 1.0f), false, Trigger1WallBang, false);
@@ -1929,25 +1916,25 @@ class GameManager {
     void checkWin()
     {
         int escape = 0;
+
         for (const auto& trigger : escapeTriggers)
         {
-            if (cube3->collider.boxToBoxCollisioncheck(trigger))
+            if (cube3->collider.boxToBoxCollisioncheck(trigger) && ifWin == false)
             {
-                if (!ifWin) {
-                    ct = st;
-                    ifWin = true;
-                    ESC = escape;
-                }
-                
+                ESC = escape;
+                ifWin = true;
+                timer = glfwGetTime();
             }
-            if (st - ct >= 2 && ifWin == true) {
+
+            if (ifWin & glfwGetTime() >= timer + 2) {
                 playerWins++;
                 std::cout << "Win";
                 cube3->get_transform().m_position = playerPos;
+                cube3->update_transform();
                 ifWin = false;
-               
 
-                if(ESC == 0){ //Ogrodzenie i pilka
+
+                if (ESC == 0) { //Ogrodzenie i pilka
                     Model wallsfixed("res/models/level/ogrodzenie_fixed.obj");
                     wallsptr->modelTemp = wallsfixed;
                     Model model0("res/models/level/model0.obj");
@@ -1982,17 +1969,18 @@ class GameManager {
                     aerialrunnwaywholeptr->additionalTriggers.at(0).setPosition(glm::vec3(36.5f, -10.0f, 5.5f));
                 }
                 if (ESC == 6) { //tree
-                    //player->setWazkerBoyPaid(false);
+                    Model tre("res/models/level/tree2.obj");
+                    tree2ptr->modelTemp = tre;
+
+                    for (int i = 23; i < tree2ptr->additionalColliders.size(); i++)
+                    {
+                        tree2ptr->additionalColliders.at(i).setPosition(glm::vec3(36.5f, -10.0f, 5.5f));
+                    }
                 }
+                break;
             }
             escape++;
         }
-        if (piaskownicaMinusUcieczka && st - ct >= 5) {
-            playerWins--;
-            piaskownicaMinusUcieczka = false;
-        }
-
-
     }
 
     std::shared_ptr<TutorialState> getTutorialState() {

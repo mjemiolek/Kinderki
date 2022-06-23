@@ -136,7 +136,7 @@ public:
                 if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
                 {
                     //playerObject->get_transform().m_position.y += 0.1f;
-                    playerObject->velocity.y = speed;
+                    //playerObject->velocity.y = speed;
                 }
                 //jump
                 if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
@@ -208,52 +208,52 @@ public:
     void checkForInteraction(GLFWwindow* window, std::shared_ptr<SceneGraphNode> AI1, std::shared_ptr<SceneGraphNode> AI2, std::shared_ptr<SceneGraphNode> AI3, std::shared_ptr<SceneGraphNode> AI4, std::shared_ptr<SceneGraphNode> AI5) {
         if ((playerObject->collider.sphereToSphereCollisionCheck(AI1->trigger))) {
             if (!paidBoy1) {
-                std::cout << "Press E to interact with kid" << std::endl;
+                //std::cout << "Press E to interact with kid" << std::endl;
                 whichKidInteractedWith = 1;
                 canInteract = true;
             }
             else {
-                std::cout << "This Kid already helped you" << std::endl;
+                //std::cout << "This Kid already helped you" << std::endl;
             }
         }
         if (playerObject->collider.sphereToSphereCollisionCheck(AI2->trigger)) {
             if (!paidBoy2) {
-                std::cout << "Press E to interact with kid" << std::endl;
+                //std::cout << "Press E to interact with kid" << std::endl;
                 whichKidInteractedWith = 2;
                 canInteract = true;
             }
             else {
-                std::cout << "This Kid already helped you" << std::endl;
+                //std::cout << "This Kid already helped you" << std::endl;
             }
         }
         if (playerObject->collider.sphereToSphereCollisionCheck(AI3->trigger)) {
             if (!paidBoy3) {
-                std::cout << "Press E to interact with kid" << std::endl;
+               // std::cout << "Press E to interact with kid" << std::endl;
                 whichKidInteractedWith = 3;
                 canInteract = true;
             }
             else {
-                std::cout << "This Kid already helped you" << std::endl;
+                //std::cout << "This Kid already helped you" << std::endl;
             }
         }
         if (playerObject->collider.sphereToSphereCollisionCheck(AI4->trigger)) {
             if (!paidBoy4) {
-                std::cout << "Press E to interact with kid" << std::endl;
+                //std::cout << "Press E to interact with kid" << std::endl;
                 whichKidInteractedWith = 4;
                 canInteract = true;
             }
             else {
-                std::cout << "This Kid already helped you" << std::endl;
+                //std::cout << "This Kid already helped you" << std::endl;
             }
         }
         if (playerObject->collider.sphereToSphereCollisionCheck(AI5->trigger)) {
             if (!paidBoy5) {
-                std::cout << "Press E to interact with kid" << std::endl;
+                //std::cout << "Press E to interact with kid" << std::endl;
                 whichKidInteractedWith = 5;
                 canInteract = true;
             }
             else {
-                std::cout << "This Kid already helped you" << std::endl;
+                //std::cout << "This Kid already helped you" << std::endl;
             }
         }
 
