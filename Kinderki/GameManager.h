@@ -87,6 +87,10 @@ class GameManager {
     std::shared_ptr<SceneGraphNode> candyCane6ptr;
 
 
+    std::shared_ptr<SceneGraphNode> treecircle1;
+    std::shared_ptr<SceneGraphNode> treecircle2;
+    std::shared_ptr<SceneGraphNode> trampolinecircle;
+
 
 
     std::shared_ptr<SceneGraphNode> bucketblackptr;
@@ -183,7 +187,7 @@ class GameManager {
     GameManager() {
         //settings
         glm::vec3 zeroPos(0.0f, 0.0f, 0.0f);
-        glm::vec3 walkPos(0.0f, 0.1f, 0.0f);
+        glm::vec3 walkPos(0.0f, 0.0f, 0.0f);
         glm::vec3 floorPos(0.0f, 0.0f, 0.0f);
         glm::vec3 sandPitPos(8.87f, 0.0f, -14.34f);
         glm::vec3 seesawPos(8.0f, 0.8f, -4.5f);
@@ -342,6 +346,12 @@ class GameManager {
         Model umbrella("res/models/level/umbrella.obj");
         Model walk("res/models/level/walk.obj");
 
+
+        Model circle("res/models/level/circle.obj");
+        Model lcircle("res/models/level/lcircle.obj");
+
+
+
         Model pool("res/models/level/pool.obj");
         Model poolwater("res/models/level/poolwater.obj");
 
@@ -459,6 +469,10 @@ class GameManager {
         poolptr = std::make_shared<SceneGraphNode>();
         poolwaterptr = std::make_shared<SceneGraphNode>();
         tabptr = std::make_shared<SceneGraphNode>();
+
+        treecircle1 = std::make_shared<SceneGraphNode>();
+        treecircle2 = std::make_shared<SceneGraphNode>();
+        trampolinecircle = std::make_shared<SceneGraphNode>();
 
         heartptr = std::make_shared<SceneGraphNode>();
         heartptr2 = std::make_shared<SceneGraphNode>();
@@ -713,7 +727,7 @@ class GameManager {
 
         //piaski
         root_node->add_child(sandsptr);
-        sandsptr->setProperties(shaderShad, texturesand, zeroPos, MODEL, sands, 0.01f, false);
+        sandsptr->setProperties(shaderShad, texturesand, glm::vec3(0.0f, -0.05f, 0.0f), MODEL, sands, 0.01f, false);
 
         ////krawezniki?
         root_node->add_child(walkptr);
@@ -723,6 +737,14 @@ class GameManager {
         root_node->add_child(floorptr);
         Collider floorCol(floorColRange, false, glm::vec3(0.0f, -101.25f, 0.0f), false);
         floorptr->setProperties(shaderShad, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
+
+        root_node->add_child(treecircle1);
+        treecircle1->setProperties(shaderShad, texturesand, glm::vec3(23.33f, 0.0f, -13.33f), MODEL, circle, 0.005f, false);
+
+        root_node->add_child(treecircle2);
+        treecircle2->setProperties(shaderShad, texturesand, tree2Pos, MODEL, circle, 0.005f, false);
+
+
 
 
         //Bramki
