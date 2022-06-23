@@ -257,6 +257,10 @@ int main()
     unsigned int tree3 = gameManager.loadTexture("res/textures/stories/tree/tree3.png");
     unsigned int tree4 = gameManager.loadTexture("res/textures/stories/tree/tree3.png");
 
+    unsigned int fin1 = gameManager.loadTexture("res/textures/stories/fin/fin1.png");
+    unsigned int fin2 = gameManager.loadTexture("res/textures/stories/fin/fin2.png");
+    unsigned int fin3 = gameManager.loadTexture("res/textures/stories/fin/fin3.png");
+
     gameManager.tutorialState->setTexture1(kidIntTexture);
     gameManager.tutorialState->setTexture2(findIntTexture);
     gameManager.tutorialState->setTexture3(itemIntTexture);
@@ -320,6 +324,10 @@ int main()
     gui.tree2 = tree2;
     gui.tree3 = tree3;
     gui.tree4 = tree4;
+
+    gui.fin1 = fin1;
+    gui.fin2 = fin2;
+    gui.fin3 = fin3;
     
     Sound bgSound("res/sounds/background-music.wav");
     bgSound.playLooped();

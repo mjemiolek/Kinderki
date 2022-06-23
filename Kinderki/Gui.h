@@ -140,6 +140,12 @@ public:
     unsigned int midday3;
     unsigned int midday4;
     unsigned int midday5;
+
+    unsigned int fin1;
+    unsigned int fin2;
+    unsigned int fin3;
+    bool alredyfin = false;
+
     std::vector<unsigned int> Storylist = { midday1, midday2, midday3, midday4, midday5 };
     unsigned int textureStory;
     bool visibilityStory = false;
@@ -559,11 +565,11 @@ public:
             }
         }
         if (visibilityEnding) {
-            Storylist.at(0) = textureSwing;
-            Storylist.at(1) = textureSeeSaw;
-            Storylist.at(2) = textureAerialRunway;
-            Storylist.at(3) = textureSeeSaw;
-            Storylist.at(4) = textureAerialRunway;
+            Storylist.at(0) = fin1;
+            Storylist.at(1) = fin1;
+            Storylist.at(2) = fin2;
+            Storylist.at(3) = fin2;
+            Storylist.at(4) = fin3;
         }
 
 
@@ -789,12 +795,13 @@ public:
             if (czassec < 31) {
                 czasmin += 1;
             }
-            if (ucieczkiold == 7) {
+            if (ucieczkiold == 5 && !alredyfin) {
                 visibilityEnding = true;
+                alredyfin = true;
                 czastempEnd = glfwGetTime();
             }
         }
-        if (visibilityEscape && glfwGetTime() > czastempEnd + 10.0f) {
+        if (visibilityEnding && glfwGetTime() > czastempEnd + 10.0f) {
             visibilityEnding = false;
         }
     }
