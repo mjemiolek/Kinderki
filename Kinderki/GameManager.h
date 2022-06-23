@@ -1510,7 +1510,7 @@ class GameManager {
         Collider heartCollider(glm::vec3(0.005f, 1.0f, 0.005f), false, heartPos, true);
         Collider heartTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos, true);
         Collider heartTrigger2(glm::vec3(0.25f, 2.0f, 0.25f), true, heartPos2, true);
-        Collider colaTrigger(glm::vec3(0.30f, 2.0f, 0.30f), true, colaPos, true);
+        Collider colaTrigger(glm::vec3(0.35f, 2.0f, 0.35f), true, colaPos, true);
         Collider mentosTrigger(glm::vec3(0.30f, 2.0f, 0.30f), true, mentosPos, true);
         Collider bucketblackTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketBlackPos, true);
         Collider bucketpinkTrigger(glm::vec3(0.25f, 2.0f, 0.25f), true, bucketPinkPos, true);

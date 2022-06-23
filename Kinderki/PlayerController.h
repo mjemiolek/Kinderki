@@ -54,7 +54,7 @@ private:
     int tyrolkerDir = -1;
     int tyrolkerAngle = 49;
     int tyrolkerSpeed = 100;
-    float tyrolkerScale = 1.2f;
+    float tyrolkerScale = 1.0f;
     
 
     bool candy1collected = false;
@@ -550,7 +550,7 @@ public:
                 seat->m_transform.x_rotation_angle += 50 * tyrolkerScale * dt;
             }
 
-            timeVariable = nowTime;
+            //timeVariable = nowTime;
         }
 
         //if player is not on seat and aerial is not at beggining
@@ -594,14 +594,14 @@ public:
         if (tyrolkerLaunch) {
             playerObject->m_transform.m_position.z += tyrolkerVelocity6 *tyrolkerScale / 1.5 * dt;
             playerObject->m_transform.m_position.y += tyrolkerVelocity6 * tyrolkerScale * dt;
-            /*tyrolkerLaunchCounter++;
+            tyrolkerLaunchCounter++;
             if (tyrolkerLaunchCounter == tyrolkerLaunchEdge * tyrolkerScale) {
                 tyrolkerLaunch = false;
                 tyrolkerLaunchCounter = 0;
-            }*/
-            if (nowTime - timeVariable >= 1.5f) {
-                tyrolkerLaunch = false;
             }
+            //if (nowTime - timeVariable >= 1.5f) {
+             //   tyrolkerLaunch = false;
+            //}
         }
     }
 
