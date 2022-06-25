@@ -67,4 +67,10 @@ Milena Pawlak:
 - Models and textures
 - Comics
 
+## Extras
+
+Our game got prize for the smartest way of resolving technological problems from 11bit studios at 14 edition of ZTGK contest. ZTGK is polish contest for team development of computer games.
+
+![](Extra.png)
+
 ## License CC BY-NC 3.0 PL
