@@ -4,7 +4,7 @@
 Playground can give a lot of excitements, especially to preschooler. To a normal preschooler... Solve puzzles and find scenarios of escaping from playground. Can you do it before day ends?
 
 ![](Game.png)
-![](Storyexapmle.png)
+![](Storyexample.png)
 
 
 Engine was created using Visual Studio 2022. It works on debug x64. Dependencies should be already inside. If they aren't go to
