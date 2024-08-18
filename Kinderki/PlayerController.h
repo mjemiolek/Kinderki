@@ -29,7 +29,8 @@ class PlayerController {
 private:
     std::shared_ptr<SceneGraphNode> playerObject;
     int candyCount, textureLayer = 0;
-    float speed = 2.5f;
+    float speed = 3.5f;
+    float angle = 0.0f;
     bool sandMove = false;
     bool goInGround = false;
     bool hustawkerMove = false, hustawkerLeft = true, hustawkerWait=false;
@@ -68,10 +69,10 @@ private:
     float timeVariable = 0.0f;
 
     float hustawkerTimeToWait = 1.0f; //seconds
-    bool hustawkerBoyPaid = false; //TODO: Make it -false and change it based on payment to boii
+    bool hustawkerBoyPaid = false;
 
     float wazkerTimeToWait = 1.0f; //seconds
-    bool wazkerBoyPaid = false; //TODO: Make it -false and change it based on payment to boii
+    bool wazkerBoyPaid = false;
     bool wazkerWait=false, wazkerMove=false;
 
     bool moveAnimation = false;
@@ -97,26 +98,40 @@ public:
             if (!sandMove) {
                 playerObject->velocity.z = 0.0f;
                 playerObject->velocity.x = 0.0f;
-                if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-                    playerObject->velocity.z = -(speed);
+                if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+                    angle = 0.0f + camera.Yaw;
+                    playerObject->velocity.z = speed * sin(glm::radians(camera.Yaw));
+                    playerObject->velocity.x = speed * cos(glm::radians(camera.Yaw));
                     moveAnimation = true;
                 }
                 else {
                     moveAnimation = false;
                 }
-                if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-                    playerObject->velocity.z = speed;
+                if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+                    angle = 180.0f + camera.Yaw;
+                    playerObject->velocity.z = -speed * sin(glm::radians(camera.Yaw));
+                    playerObject->velocity.x = -speed * cos(glm::radians(camera.Yaw));
                     moveAnimation = true;
                 }
-                if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-                    playerObject->velocity.x = -(speed);
+                if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+                    /*if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) angle = 315.0f + camera.Yaw;
+                    else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) angle = 225.0f + camera.Yaw;
+                    else*/ angle = 270.0f + camera.Yaw;
+                    playerObject->velocity.z = -speed * cos(glm::radians(camera.Yaw));
+                    playerObject->velocity.x = speed * sin(glm::radians(camera.Yaw));
                     moveAnimation = true;
                 }
-                if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-                    playerObject->velocity.x = speed;
+                if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+                    /*if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) angle = 45.0f + camera.Yaw;
+                    else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) angle = 135.0f + camera.Yaw;
+                    else*/ angle = 90.0f + camera.Yaw;
+                    playerObject->velocity.z = speed * cos(glm::radians(camera.Yaw));
+                    playerObject->velocity.x = -speed * sin(glm::radians(camera.Yaw));
                     moveAnimation = true;
                 }
-                rotate(playerObject->velocity, deltaTime);
+                //angle += camera.Yaw;
+                playerObject->get_transform().y_rotation_angle = angle + 90.0f;
+                //rotate(playerObject->velocity, deltaTime);
                 //debuowanie postaci
                 if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
                     playerObject->get_transform().m_position.x += 2.5f * deltaTime;
@@ -133,7 +148,7 @@ public:
                     playerObject->canInToGround = false;
                 }
                 //go up
-                if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+                if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS)
                 {
                     //playerObject->get_transform().m_position.y += 0.1f;
                     //playerObject->velocity.y = speed;
@@ -161,47 +176,49 @@ public:
 
     void rotate(glm::vec3 direction, float deltaTime)
     {
-        float angle = 0.0f;
-        float step = 600.0f;
-        float deviation = (step / 100.0f) * 3.0f;
+        //float angle = 0.0f;
+        //float step = 600.0f;
+        //float deviation = (step / 100.0f) * 3.0f;
         //Specify direction
-        if (direction.x == 0.0f && direction.z == 0.0f) { angle = playerObject->get_transform().y_rotation_angle; }
-        else if (direction.x == speed && direction.z == 0.0f) { angle = 90.0f; }              //right
-        else if (direction.z == speed && direction.x == 0.0f) { angle = 180.0f; }        //down
-        else if (direction.x == -speed && direction.z == 0.0f) { angle = 270.0f; }       //left
-        else if (direction.z == -speed && direction.x == 0.0f) { angle = 0.0f; }         //up
-        else if (direction.x == speed && direction.z == speed) { angle = 135.0f; }    //right-down
-        else if (direction.z == speed && direction.x == -speed) { angle = 225.0f; }   //down-left
-        else if (direction.x == -speed && direction.z == -speed) { angle = 315.0f; }  //left-up
-        else { angle = 45.0f; }   //up-right
+        //if (direction.x == 0.0f && direction.z == 0.0f) { angle = playerObject->get_transform().y_rotation_angle; }
+        //if (direction.x == speed && direction.z == 0.0f) { angle = 90.0f; }              //right
+        //else if (direction.z == speed && direction.x == 0.0f) { angle = 180.0f; }        //down
+        //else if (direction.x == -speed && direction.z == 0.0f) { angle = 270.0f; }       //left
+        //else if (direction.z == -speed && direction.x == 0.0f) { angle = 0.0f; }         //up
+        //else if (direction.x == speed && direction.z == speed) { angle = 135.0f; }    //right-down
+        //else if (direction.z == speed && direction.x == -speed) { angle = 225.0f; }   //down-left
+        //else if (direction.x == -speed && direction.z == -speed) { angle = 315.0f; }  //left-up
+        //else if (direction.z == -speed && direction.x == speed) { angle = 45.0f; }  //up-right
+        //else { angle = 0.0f; }   
+        //angle += camera.Yaw;
 //Rotate player towards direction
-        if (playerObject->get_transform().y_rotation_angle < angle - deviation || playerObject->get_transform().y_rotation_angle > angle + deviation)
-        {
-            float angle1 = playerObject->get_transform().y_rotation_angle - angle,
-                angle2 = angle - playerObject->get_transform().y_rotation_angle;
-            if (angle1 < 0.0f) angle1 += 360.0f;
-            if (angle2 < 0.0f) angle2 += 360.0f;
-            if (angle1 < angle2)
-            {
-                //Rotate in left direction
-                playerObject->get_transform().y_rotation_angle -= step * deltaTime;
-                if (playerObject->get_transform().y_rotation_angle < 0.0f)
-                {
-                    playerObject->get_transform().y_rotation_angle += 360.0f;
-                }
-            }
-            else {
-                //Rotate in right direction
-                playerObject->get_transform().y_rotation_angle += step * deltaTime;
-                if (playerObject->get_transform().y_rotation_angle >= 360.0f)
-                {
-                    playerObject->get_transform().y_rotation_angle -= 360.0f;
-                }
-            }
-        }
-        else {
-            playerObject->get_transform().y_rotation_angle = angle;
-        }
+        //if (playerObject->get_transform().y_rotation_angle < angle - deviation || playerObject->get_transform().y_rotation_angle > angle + deviation)
+        //{
+        //    float angle1 = playerObject->get_transform().y_rotation_angle - angle,
+        //        angle2 = angle - playerObject->get_transform().y_rotation_angle;
+        //    if (angle1 < 0.0f) angle1 += 360.0f;
+        //    if (angle2 < 0.0f) angle2 += 360.0f;
+        //    if (angle1 < angle2)
+        //    {
+        //        //Rotate in left direction
+        //        playerObject->get_transform().y_rotation_angle -= step * deltaTime;
+        //        if (playerObject->get_transform().y_rotation_angle < 0.0f)
+        //        {
+        //            playerObject->get_transform().y_rotation_angle += 360.0f;
+        //        }
+        //    }
+        //    else {
+        //        //Rotate in right direction
+        //        playerObject->get_transform().y_rotation_angle += step * deltaTime;
+        //        if (playerObject->get_transform().y_rotation_angle >= 360.0f)
+        //        {
+        //            playerObject->get_transform().y_rotation_angle -= 360.0f;
+        //        }
+        //    }
+        //}
+        //else {
+            //playerObject->get_transform().y_rotation_angle = angle + 90.0f;
+        //}
         //std::cout << playerObject->get_transform().y_rotation_angle<<std::endl;
     }
 

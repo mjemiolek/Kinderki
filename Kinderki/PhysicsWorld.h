@@ -6,7 +6,7 @@
 class PhysicsWorld {
 public:
 	std::vector<std::shared_ptr<SceneGraphNode>> physicsObjects;
-	float speed = 2.5f; //the same as in PlayerController
+	float speed = 3.5f; //the same as in PlayerController
 	PhysicsWorld() {}
 	PhysicsWorld(std::vector<std::shared_ptr<SceneGraphNode>> colObj)
 	{
@@ -73,11 +73,11 @@ public:
 				//player->get_transform().m_position.x -= player->velocity.x * deltaTime;
 				if (x > 0)
 				{
-					player->get_transform().m_position.x += speed * deltaTime;
+					player->get_transform().m_position.x += speed * cos(glm::radians(camera.Yaw)) * deltaTime;
 				}
 				else
 				{
-					player->get_transform().m_position.x -= speed * deltaTime;
+					player->get_transform().m_position.x -= speed * cos(glm::radians(camera.Yaw)) * deltaTime;
 				}
 				//std::cout << "abs(x):"<<abs(x) <<"abs(z)"<<abs(z)<<std::endl;
 				//Reset object velocity in collision direction
@@ -109,11 +109,11 @@ public:
 				//player->get_transform().m_position.z -= player->velocity.z * deltaTime;
 				if (z > 0)
 				{
-					player->get_transform().m_position.z += speed * deltaTime;
+					player->get_transform().m_position.z += speed * sin(glm::radians(camera.Yaw)) * deltaTime;
 				}
 				else
 				{
-					player->get_transform().m_position.z -= speed * deltaTime;
+					player->get_transform().m_position.z -= speed * sin(glm::radians(camera.Yaw)) * deltaTime;
 				}
 				//Reset object velocity in collision direction
 				player->velocity.z = 0.0f;
@@ -151,7 +151,7 @@ public:
 			//Special if for ball
 			if (player->collider.getRadius() > 0.350004f && player->collider.getRadius() < 0.350006f)
 			{
-				dimensions = glm::vec3(0.5f, 0.5f, 0.5f);
+				dimensions = glm::vec3(0.5f, 0.7f, 0.5f);
 			}
 			
 			Collider* tempCollider = new Collider(dimensions, false, player->collider.getPosition(), true);

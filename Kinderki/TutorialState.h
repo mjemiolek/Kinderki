@@ -115,22 +115,22 @@ public:
 				bigScale = true;
 			}
 		//	tutorialString = "Press arrows key to move the character";
-			if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+			if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
 				findCandy = true;
 			}
-			if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+			if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
 				findCandy = true;
 			}
-			if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+			if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
 				findCandy = true;
 			}
-			if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+			if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
 				dt = ct;
 				checkArrowsKeyMove = false;
 				findCandy = true;

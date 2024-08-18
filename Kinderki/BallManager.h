@@ -24,6 +24,7 @@ public:
         this->playerObject = playerObject;
         this->damagedwall = damagedwall;
         this->wall = wall;
+        ball->get_transform().m_position = glm::vec3(12.0f, 1.5f, 15.0f);
     }
     //TODO: 
     // bouncing off walls
@@ -33,7 +34,7 @@ public:
     {
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
         {
-            ball->get_transform().m_position = glm::vec3(12.0f, 2.5f, 15.0f);
+            ball->get_transform().m_position = glm::vec3(12.0f, 1.5f, 15.0f);
         }
         //ball logic
         float vectorx = (ball->get_transform().m_position.x - playerObject->get_transform().m_position.x);
@@ -110,7 +111,7 @@ public:
 
 
         //Don't let the ball to go into ground
-        if (ball->get_transform().m_position.y<0.25f) ball->get_transform().m_position.y = 0.26f;
+        //ball->get_transform().m_position.y = 1.45f;
 
 
         //update position

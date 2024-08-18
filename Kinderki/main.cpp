@@ -61,7 +61,7 @@ double unprocessed_time = 0.0;
 double current_time = 0.0;
 double passed_time = 0.0;
 bool should_render = false;
-double frame_time = 1.0 / 60.0;
+double frame_time = 1.0 / 144.0;
 
 bool temp = true;
 
@@ -397,9 +397,9 @@ int main()
             buffers->unbindBuffer();
             //reflection
             //move camera
-            float distance = 2 * (camera.Position.y - clipPlane.w);
+            /*float distance = 2 * (camera.Position.y - clipPlane.w);
             camera.Position.y -= distance;
-            camera.setPitch(-camera.Pitch);
+            camera.setPitch(-camera.Pitch);*/
             //move camera
             glm::vec4 clipPlane2 = glm::vec4(0.0f, 1.0f, 0.0f, -gameManager.waterHeight);
             reflectiontexture = buffers->getReflectionTexture();
@@ -408,8 +408,8 @@ int main()
             skybox.render();
             buffers->unbindBuffer();
             //move camera
-            camera.Position.y += distance;
-            camera.setPitch(-camera.Pitch);
+            /*camera.Position.y += distance;
+            camera.setPitch(-camera.Pitch);*/
             //move camera
 
             //render game
@@ -477,9 +477,10 @@ void input(GLFWwindow* window, std::shared_ptr<SceneGraphNode> player) {
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
         lightPosition.x = 35.0f;
     }
-    camera.Position.x = player->get_transform().m_position.x + cameraPos.x;  //attach camera to player
-    camera.Position.z = player->get_transform().m_position.z + cameraPos.z;  //attach camera to player
-    camera.Position.y = player->get_transform().m_position.y + cameraPos.y;  //attach camera to player
+    camera.Position.x = player->get_transform().m_position.x - camera.offsetX();  //attach camera to player
+    camera.Position.z = player->get_transform().m_position.z - camera.offsetZ();  //attach camera to player
+    camera.Position.y = player->get_transform().m_position.y - camera.offsetY() + 1.2f;  //attach camera to player
+
     lightPos.x = player->get_transform().m_position.x + lightPosition.x;     //attach light to player
     lightPos.y = player->get_transform().m_position.y + lightPosition.y;     //attach light to player
     lightPos.z = player->get_transform().m_position.z + lightPosition.z;     //attach light to player
@@ -509,7 +510,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 // glfw: whenever the mouse moves, this callback is called
 // -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
+    //if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         if (firstMouse) {
             lastX = xpos;
@@ -521,8 +522,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
         lastX = xpos;
         lastY = ypos;
         camera.ProcessMouseMovement(xoffset, yoffset);
-    }
-    else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    //}
+    //else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
 // glfw: whenever the mouse scroll wheel scrolls, this callback is called

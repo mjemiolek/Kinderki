@@ -568,6 +568,7 @@ class GameManager {
         cubeKid4->setProperties(shaderShad, kid3texture, cubePositions[11], MODEL, postac_test, 0.05f, false, cubeKid4Collider);
         Collider cubeKid4Trigger(0.9f, false, cubePositions[11], true);
         cubeKid4->trigger = cubeKid4Trigger;
+        cubeKid4->setRotation(0.0f, 270.0f, 0.0f);
 
         root_node->add_child(cubeKid5);
         Collider cubeKid5Collider(0.54f, false, cubePositions[13], false);
@@ -577,6 +578,7 @@ class GameManager {
         cubeKid5->isAnimated = true;
         cubeKid5->tempAnim = &animatorKidMentosCola;
         cubeKid5->shaderTemp3 = skeletalDepth;
+        
         
         root_node->add_child(mentosToAnimationptr);
         mentosToAnimationptr->setProperties(animShader, texmentos, cubePositions[13], MODEL, animatedMentos, 0.05f, false);
@@ -735,7 +737,7 @@ class GameManager {
 
         //podloga
         root_node->add_child(floorptr);
-        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -101.25f, 0.0f), false);
+        Collider floorCol(floorColRange, false, glm::vec3(0.0f, -101.35f, 0.0f), false);
         floorptr->setProperties(shaderShad, texturegrass, floorPos, MODEL, floor, 0.05f, false, floorCol);
 
         root_node->add_child(treecircle1);
@@ -1822,7 +1824,7 @@ class GameManager {
     {
         // 1. render depth of scene to texture (from light's perspective)
         float near_plane = 0.1f, far_plane = 75.0f;
-        float area = 16.0f;
+        float area = 32.0f;
         glm::mat4 orthgonalProjection = glm::ortho(-area, area, -area, area, near_plane, far_plane);
         glm::mat4 lightView = glm::lookAt(lightPos, cube3->get_transform().m_position, glm::vec3(0.0, 1.0, 0.0));
         glm::mat4 lightSpaceMatrix = orthgonalProjection * lightView;
