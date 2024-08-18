@@ -3,6 +3,7 @@
 
 Playground can give a lot of excitements, especially to preschooler. To a normal preschooler... Solve puzzles and find scenarios of escaping from playground. Can you do it before day ends?
 
+![ezgif-2-f52b9a3587](https://github.com/user-attachments/assets/2f93a220-2971-4118-a9da-646b8c8ac84d)
 ![](Game.png)
 ![](Storyexample.png)
 
